@@ -143,8 +143,32 @@
 	desc = "A key for a tiny lock on a collar or bag."
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
 	icon_state = "collar_key"
+	var/keyname = null//name of our key. It's null by default.
 	var/key_id = null //Adding same unique id to key
+	unique_reskin = list("Cyan" = "collar_key_blue",
+						"Yellow" = "collar_key_yellow",
+						"Green" = "collar_key_green",
+						"Red" = "collar_key_red",
+						"Latex" = "collar_key_latex",
+						"Orange" = "collar_key_orange",
+						"White" = "collar_key_white",
+						"Purple" = "collar_key_purple",
+						"Black" = "collar_key_black",
+						"Metal" = "collar_key",
+						"Black-teal" = "collar_key_tealblack")
 
+//changing color of key in case if we using multiple collars
+/obj/item/key/kink_collar/AltClick(mob/user)
+	. = ..()
+	if(unique_reskin && !current_skin && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
+		reskin_obj(user)
+
+//changing name of key in case if we using multiple collars with same color
+/obj/item/key/kink_collar/attack_self(mob/user)
+	keyname = stripped_input(user, "Would you like to change the name on the key?", "Renaming key", "Key", MAX_NAME_LEN)
+	name = "[initial(name)] - [keyname]"
+
+//we checking if we can open collar with THAT KEY with SAME ID as the collar.
 /*/obj/item/key/kink_collar/attack(mob/living/M, mob/living/user, params)
 	. = ..()
 	var/obj/item/clothing/neck/kink_collar/locked/C = user.get_item_by_slot.ITEM_SLOT_NECK
@@ -160,3 +184,4 @@
 	else
 		to_chat(user,"<span class='warning'>Looks like it's a wrong key!</span>")
 	return*/
+
