@@ -22,7 +22,6 @@
 	var/tt					//interval timer
 	var/color_changed = FALSE
 	var/static/list/mask_designs
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/bdsm_mask //gasmask filter slot
 	actions_types = list(/datum/action/item_action/toggle_breathcontrol,
 						 /datum/action/item_action/mask_inhale)
 	moans = list("Mmmph...", "Hmmphh", "Mmmfhg", "Gmmmh...")
@@ -229,16 +228,3 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	. = ..()
 	if(unique_reskin && !current_skin && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
 		reskin_obj(user)
-
-//what happens if we use gasmask filter on bdsm_gasmask
-
-
-//to check if we can apply filter on bdsm_gasmask
-
-//we can hold ONLY ONE filter in gasmask's slot
-/datum/component/storage/concrete/pockets/bdsm_mask
-	max_items = 1
-
-/datum/component/storage/concrete/pockets/bdsm_mask/Initialize()
-	. = ..()
-	can_hold = typecacheof(/obj/item/lewd_filter)
