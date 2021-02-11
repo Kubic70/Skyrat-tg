@@ -1,3 +1,9 @@
+//Jay Sparrow
+//TODO
+/*
+Icons, maybe?
+*/
+
 #define STATUS_EFFECT_LEASH_PET /datum/status_effect/leash_pet
 #define STATUS_EFFECT_LEASH_DOM /datum/status_effect/leash_dom
 #define STATUS_EFFECT_LEASH_FREEPET /datum/status_effect/leash_freepet
@@ -25,6 +31,7 @@
 	desc = "You're on a leash, but you've no master. If anyone grabs the leash they'll gain control!"
 	icon_state = "leash_freepet"
 
+
 /datum/status_effect/leash_pet
 	id = "leashed"
 	status_type = STATUS_EFFECT_UNIQUE
@@ -35,6 +42,7 @@
 	name = "Leashed Pet"
 	desc = "You're on the hook now! Be good for your master."
 	icon_state = "leash_pet"
+
 
 /datum/status_effect/leash_pet/on_apply()
 	redirect_component = WEAKREF(owner.AddComponent(/datum/component/redirect, list(COMSIG_LIVING_RESIST = CALLBACK(src, .proc/owner_resist))))
@@ -57,7 +65,6 @@
 ///// OBJECT /////
 //The leash object itself
 //The component variables are used for hooks, used later.
-
 
 /obj/item/leash
 	name = "leash"
@@ -133,7 +140,7 @@
 	if(C.has_status_effect(/datum/status_effect/leash_pet)) //If the pet is already leashed, do not leash them. For the love of god.
 		to_chat(user, "<span class='notice'>[C] has already been leashed.</span>")
 		return
-	if(istype(C.get_item_by_slot(ITEM_SLOT_NECK), /obj/item/clothing/neck/kink_collar) || istype(C.get_item_by_slot(ITEM_SLOT_NECK), /obj/item/electropack/shockcollar) || istype(C.get_item_by_slot(ITEM_SLOT_NECK), /obj/item/clothing/neck/petcollar) || istype(C.get_item_by_slot(ITEM_SLOT_NECK), /obj/item/clothing/neck/kink_collar/locked) || istype(C.get_item_by_slot(ITEM_SLOT_NECK), /obj/item/clothing/neck/human_petcollar))
+	if(istype(C.get_item_by_slot(ITEM_SLOT_NECK), /obj/item/clothing/neck/petcollar) || istype(C.get_item_by_slot(ITEM_SLOT_NECK), /obj/item/electropack/shockcollar) || istype(C.get_item_by_slot(ITEM_SLOT_NECK), /obj/item/clothing/neck/kink_collar) || istype(C.get_item_by_slot(ITEM_SLOT_NECK), /obj/item/clothing/neck/kink_collar/locked))
 		var/leashtime = 50
 		if(C.handcuffed)
 			leashtime = 5
@@ -149,7 +156,6 @@
 			leash_used = 1
 			if(!leash_pet.has_status_effect(/datum/status_effect/leash_dom)) //Add slowdown if the pet didn't leash themselves
 				leash_pet.add_movespeed_modifier(MOVESPEED_ID_LEASH, multiplicative_slowdown = 5)
-				playsound(user, C, 'sound/items/equip/toolbelt_equip.ogg', TRUE)
 			for(var/mob/viewing in viewers(user, null))
 				if(viewing == leash_master)
 					to_chat(leash_master, "<span class='warning'>You have hooked a leash onto [leash_pet]!</span>")
@@ -441,33 +447,3 @@
 	QDEL_NULL(mobhook_leash_freepet)
 	leash_pet.add_movespeed_modifier(MOVESPEED_ID_LEASH, multiplicative_slowdown = 5)
 
-/datum/component/redirect
-	dupe_mode = COMPONENT_DUPE_ALLOWED
-	var/list/signals
-	var/datum/callback/turfchangeCB
-
-/datum/component/redirect/Initialize(list/_signals, flags=NONE)
-	//It's not our job to verify the right signals are registered here, just do it.
-	if(!LAZYLEN(_signals))
-		return COMPONENT_INCOMPATIBLE
-	if(flags & REDIRECT_TRANSFER_WITH_TURF && isturf(parent))
-		// If they also want to listen to the turf change then we need to set it up so both callbacks run
-		if(_signals[COMSIG_TURF_CHANGE])
-			turfchangeCB = _signals[COMSIG_TURF_CHANGE]
-			if(!istype(turfchangeCB))
-				. = COMPONENT_INCOMPATIBLE
-				CRASH("Redirect components must be given instanced callbacks, not proc paths.")
-		_signals[COMSIG_TURF_CHANGE] = CALLBACK(src, .proc/turf_change)
-
-	signals = _signals
-
-/datum/component/redirect/RegisterWithParent()
-	for(var/signal in signals)
-		RegisterSignal(parent, signal, signals[signal])
-
-/datum/component/redirect/UnregisterFromParent()
-	UnregisterSignal(parent, signals)
-
-/datum/component/redirect/proc/turf_change(datum/source, path, new_baseturfs, flags, list/transfers)
-	transfers += src
-	return turfchangeCB?.InvokeAsync(arglist(args))
