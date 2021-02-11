@@ -8,7 +8,8 @@
 //message when equipping that thing
 /obj/item/clothing/head/domina_cap/equipped(mob/user, slot)
 	. = ..()
-	if(victim.head == src)
+	var/mob/living/carbon/C = user
+	if(src == C.head)
 		user.visible_message("<font color=purple>You feel much more determined.</font>")
 	else
 		return
