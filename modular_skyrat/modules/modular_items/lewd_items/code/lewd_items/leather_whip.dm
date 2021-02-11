@@ -1,4 +1,4 @@
-/obj/item/melee/leatherwhip
+/obj/item/leatherwhip
 	name = "leather whip"
 	desc = "A tool that used for domination. Hurts in a way you like it."
 	icon_state = "leather"
@@ -6,12 +6,7 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
-	flags_1 = CONDUCT_1
-	force = 1
-	throwforce = 0
 	w_class = WEIGHT_CLASS_NORMAL
-	attack_verb_continuous = list("flogs", "whips", "lashes", "disciplines")
-	attack_verb_simple = list("flog", "whip", "lash", "discipline")
 	hitsound = 'sound/weapons/whip.ogg'
 	var/color_changed = FALSE
 	var/form_changed = FALSE
@@ -23,30 +18,30 @@
 	var/static/list/whip_types
 
 //create radial menu
-/obj/item/melee/leatherwhip/proc/populate_whip_designs()
+/obj/item/leatherwhip/proc/populate_whip_designs()
 	whip_designs = list(
 		"pink" = image (icon = src.icon, icon_state = "leather_whip_pink_hard"),
 		"teal" = image(icon = src.icon, icon_state = "leather_whip_teal_hard"))
 
 //radial menu for changing form
-/obj/item/melee/leatherwhip/proc/populate_whip_forms()
+/obj/item/leatherwhip/proc/populate_whip_forms()
 	whip_forms = list(
 		"whip" = image (icon = src.icon, icon_state = "leather_whip_pink_hard"),
 		"crotch" = image(icon = src.icon, icon_state = "leather_crotch_pink_hard"))
 
 //radial menu for changing type
-/obj/item/melee/leatherwhip/proc/populate_whip_types()
+/obj/item/leatherwhip/proc/populate_whip_types()
 	whip_types = list(
 		"weak" = image (icon = src.icon, icon_state = "leather_whip_pink_weak"),
 		"hard" = image(icon = src.icon, icon_state = "leather_crotch_pink_hard"))
 
 //to update model lol
-/obj/item/melee/leatherwhip/ComponentInitialize()
+/obj/item/leatherwhip/ComponentInitialize()
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 //to change color
-/obj/item/melee/leatherwhip/AltClick(mob/user, obj/item/I)
+/obj/item/leatherwhip/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -75,14 +70,14 @@
 		return
 
 //to check if we can change whip's model
-/obj/item/melee/leatherwhip/proc/check_menu(mob/living/user)
+/obj/item/leatherwhip/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/melee/leatherwhip/Initialize()
+/obj/item/leatherwhip/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
@@ -93,12 +88,12 @@
 	if(!length(whip_types))
 		populate_whip_types()
 
-/obj/item/melee/leatherwhip/update_icon_state()
+/obj/item/leatherwhip/update_icon_state()
 	icon_state = icon_state = "[initial(icon_state)]_[current_whip_form]_[current_whip_color]_[current_whip_type]"
 	inhand_icon_state = "[initial(icon_state)]_[current_whip_form]_[current_whip_color]_[current_whip_type]"
 
 //safely discipline someone without damage
-/obj/item/melee/leatherwhip/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/leatherwhip/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return
@@ -153,11 +148,8 @@
 			else
 				return
 
-	if(user.a_intent != INTENT_HELP)
-		return ..(M, user)
-
 //toggle low pain mode. Because sometimes screaming isn't good
-/obj/item/melee/leatherwhip/attack_self(mob/user, obj/item/I)
+/obj/item/leatherwhip/attack_self(mob/user, obj/item/I)
 	current_whip_type = !current_whip_type
 	to_chat(user, "<span class='notice'>Whip now is [current_whip_type? "weak. Easy mode!" : "hard. Someone need to be punished!"]</span>")
 	update_icon()
