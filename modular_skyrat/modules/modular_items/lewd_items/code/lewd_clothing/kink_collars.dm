@@ -14,7 +14,7 @@
 	can_hold = typecacheof(list(
 	/obj/item/food/cookie,
 	/obj/item/food/cookie/sugar,
-	/obj/item/key/collar))
+	/obj/item/key/kink_collar))
 
 //Here goes code for normal collar
 
@@ -71,13 +71,10 @@
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_neck.dmi'
 	icon_state = "lock_collar_cyan"
 	inhand_icon_state = "lock_collar_cyan"
-	body_parts_covered = NECK
-	slot_flags = ITEM_SLOT_NECK
-	w_class = WEIGHT_CLASS_SMALL
 	pocket_storage_component_path = /datum/component/storage/concrete/pockets/small/kink_collar/locked
-	treat_path = /obj/item/key/collar
+	treat_path = /obj/item/key/kink_collar
 	var/lock = FALSE
-	var/key_id //Adding unique id to collar
+	var/key_id = null //Adding unique id to collar
 	unique_reskin = list("Cyan" = "lock_collar_cyan",
 						"Yellow" = "lock_collar_yellow",
 						"Green" = "lock_collar_green",
@@ -95,6 +92,14 @@
 	. = ..()
 	if(treat_path)
 		new treat_path(src)
+	var/id = rand(111111,999999)
+	key_id = id
+	to_chat(world,"hi")
+	/*/var/obj/item/clothing/neck/kink_collar/locked/L = src
+	to_chat(world,"L.pockets")
+	var/obj/item/key/collar/K = L.pockets
+	K.key_id = id
+	to_chat(world,"[K]")*/
 
 //reskin code
 
@@ -108,15 +113,17 @@
 
 /obj/item/clothing/neck/kink_collar/locked/attackby(obj/item/K, mob/user, params)
 	var/obj/item/clothing/neck/kink_collar/locked/collar
-	var/obj/item/key/collar/key
-	if(istype(K, /obj/item/key/collar))
+	var/obj/item/key/kink_collar/key
+	if(istype(K, /obj/item/key/kink_collar))
 		if(key.key_id==collar.key_id)
 			if(lock != FALSE)
 				to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
 				lock = FALSE
+				REMOVE_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
 			else
 				to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
 				lock = TRUE
+				ADD_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
 		else
 			to_chat(user,"<span class='warning'>Looks like it's a wrong key!</span>")
 	return
@@ -131,9 +138,25 @@
 
 //And here some code for key thingy
 
-/obj/item/key/collar
-	name = "collar key"
+/obj/item/key/kink_collar
+	name = "kink collar key"
 	desc = "A key for a tiny lock on a collar or bag."
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
 	icon_state = "collar_key"
-	var/key_id //Adding same unique id to key
+	var/key_id = null //Adding same unique id to key
+
+/*/obj/item/key/kink_collar/attack(mob/living/M, mob/living/user, params)
+	. = ..()
+	var/obj/item/clothing/neck/kink_collar/locked/C = user.get_item_by_slot.ITEM_SLOT_NECK
+	if(C.key_id == key_id)
+		if(lock != FALSE)
+			to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
+			lock = FALSE
+			REMOVE_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
+		else
+			to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
+			lock = TRUE
+			ADD_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
+	else
+		to_chat(user,"<span class='warning'>Looks like it's a wrong key!</span>")
+	return*/
