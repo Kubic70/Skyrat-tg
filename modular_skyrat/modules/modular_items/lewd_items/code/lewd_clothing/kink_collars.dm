@@ -46,8 +46,15 @@
 
 /obj/item/clothing/neck/kink_collar/Initialize()
 	. = ..()
+	var/Key
 	if(treat_path)
-		new treat_path(src)
+		Key = new treat_path(src)
+		if(istype(Key,/obj/item/key/kink_collar))
+			var/id = rand(111111,999999)
+			var/obj/item/clothing/neck/kink_collar/locked/L = src
+			var/obj/item/key/kink_collar/K = Key
+			L.key_id = id
+			K.key_id = id
 
 //reskin code
 
@@ -87,19 +94,6 @@
 						"Black-teal" = "lock_collar_tealblack")
 
 //spawn thing in collar
-
-/obj/item/clothing/neck/kink_collar/locked/Initialize()
-	. = ..()
-	if(treat_path)
-		new treat_path(src)
-	var/id = rand(111111,999999)
-	key_id = id
-	to_chat(world,"hi")
-	/*/var/obj/item/clothing/neck/kink_collar/locked/L = src
-	to_chat(world,"L.pockets")
-	var/obj/item/key/collar/K = L.pockets
-	K.key_id = id
-	to_chat(world,"[K]")*/
 
 //reskin code
 
