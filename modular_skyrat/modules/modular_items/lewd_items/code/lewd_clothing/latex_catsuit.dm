@@ -16,14 +16,26 @@
 	equip_delay_self = 80
 	strip_delay = 80
 	mutant_variants = STYLE_DIGITIGRADE|STYLE_TAUR_ALL
-	unique_reskin = list("Male" = "latex_catsuit",
-						"Female" = "latex_catsuit_fem")
+	fitted = FEMALE_UNIFORM_FULL
 
-/obj/item/clothing/under/misc/latex_catsuit/AltClick(mob/user)
-	. = ..()
-	if(unique_reskin && !current_skin && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
-		reskin_obj(user)
+//to update icon on mob
+///obj/item/clothing/under/misc/latex_catsuit/ComponentInitialize()
+//	. = ..()
+//	AddElement(/datum/element/update_icon_updates_onmob)
 
+//to spawn catsuit with sprite
+///obj/item/clothing/under/misc/latex_catsuit/Initialize()
+//	. = ..()
+//	update_icon_state()
+//	update_icon()
+
+//need to correctly change sprite
+///obj/item/clothing/under/misc/latex_catsuit/update_icon_state()
+//	icon_state = "[suit_gender]_[initial(icon_state)]"
+//	update_icon()
+//	update_inv_w_uniform()
+
+//this fragment of code makes unequipping not instant
 /obj/item/clothing/under/misc/latex_catsuit/attack_hand(mob/user)
 	if(iscarbon(user))
 		var/mob/living/carbon/human/C = user
@@ -31,3 +43,22 @@
 			if(!do_after(C, 60, target = src))
 				return
 	. = ..()
+
+//some gender identification magic
+///obj/item/clothing/under/misc/latex_catsuit/equipped(mob/living/U, slot)
+//	. = ..()
+//	var/mob/living/carbon/human/C = U
+//	if(src == C.w_uniform)
+//		if(U.gender == FEMALE)
+//			suit_gender = "f"
+//			to_chat(U,"gender female")
+//			update_icon_state()
+//			update_icon()
+//			update_inv_w_uniform()
+
+//		if(U.gender == MALE)
+//			suit_gender = "m"
+//			to_chat(U,"gender male")
+//			update_icon_state()
+//			update_icon()
+//			update_inv_w_uniform()
