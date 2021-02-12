@@ -81,6 +81,7 @@
 	pocket_storage_component_path = /datum/component/storage/concrete/pockets/small/kink_collar/locked
 	treat_path = /obj/item/key/kink_collar
 	var/lock = FALSE
+	var/broke = FALSE
 	var/key_id = null //Adding unique id to collar
 	unique_reskin = list("Cyan" = "lock_collar_cyan",
 						"Yellow" = "lock_collar_yellow",
@@ -105,19 +106,33 @@
 
 //locking or unlocking collar code
 
+/obj/item/clothing/neck/kink_collar/locked/proc/IsLocked(var/L,mob/user)
+	if(!broke)
+		if(L == TRUE)
+			to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
+			lock = TRUE
+			ADD_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
+		if(L == FALSE)
+			to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
+			lock = FALSE
+			REMOVE_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
+	else
+		to_chat(user, "<span class='warning'>Looks like the lock is broken. Now it is an ordinary collar.</span>")
+		lock = FALSE
+		REMOVE_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
+
 /obj/item/clothing/neck/kink_collar/locked/attackby(obj/item/K, mob/user, params)
-	var/obj/item/clothing/neck/kink_collar/locked/collar
-	var/obj/item/key/kink_collar/key
+	var/obj/item/clothing/neck/kink_collar/locked/collar = src
+	//to_chat(world,"K=[K]/user=[user]/atakby=[src]")
 	if(istype(K, /obj/item/key/kink_collar))
+		var/obj/item/key/kink_collar/key = K
 		if(key.key_id==collar.key_id)
 			if(lock != FALSE)
-				to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
-				lock = FALSE
-				REMOVE_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
+				//to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
+				IsLocked(FALSE,user)
 			else
-				to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
-				lock = TRUE
-				ADD_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
+				//to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
+				IsLocked(TRUE,user)
 		else
 			to_chat(user,"<span class='warning'>Looks like it's a wrong key!</span>")
 	return
@@ -163,19 +178,53 @@
 	name = "[initial(name)] - [keyname]"
 
 //we checking if we can open collar with THAT KEY with SAME ID as the collar.
-/*/obj/item/key/kink_collar/attack(mob/living/M, mob/living/user, params)
+/obj/item/key/kink_collar/attack(mob/living/M, mob/living/user, params)
 	. = ..()
-	var/obj/item/clothing/neck/kink_collar/locked/C = user.get_item_by_slot.ITEM_SLOT_NECK
-	if(C.key_id == key_id)
-		if(lock != FALSE)
-			to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
-			lock = FALSE
-			REMOVE_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
+	//to_chat(world,"target=[M]/user=[user]/atakby=[src]")
+	var/mob/living/carbon/target = M
+	if(istype(target.wear_neck,/obj/item/clothing/neck/kink_collar/locked/))
+		var/obj/item/key/kink_collar/key = src
+		var/obj/item/clothing/neck/kink_collar/locked/collar = target.wear_neck
+		if(collar.key_id == key.key_id)
+			if(collar.lock != FALSE)
+				//to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
+				collar.IsLocked(FALSE,user)
+			else
+				//to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
+				collar.IsLocked(TRUE,user)
 		else
-			to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
-			lock = TRUE
-			ADD_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
-	else
-		to_chat(user,"<span class='warning'>Looks like it's a wrong key!</span>")
-	return*/
+			to_chat(user,"<span class='warning'>Looks like it's a wrong key!</span>")
+	return
+
+/obj/item/circular_saw/attack(mob/living/M, mob/living/user, params)
+	. = ..()
+	//to_chat(world,"target=[M]/user=[user]/atakby=[src]")
+	var/mob/living/carbon/target = M
+	if(istype(target.wear_neck,/obj/item/clothing/neck/kink_collar/locked/))
+		var/obj/item/clothing/neck/kink_collar/locked/collar = target.wear_neck
+		if(!collar.broke)
+			if(target != user)
+				to_chat(user, "<span class='warning'>You try to cut collar lock!</span>")
+				if(do_after(user, 20, target))
+					collar.broke = TRUE
+					collar.IsLocked(FALSE,user)
+					if(rand(0,2) == 0) //chance to get damage
+						to_chat(user, "<span class='warning'>You broke the collar lock, but [target.name] have sevaral cuts!</span>")
+						target.apply_damage(rand(1,4),BRUTE,BODY_ZONE_HEAD,wound_bonus=10)
+					else
+						to_chat(user, "<span class='warning'>You broke the collar lock!</span>")
+			else
+				to_chat(user, "<span class='warning'>You try to cut collar lock!</span>")
+				if(do_after(user, 30, target))
+					if(rand(0,2) == 0)
+						to_chat(user, "<span class='warning'>You broke the collar lock and got sevaral cuts!</span>")
+						collar.broke = TRUE
+						collar.IsLocked(FALSE,user)
+						target.apply_damage(rand(2,4),BRUTE,BODY_ZONE_HEAD,wound_bonus=10)
+					else
+						to_chat(user, "<span class='warning'>You you didn't break the collar lock and got sevaral cuts!</span>")
+						target.apply_damage(rand(3,5),BRUTE,BODY_ZONE_HEAD,wound_bonus=30)
+		else
+			to_chat(user, "<span class='warning'>Looks like the lock is broken.</span>")
+
 
