@@ -93,7 +93,9 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 			if(C.wear_mask == src)
 				to_chat(user, "<span class='warning'>You need help taking this off!</span>")
 				return
+	add_fingerprint(usr)
 	. = ..()
+
 //to make in unremovable without helping when mask is on (for MouseDrop)
 /obj/item/clothing/mask/gas/bdsm_mask/MouseDrop(atom/over_object)
 	var/mob/M = usr

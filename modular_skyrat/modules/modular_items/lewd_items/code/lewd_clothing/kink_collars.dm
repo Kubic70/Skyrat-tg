@@ -143,6 +143,17 @@
 	if(loc == user && user.get_item_by_slot(ITEM_SLOT_NECK) && lock != FALSE)
 		to_chat(user, "<span class='warning'>The collar is locked! You'll need unlock the collar before you can take it off!</span>")
 		return
+	add_fingerprint(usr)
+	..()
+
+/obj/item/clothing/neck/kink_collar/locked/MouseDrop(atom/over_object)
+	var/mob/M = usr
+	if(loc == usr && usr.get_item_by_slot(ITEM_SLOT_NECK) && lock != FALSE && istype(over_object, /atom/movable/screen/inventory/hand))
+		to_chat(usr, "<span class='warning'>The collar is locked! You'll need unlock the collar before you can take it off!</span>")
+		return
+	var/atom/movable/screen/inventory/hand/H = over_object
+	if(M.putItemFromInventoryInHandIfPossible(src, H.held_index))
+		add_fingerprint(usr)
 	..()
 
 //And here some code for key thingy
