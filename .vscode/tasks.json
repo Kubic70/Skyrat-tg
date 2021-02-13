@@ -37,12 +37,6 @@
 			],
 			"group": "build",
 			"label": "tgui: build"
-		},
-		{
-			"label": "Run Test Server",
-			"group": "test",
-			"command": "C:\\Program Files (x86)\\BYOND\\bin\\dreamdaemon.exe",
-			"args": [ "${workspaceRoot}\\tgstation.dmb", "-invisible", "-verbose", "-trusted" ]
 		}
 	]
 }
