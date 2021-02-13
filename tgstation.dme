@@ -3816,7 +3816,6 @@
 #include "modular_skyrat\modules\modular_items\lewd_items\code\technical_stuff_for_lewd.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\ballgag.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\bdsm_mask.dm"
-#include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\deprivation_helmet.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\domina_cap.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\hypnogoggles.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\kink_collars.dm"
