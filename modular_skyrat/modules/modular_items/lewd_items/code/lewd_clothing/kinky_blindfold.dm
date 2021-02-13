@@ -18,12 +18,12 @@
 		"teal"      = image(icon = src.icon, icon_state = "kblindfold_teal"))
 
 //to update model lol
-/obj/item/clothing/glasses/blindfold/kinky/ComponentInitialize()
+obj/item/clothing/glasses/blindfold/kinky/ComponentInitialize()
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 //to change model
-/obj/item/clothing/glasses/blindfold/kinky/AltClick(mob/user, obj/item/I)
+obj/item/clothing/glasses/blindfold/kinky/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -38,34 +38,20 @@
 		return
 
 //to check if we can change kinkphones's model
-/obj/item/clothing/glasses/blindfold/kinky/proc/check_menu(mob/living/user)
+obj/item/clothing/glasses/blindfold/kinky/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/clothing/glasses/blindfold/kinky/Initialize()
+obj/item/clothing/glasses/blindfold/kinky/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
 	if(!length(kinkfold_designs))
 		populate_kinkfold_designs()
 
-/obj/item/clothing/glasses/blindfold/kinky/update_icon_state()
+obj/item/clothing/glasses/blindfold/kinky/update_icon_state()
 	icon_state = icon_state = "[initial(icon_state)]_[current_kinkfold_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_kinkfold_color]"
-
-//message when equipping that thing
-/obj/item/clothing/glasses/blindfold/kinky/equipped(mob/user, slot)
-	. = ..()
-	var/mob/living/carbon/C = user
-	if(src == C.glasses)
-		user.visible_message("<font color=purple>Blindfold is blocking your vision! You feel yourself so helpless...</font>")
-	else
-		return
-
-//message when unequipping that thing
-/obj/item/clothing/glasses/blindfold/kinky/dropped(mob/user)
-	. = ..()
-	user.visible_message("<font color=purple>Blindfold no longer restricts your vision.</font>")
