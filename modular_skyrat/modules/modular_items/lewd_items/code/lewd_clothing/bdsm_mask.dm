@@ -17,7 +17,7 @@
 	var/current_mask_color = "pink"
 	var/breath_status = TRUE
 	var/time_to_choke = 6	//how long can breath hold
-	var/time_to_choke_left	//time left
+	var/time_to_choke_left	//time left before start choking
 	var/time = 2			//interval for emotes
 	var/tt					//interval timer
 	var/color_changed = FALSE
@@ -90,45 +90,46 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	if(iscarbon(user))
 		if(mask_on == TRUE)
 			var/mob/living/carbon/C = user
-			if(src == C.wear_mask)
+			if(C.wear_mask == src)
 				to_chat(user, "<span class='warning'>You need help taking this off!</span>")
 				return
- 	. = ..()
+	. = ..()
+//to make in unremovable without helping when mask is on (for MouseDrop)
+/obj/item/clothing/mask/gas/bdsm_mask/MouseDrop(atom/over_object)
+	var/mob/M = usr
+	var/mob/living/carbon/human/C = usr
+	if(ismecha(M.loc)) // stops inventory actions in a mech
+		return
+	if(!M.incapacitated())
+		if(loc == M)
+			if(istype(over_object, /atom/movable/screen/inventory/hand))
+				var/atom/movable/screen/inventory/hand/H = over_object
+				if(iscarbon(usr))
+					if(mask_on == TRUE)
+						if(src == C.wear_mask || . == C.wear_mask)
+							to_chat(usr, "<span class='warning'>You need help taking this off!</span>")
+							return
+				if(M.putItemFromInventoryInHandIfPossible(src, H.held_index))
+					add_fingerprint(usr)
+				. = ..()
 
-//button
+//Breathing valve control button
 /datum/action/item_action/toggle_breathcontrol
     name = "Toggle breath controlling filter"
     desc = "Makes incredebly hard to breath in this mask. Use with caution"
 
-//trigget thing for manual breath
+//trigger thing for manual breath
 /datum/action/item_action/toggle_breathcontrol/Trigger()
 	var/obj/item/clothing/mask/gas/bdsm_mask/H = target
 	if(istype(H))
 		H.check()
-
-///obj/item/clothing/mask/gas/bdsm_mask/verb/verb_toggle_breathcontrol()
-	//set name = "Toggle breath controlling"
-	//set category = "Object"
-	//set src in oview(1)
-	//check()
-
-///mob/living/verb/verb_toggle_breathcontrol_ext()
-	//set name = "Toggle breath controlling ext"
-	//set category = "Object"
-	//set src in oview(1)
-	//to_chat(world,"Verb added")
-	//var/mob/living/carbon/C = usr
-	//var/obj/item/clothing/mask/gas/bdsm_mask/M = C.wear_mask
-	//to_chat(world,"[C]")
-	//to_chat(world,"[M]")
-	//M.check()
 
 /datum/action/item_action/mask_inhale
     name = "Inhale oxygen"
     desc = "You must inhale oxygen!"
   //TODO: icon_icon = make icon for inhaling
 
-//to do stuff by pressing buttons
+//Open the valve when press the button
 /datum/action/item_action/mask_inhale/Trigger()
 	if(istype(target, /obj/item/clothing/mask/gas/bdsm_mask))
 		var/obj/item/clothing/mask/gas/bdsm_mask/M = target
@@ -144,21 +145,20 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 /obj/item/clothing/mask/gas/bdsm_mask/equipped(/mob/user, slot)
 	. = ..()
 	var/mob/living/carbon/C = usr
-	//C.verbs += /mob/living/verb/verb_toggle_breathcontrol_ext
-	if(mask_on)
-		if(breath_status == FALSE)
+	var/I = usr.get_item_by_slot(ITEM_SLOT_MASK)
+	if(I==src)
+		if(mask_on)
+			if(breath_status == FALSE)
+				time_to_choke_left = time_to_choke
+				breath_status = TRUE
+				C.emote("inhale")
+			to_chat(usr,"<font color=purple>You suddenly realize that breathing has become much harder!.</font>")
+			START_PROCESSING(SSobj, src)
 			time_to_choke_left = time_to_choke
-			breath_status = TRUE
-			C.emote("inhale")
-		to_chat(usr,"<font color=purple>You suddenly realize that breathing has become much harder!.</font>")
-		START_PROCESSING(SSobj, src)
-		time_to_choke_left = time_to_choke
 
 //We unequipped mask, now we can breath without buttons
 /obj/item/clothing/mask/gas/bdsm_mask/dropped(mob/user)
 	. = ..()
-	//var/mob/living/carbon/C = usr
-	//C.verbs -= /mob/living/verb/verb_toggle_breathcontrol_ext
 	if(mask_on == TRUE)
 		STOP_PROCESSING(SSobj, src)
 
@@ -170,6 +170,7 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	else
 		toggle(C)
 
+//Switch the mask valve to the opposite state
 /obj/item/clothing/mask/gas/bdsm_mask/proc/toggle(user)
 	mask_on = !mask_on
 	to_chat(user, "<span class='notice'>You turn the air filter [mask_on? "on. Use with caution!" : "off. Now it's safe to wear"]</span>")
@@ -202,7 +203,6 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	else
 		time_to_choke_left -= delta_time
 
-
 ////////////////////////////////
 //////////---FILTERS---/////////
 ////////////////////////////////
@@ -220,8 +220,6 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	var/list/list_reagents = list(/datum/reagent/drug/space_drugs = 50)
 
 ///obj/item/lewd_filter/proc/spray_reagent(mob/user, obj/item/lewd_filter/filter)
-
-
 
 //i just wanted to add 2th color variation. Because.
 /obj/item/lewd_filter/AltClick(mob/user)
