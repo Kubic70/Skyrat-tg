@@ -81,3 +81,148 @@
 /mob/living/carbon/human
 	var/arousal = 0
 
+
+///////////////////some foundamental stuff////////////////////
+
+#define REQUIRE_NONE 0
+#define REQUIRE_EXPOSED 1
+#define REQUIRE_UNEXPOSED 2
+#define REQUIRE_ANY 3
+
+/mob/living
+	var/has_penis = FALSE
+	var/has_vagina = FALSE
+	var/has_breasts = FALSE
+	var/has_testicles = FALSE
+
+////////////////some foundamental stuff ended/////////////////
+
+
+///////////////////Determining what kind of organ character have////////////////////
+
+/mob/living/proc/has_penis(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(issilicon(src) && C.has_penis)
+		return TRUE
+	if(istype(C))
+		var/obj/item/organ/genital/penis = C.getorganslot(ORGAN_SLOT_PENIS)
+		if(penis)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(penis.is_exposed())
+						return TRUE
+					else
+						return FALSE
+				if(REQUIRE_UNEXPOSED)
+					if(!penis.is_exposed())
+						return TRUE
+					else
+						return FALSE
+				else
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_balls(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(issilicon(src) && C.has_testicles)
+		return TRUE
+	if(istype(C))
+		var/obj/item/organ/genital/testicles = C.getorganslot(ORGAN_SLOT_TESTICLES)
+		if(testicles)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(testicles.is_exposed())
+						return TRUE
+					else
+						return FALSE
+				if(REQUIRE_UNEXPOSED)
+					if(!testicles.is_exposed())
+						return TRUE
+					else
+						return FALSE
+				else
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_vagina(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(issilicon(src) && C.has_vagina)
+		return TRUE
+	if(istype(C))
+		var/obj/item/organ/genital/vagina = C.getorganslot(ORGAN_SLOT_VAGINA)
+		if(vagina)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(vagina.is_exposed())
+						return TRUE
+					else
+						return FALSE
+				if(REQUIRE_UNEXPOSED)
+					if(!vagina.is_exposed())
+						return TRUE
+					else
+						return FALSE
+				else
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_breasts(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(issilicon(src) && C.has_breasts)
+		return TRUE
+	if(istype(C))
+		var/obj/item/organ/genital/breasts = C.getorganslot(ORGAN_SLOT_BREASTS)
+		if(breasts)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(breasts.is_exposed())
+						return TRUE
+					else
+						return FALSE
+				if(REQUIRE_UNEXPOSED)
+					if(!breasts.is_exposed())
+						return TRUE
+					else
+						return FALSE
+				else
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_anus(var/nintendo = REQUIRE_ANY)
+	if(issilicon(src))
+		return TRUE
+	switch(nintendo)
+		if(REQUIRE_EXPOSED)
+			if(is_bottomless())
+				return TRUE
+			else
+				return FALSE
+		if(REQUIRE_ANY)
+			return TRUE
+		if(REQUIRE_UNEXPOSED)
+			if(!is_bottomless())
+				return TRUE
+			else
+				return FALSE
+		else
+			return TRUE
+
+
+
+///////////////////To make is_exposed proc work////////////////////
+
+
+//Кубик, эта штука должна определять открыта ли конкретная гениталия в меню expose/hide genitals. Она работает некорректно и всегда выдает FALSE. После моих исправлений она не работает совсем. Почини пожалуйста.
+/obj/item/organ/genital/proc/is_exposed()
+//	if(genital_list & (GENITAL_HIDDEN_BY_CLOTHES|GENITAL_NEVER_SHOW))
+		return FALSE
+	else
+		return TRUE
