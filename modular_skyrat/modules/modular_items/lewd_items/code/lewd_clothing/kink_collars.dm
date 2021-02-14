@@ -40,7 +40,8 @@
 						"White" = "collar_white",
 						"Purple" = "collar_purple",
 						"Black" = "collar_black",
-						"Black-teal" = "collar_tealblack")
+						"Black-teal" = "collar_tealblack",
+						"Spike" = "collar_spike")
 
 //spawn thing in collar
 
@@ -92,7 +93,8 @@
 						"White" = "lock_collar_white",
 						"Purple" = "lock_collar_purple",
 						"Black" = "lock_collar_black",
-						"Black-teal" = "lock_collar_tealblack")
+						"Black-teal" = "lock_collar_tealblack",
+						"Spike" = "lock_collar_spike")
 
 //spawn thing in collar
 
