@@ -1,4 +1,4 @@
-/obj/item/magic_wand
+/*/obj/item/magic_wand
 	name = "magic wand"
 	desc = "Not sure where is magic in this thing, but if you press button - it makes funny vibrations"
 	icon_state = "magicwand"
@@ -77,3 +77,4 @@
 	else
 		to_chat(user, "<span class='notice'>You must turn on the toy, to use it!</span>")
 		return
+*/
