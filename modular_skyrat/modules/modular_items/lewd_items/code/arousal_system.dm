@@ -56,7 +56,7 @@
 			breasts_count = 6
 	if(DNA.features["breasts_lactation"])
 		milk_container.volume = DNA.features["breasts_size"] * breasts_count * 10
-		milk_container.list_reagents = list(/datum/reagent/consumable/milk = 0)
+		milk_container.list_reagents = list(/datum/reagent/consumable/milk = milk_container.volume / 2)
 	else
 		milk_container.volume = 0
 	//to_chat(world,"Breasts: genital_type = [genital_type] / breasts_count = [breasts_count] / breasts_size = [DNA.features["breasts_size"]] / milk_max_vol = [milk_container.volume]")
@@ -68,7 +68,7 @@
 	. = ..()
 	semen_container = new /obj/item/reagent_containers
 	semen_container.volume = DNA.features["balls_size"] * 10
-	semen_container.list_reagents = list(/datum/reagent/cum = 0)
+	semen_container.list_reagents = list(/datum/reagent/cum = semen_container.volume / 2)
 	//to_chat(world,"Balls: genital_type = [genital_type] / balls_size = [DNA.features["balls_size"]] / semen_max_vol = [semen_container.volume]")
 
 /obj/item/organ/genital/vagina
@@ -84,9 +84,54 @@
 
 ///////////////////Stats////////////////////
 
-/mob/living/carbon/human
+/mob/living
 	var/arousal = 0
+	var/pleasure = 0
+	var/arousal_status = AROUSAL_NONE
 
+/mob/living/carbon/human/Initialize()
+	. = ..()
+	apply_status_effect(/datum/status_effect/aroused)
+
+
+/mob/living/proc/adjustArous(arous = 0, pleas = 0)
+	arousal += arous
+	pleasure += pleas
+
+	arousal = min(max(arousal,0),100)
+	pleasure = min(max(pleasure,0),100)
+
+	var/arousal_flag = AROUSAL_NONE
+	if(arousal >= 30)
+		arousal_flag = AROUSAL_PARTIAL
+	else if(arousal >= 70)
+		arousal_flag = AROUSAL_FULL
+
+	if(arousal_status != arousal_flag)
+		arousal_status = arousal_flag
+		if(istype(src,/mob/living/carbon/human))
+			var/mob/living/carbon/human/M = src
+			for(var/i=1,i<=M.internal_organs.len,i++)
+				to_chat(src, "<span class='warning'>[M.internal_organs[i]]</span>")
+				if(istype(M.internal_organs[i],/obj/item/organ/genital))
+					if(!M.internal_organs[i].aroused == AROUSAL_CANT)
+						M.internal_organs[i].aroused = arousal_status
+						M.internal_organs[i].update_sprite_suffix()
+			M.update_body()
+
+/datum/status_effect/aroused
+	id = "aroused"
+	duration = -1
+	alert_type = null
+
+/datum/status_effect/aroused/tick()
+	owner.adjustArous(-0.1)
+
+/*/atom/movable/screen/alert/status_effect/aroused
+	name = "Aroused"
+	//desc = "Our wounds are rapidly healing. <i>This effect is prevented if we are on fire.</i>"
+	//icon_state = "fleshmend"
+	*/
 /*
 ///////////////////some foundamental stuff////////////////////
 
