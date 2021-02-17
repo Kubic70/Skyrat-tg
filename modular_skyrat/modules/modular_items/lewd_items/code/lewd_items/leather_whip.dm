@@ -16,6 +16,8 @@
 	var/static/list/whip_designs
 	var/static/list/whip_forms
 	var/static/list/whip_types
+	var/list/modes = list("hard" = "weak", "weak" = "hard")
+	var/mode = "hard"
 
 //create radial menu
 /obj/item/leatherwhip/proc/populate_whip_designs()
@@ -89,6 +91,7 @@
 		populate_whip_types()
 
 /obj/item/leatherwhip/update_icon_state()
+	to_chat(usr,"[initial(icon_state)]_[current_whip_form]_[current_whip_color]_[current_whip_type]")
 	icon_state = icon_state = "[initial(icon_state)]_[current_whip_form]_[current_whip_color]_[current_whip_type]"
 	inhand_icon_state = "[initial(icon_state)]_[current_whip_form]_[current_whip_color]_[current_whip_type]"
 
@@ -150,7 +153,16 @@
 
 //toggle low pain mode. Because sometimes screaming isn't good
 /obj/item/leatherwhip/attack_self(mob/user, obj/item/I)
-	current_whip_type = !current_whip_type
+	toggle_mode()
 	to_chat(user, "<span class='notice'>Whip now is [current_whip_type? "weak. Easy mode!" : "hard. Someone need to be punished!"]</span>")
 	update_icon()
 	update_icon_state()
+
+//pain mode switch
+/obj/item/leatherwhip/proc/toggle_mode()
+	mode = modes[mode]
+	switch(mode)
+		if("hard")
+			current_whip_type = "hard"
+		if("weak")
+			current_whip_type = "weak"
