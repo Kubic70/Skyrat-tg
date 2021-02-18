@@ -17,12 +17,13 @@
 	var/color_changed = FALSE
 	var/static/list/bag_colors
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDEHAIR
-	equip_delay_self = 100
-	strip_delay = 120
-	breakouttime = 10
+	equip_delay_self = 300
+	strip_delay = 300
+	breakouttime = 3000 //do not touch. First - It's contraband item, Second - It's damn expensive, Third - it's ERP item, so you can't legally use it on characters without enabled non-con.
 	var/static/list/bag_inf_states
 	var/list/bag_states = list("deflated" = "inflated", "inflated" = "deflated")
 	var/state_thing = "deflated"
+	slowdown = 2
 	actions_types = list(/datum/action/item_action/fold_bag)
 
 //create radial menu
@@ -75,16 +76,18 @@
 		populate_bag_inf_states()
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/update_icon_state()
-	icon_state = icon_state = "[initial(icon_state)]_[bag_color]_[bag_state]_[bag_fold? "folded" : "unfolded"]"
+	icon_state = "[initial(icon_state)]_[bag_color]_[bag_state]_[bag_fold? "folded" : "unfolded"]"
 	inhand_icon_state = "[initial(icon_state)]_[bag_color]_[bag_state]_[bag_fold? "folded" : "unfolded"]"
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/equipped(mob/user, slot)
 	. = ..()
 	if(ishuman(user) && slot == ITEM_SLOT_OCLOTHING)
-		if(bag_fold == TRUE)
-			to_chat(src, "<span class='warning'>You are unable to equip that!</span>")
-		else
-			return
+		ADD_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
+		if(bag_state == "inflated")
+			to_chat(usr,"<font color=purple>You realize that you can't move even an inch. Inflated sleepbag squeezes you from all sides.</font>")
+
+		if(bag_state == "deflated")
+			to_chat(usr,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
 
 //to inflate/deflate that thing
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/attack_self(mob/user, obj/item/I)
@@ -133,5 +136,15 @@
 	switch(state_thing)
 		if("deflated")
 			bag_state = "deflated"
+			breakouttime = 3000
+			slowdown = 2
 		if("inflated")
 			bag_state = "inflated"
+			breakouttime = 6000 //do not touch
+			slowdown = 10 //it should be almost impossible to move in that thing, so this big slowdown have reasons.
+
+/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/dropped(mob/user)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
+	to_chat(usr,"<font color=purple>You are finally free! The tight bag no longer constricts your movements.</font>")
+
