@@ -77,7 +77,7 @@
 				to_chat(usr,"<font color=purple>Your mouth is free. you breathe out with relief.</font>")
 		else
 			muzzle = TRUE
-				to_chat(usr,"Speech switch on")
+			to_chat(usr,"Speech switch on")
 			if(usr.get_item_by_slot(ITEM_SLOT_HEAD) == src)
 				ADD_TRAIT(usr, TRAIT_MUTE, CLOTHING_TRAIT)
 				to_chat(usr,"<font color=purple>Something gagged your mouth! You can't make a single a sound...</font>")
