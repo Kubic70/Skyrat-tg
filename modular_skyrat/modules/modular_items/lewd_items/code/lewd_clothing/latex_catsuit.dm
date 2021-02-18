@@ -40,33 +40,32 @@
 // 	update_icon()
 // 	// update_inv_w_uniform()
 
-// //this fragment of code makes unequipping not instant
-// /obj/item/clothing/under/misc/latex_catsuit/attack_hand(mob/user)
-// 	if(iscarbon(user))
-// 		var/mob/living/carbon/human/C = user
-// 		if(src == C.w_uniform)
-// 			if(!do_after(C, 60, target = src))
-// 				return
-// 	. = ..()
+//this fragment of code makes unequipping not instant
+/obj/item/clothing/under/misc/latex_catsuit/attack_hand(mob/user)
+	if(iscarbon(user))
+		var/mob/living/carbon/human/C = user
+		if(src == C.w_uniform)
+			if(!do_after(C, 60, target = src))
+				return
+	. = ..()
 
 // //some gender identification magic
 /obj/item/clothing/under/misc/latex_catsuit/equipped(mob/living/U, slot)
-
 	var/mob/living/carbon/human/C = U
 	if(src == C.w_uniform)
 		if(U.gender == FEMALE)
-			// suit_gender = "female"
 			to_chat(U,"gender female")
 			icon_state = "latex_catsuit_female"
 			// update_icon()
 			// update_icon_state()
-			// update_inv_w_uniform()
+			U.update_inv_w_uniform()
 
 		if(U.gender == MALE)
-			// suit_gender = "male"
-			to_chat(U,"gender male")
 			icon_state = "latex_catsuit_male"
 			// update_icon()
 			// update_icon_state()
-			// update_inv_w_uniform()
+			U.update_inv_w_uniform()
 		. = ..()
+
+
+
