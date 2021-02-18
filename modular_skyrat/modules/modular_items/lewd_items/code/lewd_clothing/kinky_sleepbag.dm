@@ -15,6 +15,10 @@
 	var/bag_fold = TRUE
 	var/bag_color = "pink"
 	var/color_changed = FALSE
+	var/time_to_sound = 20
+	var/time_to_sound_left
+	var/time = 2
+	var/tt
 	var/static/list/bag_colors
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDEHAIR
 	equip_delay_self = 300
@@ -89,6 +93,9 @@
 		if(bag_state == "deflated")
 			to_chat(usr,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
 
+		START_PROCESSING(SSobj, src)
+			time_to_sound_left = time_to_sound
+
 //to inflate/deflate that thing
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/attack_self(mob/user, obj/item/I)
 	if(bag_fold == FALSE)
@@ -147,4 +154,15 @@
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
 	to_chat(usr,"<font color=purple>You are finally free! The tight bag no longer constricts your movements.</font>")
+	STOP_PROCESSING(SSobj, src)
 
+/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/process(delta_time)
+	var/mob/living/U = loc
+	if(time_to_sound_left <= 0)
+		if(tt <= 0)
+			playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 100, TRUE)
+			tt = rand(15,35) //to do random funny sounds when character inside that thing. haha.
+		else
+			tt -= delta_time
+	else
+		time_to_sound_left -= delta_time

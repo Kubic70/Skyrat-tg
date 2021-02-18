@@ -27,7 +27,6 @@
 /obj/item/magic_wand/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[vibration_mode]_[wand_on? "on" : "off"]"
-	inhand_icon_state = "[initial(icon_state)]_[vibration_mode]_[wand_on? "on" : "off"]"
 
 /obj/item/magic_wand/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
