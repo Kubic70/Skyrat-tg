@@ -200,14 +200,17 @@
 
 //start choking when equipping gag
 /obj/item/clothing/mask/ballgag_phallic/equipped(mob/user, slot)
+	..()
 	var/mob/living/carbon/U = usr
 	if(src == U.wear_mask)
 		START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/mask/ballgag_phallic/dropped(mob/user, slot)
+	..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/mask/ballgag_phallic/Destroy()
+	..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/mask/ballgag_phallic/process(delta_time)

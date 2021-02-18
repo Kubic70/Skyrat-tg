@@ -218,7 +218,7 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	unique_reskin = list("pink" = "filter_pink",
 						"teal" = "filter_teal")
 	w_class = WEIGHT_CLASS_SMALL
-	var volume = 50
+	var/volume = 50
 	var/list/list_reagents = list(/datum/reagent/drug/space_drugs = 50)
 
 ///obj/item/lewd_filter/proc/spray_reagent(mob/user, obj/item/lewd_filter/filter)

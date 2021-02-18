@@ -18,17 +18,17 @@
 	if(!..()) //a check failed or the item has already found its slot
 		return
 
-		if(ITEM_SLOT_GLOVES)
-			if(gloves)
-				return
-			gloves = I
+	if(ITEM_SLOT_GLOVES)
+		if(gloves)
+			return
+		gloves = I
 
-			if(I.flags_inv)
-				update_inv_w_uniform()
-			if(gloves.breakouttime) //when equipping a ball mittens
-				ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
-				update_action_buttons_icon() //certain action buttons will no longer be usable.
-			update_inv_gloves()
+		if(I.flags_inv)
+			update_inv_w_uniform()
+		if(gloves.breakouttime) //when equipping a ball mittens
+			ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
+			update_action_buttons_icon() //certain action buttons will no longer be usable.
+		update_inv_gloves()
 
 /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..() //See mob.dm for an explanation on this and some rage about people copypasting instead of calling ..() like they should.
