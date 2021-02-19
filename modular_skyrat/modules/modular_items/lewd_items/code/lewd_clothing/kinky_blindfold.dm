@@ -14,8 +14,8 @@
 //create radial menu
 /obj/item/clothing/glasses/blindfold/kinky/proc/populate_kinkfold_designs()
 	kinkfold_designs = list(
-		"pink"    = image (icon = src.icon, icon_state = "kblindfold_pink"),
-		"teal"      = image(icon = src.icon, icon_state = "kblindfold_teal"))
+		"pink" = image (icon = src.icon, icon_state = "kblindfold_pink"),
+		"teal" = image(icon = src.icon, icon_state = "kblindfold_teal"))
 
 //to update model lol
 /obj/item/clothing/glasses/blindfold/kinky/ComponentInitialize()
