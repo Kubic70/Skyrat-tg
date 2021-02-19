@@ -42,14 +42,14 @@
 					var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
 					if(vibration_mode == "low")
 						if(penis)
-							message = (user == M) ? pick("Massages their penis with the [src]","Gently teases their penis with [src]") : pick("Massages [M]'s penis with [src]", "Uses [src] to massage [M]'s penis","Leans the massager against [M]'s penis")
+							message = (user == M) ? pick("Massages their penis with the [src]","Gently teases their penis with [src]") : pick("Delicately massages [M]'s penis with [src]", "Uses [src] to gently massage [M]'s penis","Leans the vibrator against [M]'s penis")
 							M.adjustArous(4,2)
 							M.emote(pick("twitch_w","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
 
 						if(vagina)
-							message = (user == M) ? pick("Massages their vagina with the [src]","Gently teases their pussy with [src]") : pick("Massages [M]'s vagina with [src]", "Uses [src] to massage [M]'s crotch","Leans the massager against [M]'s pussy")
+							message = (user == M) ? pick("Massages their pussy with the [src]","Gently teases their pussy with [src]") : pick("Delicately massages [M]'s pussy with [src]", "Uses [src] to gently massage [M]'s pussy","Leans the vibrator against [M]'s pussy")
 							M.adjustArous(4,2)
 							M.emote(pick("twitch_w","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
@@ -57,14 +57,14 @@
 
 					if(vibration_mode == "medium")
 						if(penis)
-							message = (user == M) ? pick("Massages their penis with the [src]","Gently teases their penis with [src]") : pick("Massages [M]'s penis with [src]", "Uses [src] to massage [M]'s penis","Leans the massager against [M]'s penis")
+							message = (user == M) ? pick("Massages their penis with the [src]","Teases teases their penis with [src]") : pick("Massages [M]'s penis with [src]", "Uses [src] to massage [M]'s penis","Leans the vibrator against [M]'s penis")
 							M.adjustArous(5,5)
 							M.emote(pick("twitch_w","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 20, TRUE)
 
 						if(vagina)
-							message = (user == M) ? pick("Massages their vagina with the [src]","Gently teases their pussy with [src]") : pick("Massages [M]'s vagina with [src]", "Uses [src] to massage [M]'s crotch","Leans the massager against [M]'s pussy")
+							message = (user == M) ? pick("Massages their vagina with the [src]","Gently teases their pussy with [src]") : pick("Massages [M]'s vagina with [src]", "Uses [src] to massage [M]'s crotch","Leans the vibrator against [M]'s pussy")
 							M.adjustArous(5,5)
 							M.emote(pick("twitch_w","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
@@ -72,14 +72,14 @@
 
 					if(vibration_mode == "hard")
 						if(penis)
-							message = (user == M) ? pick("Massages their penis with the [src]","Gently teases their penis with [src]") : pick("Massages [M]'s penis with [src]", "Uses [src] to massage [M]'s penis","Leans the massager against [M]'s penis")
+							message = (user == M) ? pick("Massages their penis with the [src]","Hardly teases their penis with [src]") : pick("Leans vibrator tight to [M]'s penis with [src]", "Uses [src] to agressively massage [M]'s penis","Leans the vibrator against [M]'s penis")
 							M.adjustArous(8,10)
 							M.emote(pick("twitch_w","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 30, TRUE)
 
 						if(vagina)
-							message = (user == M) ? pick("Massages their vagina with the [src]","Gently teases their pussy with [src]") : pick("Massages [M]'s vagina with [src]", "Uses [src] to massage [M]'s crotch","Leans the massager against [M]'s pussy")
+							message = (user == M) ? pick("Massages their vagina with the [src]","Hardly teases their pussy with [src]") : pick("Leans vibrator tight to [M]'s vagina with [src]", "Uses [src] to agressively massage [M]'s crotch","Leans the vibrator against [M]'s pussy")
 							M.adjustArous(8,10)
 							M.emote(pick("twitch_w","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
@@ -94,7 +94,7 @@
 					var/obj/item/organ/genital/breasts = M.getorganslot(ORGAN_SLOT_BREASTS)
 					if(vibration_mode == "low")
 						if(breasts)
-							message = (user == M) ? pick("Massages their breasts with the [src]","Gently teases their nipples with [src]") : pick("Teases [M]'s nipples with [src]", "Uses [src] to massage [M]'s tits", "Uses [src] to tease [M]'s nipples")
+							message = (user == M) ? pick("Massages their breasts with the [src]","Gently teases their nipples with [src]") : pick("Delicately teases [M]'s nipples with [src]", "Uses [src] to slowly massage [M]'s tits", "Uses [src] to tease [M]'s nipples")
 							M.adjustArous(3,1)
 							M.emote(pick("twitch_w","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
@@ -102,7 +102,7 @@
 
 					if(vibration_mode == "medium")
 						if(breasts)
-							message = (user == M) ? pick("Massages their breasts with the [src]","Gently teases their nipples with [src]") : pick("Teases [M]'s nipples with [src]", "Uses [src] to massage [M]'s tits", "Uses [src] to tease [M]'s nipples")
+							message = (user == M) ? pick("Massages their breasts with the [src]","Teases their nipples with [src]") : pick("Teases [M]'s nipples with [src]", "Uses [src] to massage [M]'s tits", "Uses [src] to tease [M]'s nipples")
 							M.adjustArous(4,4)
 							M.emote(pick("twitch_w","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
@@ -110,7 +110,7 @@
 
 					if(vibration_mode == "hard")
 						if(breasts)
-							message = (user == M) ? pick("Massages their breasts with the [src]","Gently teases their nipples with [src]") : pick("Teases [M]'s nipples with [src]", "Uses [src] to massage [M]'s tits", "Uses [src] to tease [M]'s nipples")
+							message = (user == M) ? pick("Massages their breasts with the [src]","Hardly teases their nipples with [src]") : pick("Leans vibrator tight [M]'s nipples with [src]", "Uses [src] to massage [M]'s tits", "Uses [src] to tease [M]'s nipples")
 							M.adjustArous(7,9)
 							M.emote(pick("twitch_w","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
@@ -135,7 +135,7 @@
 		update_icon()
 		update_icon_state()
 	else
-		to_chat(usr, "<span class ='notice'> You cannot switch modes while the massager is turned off.</span>")
+		to_chat(usr, "<span class ='notice'> You cannot switch modes while the vibrator is turned off.</span>")
 		return
 
 /obj/item/magic_wand/proc/toggle_mode()
