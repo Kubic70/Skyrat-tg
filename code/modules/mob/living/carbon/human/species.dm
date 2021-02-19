@@ -990,7 +990,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	// handles the equipping of species-specific gear
 	return
 
-/datum/species/proc/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
+/datum/species/proc/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE, invMouseOver)
 	if(slot in no_equip)
 		if(!I.species_exception || !is_type_in_list(src, I.species_exception))
 			return FALSE
@@ -1019,17 +1019,17 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		if(ITEM_SLOT_MASK)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_NECK)
 			return TRUE
 		if(ITEM_SLOT_BACK)
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_OCLOTHING)
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_GLOVES)
 			if(H.num_hands < 2)
 				return FALSE
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_FEET)
 			if(H.num_legs < 2)
 				return FALSE
@@ -1041,7 +1041,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 				return FALSE
 			*/
 			//SKYRAT EDIT REMOVAL END
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_BELT)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
 
@@ -1049,31 +1049,31 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 				if(!disable_warning)
 					to_chat(H, "<span class='warning'>You need a jumpsuit before you can attach this [I.name]!</span>")
 				return FALSE
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_EYES)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
 			var/obj/item/organ/eyes/E = H.getorganslot(ORGAN_SLOT_EYES)
 			if(E?.no_glasses)
 				return FALSE
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_HEAD)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_EARS)
 			if(!H.get_bodypart(BODY_ZONE_HEAD))
 				return FALSE
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_ICLOTHING)
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_ID)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
 			if(!H.w_uniform && !nojumpsuit && (!O || O.status != BODYPART_ROBOTIC))
 				if(!disable_warning)
 					to_chat(H, "<span class='warning'>You need a jumpsuit before you can attach this [I.name]!</span>")
 				return FALSE
-			return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			return equip_delay_self_check(I, H, bypass_equip_delay_self, invMouseOver)
 		if(ITEM_SLOT_LPOCKET)
 			if(HAS_TRAIT(I, TRAIT_NODROP)) //Pockets aren't visible, so you can't move TRAIT_NODROP items into them.
 				return FALSE
@@ -1136,8 +1136,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			return FALSE
 	return FALSE //Unsupported slot
 
-/datum/species/proc/equip_delay_self_check(obj/item/I, mob/living/carbon/human/H, bypass_equip_delay_self)
-	if(!I.equip_delay_self || bypass_equip_delay_self)
+/datum/species/proc/equip_delay_self_check(obj/item/I, mob/living/carbon/human/H, bypass_equip_delay_self, invMouseOver)
+	if(!I.equip_delay_self || bypass_equip_delay_self || invMouseOver)
 		return TRUE
 	H.visible_message("<span class='notice'>[H] start putting on [I]...</span>", "<span class='notice'>You start putting on [I]...</span>")
 	return do_after(H, I.equip_delay_self, target = H)

@@ -32,6 +32,13 @@
 	 * But for now, this works.
 	 */
 	var/del_on_map_removal = TRUE
+	/**
+	 * Variable for tracking the call of the check for the ability to equip an item from the usual mouse cursor hovering over an inventory slot with an item in hand.
+	 * Set to TRUE only if the item has an equip delay.
+	 * In other cases, the verification algorithm works normally.
+	 * This solution is necessary to fix the error when, when hovering over the inventory slot, a progress bar appears, if the item in the hands has a delay when equip.
+	 */
+	var/invMouseOver = FALSE
 
 /atom/movable/screen/Destroy()
 	master = null
@@ -182,7 +189,9 @@
 	var/image/item_overlay = image(holding)
 	item_overlay.alpha = 92
 
-	if(!user.can_equip(holding, slot_id, TRUE))
+	if(!holding.equip_delay_self == 0)
+		invMouseOver = TRUE
+	if(!user.can_equip(holding, slot_id, TRUE,FALSE,invMouseOver))
 		item_overlay.color = "#FF0000"
 	else
 		item_overlay.color = "#00ff00"
