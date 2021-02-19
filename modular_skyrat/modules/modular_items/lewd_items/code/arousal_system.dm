@@ -87,19 +87,65 @@
 /mob/living
 	var/arousal = 0
 	var/pleasure = 0
+	var/pain = 0
+
+	var/masohism = FALSE
+	var/nymphomania = FALSE
+
+	var/pain_limit = 0
 	var/arousal_status = AROUSAL_NONE
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
-	apply_status_effect(/datum/status_effect/aroused)
+	if(!istype(src,/mob/living/carbon/human/species/monkey))
+		set_masohism(FALSE)
+		apply_status_effect(/datum/status_effect/aroused)
+		//to_chat(world, "name = [src.name]")
+
+/mob/living/carbon/human/verb/arousal_panel()
+	set name = "Arousal panel"
+	set category = "IC"
+	show_arousal_panel()
+
+/mob/living/carbon/human/proc/show_arousal_panel()
+	var/list/dat = list()
+
+	dat += "<table>"
 
 
-/mob/living/proc/adjustArous(arous = 0, pleas = 0)
+
+	dat += {"</table>
+	<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"}
+
+	var/datum/browser/popup = new(usr, "mob[REF(src)]", "[src]", 440, 510)
+	popup.set_content(dat.Join())
+	popup.open()
+
+/mob/living/carbon/human/proc/set_masohism(status) //TRUE or FALSE
+	if(status)
+		masohism = status
+		pain_limit = 80
+	if(!status)
+		masohism = status
+		pain_limit = 50
+
+/mob/living/carbon/human/proc/set_nymphomania(status) //TRUE or FALSE
+	if(status)
+		nymphomania = TRUE
+	if(!status)
+		nymphomania = FALSE
+
+/mob/living/proc/adjustArous(arous = 0, pleas = 0, pn = 0)
 	arousal += arous
 	pleasure += pleas
+	pain += pn
 
-	arousal = min(max(arousal,0),100)
+	if(nymphomania)
+		arousal = min(max(arousal,0),100)
+	else
+		arousal = min(max(arousal,20),100)
 	pleasure = min(max(pleasure,0),100)
+	pain = min(max(pain,0),100)
 
 	var/arousal_flag = AROUSAL_NONE
 	if(arousal >= 30)
@@ -112,7 +158,7 @@
 		if(istype(src,/mob/living/carbon/human))
 			var/mob/living/carbon/human/M = src
 			for(var/i=1,i<=M.internal_organs.len,i++)
-				to_chat(src, "<span class='warning'>[M.internal_organs[i]]</span>")
+				//to_chat(src, "<span class='warning'>[M.internal_organs[i]]</span>")
 				if(istype(M.internal_organs[i],/obj/item/organ/genital))
 					if(!M.internal_organs[i].aroused == AROUSAL_CANT)
 						M.internal_organs[i].aroused = arousal_status
@@ -125,7 +171,38 @@
 	alert_type = null
 
 /datum/status_effect/aroused/tick()
-	owner.adjustArous(-0.1)
+	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
+	var/temp_arousal = -0.1
+	var/temp_pleasure = -0.5
+	var/temp_pain = -0.5
+
+	if(owner.masohism)
+		temp_pain -= 0.5
+	if(owner.nymphomania)
+		temp_pleasure += 0.25
+		temp_arousal += 0.05
+
+	if(balls)
+		if(balls.semen_container.volume <= balls.semen_container.reagents.total_volume)
+			temp_arousal += 0.1
+
+	if(owner.pain > owner.pain_limit)
+		temp_arousal -= 0.1
+		if(prob(10))
+			owner.emote("scream")
+		//SCREAM!!!
+	if(owner.arousal >= 70)
+		if(prob(10))
+			owner.emote("moan")
+		temp_pleasure += 0.1
+		//moan
+	if(owner.pleasure > 50)
+		if(prob(10))
+			owner.emote("moan")
+		//moan x2
+
+
+	owner.adjustArous(temp_arousal, temp_pleasure, temp_pain)
 
 /*/atom/movable/screen/alert/status_effect/aroused
 	name = "Aroused"
