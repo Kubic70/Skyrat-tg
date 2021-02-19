@@ -102,6 +102,25 @@
 		apply_status_effect(/datum/status_effect/aroused)
 		//to_chat(world, "name = [src.name]")
 
+/mob/living/carbon/human/verb/arousal_panel()
+	set name = "Arousal panel"
+	set category = "IC"
+	show_arousal_panel()
+
+/mob/living/carbon/human/proc/show_arousal_panel()
+	var/list/dat = list()
+
+	dat += "<table>"
+
+
+
+	dat += {"</table>
+	<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"}
+
+	var/datum/browser/popup = new(usr, "mob[REF(src)]", "[src]", 440, 510)
+	popup.set_content(dat.Join())
+	popup.open()
+
 /mob/living/carbon/human/proc/set_masohism(status) //TRUE or FALSE
 	if(status)
 		masohism = status
@@ -163,8 +182,9 @@
 		temp_pleasure += 0.25
 		temp_arousal += 0.05
 
-	if(balls.semen_container.volume <= balls.semen_container.reagents.total_volume)
-		temp_arousal += 0.1
+	if(balls)
+		if(balls.semen_container.volume <= balls.semen_container.reagents.total_volume)
+			temp_arousal += 0.1
 
 	if(owner.pain > owner.pain_limit)
 		temp_arousal -= 0.1
