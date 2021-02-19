@@ -66,6 +66,10 @@
 			// update_icon_state()
 			U.update_inv_w_uniform()
 		. = ..()
+//Plug to bypass the bug with instant suit equip/drop
+/obj/item/clothing/under/misc/latex_catsuit/MouseDrop(atom/over_object)
+	if(1 == 2)
+		. = ..()
 
 
 
