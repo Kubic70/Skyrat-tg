@@ -94,7 +94,7 @@
 			to_chat(usr,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
 
 		START_PROCESSING(SSobj, src)
-			time_to_sound_left = time_to_sound
+		time_to_sound_left = time_to_sound
 
 //to inflate/deflate that thing
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/attack_self(mob/user, obj/item/I)
@@ -157,6 +157,7 @@
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/process(delta_time)
+	// var/mob/living/U = loc
 	if(time_to_sound_left <= 0)
 		if(tt <= 0)
 			playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 100, TRUE)
