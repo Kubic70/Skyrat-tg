@@ -3838,6 +3838,7 @@
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\leather_whip.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\magic_wand.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\pinkcuffs.dm"
+#include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\torture candle.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\vibrator.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_structures\bdsm_furniture.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_structures\dancing_pole.dm"
