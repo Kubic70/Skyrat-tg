@@ -30,12 +30,11 @@
 //create radial menu
 /obj/structure/pole/proc/populate_pole_designs()
     pole_designs = list(
-        "purple"    = image (icon = src.icon, icon_state = "pole_purple_on"),
-        "cyan"      = image(icon = src.icon, icon_state = "pole_cyan_on"),
-        "red"       = image(icon = src.icon, icon_state = "pole_red_on"),
-        "green"     = image(icon = src.icon, icon_state = "pole_green_on"),
-        "white"     = image(icon = src.icon, icon_state = "pole_white_on")
-        )
+        "purple" = image (icon = src.icon, icon_state = "pole_purple_on"),
+        "cyan" = image(icon = src.icon, icon_state = "pole_cyan_on"),
+        "red" = image(icon = src.icon, icon_state = "pole_red_on"),
+        "green" = image(icon = src.icon, icon_state = "pole_green_on"),
+        "white" = image(icon = src.icon, icon_state = "pole_white_on"))
 
 //using multitool on pole
 /obj/structure/pole/multitool_act(mob/living/user, obj/item/I)
