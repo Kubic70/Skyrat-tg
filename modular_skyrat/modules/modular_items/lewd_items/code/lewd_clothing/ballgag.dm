@@ -44,7 +44,6 @@
 	icon_state = "ballgag"
 	inhand_icon_state = "ballgag"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_masks.dmi'
-	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_masks.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	gas_transfer_coefficient = 0.9
@@ -59,8 +58,8 @@
 //create radial menu
 /obj/item/clothing/mask/ballgag/proc/populate_ballgag_designs()
 	ballgag_designs = list(
-		"pink"    = image (icon = src.icon, icon_state = "ballgag_pink"),
-		"teal"      = image(icon = src.icon, icon_state = "ballgag_teal"))
+		"pink" = image (icon = src.icon, icon_state = "ballgag_pink"),
+		"teal" = image(icon = src.icon, icon_state = "ballgag_teal"))
 
 //to update model lol
 /obj/item/clothing/mask/ballgag/ComponentInitialize()

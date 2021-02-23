@@ -102,6 +102,20 @@
             return FALSE
     return TRUE
 
+/mob/living/proc/is_hands_uncovered()
+    if(istype(src, /mob/living/carbon/human))
+        var/mob/living/carbon/human/H = src
+        if(H.gloves?.body_parts_covered & ARMS)
+            return FALSE
+    return TRUE
+
+/mob/living/proc/is_head_uncovered()
+    if(istype(src, /mob/living/carbon/human))
+        var/mob/living/carbon/human/H = src
+        if(H.head?.body_parts_covered & HEAD)
+            return FALSE
+    return TRUE
+
 /mob/living/proc/has_feet(var/nintendo = REQUIRE_ANY)
 	if(iscarbon(src))
 		var/mob/living/carbon/C = src
@@ -132,6 +146,38 @@
 					return feetcount
 			else
 				return feetcount
+	return FALSE
+
+/mob/living/proc/has_arms(var/nintendo = REQUIRE_ANY)
+	if(iscarbon(src))
+		var/mob/living/carbon/C = src
+		var/armscount = 0
+		var/covered = 0
+		var/iscovered = FALSE
+		for(var/obj/item/bodypart/l_arm/L in C.bodyparts)
+			armscount++
+		for(var/obj/item/bodypart/r_arm/R in C.bodyparts)
+			armscount++
+		if(C.get_item_by_slot(ITEM_SLOT_GLOVES))
+			var/obj/item/clothing/gloves/S = C.get_item_by_slot(ITEM_SLOT_GLOVES)
+			covered = S.body_parts_covered
+		if(covered & ARMS)
+			iscovered = TRUE
+		switch(nintendo)
+			if(REQUIRE_ANY)
+				return armscount
+			if(REQUIRE_EXPOSED)
+				if(iscovered)
+					return FALSE
+				else
+					return armscount
+			if(REQUIRE_UNEXPOSED)
+				if(!iscovered)
+					return FALSE
+				else
+					return armscount
+			else
+				return armscount
 	return FALSE
 
 //////////////////////////////////////////////////////////////////////////////////
