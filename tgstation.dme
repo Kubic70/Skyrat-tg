@@ -3834,6 +3834,8 @@
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\shackles.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\shockcollar.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\stripper_outfit.dm"
+#include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\attachable_vibrator.dm"
+#include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\buttplug.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\feather.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\kinky_shocker.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\leather_whip.dm"
