@@ -171,7 +171,7 @@
 		update_icon()
 		update_icon_state()
 	else
-		to_chat(usr, "<span class ='notice'> You cannot switch modes while the massager is turned off.</span>")
+		to_chat(usr, "<span class ='notice'> You cannot switch modes while the vibrator is turned off.</span>")
 		return
 
 /obj/item/vibrator/proc/toggle_mode()
