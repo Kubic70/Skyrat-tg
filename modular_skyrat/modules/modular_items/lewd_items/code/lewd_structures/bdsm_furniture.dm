@@ -55,26 +55,13 @@
 	desc = "Why you even call it X stand? It doesn't even in X form. Anyway you can buckle someone to it"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/bdsm_furniture.dmi'
 	icon_state = "xstand"
+	max_buckled_mobs = 1
 	var/stand_state = "open"
 	var/stand_open = FALSE
 	var/list/stand_states = list("open" = "close", "close" = "open")
 	var/state_thing = "open"
 	var/static/mutable_appearance/xstand_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/bdsm_furniture.dmi', "xstand_overlay", LYING_MOB_LAYER)
-
-/obj/structure/bed/x_stand/update_icon_state()
-    . = ..()
-    icon_state = "[initial(icon_state)]_[stand_state? "open" : "close"]"
-
-//to close and open x stand by LBM
-/obj/structure/bed/x_stand/attack_hand(mob/living/user)
-	user.visible_message("<font color=purple>[user] locked the locks on the [src]!</font>")
-	toggle_mode()
-	if(stand_state == "open")
-		to_chat(user, "<span class='notice'>Stand is open now.</span>")
-	if(stand_state == "close")
-		to_chat(user, "<span class='notice'>Stand is closed now!</span>")
-	update_icon()
-	update_icon_state()
+	buckle_lying = NO_BUCKLE_LYING //Altrnative value is 0
 
 //to make it have model when we constructing the thingy
 /obj/structure/bed/x_stand/Initialize()
@@ -82,70 +69,135 @@
 	update_icon_state()
 	update_icon()
 
-//toggle_mode() proc that changes sprite and var.
-/obj/structure/bed/x_stand/proc/toggle_mode()
+/obj/structure/bed/x_stand/update_icon_state()
+    . = ..()
+    icon_state = "[initial(icon_state)]_[stand_state? "open" : "close"]"
+
+//X-Stand LBM interaction handler
+/obj/structure/bed/x_stand/attack_hand(mob/living/user)
+	var/mob/living/M = locate() in src.loc
+	// X-Stand is empty?
+	if(!has_buckled_mobs())
+		// Is there someone on the X-Stand tile?
+		if(M)
+			// Can a mob in a X-Stand tile be buckled?
+			if(M.can_buckle_to)
+				user_buckle_mob(M, user, check_loc = TRUE)
+			else
+				// The X-Stand is empty, but there is a mob in the X-Stand tile that cannot be buckled
+				// A place to report the impossibility to buckle the current mob in X-Stand
+		else
+			// The stand is empty, there is no one in the tile. We just change the state of the stand.
+			toggle_mode(user)
+	else
+		// The X-Stand is not empty. Get the mob in the X-Stand and try to unbuckle it.
+		var/mob/living/buckled_mob = buckled_mobs[1]
+		user_unbuckle_mob(buckled_mob, user)
+
+
+// Handler for attempting to unbukle a mob from a X-Stand
+/obj/structure/bed/x_stand/user_unbuckle_mob(mob/living/buckled_mob, mob/living/user)
+	// Let's make sure that the X-Stand is in the correct state
+	if(stand_state == "open")
+		toggle_mode(user)
+	var/mob/living/M = buckled_mob
+	if(M)
+		if(M != user)
+			if(!do_after(user, 5 SECONDS, M)) // Timer for unbuckling one mob with another mob
+				// Place to describe failed attempt
+				return FALSE
+			// Description of a successful attempt
+			M.visible_message("<span class='notice'>[user] unbuckles [M] from [src].</span>",\
+				"<span class='notice'>[user] unbuckles you from [src].</span>",\
+				"<span class='hear'>You hear metal clanking.</span>")
+			// Description of a successful mob attempt to unbuckle one mob with another mob
+		else
+			if(!do_after(user, 120 SECONDS, M)) // Timer to unbuckle the mob by itself
+				// Place to describe failed attempt
+				return FALSE
+			// Description of a successful mob attempt to unbuckle itself
+			user.visible_message("<span class='notice'>You unbuckle yourself from [src].</span>",\
+				"<span class='hear'>You hear metal clanking.</span>")
+		add_fingerprint(user)
+		if(isliving(M.pulledby))
+			var/mob/living/L = M.pulledby
+			L.set_pull_offsets(M, L.grab_state)
+		unbuckle_mob(buckled_mob)
+		toggle_mode(user)
+	return M
+
+// Handler for attempting to buckle a mob into a X-Stand
+/obj/structure/bed/x_stand/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+	// Let's make sure that the X-Stand is in the correct state
+	if(stand_state == "close")
+		toggle_mode(user)
+		//return  // Uncomment if it is necessary to "open" the X-Stand as a separate action before buckling
+
+	// Is buckling even possible? Do a full suite of checks.
+	if(!is_user_buckle_possible(M, user, check_loc))
+		return FALSE
+	add_fingerprint(user)
+
+	// If the mob we're attempting to buckle is not stood on this atom's turf and it isn't the user buckling themselves,
+	// we'll try it with a 2 second do_after delay.
+	if(M != user)
+		// Place to describe an attempt to buckle a mob
+		if(!do_after(user, 5 SECONDS, M)) // Timer to buckle one mob by another
+			// Place to describe a failed buckling attempt
+			return FALSE
+
+		// Sanity check before we attempt to buckle. Is everything still in a kosher state for buckling after the 3 seconds have elapsed?
+		// Covers situations where, for example, the chair was moved or there's some other issue.
+		if(!is_user_buckle_possible(M, user, check_loc))
+			// A place to report the inability to buckle a mob
+			return FALSE
+
+		// Description of a successful attempt to buckle a mob by another mob
+		M.visible_message("<span class='warning'>[user] starts buckling [M] to [src]!</span>",\
+			"<span class='userdanger'>[user] starts buckling you to [src]!</span>",\
+			"<span class='hear'>You hear metal clanking.</span>")
+		// Place to insert a description of a successful attempt for a user mob
+		buckle_mob(M, check_loc = check_loc)
+		toggle_mode(user)
+
+	else
+		if(!do_after(user, 10 SECONDS, M)) // Timer to buckle the mob itself
+			// Place to describe failed attempt
+			return FALSE
+
+		// Sanity check before we attempt to buckle. Is everything still in a kosher state for buckling after the 3 seconds have elapsed?
+		// Covers situations where, for example, the chair was moved or there's some other issue.
+		if(!is_user_buckle_possible(M, user, check_loc))
+			// Place to report the inability to buckle
+			return FALSE
+
+		user.visible_message("<span class='warning'>You buckles yourself to [src]!</span>",\
+			"<span class='hear'>You hear metal clanking.</span>")
+		buckle_mob(M, check_loc = check_loc)
+		toggle_mode(user)
+
+// X-Stand state switch processing
+/obj/structure/bed/x_stand/proc/toggle_mode(mob/user)
 	state_thing = stand_states[state_thing]
 	switch(state_thing)
 		if("open")
 			stand_state = "open"
-			update_icon_state()
-			update_icon()
-			playsound(loc, 'sound/weapons/magin.ogg', 20, TRUE)
 			cut_overlay(xstand_overlay)
-
 		if("close")
 			stand_state = "close"
-			update_icon_state()
-			update_icon()
-			playsound(loc, 'sound/weapons/magin.ogg', 20, TRUE)
 			add_overlay(xstand_overlay)
+	add_fingerprint(user)
+	update_icon_state()
+	update_icon()
+	playsound(loc, 'sound/weapons/magin.ogg', 20, TRUE)
 
-//xstand allows buckle someone to it.
-/obj/structure/bed/x_stand/user_unbuckle_mob(mob/living/buckled_mob, mob/living/user)
-	if(stand_state == "close")
-		if(has_buckled_mobs())
-			if(buckled_mob != user)
-				buckled_mob.visible_message("<span class='notice'>[user.name] pulls [buckled_mob.name] free from the sticky nest!</span>",\
-					"<span class='notice'>[user.name] pulls you free from the gelatinous resin.</span>",\
-					"<span class='hear'>You hear a metal clank...</span>")
-				stand_state = "open"
-				update_icon_state()
-				update_icon()
-			else
-				buckled_mob.visible_message("<span class='warning'>[buckled_mob.name] struggles to break free from the gelatinous resin!</span>",\
-					"<span class='notice'>You struggle to break free from the gelatinous resin... (Stay still for two minutes.)</span>",\
-					"<span class='hear'>You hear a metal clank...</span>")
-				if(!do_after(buckled_mob, 1200, target = src))
-					if(buckled_mob?.buckled)
-						to_chat(buckled_mob, "<span class='warning'>You fail to unbuckle yourself!</span>")
-					return
-				if(!buckled_mob.buckled)
-					return
-
-				buckled_mob.visible_message("<span class='warning'>[buckled_mob.name] breaks free from the gelatinous resin!</span>",\
-					"<span class='notice'>You break free from the gelatinous resin!</span>",\
-					"<span class='hear'>You hear a metal clank...</span>")
-				stand_state = "open"
-				update_icon_state()
-				update_icon()
-
-				unbuckle_mob(buckled_mob)
-				add_fingerprint(user)
-
-/obj/structure/bed/x_stand/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
-	if(stand_state == "close")
-		return
-
-	if(buckle_mob(M))
-		M.visible_message("<span class='notice'>[user.name] secretes a thick vile goo, securing [M.name] into [src]!</span>",\
-			"<span class='danger'>[user.name] drenches you in a foul-smelling resin, trapping you in [src]!</span>",\
-			"<span class='hear'>You hear a metal clank...</span>")
-
+//Place the mob in the desired position after buckling
 /obj/structure/bed/x_stand/post_buckle_mob(mob/living/M)
 	M.pixel_y = M.base_pixel_y
-	M.pixel_x = M.base_pixel_x + 2
+	M.pixel_x = M.base_pixel_x
 	M.layer = BELOW_MOB_LAYER
 
+//Restore the position of the mob after unbuckling.
 /obj/structure/bed/x_stand/post_unbuckle_mob(mob/living/M)
 	M.pixel_x = M.base_pixel_x + M.body_position_pixel_x_offset
 	M.pixel_y = M.base_pixel_y + M.body_position_pixel_y_offset
