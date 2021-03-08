@@ -1,5 +1,5 @@
 /obj/item/buttplug
-	name = "bugg plug"
+	name = "buttplug"
 	desc = "Uhh... Again, WHERE i supposed to put that?!"
 	icon_state = "buttplug"
 	worn_icon_state = "buttplug"
