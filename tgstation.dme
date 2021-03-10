@@ -3830,6 +3830,7 @@
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\latex_straight_jacket.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\lewd_glasses.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\lewd_gloves.dm"
+#include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\lewd_maid.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\lewd_shoes.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\neckleash.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_clothing\shackles.dm"
