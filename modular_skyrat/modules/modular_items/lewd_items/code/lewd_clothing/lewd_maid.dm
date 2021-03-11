@@ -1,4 +1,4 @@
-/obj/item/clothing/under/costume/maid/lewdmaid
+/obj/item/clothing/under/costume/lewdmaid
 	name = "latex maid costume"
 	desc = "Maid costume for fetish reasons."
 	icon_state = "lewdmaid"
@@ -11,12 +11,8 @@
 	fitted = FEMALE_UNIFORM_TOP
 	can_adjust = FALSE
 
-/obj/item/clothing/under/costume/maid/lewdmaid/Initialize()
-	. = ..()
-	var/obj/item/clothing/accessory/maidapron/lewdapron/B = new (src)
-	attach_accessory(B)
 
-/obj/item/clothing/accessory/maidapron/lewdapron
+/obj/item/clothing/accessory/lewdapron
 	name = "shiny maid apron"
 	desc = "The best part of a maid costume. Now with different colors!"
 	icon_state = "lewdapron"
@@ -31,8 +27,13 @@
 	var/current_color = "red"
 	var/static/list/apron_designs
 
+/obj/item/clothing/under/costume/lewdmaid/Initialize()
+	. = ..()
+	var/obj/item/clothing/accessory/lewdapron/B = new(src)
+	attach_accessory(B)
+
 //create radial menu
-/obj/item/clothing/accessory/maidapron/lewdapron/proc/populate_apron_designs()
+/obj/item/clothing/accessory/lewdapron/proc/populate_apron_designs()
 	apron_designs = list(
 		"red" = image (icon = src.icon, icon_state = "lewdapron_red"),
 		"green" = image (icon = src.icon, icon_state = "lewdapron_green"),
@@ -41,12 +42,12 @@
 		"yellow" = image (icon = src.icon, icon_state = "lewdapron_yellow"))
 
 //to update model lol
-/obj/item/clothing/accessory/maidapron/lewdapron/ComponentInitialize()
+/obj/item/clothing/accessory/lewdapron/ComponentInitialize()
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 //to change model
-/obj/item/clothing/accessory/maidapron/lewdapron/AltClick(mob/user, obj/item/I)
+/obj/item/clothing/accessory/lewdapron/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -61,20 +62,34 @@
 		return
 
 //to check if we can change kinkphones's model
-/obj/item/clothing/accessory/maidapron/lewdapron/proc/check_menu(mob/living/user)
+/obj/item/clothing/accessory/lewdapron/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/clothing/accessory/maidapron/lewdapron/Initialize()
-	. = ..()
-	update_icon_state()
-	update_icon()
+/obj/item/clothing/accessory/lewdapron/Initialize()
 	if(!length(apron_designs))
 		populate_apron_designs()
+	update_icon_state()
+	update_icon()
+	. = ..()
 
-/obj/item/clothing/accessory/maidapron/lewdapron/update_icon_state()
+/obj/item/clothing/accessory/lewdapron/update_icon_state()
 	icon_state = icon_state = "[initial(icon_state)]_[current_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
+
+/obj/item/clothing/under/costume/lewdmaid/attach_accessory(obj/item/I)
+	..()
+	var/accessory_color = attached_accessory.icon_state
+	accessory_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_items/lewd_items.dmi', "[accessory_color]")
+	accessory_overlay.alpha = attached_accessory.alpha
+	accessory_overlay.color = attached_accessory.color
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		H.update_inv_w_uniform()
+		H.update_inv_wear_suit()
+		H.fan_hud_set_fandom()
+
+	return TRUE
