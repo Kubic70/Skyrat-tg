@@ -1,6 +1,12 @@
+#define AROUS_SYS_LITTLE 30
+#define AROUS_SYS_STRONG 70
+#define AROUS_SYS_READYTOCUM 90
+#define PAIN_SYS_LIMIT 50
+#define PLEAS_SYS_EDGE 85
+
 ///////////////////Reagents////////////////////
 
-/datum/reagent/girlcum
+/datum/reagent/consumable/girlcum
 	name = "Girlcum"
 	description = "NEED DESCRIPTION!!!"
 	taste_description = "NEED TASTE DESCRIPTION!!!"
@@ -9,8 +15,17 @@
 	glass_desc = "NEED DESCRIPTION IN GLASS"
 	reagent_state = LIQUID
 
-/datum/reagent/cum
+/datum/reagent/consumable/cum
 	name = "Cum"
+	description = "NEED DESCRIPTION!!!"
+	taste_description = "NEED TASTE DESCRIPTION!!!"
+	color = "#ffffffff"
+	glass_name = "NEED GLASS NAME"
+	glass_desc = "NEED DESCRIPTION IN GLASS"
+	reagent_state = LIQUID
+
+/datum/reagent/consumable/breast_milk
+	name = "Brests milk"
 	description = "NEED DESCRIPTION!!!"
 	taste_description = "NEED TASTE DESCRIPTION!!!"
 	color = "#ffffffff"
@@ -40,12 +55,11 @@
 
 ///////////////////Reagent Containers////////////////////
 
-/obj/item/organ/genital/breasts
-	var/obj/item/reagent_containers/milk_container
+/obj/item/organ/genital
+	var/datum/reagents/internal_fluids
 
 /obj/item/organ/genital/breasts/build_from_dna(datum/dna/DNA, associated_key)
 	. = ..()
-	milk_container = new /obj/item/reagent_containers
 	var/breasts_count = 0
 	switch(genital_type)
 		if("pair")
@@ -54,32 +68,15 @@
 			breasts_count = 4
 		if("sextuple")
 			breasts_count = 6
-	if(DNA.features["breasts_lactation"])
-		milk_container.volume = DNA.features["breasts_size"] * breasts_count * 10
-		milk_container.list_reagents = list(/datum/reagent/consumable/milk = milk_container.volume / 2)
-	else
-		milk_container.volume = 0
-	//to_chat(world,"Breasts: genital_type = [genital_type] / breasts_count = [breasts_count] / breasts_size = [DNA.features["breasts_size"]] / milk_max_vol = [milk_container.volume]")
-
-/obj/item/organ/genital/testicles
-	var/obj/item/reagent_containers/semen_container
+	internal_fluids = new /datum/reagents(DNA.features["breasts_size"] * breasts_count * 10)
 
 /obj/item/organ/genital/testicles/build_from_dna(datum/dna/DNA, associated_key)
 	. = ..()
-	semen_container = new /obj/item/reagent_containers
-	semen_container.volume = DNA.features["balls_size"] * 10
-	semen_container.list_reagents = list(/datum/reagent/cum = semen_container.volume / 2)
-	//to_chat(world,"Balls: genital_type = [genital_type] / balls_size = [DNA.features["balls_size"]] / semen_max_vol = [semen_container.volume]")
-
-/obj/item/organ/genital/vagina
-	var/obj/item/reagent_containers/girlcum_container
+	internal_fluids = new /datum/reagents(DNA.features["balls_size"] * 10)
 
 /obj/item/organ/genital/vagina/build_from_dna(datum/dna/DNA, associated_key)
 	. = ..()
-	girlcum_container = new /obj/item/reagent_containers
-	girlcum_container.volume = 5
-	girlcum_container.list_reagents = list(/datum/reagent/girlcum = 0)
-	//to_chat(world,"Vagina: girlcum_max_vol = [girlcum_container.volume]")
+	internal_fluids = new /datum/reagents(5)
 
 
 ///////////////////Stats////////////////////
@@ -108,31 +105,55 @@
 	show_arousal_panel()
 
 /mob/living/carbon/human/proc/show_arousal_panel()
+	var/obj/item/organ/genital/testicles/balls = getorganslot(ORGAN_SLOT_TESTICLES)
+	var/obj/item/organ/genital/breasts/breasts = getorganslot(ORGAN_SLOT_BREASTS)
+	var/obj/item/organ/genital/vagina/vagina = getorganslot(ORGAN_SLOT_VAGINA)
+
 	var/list/dat = list()
 
-	dat += "<table>"
+	dat += "<div>"
+	dat += {"<table style="float: left">"}
+	dat += "<tr><td><label>Arousal:</lable></td><td><lable>[arousal]%</label></td></tr>"
+	dat += "<tr><td><label>Pleasure:</lable></td><td><lable>[pleasure]%</label></td></tr>"
+	dat += "<tr><td><label>Pain:</lable></td><td><lable>[pain]%</label></td></tr>"
+	dat += "</table>"
 
+	dat += {"<table style="float: left"; margin-left: 50px;>"}
+	if(balls)
+		dat += "<tr><td><label>Semen:</lable></td><td><lable>[balls.internal_fluids.total_volume]/[balls.internal_fluids.maximum_volume]</label></td></tr>"
+	if(breasts)
+		dat += "<tr><td><label>Milk:</lable></td><td><lable>[breasts.internal_fluids.total_volume]/[breasts.internal_fluids.maximum_volume]</label></td></tr>"
+	if(vagina)
+		dat += "<tr><td><label>GirlCum:</lable></td><td><lable>[vagina.internal_fluids.total_volume]/[vagina.internal_fluids.maximum_volume]</label></td></tr>"
+	dat += "</table>"
+	dat += "</div>"
 
-
-	dat += {"</table>
-	<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"}
+	dat += "<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"
+	dat += "<A href='?src=[REF(src)];refresh=1'>Refresh</A>"
 
 	var/datum/browser/popup = new(usr, "mob[REF(src)]", "[src]", 440, 510)
+	popup.title = "Arousal panel"
 	popup.set_content(dat.Join())
 	popup.open()
 
+/mob/living/carbon/human/Topic(href, href_list)
+	.=..()
+	if(href_list["refresh"])
+		var/mob/living/carbon/human/user = src
+		user.show_arousal_panel()
+
 /mob/living/carbon/human/proc/set_masohism(status) //TRUE or FALSE
-	if(status)
+	if(status == TRUE)
 		masohism = status
 		pain_limit = 80
-	if(!status)
+	if(status == FALSE)
 		masohism = status
 		pain_limit = 50
 
 /mob/living/carbon/human/proc/set_nymphomania(status) //TRUE or FALSE
-	if(status)
+	if(status == TRUE)
 		nymphomania = TRUE
-	if(!status)
+	if(status == FALSE)
 		nymphomania = FALSE
 
 /mob/living/proc/adjustArous(arous = 0, pleas = 0, pn = 0)
@@ -140,7 +161,7 @@
 	pleasure += pleas
 	pain += pn
 
-	if(nymphomania)
+	if(nymphomania == TRUE)
 		arousal = min(max(arousal,0),100)
 	else
 		arousal = min(max(arousal,20),100)
@@ -148,9 +169,9 @@
 	pain = min(max(pain,0),100)
 
 	var/arousal_flag = AROUSAL_NONE
-	if(arousal >= 30)
+	if(arousal >= AROUS_SYS_LITTLE)
 		arousal_flag = AROUSAL_PARTIAL
-	else if(arousal >= 70)
+	else if(arousal >= AROUS_SYS_STRONG)
 		arousal_flag = AROUSAL_FULL
 
 	if(arousal_status != arousal_flag)
@@ -172,6 +193,9 @@
 
 /datum/status_effect/aroused/tick()
 	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
+	var/obj/item/organ/genital/breasts/breasts = owner.getorganslot(ORGAN_SLOT_BREASTS)
+	var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
+
 	var/temp_arousal = -0.1
 	var/temp_pleasure = -0.5
 	var/temp_pain = -0.5
@@ -182,16 +206,30 @@
 		temp_pleasure += 0.25
 		temp_arousal += 0.05
 
+//////////REGENERATE Fluids//////////////////
 	if(balls)
-		if(balls.semen_container.volume <= balls.semen_container.reagents.total_volume)
+		if(balls.internal_fluids.total_volume >= balls.internal_fluids.maximum_volume)
 			temp_arousal += 0.1
+		if(owner.arousal >= AROUS_SYS_LITTLE)
+			balls.internal_fluids.add_reagent(/datum/reagent/consumable/cum, 0.1)
+
+	if(breasts)
+		if(breasts.lactates == TRUE)
+			var/regen = ((owner.nutrition / (NUTRITION_LEVEL_WELL_FED/100))/100) * (breasts.internal_fluids.maximum_volume/2000)
+			breasts.internal_fluids.add_reagent(/datum/reagent/consumable/breast_milk, regen)
+
+	if(vagina)
+		if(owner.arousal >= AROUS_SYS_LITTLE)
+			vagina.internal_fluids.add_reagent(/datum/reagent/consumable/girlcum, 0.1)
+
+//////////REGENERATE Fluids//////////////////
 
 	if(owner.pain > owner.pain_limit)
 		temp_arousal -= 0.1
 		if(prob(10))
 			owner.emote("scream")
 		//SCREAM!!!
-	if(owner.arousal >= 70)
+	if(owner.arousal >= AROUS_SYS_STRONG)
 		if(prob(10))
 			owner.emote("moan")
 		temp_pleasure += 0.1
