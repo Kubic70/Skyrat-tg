@@ -120,6 +120,12 @@
 /obj/item/clothing/under/rank/civilian/janitor/maid
 	name = "maid uniform"
 	desc = "A simple maid uniform for housekeeping."
+	//LAMELLA RESPRITE//
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_uniform.dmi'
+	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_uniform/lewd_uniform.dmi'
+	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
+	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
+	//LAMELLA RESPRITE//
 	icon_state = "janimaid"
 	inhand_icon_state = "janimaid"
 	body_parts_covered = CHEST|GROIN
