@@ -25,7 +25,7 @@
 	reagent_state = LIQUID
 
 /datum/reagent/consumable/breast_milk
-	name = "Brests milk"
+	name = "Breasts milk"
 	description = "NEED DESCRIPTION!!!"
 	taste_description = "NEED TASTE DESCRIPTION!!!"
 	color = "#ffffffff"
