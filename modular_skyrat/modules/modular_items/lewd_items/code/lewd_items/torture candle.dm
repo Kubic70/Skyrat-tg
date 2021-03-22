@@ -30,7 +30,7 @@
     set_light_on(lit)
     update_light()
 
-/obj/item/bdsm_candle/proc/check_menu(mob/living/user, obj/item/multitool)
+/obj/item/bdsm_candle/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())

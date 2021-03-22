@@ -7,41 +7,41 @@
 ///////////////////Reagents////////////////////
 
 /datum/reagent/consumable/girlcum
-	name = "Girlcum"
-	description = "NEED DESCRIPTION!!!"
-	taste_description = "NEED TASTE DESCRIPTION!!!"
+	name = "girlcum"
+	description = "Uhh... Someone had fun."
+	taste_description = "astringent and sweetish"
 	color = "#ffffffb0"
-	glass_name = "NEED GLASS NAME"
-	glass_desc = "NEED DESCRIPTION IN GLASS"
+	glass_name = "glass of Girlcum"
+	glass_desc = "Strange white liquid... Eww!"
 	reagent_state = LIQUID
 
 /datum/reagent/consumable/cum
-	name = "Cum"
-	description = "NEED DESCRIPTION!!!"
-	taste_description = "NEED TASTE DESCRIPTION!!!"
+	name = "cum"
+	description = "Eww... Well, someone was having a good time."
+	taste_description = "astringent and salty"
 	color = "#ffffffff"
-	glass_name = "NEED GLASS NAME"
-	glass_desc = "NEED DESCRIPTION IN GLASS"
+	glass_name = "glass of Cum"
+	glass_desc = "Uhh... Do you really want to consume it?"
 	reagent_state = LIQUID
 
 /datum/reagent/consumable/breast_milk
-	name = "Breasts milk"
-	description = "NEED DESCRIPTION!!!"
-	taste_description = "NEED TASTE DESCRIPTION!!!"
+	name = "breast milk"
+	description = "This looks familiar... Wait, it's a milk!"
+	taste_description = "warm and creamy"
 	color = "#ffffffff"
-	glass_name = "NEED GLASS NAME"
-	glass_desc = "NEED DESCRIPTION IN GLASS"
+	glass_name = "glass of Breast milk"
+	glass_desc = "Almost like a normal milk."
 	reagent_state = LIQUID
 
 ///datum/reagent/consumable/milk
 
 /datum/reagent/drug/dopamine
-	name = "Dopamine"
-	description = "NEED DESCRIPTION!!!"
-	taste_description = "NEED TASTE DESCRIPTION!!!"
+	name = "dopamine"
+	description = "Pure happines"
+	taste_description = "passion fruit, banana and hint of apple"
 	color = "#97ffee"
-	glass_name = "NEED GLASS NAME"
-	glass_desc = "NEED DESCRIPTION IN GLASS"
+	glass_name = "dopamine"
+	glass_desc = "Delicious flavored reagent. You feel happy even looking at it."
 	reagent_state = LIQUID
 	overdosed = TRUE
 	trippy = TRUE
