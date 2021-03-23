@@ -1,5 +1,5 @@
 /obj/item/clothing/suit/straight_jacket/latex_straight_jacket
-	name = "Latex straight jacket"
+	name = "latex straight jacket"
 	desc = "Toy, that actually can't restraint anyone. But it's fun to wear."
 	inhand_icon_state = "latex_straight_jacket"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_suits.dmi'
