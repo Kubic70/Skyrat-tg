@@ -4,9 +4,9 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_suits.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/lewd_suits.dmi'
 	worn_icon_digi = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/lewd_suits.dmi'
-	worn_icon_taur_snake = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/lewd_suits.dmi'
-	worn_icon_taur_paw = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/lewd_suits.dmi'
-	worn_icon_taur_hoof = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/lewd_suits.dmi'
+	worn_icon_taur_snake = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_special.dmi'
+	worn_icon_taur_paw = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_special.dmi'
+	worn_icon_taur_hoof = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_special.dmi'
 	mutant_variants = STYLE_DIGITIGRADE|STYLE_TAUR_ALL
 	icon_state = "sleepbag"
 	inhand_icon_state = "sleepbag"
@@ -28,7 +28,11 @@
 	var/list/bag_states = list("deflated" = "inflated", "inflated" = "deflated")
 	var/state_thing = "deflated"
 	slowdown = 2
+	worn_x_dimension = 64
+	worn_y_dimension = 64
+	clothing_flags = LARGE_WORN_ICON
 	actions_types = list(/datum/action/item_action/fold_bag)
+	slot_flags = NONE
 
 //create radial menu
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/proc/populate_bag_colors()
@@ -85,6 +89,7 @@
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/equipped(mob/user, slot)
 	. = ..()
+	var/mob/living/carbon/human/H = user
 	if(ishuman(user) && slot == ITEM_SLOT_OCLOTHING)
 		ADD_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
 		if(bag_state == "inflated")
@@ -104,7 +109,7 @@
 		update_icon()
 		update_icon_state()
 	else
-		to_chat(usr, "<span class ='notice'> You can't infalte bag while its folded! </span>")
+		to_chat(usr, "<span class ='notice'> You can't inflate bag while its folded! </span>")
 		return
 
 //to fold that thing
@@ -133,8 +138,10 @@
 	playsound(user, bag_fold ? 'sound/items/handling/cloth_pickup.ogg' : 'sound/items/handling/cloth_drop.ogg', 40, TRUE)
 	if(bag_fold == TRUE)
 		w_class = WEIGHT_CLASS_SMALL
+		slot_flags = NONE
 	if(bag_fold == FALSE)
 		w_class = WEIGHT_CLASS_HUGE
+		slot_flags = ITEM_SLOT_OCLOTHING
 	update_icon_state()
 	update_icon()
 
