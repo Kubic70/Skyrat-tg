@@ -23,6 +23,10 @@
 //no speaking
 /obj/item/clothing/mask/ballgag/handle_speech(datum/source, list/speech_args)
 	speech_args[SPEECH_MESSAGE] = pick((prob(moans_alt_probability) && LAZYLEN(moans_alt)) ? moans_alt : moans)
+	playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f1.ogg',
+						'modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f2.ogg',
+						'modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f3.ogg',
+						'modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f4.ogg'), 70, 1, -1)
 
 //here goes code for chocking ballgag
 
@@ -33,6 +37,10 @@
 
 /obj/item/clothing/mask/ballgag_phallic/handle_speech(datum/source, list/speech_args)
 	speech_args[SPEECH_MESSAGE] = pick((prob(moans_alt_probability) && LAZYLEN(moans_alt)) ? moans_alt : moans)
+	playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f1.ogg',
+						'modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f2.ogg',
+						'modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f3.ogg',
+						'modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f4.ogg'), 40, 1, -1)
 
 /////////////////////////////////////////////////////////////////////
 //////////here goes code for normal version of ballgag///////////////
@@ -44,6 +52,7 @@
 	icon_state = "ballgag"
 	inhand_icon_state = "ballgag"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_masks.dmi'
+	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_masks.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	gas_transfer_coefficient = 0.9

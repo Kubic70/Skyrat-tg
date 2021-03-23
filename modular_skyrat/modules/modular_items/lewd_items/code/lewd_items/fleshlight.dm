@@ -39,6 +39,20 @@
 	icon_state = "[initial(icon_state)]_[current_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
+/obj/item/fleshlight/AltClick(mob/user, obj/item/I)
+	if(color_changed == FALSE)
+		. = ..()
+		if(.)
+			return
+		var/choice = show_radial_menu(user,src, fleshlight_designs, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
+		if(!choice)
+			return FALSE
+		current_color = choice
+		update_icon()
+		color_changed = TRUE
+	else
+		return
+
 /obj/item/fleshlight/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
@@ -46,72 +60,38 @@
 
 	var/message = ""
 
-	switch(user.zone_selected) //to let code know what part of body we gonna tickle
+	switch(user.zone_selected) //to let code know what part of body we gonna... Uhh... You get the point.
 		if(BODY_ZONE_PRECISE_GROIN)
-			if(M.is_bottomless())
-				message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
-				M.emote(pick("laugh","giggle","twitch","twitch_s"))
-				M.do_jitter_animation()
-				M.adjustStaminaLoss(5)
-				M.adjustArous(3)
-				user.visible_message("<font color=purple>[user] [message].</font>")
-				playsound(loc, pick('sound/items/handling/cloth_drop.ogg', 					//i duplicate this part of code because im useless shitcoder that can't make it work properly without tons of repeating code blocks
-            			            'sound/items/handling/cloth_pickup.ogg',				//if you can make it better - go ahead, modify it, please.
-        	       	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)	//selfdestruction - 100
-			else
-				user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
-				return
-
-		if(BODY_ZONE_CHEST)
-			if(M.is_topless())
-				message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their nipples with [src]") : pick("Teases [M]'s nipples with [src]", "Uses [src] to tickle [M]'s left nipple", "Uses [src] to tickle [M]'s right nipple")
-				M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
-				M.do_jitter_animation()
-				M.adjustStaminaLoss(5)
-				M.adjustArous(3)
-				user.visible_message("<font color=purple>[user] [message].</font>")
-				playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
-            			            'sound/items/handling/cloth_pickup.ogg',
-        	       	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
-			else
-				user.visible_message("<span class='danger'>Looks like [M]'s chest is covered!</span>")
-				return
-
-		if(BODY_ZONE_L_LEG)
-			if(M.has_feet())
-				if(M.is_feets_uncovered())
-					message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their feet with [src]") : pick("Teases [M]'s feet with [src]", "Uses [src] to tickle [M]'s left foot", "Uses [src] to tickle [M]'s toes")
-					M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
-					M.do_jitter_animation()
-					M.adjustStaminaLoss(5)
-					M.adjustArous(3)
-					user.visible_message("<font color=purple>[user] [message].</font>")
-					playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
-            				            'sound/items/handling/cloth_pickup.ogg',
-        	        	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
+			var/obj/item/organ/genital/penis = M.getorganslot(ORGAN_SLOT_PENIS)
+			if(penis)
+				if(M.is_bottomless())
+					if(M.gender == MALE)
+						message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
+						M.emote(pick("twitch_s","moan","blush"))
+						M.adjustArous(6,9)
+						user.visible_message("<font color=purple>[user] [message].</font>")
+						playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang3.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang4.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 70, 1, -1)
+					if(M.gender == FEMALE)
+						message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
+						M.emote(pick("twitch_s","moan","blush"))
+						M.adjustArous(6,9)
+						user.visible_message("<font color=purple>[user] [message].</font>")
+						playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang3.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang4.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 70, 1, -1)
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
+					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
 			else
-				user.visible_message("<span class='danger'>Looks like [M] don't have any legs!</span>")
+				user.visible_message("<span class = 'danger'> You realised that [M] don't have a penis.</span>")
 				return
-
-		if(BODY_ZONE_R_LEG)
-			if(M.has_feet())
-				if(M.is_feets_uncovered())
-					message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their feet with [src]") : pick("Teases [M]'s feet with [src]", "Uses [src] to tickle [M]'s right foot", "Uses [src] to tickle [M]'s toes")
-					M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
-					M.do_jitter_animation()
-					M.adjustStaminaLoss(5)
-					M.adjustArous(3)
-					user.visible_message("<font color=purple>[user] [message].</font>")
-					playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
-            				            'sound/items/handling/cloth_pickup.ogg',
-        	        	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
-
-				else
-					user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
-					return
-			else
-				user.visible_message("<span class='danger'>Looks like [M] don't have any legs!</span>")
-				return
+		else
+			return
