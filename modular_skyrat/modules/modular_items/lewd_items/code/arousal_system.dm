@@ -87,6 +87,18 @@
 
 
 ///////////-----Initilaze------///////////
+/obj/item/organ/genital/vagina
+	var/list/contained_item = list(/obj/item/eggvib)
+	var/obj/item/inserted_item //Used for vibrators
+
+/obj/item/organ/genital/penis
+	var/list/contained_item = list(/obj/item/eggvib)
+	var/obj/item/inserted_item //Used penis toy
+
+/obj/item/organ/genital/breasts
+	var/list/contained_item = list(/obj/item/eggvib)
+	var/obj/item/inserted_item //Used nipple toy
+
 /mob/living
 	var/arousal = 0
 	var/pleasure = 0
@@ -97,6 +109,9 @@
 
 	var/pain_limit = 0
 	var/arousal_status = AROUSAL_NONE
+
+	var/list/contained_item = list(/obj/item/eggvib, /obj/item/buttplug)
+	var/obj/item/inserted_item //Used for vibrators
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
@@ -123,6 +138,7 @@
 	var/obj/item/organ/genital/testicles/balls = getorganslot(ORGAN_SLOT_TESTICLES)
 	var/obj/item/organ/genital/breasts/breasts = getorganslot(ORGAN_SLOT_BREASTS)
 	var/obj/item/organ/genital/vagina/vagina = getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/penis/penis = getorganslot(ORGAN_SLOT_PENIS)
 
 	var/list/dat = list()
 
@@ -144,6 +160,18 @@
 	dat += "</div>"
 
 	dat += "<div>"
+	dat += {"<table style="float: left">"}
+	dat += "<tr><td><label>Anus:</lable></td><td><A href='?src=[REF(src)];anus=1'>[(inserted_item ? inserted_item.name : "None")]</A></td></tr>"
+	if(breasts)
+		dat += "<tr><td><label>Nipples:</lable></td><td><A href='?src=[REF(src)];breasts=1'>[(breasts.inserted_item ? breasts.inserted_item.name : "None")]</A></td></tr>"
+	if(penis)
+		dat += "<tr><td><label>Penis:</lable></td><td><A href='?src=[REF(src)];penis=1'>[(penis.inserted_item ? penis.inserted_item.name : "None")]</A></td></tr>"
+	if(vagina)
+		dat += "<tr><td><label>Vagina:</lable></td><td><A href='?src=[REF(src)];vagina=1'>[(vagina.inserted_item ? vagina.inserted_item.name : "None")]</A></td></tr>"
+	dat += "</table>"
+	dat += "</div>"
+
+	dat += "<div>"
 	dat += "<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"
 	dat += "<A href='?src=[REF(src)];refresh=1'>Refresh</A>"
 	dat += "</div>"
@@ -155,12 +183,73 @@
 
 /mob/living/carbon/human/Topic(href, href_list)
 	.=..()
+
+	var/mob/living/carbon/human/user = src
+	var/obj/item/organ/genital/breasts/breasts = getorganslot(ORGAN_SLOT_BREASTS)
+	var/obj/item/organ/genital/vagina/vagina = getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/penis/penis = getorganslot(ORGAN_SLOT_PENIS)
+
 	if(href_list["refresh"])
-		var/mob/living/carbon/human/user = src
 		user.show_arousal_panel()
 
+	if(href_list["anus"])
+		// этот код работает как надо, но он свернут в proc который уже не работает
+		/*if(!isnull(inserted_item))
+			put_in_hands(inserted_item)
+			inserted_item = null
+		else
+			var/obj/item/I = get_active_held_item()
+			if(!I)
+				return
+			var/C = FALSE
+			for(var/T in contained_item)
+				if(istype(I,T))
+					if(!transferItemToLoc(I, inserted_item))
+						return
+					inserted_item = I
+					C = TRUE
+					return
+			if(C == FALSE)
+				to_chat(user, "<span class='notice'>You cant put [I] in ass.</span>")*/
+		if(!extract_item(user.get_active_held_item(), inserted_item, contained_item, user))
+			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item()] in anus.</span>")
+		user.show_arousal_panel()
+
+	if(href_list["vagina"])
+		if(!extract_item(user.get_active_held_item(), vagina.inserted_item, vagina.contained_item, user))
+			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item()] in vagina.</span>")
+		user.show_arousal_panel()
+
+	if(href_list["breasts"])
+		if(!extract_item(user.get_active_held_item(), breasts.inserted_item, breasts.contained_item, user))
+			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item()] to nipple.</span>")
+		user.show_arousal_panel()
+
+	if(href_list["penis"])
+		if(!extract_item(user.get_active_held_item(), penis.inserted_item, penis.contained_item, user))
+			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item()] to penis.</span>")
+		user.show_arousal_panel()
 
 ///////////-----Procs------///////////
+ //тот самый свернутый proc, можно кстати itemInHand не передавать т.к. он получается из user
+/mob/living/carbon/human/proc/extract_item(itemInHand, slot, wList, user)
+	var/obj/item/I = itemInHand
+	var/mob/living/carbon/human/U = user
+	if(!isnull(slot))
+		if(U.put_in_hands(slot))
+			slot = null
+			return TRUE
+	else
+		if(!I)
+			return FALSE
+		for(var/T in wList)
+			if(istype(I,T))
+				if(!transferItemToLoc(I, slot))
+					return FALSE
+				slot = I
+				return TRUE
+
+
 /mob/living/carbon/human/proc/set_masohism(status) //TRUE or FALSE
 	if(status == TRUE)
 		masohism = status
