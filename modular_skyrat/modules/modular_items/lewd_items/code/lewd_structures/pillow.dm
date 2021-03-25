@@ -165,6 +165,7 @@
 	var/current_form = "round"
 
 /obj/structure/bed/pillow_tiny/Initialize()
+	.=..()
 	update_icon_state()
 	update_icon()
 
@@ -175,9 +176,9 @@
 //"picking up" the pillow
 
 /obj/structure/bed/pillow_tiny/AltClick(mob/user)
-	. = ..()
+
 	to_chat(user, "<span class='notice'>You lifted pillow off the floor.</span>")
-	var/obj/item/pillow/W = new
+	var/obj/item/pillow/W = new()
 	user.put_in_hands(W)
 	switch(current_form)
 		if("square")
