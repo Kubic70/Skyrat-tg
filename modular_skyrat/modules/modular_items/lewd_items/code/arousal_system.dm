@@ -87,6 +87,19 @@
 
 
 ///////////-----Initilaze------///////////
+/obj/item/organ/genital
+	var/list/contained_item
+	var/obj/item/inserted_item //Used for toys
+
+/obj/item/organ/genital/vagina
+	contained_item = list(/obj/item/eggvib)
+
+/obj/item/organ/genital/penis
+	contained_item = list(/obj/item/eggvib)
+
+/obj/item/organ/genital/breasts
+	contained_item = list(/obj/item/eggvib)
+
 /mob/living
 	var/arousal = 0
 	var/pleasure = 0
@@ -97,6 +110,9 @@
 
 	var/pain_limit = 0
 	var/arousal_status = AROUSAL_NONE
+
+	var/list/contained_item = list(/obj/item/eggvib, /obj/item/buttplug)
+	var/obj/item/inserted_item //Used for vibrators
 
 /mob/living/carbon/human/Initialize()
 	. = ..()
@@ -123,6 +139,7 @@
 	var/obj/item/organ/genital/testicles/balls = getorganslot(ORGAN_SLOT_TESTICLES)
 	var/obj/item/organ/genital/breasts/breasts = getorganslot(ORGAN_SLOT_BREASTS)
 	var/obj/item/organ/genital/vagina/vagina = getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/penis/penis = getorganslot(ORGAN_SLOT_PENIS)
 
 	var/list/dat = list()
 
@@ -144,6 +161,18 @@
 	dat += "</div>"
 
 	dat += "<div>"
+	dat += {"<table style="float: left">"}
+	dat += "<tr><td><label>Anus:</lable></td><td><A href='?src=[REF(src)];anus=1'>[(inserted_item ? inserted_item.name : "None")]</A></td></tr>"
+	if(breasts)
+		dat += "<tr><td><label>Nipples:</lable></td><td><A href='?src=[REF(src)];breasts=1'>[(breasts.inserted_item ? breasts.inserted_item.name : "None")]</A></td></tr>"
+	if(penis)
+		dat += "<tr><td><label>Penis:</lable></td><td><A href='?src=[REF(src)];penis=1'>[(penis.inserted_item ? penis.inserted_item.name : "None")]</A></td></tr>"
+	if(vagina)
+		dat += "<tr><td><label>Vagina:</lable></td><td><A href='?src=[REF(src)];vagina=1'>[(vagina.inserted_item ? vagina.inserted_item.name : "None")]</A></td></tr>"
+	dat += "</table>"
+	dat += "</div>"
+
+	dat += "<div>"
 	dat += "<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"
 	dat += "<A href='?src=[REF(src)];refresh=1'>Refresh</A>"
 	dat += "</div>"
@@ -155,12 +184,83 @@
 
 /mob/living/carbon/human/Topic(href, href_list)
 	.=..()
+	var/mob/living/carbon/human/user = usr
 	if(href_list["refresh"])
-		var/mob/living/carbon/human/user = src
 		user.show_arousal_panel()
 
+	if(href_list["anus"])
+		if(!extract_item(user, "anus"))
+			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in anus.</span>")
+		user.show_arousal_panel()
+
+	if(href_list["vagina"])
+		if(!extract_item(user, "vagina"))
+			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in vagina.</span>")
+		user.show_arousal_panel()
+
+	if(href_list["breasts"])
+		if(!extract_item(user, "breasts"))
+			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to nipple.</span>")
+		user.show_arousal_panel()
+
+	if(href_list["penis"])
+		if(!extract_item(user, "penis"))
+			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to penis.</span>")
+		user.show_arousal_panel()
 
 ///////////-----Procs------///////////
+/mob/living/carbon/human/proc/extract_item(user, slotName)
+	var/mob/living/carbon/human/U = user
+	var/mob/living/carbon/human/O = src
+	var/slotText = slotName
+
+	if(slotText == "vagina" || slotText == "breasts" || slotText == "penis")
+		var/obj/item/organ/genital/organ = null
+		var/list/wList = null
+		if(slotText == "vagina")
+			organ = O.getorganslot(ORGAN_SLOT_VAGINA)
+		else if(slotText == "breasts")
+			organ = O.getorganslot(ORGAN_SLOT_BREASTS)
+		else if(slotText == "penis")
+			organ = O.getorganslot(ORGAN_SLOT_PENIS)
+		else
+			return FALSE
+
+		wList = organ.contained_item
+		if(!isnull(organ.inserted_item))
+			U.put_in_hands(organ.inserted_item)
+			organ.inserted_item = null
+			return TRUE
+		else
+			var/obj/item/I = U.get_active_held_item()
+			if(!I)
+				return FALSE
+			for(var/T in wList)
+				if(istype(I,T))
+					if(!transferItemToLoc(I, organ.inserted_item))
+						return FALSE
+					organ.inserted_item = I
+					return TRUE
+
+	else if(slotText == "anus")
+		if(!isnull(O.inserted_item))
+			U.put_in_hands(O.inserted_item)
+			O.inserted_item = null
+			return TRUE
+		else
+			var/obj/item/I = U.get_active_held_item()
+			if(!I)
+				return FALSE
+			for(var/T in O.contained_item)
+				if(istype(I,T))
+					if(!transferItemToLoc(I, O.inserted_item))
+						return FALSE
+					O.inserted_item = I
+					return TRUE
+	else
+		return FALSE
+
+
 /mob/living/carbon/human/proc/set_masohism(status) //TRUE or FALSE
 	if(status == TRUE)
 		masohism = status
