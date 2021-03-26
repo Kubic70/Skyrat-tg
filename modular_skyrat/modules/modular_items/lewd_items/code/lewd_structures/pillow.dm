@@ -219,12 +219,13 @@
 	icon_state = "pillowpile_small"
 	var/current_color = "pink"
 	var/mutable_appearance/armrest
+	buckle_lying = 90
 
 /obj/structure/chair/pillow_small/Initialize()
 	update_icon_state()
 	update_icon()
 	armrest = GetArmrest()
-	armrest.layer = ABOVE_MOB_LAYER
+	armrest.layer = ABOVE_MOB_LAYER + 0.1
 	return ..()
 
 /obj/structure/chair/pillow_small/proc/GetArmrest()
@@ -242,7 +243,7 @@
 	update_armrest()
 	density = TRUE
 	//Push them up from the normal lying position
-	M.pixel_y = M.base_pixel_y + 4.9
+	M.pixel_y = M.base_pixel_y + 0.5
 
 /obj/structure/chair/pillow_small/proc/update_armrest()
 	if(has_buckled_mobs())
@@ -277,7 +278,7 @@
 	update_icon_state()
 	update_icon()
 	armrest = GetArmrest()
-	armrest.layer = ABOVE_MOB_LAYER
+	armrest.layer = ABOVE_MOB_LAYER + 0.2
 	return ..()
 
 /obj/structure/bed/pillow_large/proc/GetArmrest()
