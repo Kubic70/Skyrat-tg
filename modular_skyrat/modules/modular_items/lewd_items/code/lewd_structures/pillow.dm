@@ -147,10 +147,6 @@
 				C.current_color = "teal"
 			if("pink")
 				C.current_color = "pink"
-		if(color_changed == TRUE)
-			C.color_changed1 = TRUE
-		if(form_changed == TRUE)
-			C.form_changed1 = TRUE
 		C.update_icon_state()
 		C.update_icon()
 		del(src)
@@ -167,9 +163,6 @@
 	icon_state = "pillow"
 	var/current_color = "pink"
 	var/current_form = "round"
-	//Stuff required for picking up pillow with saving some info about vars
-	var/color_changed1 = FALSE
-	var/form_changed1 = FALSE
 
 /obj/structure/bed/pillow_tiny/Initialize()
 	.=..()
@@ -197,10 +190,6 @@
 			W.current_color = "teal"
 		if("pink")
 			W.current_color = "pink"
-	if(color_changed1 == TRUE)
-		W.color_changed = TRUE
-	if(form_changed1 == TRUE)
-		W.form_changed = TRUE
 	W.update_icon_state()
 	W.update_icon()
 	del(src)
@@ -219,76 +208,6 @@
 	//Set them back down to the normal lying position
 	M.pixel_y = M.base_pixel_y
 
-//What is it? Tiny pillow is evolving!
-//Actually just code for upgrading it to pile.
-
-/*
-/obj/structure/bed/pillow_tiny/attackby(mob/user, obj/item/I)
-	if(istype(I, /obj/item/pillow))
-		var/obj/item/pillow/P = I
-		switch(current_color)
-			if("teal")
-				switch(P.current_color)
-					if("teal")
-						var/obj/structure/chair/pillow_small/C = new(get_turf(src))
-						C.current_color = "teal"
-						to_chat(user, "<span class='notice'>You put pillow on other pillow. Somehow it looks like a pile of pillows. How strange.</span>")
-						switch(P.current_form)
-							if("square")
-								C.pillow2_form = "square"
-							if("round")
-								C.pillow2_form = "round"
-						if(P.color_changed == TRUE)
-							C.color_changed2 = TRUE
-						if(P.form_changed == TRUE)
-							C.form_changed2 = TRUE
-						switch(current_form)
-							if("square")
-								C.pillow1_form = "square"
-							if("round")
-								C.pillow1_form = "round"
-						if(color_changed1 == TRUE)
-							C.color_changed1 = TRUE
-						if(form_changed1 == TRUE)
-							C.form_changed1 = TRUE
-						C.update_icon_state()
-						C.update_icon()
-						del(src)
-						return
-					if("pink")
-						return
-			if("pink")
-				switch(current_color)
-					if("pink")
-						var/obj/structure/chair/pillow_small/C = new(get_turf(src))
-						C.current_color = "pink"
-						to_chat(user, "<span class='notice'>You put pillow on other pillow. Somehow it looks like a pile of pillows. How strange.</span>")
-						switch(P.current_form)
-							if("square")
-								C.pillow2_form = "square"
-							if("round")
-								C.pillow2_form = "round"
-						if(P.color_changed == TRUE)
-							C.color_changed2 = TRUE
-						if(P.form_changed == TRUE)
-							C.form_changed2 = TRUE
-						switch(current_form)
-							if("square")
-								C.pillow1_form = "square"
-							if("round")
-								C.pillow1_form = "round"
-						if(color_changed1 == TRUE)
-							C.color_changed1 = TRUE
-						if(form_changed1 == TRUE)
-							C.form_changed1 = TRUE
-						C.update_icon_state()
-						C.update_icon()
-						del(src)
-						return
-					if("teal")
-						return
-*/
-
 /////////////////////////////////////
 ///CODE FOR SMALL PILLOW FURNITURE///
 /////////////////////////////////////
@@ -300,13 +219,6 @@
 	icon_state = "pillowpile_small"
 	var/current_color = "pink"
 	var/mutable_appearance/armrest
-	//here comes some magic shitcode, that required for saving pillow's info about form and color. Very useful, yes..
-	var/pillow1_form = "round"
-	var/pillow2_form = "round"
-	var/color_changed1 = FALSE
-	var/color_changed2 = FALSE
-	var/form_changed1 = FALSE
-	var/form_changed2 = FALSE
 
 /obj/structure/chair/pillow_small/Initialize()
 	update_icon_state()
@@ -316,11 +228,10 @@
 	return ..()
 
 /obj/structure/chair/pillow_small/proc/GetArmrest()
-	switch(current_color)
-		if("pink")
-			return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/pillows.dmi', "pillowpile_small_pink_overlay")
-		if("teal")
-			return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/pillows.dmi', "pillowpile_small_teal_overlay")
+	if(current_color == "pink")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/pillows.dmi', "pillowpile_small_pink_overlay")
+	if(current_color == "teal")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/pillows.dmi', "pillowpile_small_teal_overlay")
 
 /obj/structure/chair/pillow_small/Destroy()
 	QDEL_NULL(armrest)
@@ -331,7 +242,7 @@
 	update_armrest()
 	density = TRUE
 	//Push them up from the normal lying position
-	M.pixel_y = M.base_pixel_y + 4.9 //Yes. Exactly 4.9. Not 4.8, not 5. Do not touch.
+	M.pixel_y = M.base_pixel_y + 4.9
 
 /obj/structure/chair/pillow_small/proc/update_armrest()
 	if(has_buckled_mobs())
@@ -349,49 +260,6 @@
 /obj/structure/chair/pillow_small/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]"
-
-//code for taking pillows BACC
-/*
-/obj/structure/chair/pillow_small/AltClick(mob/user)
-
-	to_chat(user, "<span class='notice'>You took pillow from pile.</span>")
-	var/obj/item/pillow/W = new()
-	user.put_in_hands(W)
-	var/obj/structure/bed/pillow_tiny/C = new(get_turf(src))
-	//to save things for pillow, that leaved on the ground
-	switch(pillow1_form)
-		if("square")
-			C.current_form = "square"
-		if("round")
-			C.current_form = "round"
-	switch(current_color)
-		if("teal")
-			C.current_color = "teal"
-		if("pink")
-			C.current_color = "pink"
-	if(color_changed1 == TRUE)
-		C.color_changed1 = TRUE
-	if(form_changed1 == TRUE)
-		C.form_changed1 = TRUE
-	//and for inhand item.
-	switch(pillow2_form)
-		if("square")
-			W.current_form = "square"
-		if("round")
-			W.current_form = "round"
-	switch(current_color)
-		if("teal")
-			W.current_color = "teal"
-		if("pink")
-			W.current_color = "pink"
-	if(color_changed2 == TRUE)
-		W.color_changed = TRUE
-	if(form_changed2 == TRUE)
-		W.form_changed = TRUE
-	W.update_icon_state()
-	W.update_icon()
-	del(src)
-*/
 
 /////////////////////////
 ///CODE FOR PILLOW BED///
