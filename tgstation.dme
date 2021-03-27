@@ -3847,6 +3847,7 @@
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\serviette.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\torture candle.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_items\vibrator.dm"
+#include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_machinery\milking_machine.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_structures\bdsm_furniture.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_structures\dancing_pole.dm"
 #include "modular_skyrat\modules\modular_items\lewd_items\code\lewd_structures\lustwish.dm"
