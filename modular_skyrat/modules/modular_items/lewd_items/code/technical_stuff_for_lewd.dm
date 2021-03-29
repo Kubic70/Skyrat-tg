@@ -45,6 +45,26 @@
 			update_inv_gloves()
 
 
+////////////////////////////////////////////////////////////////////////////////////////
+///////i needed this code for ballgag, because it doesn't muzzle, it kinda voxbox///////
+//wearer for moaning. So i really need it, don't touch or whole ballgag will be broken//
+/////////////////////////for ballgag mute audible emotes////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+
+//adding is_ballgagged() proc here. Hope won't break anything important.
+//This is kinda shitcode, but they said don't touch main code or they will break my knees.
+//i love my knees, please merge.
+
+//more shitcode can be found in code/datums/emotes.dm
+//in /datum/emote/proc/select_message_type(mob/user, intentional) proc. Sorry for that, i had no other choise.
+
+//false for default
+/mob/proc/is_ballgagged()
+	return FALSE
+
+/mob/living/carbon/is_ballgagged()
+	return(istype(src.wear_mask, /obj/item/clothing/mask/ballgag))
+
 //////////////////////////////////////////////////////////////////////////////////
 /////////this shouldn't be put anywhere, get your dirty hands off!////////////////
 /////////////////////////////for dancing pole/////////////////////////////////////

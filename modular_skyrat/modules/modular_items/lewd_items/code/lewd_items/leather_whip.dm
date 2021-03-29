@@ -108,8 +108,9 @@
 					if(current_whip_type == "hard")
 						var/message = ""
 						message = (user == M) ? pick("Knocks themselves down with [src]", "Uses [src] to knock themselves on the ground") : pick("Hardly drops [M] on the ground with [src]", "Uses [src] to put [M] on the knees")
-						M.emote(pick("gasp","shiver"))
-						M.Paralyze(1)//don't fucking touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
+						if(prob(60))
+							M.emote(pick("gasp","shiver"))
+						M.Paralyze(1)//don't touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
 						M.adjustArous(0,0,5)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc, 'sound/weapons/whip.ogg', 100)
@@ -117,11 +118,12 @@
 					if(current_whip_type == "weak")
 						var/message = ""
 						message = (user == M) ? pick("Knocks themselves down with [src]", "Gently uses [src] to knock themselves on the ground") : pick("Gently drops [M] on the ground with [src]", "Uses [src] to slowly put [M] on the knees")
-						M.emote(pick("gasp","shiver"))
-						M.Paralyze(1)//don't fucking touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
+						if(prob(30))
+							M.emote(pick("gasp","shiver"))
+						M.Paralyze(1)//don't touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
 						M.adjustArous(0,0,3)
 						user.visible_message("<font color=purple>[user] [message].</font>")
-						playsound(loc, 'sound/weapons/whip.ogg', 100)
+						playsound(loc, 'sound/weapons/whip.ogg', 60)
 				else
 					user.visible_message("<span class='danger'>Looks like [M]'s legs is covered!</span>")
 					return
@@ -129,16 +131,19 @@
 		if(BODY_ZONE_HEAD)
 			var/message = ""
 			message = (user == M) ? pick("Chokes themselves with [src]", "Uses [src] to choke themselves") : pick("Chokes [M] with [src]", "Twines a [src] around [M]'s neck!")
-			M.emote(pick("gasp","choke", "moan"))
+			if(prob(70))
+				M.emote(pick("gasp","choke", "moan"))
 			M.adjustArous(3,0,5)
-			M.adjustOxyLoss(1)//DON'T TOUCH THIS TOO, IT DEALS REALLY LOW DAMAGE. I DARE YOU!
+			M.adjustOxyLoss(2)//DON'T TOUCH THIS TOO, IT DEALS REALLY LOW DAMAGE. I DARE YOU!
 			user.visible_message("<font color=purple>[user] [message].</font>")
+			playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 80)
 
 		else
 			if(current_whip_type == "hard")
 				var/message = ""
 				message = (user == M) ? pick("Disciplines themselves with [src]","Uses [src] to lash themselves") : pick("Lashes [M]'s body with [src]","Uses [src] to discipline [M]", "Disciplines with [M] with [src]")
-				M.emote(pick("moan","twitch","twitch_s","scream"))
+				if(prob(50))
+					M.emote(pick("moan","twitch","twitch_s","scream"))
 				M.do_jitter_animation()
 				M.adjustArous(0,0,7)
 				user.visible_message("<font color=purple>[user] [message].</font>")
@@ -147,7 +152,8 @@
 			if(current_whip_type == "weak")
 				var/message = ""
 				message = (user == M) ? pick("Whips themselves with [src]","Uses [src] to lash themselves") : pick("Playfully lashes [M]'s body with [src]","Uses [src] to discipline [M]", "Gently lashes [M] with [src]")
-				M.emote(pick("moan","twitch"))
+				if(prob(30))
+					M.emote(pick("moan","twitch"))
 				M.do_jitter_animation()
 				M.adjustArous(0,0,4)
 				user.visible_message("<font color=purple>[user] [message].</font>")
