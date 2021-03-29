@@ -64,9 +64,13 @@
 
 /datum/reagent/drug/dopamine/overdose_process(mob/living/M)*/
 
-///////////-----Reagent holders------///////////
+
+///////////-----Initilaze------///////////
+
 /obj/item/organ/genital
 	var/datum/reagents/internal_fluids
+	var/list/contained_item
+	var/obj/item/inserted_item //Used for toys
 
 /obj/item/organ/genital/breasts/build_from_dna(datum/dna/DNA, associated_key)
 	. = ..()
@@ -95,12 +99,6 @@
 /obj/item/organ/genital/vagina/build_from_dna(datum/dna/DNA, associated_key)
 	. = ..()
 	internal_fluids = new /datum/reagents(10)
-
-
-///////////-----Initilaze------///////////
-/obj/item/organ/genital
-	var/list/contained_item
-	var/obj/item/inserted_item //Used for toys
 
 /obj/item/organ/genital/vagina
 	contained_item = list(/obj/item/eggvib)
@@ -139,14 +137,15 @@
 /mob/living/carbon/human/verb/arousal_panel()
 	set name = "Arousal panel"
 	set category = "IC"
-	show_arousal_panel()
+	set src in view(1)
+	show_arousal_panel(usr)
 
-/mob/living/carbon/human/verb/climax_panel()
+/*/mob/living/carbon/human/verb/climax_panel()
 	set name = "Climax"
 	set category = "IC"
-	to_chat(world,"climax under cunstruct")
+	to_chat(world,"climax under cunstruct")*/
 
-/mob/living/carbon/human/proc/show_arousal_panel()
+/mob/living/carbon/human/proc/show_arousal_panel(mob/user)
 	var/obj/item/organ/genital/testicles/balls = getorganslot(ORGAN_SLOT_TESTICLES)
 	var/obj/item/organ/genital/breasts/breasts = getorganslot(ORGAN_SLOT_BREASTS)
 	var/obj/item/organ/genital/vagina/vagina = getorganslot(ORGAN_SLOT_VAGINA)
@@ -154,39 +153,58 @@
 
 	var/list/dat = list()
 
-	dat += "<div>"
-	dat += {"<table style="float: left">"}
-	dat += "<tr><td><label>Arousal:</lable></td><td><lable>[arousal]%</label></td></tr>"
-	dat += "<tr><td><label>Pleasure:</lable></td><td><lable>[pleasure]%</label></td></tr>"
-	dat += "<tr><td><label>Pain:</lable></td><td><lable>[pain]%</label></td></tr>"
-	dat += "</table>"
+	if(user == src)
+		dat += "<div>"
+		dat += {"<table style="float: left">"}
+		dat += "<tr><td><label>Arousal:</lable></td><td><lable>[arousal]%</label></td></tr>"
+		dat += "<tr><td><label>Pleasure:</lable></td><td><lable>[pleasure]%</label></td></tr>"
+		dat += "<tr><td><label>Pain:</lable></td><td><lable>[pain]%</label></td></tr>"
+		dat += "</table>"
 
-	dat += {"<table style="float: left"; margin-left: 50px;>"}
-	if(balls)
-		dat += "<tr><td><label>Semen:</lable></td><td><lable>[balls.internal_fluids.total_volume]/[balls.internal_fluids.maximum_volume]</label></td></tr>"
-	if(breasts)
-		dat += "<tr><td><label>Milk:</lable></td><td><lable>[breasts.internal_fluids.total_volume]/[breasts.internal_fluids.maximum_volume]</label></td></tr>"
-	if(vagina)
-		dat += "<tr><td><label>GirlCum:</lable></td><td><lable>[vagina.internal_fluids.total_volume]/[vagina.internal_fluids.maximum_volume]</label></td></tr>"
-	dat += "</table>"
-	dat += "</div>"
+		dat += {"<table style="float: left"; margin-left: 50px;>"}
+		if(balls)
+			dat += "<tr><td><label>Semen:</lable></td><td><lable>[balls.internal_fluids.total_volume]/[balls.internal_fluids.maximum_volume]</label></td></tr>"
+		if(breasts)
+			dat += "<tr><td><label>Milk:</lable></td><td><lable>[breasts.internal_fluids.total_volume]/[breasts.internal_fluids.maximum_volume]</label></td></tr>"
+		if(vagina)
+			dat += "<tr><td><label>GirlCum:</lable></td><td><lable>[vagina.internal_fluids.total_volume]/[vagina.internal_fluids.maximum_volume]</label></td></tr>"
+		dat += "</table>"
+		dat += "</div>"
 
-	dat += "<div>"
-	dat += {"<table style="float: left">"}
-	dat += "<tr><td><label>Anus:</lable></td><td><A href='?src=[REF(src)];anus=1'>[(inserted_item ? inserted_item.name : "None")]</A></td></tr>"
-	if(breasts)
-		dat += "<tr><td><label>Nipples:</lable></td><td><A href='?src=[REF(src)];breasts=1'>[(breasts.inserted_item ? breasts.inserted_item.name : "None")]</A></td></tr>"
-	if(penis)
-		dat += "<tr><td><label>Penis:</lable></td><td><A href='?src=[REF(src)];penis=1'>[(penis.inserted_item ? penis.inserted_item.name : "None")]</A></td></tr>"
-	if(vagina)
-		dat += "<tr><td><label>Vagina:</lable></td><td><A href='?src=[REF(src)];vagina=1'>[(vagina.inserted_item ? vagina.inserted_item.name : "None")]</A></td></tr>"
-	dat += "</table>"
-	dat += "</div>"
+		dat += "<div>"
+		dat += {"<table style="float: left">"}
+		dat += "<tr><td><label>Anus:</lable></td><td><A href='?src=[REF(src)];anus=1'>[(inserted_item ? inserted_item.name : "None")]</A></td></tr>"
+		if(breasts)
+			dat += "<tr><td><label>Nipples:</lable></td><td><A href='?src=[REF(src)];breasts=1'>[(breasts.inserted_item ? breasts.inserted_item.name : "None")]</A></td></tr>"
+		if(penis)
+			dat += "<tr><td><label>Penis:</lable></td><td><A href='?src=[REF(src)];penis=1'>[(penis.inserted_item ? penis.inserted_item.name : "None")]</A></td></tr>"
+		if(vagina)
+			dat += "<tr><td><label>Vagina:</lable></td><td><A href='?src=[REF(src)];vagina=1'>[(vagina.inserted_item ? vagina.inserted_item.name : "None")]</A></td></tr>"
+		dat += "</table>"
+		dat += "</div>"
 
-	dat += "<div>"
-	dat += "<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"
-	dat += "<A href='?src=[REF(src)];refresh=1'>Refresh</A>"
-	dat += "</div>"
+		dat += "<div>"
+		dat += "<A href='?src=[REF(src)];climax=1'>Climax</A>"
+		dat += "<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"
+		dat += "<A href='?src=[REF(src)];refresh=1'>Refresh</A>"
+		dat += "</div>"
+	else
+		dat += "<div>"
+		dat += {"<table style="float: left">"}
+		dat += "<tr><td><label>Anus:</lable></td><td><A href='?src=[REF(src)];anus=1'>[(inserted_item ? inserted_item.name : "None")]</A></td></tr>"
+		if(breasts)
+			dat += "<tr><td><label>Nipples:</lable></td><td><A href='?src=[REF(src)];breasts=1'>[(breasts.inserted_item ? breasts.inserted_item.name : "None")]</A></td></tr>"
+		if(penis)
+			dat += "<tr><td><label>Penis:</lable></td><td><A href='?src=[REF(src)];penis=1'>[(penis.inserted_item ? penis.inserted_item.name : "None")]</A></td></tr>"
+		if(vagina)
+			dat += "<tr><td><label>Vagina:</lable></td><td><A href='?src=[REF(src)];vagina=1'>[(vagina.inserted_item ? vagina.inserted_item.name : "None")]</A></td></tr>"
+		dat += "</table>"
+		dat += "</div>"
+
+		dat += "<div>"
+		dat += "<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"
+		dat += "<A href='?src=[REF(src)];refresh=1'>Refresh</A>"
+		dat += "</div>"
 
 	var/datum/browser/popup = new(usr, "mob[REF(src)]", "[src]", 440, 510)
 	popup.title = "Arousal panel"
@@ -197,30 +215,33 @@
 	.=..()
 	var/mob/living/carbon/human/user = usr
 	if(href_list["refresh"])
-		user.show_arousal_panel()
+		user.show_arousal_panel(src)
+
+	if(href_list["climax"])
+		climax(TRUE)
 
 	if(href_list["anus"])
 		if(!extract_item(user, "anus"))
 			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in anus.</span>")
-		user.show_arousal_panel()
+		user.show_arousal_panel(src)
 
 	if(href_list["vagina"])
 		if(!extract_item(user, "vagina"))
 			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in vagina.</span>")
-		user.show_arousal_panel()
+		user.show_arousal_panel(src)
 
 	if(href_list["breasts"])
 		if(!extract_item(user, "breasts"))
 			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to nipple.</span>")
-		user.show_arousal_panel()
+		user.show_arousal_panel(src)
 
 	if(href_list["penis"])
 		if(!extract_item(user, "penis"))
 			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to penis.</span>")
-		user.show_arousal_panel()
+		user.show_arousal_panel(src)
 
 ///////////-----Procs------///////////
-/mob/living/carbon/human/proc/extract_item(user, slotName)
+/mob/living/proc/extract_item(user, slotName)
 	var/mob/living/carbon/human/U = user
 	var/mob/living/carbon/human/O = src
 	var/slotText = slotName
@@ -272,7 +293,7 @@
 		return FALSE
 
 
-/mob/living/carbon/human/proc/set_masohism(status) //TRUE or FALSE
+/mob/living/proc/set_masohism(status) //TRUE or FALSE
 	if(status == TRUE)
 		masohism = status
 		pain_limit = 80
@@ -280,11 +301,57 @@
 		masohism = status
 		pain_limit = 50
 
-/mob/living/carbon/human/proc/set_nymphomania(status) //TRUE or FALSE
+/mob/living/proc/set_nymphomania(status) //TRUE or FALSE
 	if(status == TRUE)
 		nymphomania = TRUE
 	if(status == FALSE)
 		nymphomania = FALSE
+
+
+////////////
+///FLUIDS///
+////////////
+
+/datum/status_effect/body_fluid_regen
+	id = "body fluid regen"
+	tick_interval = 50
+	duration = -1
+	alert_type = null
+
+/datum/status_effect/body_fluid_regen/tick()
+	if(owner.stat != DEAD)
+		//to_chat(world,"Name:[owner.name]")
+		var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
+		var/obj/item/organ/genital/breasts/breasts = owner.getorganslot(ORGAN_SLOT_BREASTS)
+		var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
+
+		var/interval = 5	// = tick_interval / 10
+		if(balls)
+			if(owner.arousal >= AROUS_SYS_LITTLE)
+				var/regen = (owner.arousal/100) * (balls.internal_fluids.maximum_volume/235) * interval
+				balls.internal_fluids.add_reagent(/datum/reagent/consumable/cum, regen)
+				//to_chat(world,"Cum regen:[regen]")
+
+		if(breasts)
+			if(breasts.lactates == TRUE)
+				var/regen = ((owner.nutrition / (NUTRITION_LEVEL_WELL_FED/100))/100) * (breasts.internal_fluids.maximum_volume/11000) * interval
+				breasts.internal_fluids.add_reagent(/datum/reagent/consumable/breast_milk, regen)
+				//to_chat(world,"Milk regen:[regen]")
+				//NEED DROOL
+
+		if(vagina)
+			if(owner.arousal >= AROUS_SYS_LITTLE)
+				var/regen = (owner.arousal/100) * (vagina.internal_fluids.maximum_volume/250) * interval
+				vagina.internal_fluids.add_reagent(/datum/reagent/consumable/girlcum, regen)
+				if(vagina.internal_fluids.holder_full() && regen >= 0.15)
+					regen = regen // place for drool
+			else
+				vagina.internal_fluids.remove_any(0.05)
+				owner.adjustArous()
+
+/////////////
+///AROUSAL///
+/////////////
 
 /mob/living/proc/adjustArous(arous = 0, pleas = 0, pn = 0)
 	arousal += arous
@@ -315,58 +382,20 @@
 						M.internal_organs[i].update_sprite_suffix()
 			M.update_body()
 
+	if(pleasure >= 100)
+		climax(FALSE)
 
-///////////-----Status effects------///////////
 /datum/status_effect/aroused
 	id = "aroused"
 	tick_interval = 10
 	duration = -1
 	alert_type = null
 
-/datum/status_effect/body_fluid_regen
-	id = "body fluid regen"
-	tick_interval = 50
-	duration = -1
-	alert_type = null
-
-
-///////////-----Status effects tiks------///////////
-/datum/status_effect/body_fluid_regen/tick()
-	if(owner.stat != DEAD)
-		//to_chat(world,"Name:[owner.name]")
-		var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
-		var/obj/item/organ/genital/breasts/breasts = owner.getorganslot(ORGAN_SLOT_BREASTS)
-		var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
-
-		var/interval = 5	// = tick_interval / 10
-		if(balls)
-			if(owner.arousal >= AROUS_SYS_LITTLE)
-				var/regen = (owner.arousal/100) * (balls.internal_fluids.maximum_volume/235) * interval
-				balls.internal_fluids.add_reagent(/datum/reagent/consumable/cum, regen)
-				//to_chat(world,"Cum regen:[regen]")
-
-		if(breasts)
-			if(breasts.lactates == TRUE)
-				var/regen = ((owner.nutrition / (NUTRITION_LEVEL_WELL_FED/100))/100) * (breasts.internal_fluids.maximum_volume/11000) * interval
-				breasts.internal_fluids.add_reagent(/datum/reagent/consumable/breast_milk, regen)
-				//to_chat(world,"Milk regen:[regen]")
-
-		if(vagina)
-			if(owner.arousal >= AROUS_SYS_LITTLE)
-				var/regen = (owner.arousal/100) * (vagina.internal_fluids.maximum_volume/250) * interval
-				vagina.internal_fluids.add_reagent(/datum/reagent/consumable/girlcum, regen)
-				if(vagina.internal_fluids.holder_full() && regen >= 0.15)
-					regen = regen // place for drool
-			else
-				vagina.internal_fluids.remove_any(0.05)
-				owner.adjustArous()
-
-
 /datum/status_effect/aroused/tick()
+	var/temp_arousal = -0.1
+	var/temp_pleasure = -0.5
+	var/temp_pain = -0.5
 	if(owner.stat != DEAD)
-		var/temp_arousal = -0.1
-		var/temp_pleasure = -0.5
-		var/temp_pain = -0.5
 
 		var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
 		if(balls)
@@ -394,12 +423,44 @@
 				owner.emote(pick("moan","twitch_s"))
 			//moan x2
 
-
-		owner.adjustArous(temp_arousal, temp_pleasure, temp_pain)
+	owner.adjustArous(temp_arousal, temp_pleasure, temp_pain)
 
 ////////////
 ///CLIMAX///
 ////////////
+
+/mob/living/proc/climax(manual = TRUE)
+	if(manual == TRUE && arousal > 90 && !has_status_effect(/datum/status_effect/climax))
+		apply_status_effect(/datum/status_effect/climax)
+		return TRUE
+	else if(manual == FALSE)
+		apply_status_effect(/datum/status_effect/climax)
+		return TRUE
+	else
+		return FALSE
+
+/datum/status_effect/climax
+	id = "climax"
+	tick_interval =  10
+	duration = 100
+	alert_type = null
+
+/datum/status_effect/climax/tick()
+	var/temp_arousal = -12
+	var/temp_pleasure = -12
+	var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
+
+	if(balls)
+		balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
+		//NEED ADD SPRITE
+
+	if(vagina)
+		vagina.reagents.remove_all()
+		//NEED ADD SPRITE
+
+	owner.adjustArous(temp_arousal, temp_pleasure, 0)
+
 /*
 
 Вот список того что должно быть при оргазме:
