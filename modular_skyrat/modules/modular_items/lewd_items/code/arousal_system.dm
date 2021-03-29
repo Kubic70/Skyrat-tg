@@ -4,8 +4,19 @@
 #define PAIN_SYS_LIMIT 50
 #define PLEAS_SYS_EDGE 85
 
+#define CUM_MALE 1
+#define CUM_FEMALE 2
 
-///////////-----Reagents------///////////
+///////////-----Decals-----//////////
+/obj/effect/decal/cleanable/cum
+	name = "cum"
+	desc = "Uh... Gross."
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_decals/lewd_decals.dmi'
+	icon_state = "cum_1"
+	random_icon_states = list("cum_1", "cum_2", "cum_3", "cum_4")
+	beauty = -150
+
+///////////-----Reagents-----///////////
 /datum/reagent/consumable/girlcum
 	name = "girlcum"
 	description = "Uhh... Someone had fun."
@@ -370,18 +381,129 @@
 
 		if(owner.pain > owner.pain_limit)
 			temp_arousal -= 0.1
-			if(prob(10))
-				owner.emote("scream")
+			if(prob(3))
+				owner.emote(pick("scream","shiver"))
 			//SCREAM!!!
 		if(owner.arousal >= AROUS_SYS_STRONG)
-			if(prob(10))
-				owner.emote("moan")
+			if(prob(3))
+				owner.emote(pick("moan","blush"))
 			temp_pleasure += 0.1
 			//moan
 		if(owner.pleasure >= PLEAS_SYS_EDGE)
-			if(prob(10))
-				owner.emote("moan")
+			if(prob(3))
+				owner.emote(pick("moan","twitch_s"))
 			//moan x2
 
 
 		owner.adjustArous(temp_arousal, temp_pleasure, temp_pain)
+
+////////////
+///CLIMAX///
+////////////
+/*
+
+Вот список того что должно быть при оргазме:
+Персонаж делает анимацию дёргтания
+Получает кучу стаминаурона
+Получает удовольствие как от наркотиков.
+Кол-во реагентов в его органах уменьшается до 0 в соответствующих гениталиях
+На полу появляется спрайт соответствующий вышедшим жидкостям персонажа, если персонаж не "сух"
+В чат игрока и в локальный выводится какое-нибудь извращенное сообщение
+Значение arousal и pleasure падает до 0.
+Добавляется бонус к настроению.
+КД на оргазм в 2-3 минуты. Персонажу нужно "Охладиться".
+Если персонаж "сух" - не спавнить ничего и вывести другое сообщение для оргазма.
+
+/mob/living/carbon/human/proc/climax(mob/living/carbon/human/M, distance = 1, cum_type = CUM_MALE)
+//effects on character + messages in chat and sound effect.
+	if(character_can_cum())
+		M.set_drugginess(rand(40, 80))
+		M.adjustStaminaLoss(60) //character should get tired. Potentionally abusable, but i hope cooldown will prevent this. Also ERP abuse is bad.
+		M.Paralyze(80)
+		if(!is_bottomless()) //Giving correct mood effect here
+			visible_message("<font color=purple>[src] cums in their underwear!</font>", \
+							"<font color=purple>You cum in your underwear! Eww.</font>")
+			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "climax", /datum/mood_event/climaxself)
+			distance = 0
+		else
+			visible_message("<font color=purple>[src] cumming!</font>", "<font color=purple>You cumming!</font>")
+			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "climax", /datum/mood_event/climax)
+		//Determining what kind of sound we getting when cumming
+		switch(M.gender)
+			if(MALE)
+				playsound(get_turf(src), pick('modular_skyrat/modules/modular_items/lewd_items/sounds/final_m1.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_m2.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_m3.ogg'), 50, TRUE)
+			if(FEMALE)
+				playsound(get_turf(src), pick('modular_skyrat/modules/modular_items/lewd_items/sounds/final_f1.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_f2.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_f3.ogg'), 50, TRUE)
+			else
+				playsound(get_turf(src), pick('modular_skyrat/modules/modular_items/lewd_items/sounds/final_m1.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_m2.ogg',
+											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_m3.ogg'), 50, TRUE)
+
+//We checking if character can cum, or he/she "dry".
+		var/turf/T = get_turf(src)
+		for(var/i=0 to distance)
+			if(T)
+				if(current_semen.reagents.total_volume > 0 && current_girlcum.reagents.total_volume > 0) //Whatever-the-fuck-you-are case. No, i didn't sprited special decal for this. Penis and vagina on same spot are you fucking kidding me? Biological abomination.
+					T.add_cum_floor(src, cum_type)
+					current_semen.reagents.total_volume = 0
+					current_girlcum.reagents.total_volume = 0
+				else if(current_semen.reagents.total_volume > 0) //Male case
+					T.add_cum_floor(src, cum_type)
+					current_semen.reagents.total_volume = 0
+				else if(current_girlcum.reagents.total_volume > 0) //Female case
+					cum_type = CUM_FEMALE
+					T.add_cum_floor(src, cum_type)
+					current_girlcum.reagents.total_volume = 0
+				else //Dry case
+					return
+
+			T = get_step(T, dir)
+			if (T?.is_blocked_turf())
+				break
+		return TRUE
+
+	else
+		visible_message("<font color=purple>[src] twitches, trying to cum, but with no result.</font>", \
+						"<font color=purple>You can't have an orgasm!</font>")
+
+//This is cool modularised proc that required for determining if character can cum. Yes, it's obvious.
+//actually i need it for hexacamphor (permanent anaphrodisiac)
+//and for cooldown on climax.
+/mob/living/carbon/human/proc/character_can_cum(mob/living/carbon/human/M)
+	return TRUE
+
+//Mood events
+
+/datum/mood_event/climax
+	description = "<font color=purple>Woah... This pleasant tiredness... I love it.</font>\n"
+	mood_change = 8 //yes, +8. Well fed buff gives same amount. This is Fair (tm).
+	timeout = 5 MINUTES
+
+/datum/mood_event/climaxself
+	description = "<font color=purple>I just came in my own underwear. Messy.</font>\n"
+	mood_change = -2
+	timeout = 4 MINUTES
+
+//Прости кубик, тут не до конца доведено, может не работать.
+//adding cum on floor. What am i doing in my life?
+/turf/proc/add_cum_floor(mob/living/M, cum_type = NONE)
+	var/obj/effect/decal/cleanable/cum/V = new /obj/effect/decal/cleanable/cum()
+	if (QDELETED(V))
+		V = locate() in src
+	if(!V)
+		return
+	// Apply the proper icon and name set based on cum type
+	if(cum_type == CUM_FEMALE)
+		V.name = "female cum"
+		V.desc = "Guhh... We need to call janitors."
+		V.icon_state = "femcum_[pick(1,4)]"
+
+	else if (cum_type == CUM_MALE)
+		V.name = "male cum"
+		V.desc = "Eww! Gross..."
+		V.icon_state = "cum_[pick(1,4)]"
+*/
