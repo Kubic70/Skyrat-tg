@@ -65,28 +65,43 @@
 			var/obj/item/organ/genital/penis = M.getorganslot(ORGAN_SLOT_PENIS)
 			if(penis)
 				if(M.is_bottomless())
-					if(M.gender == MALE)
-						message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
-						M.emote(pick("twitch_s","moan","blush"))
-						M.adjustArous(6,9)
-						user.visible_message("<font color=purple>[user] [message].</font>")
-						playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang3.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang4.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 70, 1, -1)
-					if(M.gender == FEMALE)
-						message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
-						M.emote(pick("twitch_s","moan","blush"))
-						M.adjustArous(6,9)
-						user.visible_message("<font color=purple>[user] [message].</font>")
-						playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang3.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang4.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
-											'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 70, 1, -1)
+					switch(M.gender)
+						if(MALE)
+							message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
+							if(prob(40))
+								M.emote(pick("twitch_s","moan","blush"))
+							M.adjustArous(6,9)
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang3.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang4.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 70, 1, -1)
+						if(FEMALE)
+							message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
+							if(prob(40))
+								M.emote(pick("twitch_s","moan","blush"))
+							M.adjustArous(6,9)
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang3.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang4.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 70, 1, -1)
+						else
+							message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
+							if(prob(40))
+								M.emote(pick("twitch_s","moan","blush"))
+							M.adjustArous(6,9)
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang3.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang4.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 70, 1, -1)
 				else
 					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
