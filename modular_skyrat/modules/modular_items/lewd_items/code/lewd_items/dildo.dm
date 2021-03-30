@@ -106,7 +106,10 @@
 				var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
 				if(vagina)
 					message = (user == M) ? pick("rubs their vagina with the [src]","gently jams their pussy with [src]","fucks their vagina with a [src]") : pick("delicately rubs [M]'s vagina with [src]", "uses [src] to fuck [M]'s vagina","jams [M]'s pussy with a [src]", "teasing [M]'s pussy with a [src]")
-					M.adjustArous(6,8)
+					//M.adjustArous(6,8)
+					M.adjustArousal(6)
+					M.adjustPleasure(8)
+
 					if(prob(40))
 						M.emote(pick("twitch_s","moan"))
 					user.visible_message("<font color=purple>[user] [message].</font>")
@@ -127,7 +130,9 @@
 		if(BODY_ZONE_HEAD) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
 			if(!M.is_mouth_covered())
 				message = (user == M) ? pick("sucks [src] with their mouth","licks [src], then slowly inserting it into their throat") : pick("fucks [M]'s mouth with [src]", "choking [M] by inserting [src] into [M]'s throat", "forcing [M] to suck a [src]", "inserts [src] into [M]'s throat")
-				M.adjustArous(4,1)
+				//M.adjustArous(4,1)
+				M.adjustArousal(4)
+				M.adjustPleasure(1)
 				M.adjustOxyLoss(3)
 				if(prob(70))
 					M.emote(pick("gasp","moan"))
@@ -146,7 +151,9 @@
 		else
 			if(M.is_bottomless())
 				message = (user == M) ? pick("puts [src] into their anus","slowly inserts [src] into their ass") : pick("fucks [M]'s ass with a [src]", "uses [src] to fuck [M]'s anus", "jams [M]'s ass with a [src]", "roughly fucks [M]'s ass with a [src], making [M] roll eyes up")
-				M.adjustArous(5,5)
+				//M.adjustArous(5,5)
+				M.adjustArousal(5)
+				M.adjustPleasure(5)
 				if(prob(60))
 					M.emote(pick("twitch_s","moan","shiver"))
 				user.visible_message("<font color=purple>[user] [message].</font>")

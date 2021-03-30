@@ -349,7 +349,8 @@
 	var/picked_arousal = input(src, "Choose arousal", "Toggle Arousal") as null|anything in gen_arous_trans
 	var/a = gen_arous_trans[picked_arousal] - get_arousal()
 	if(a > 0)
-		adjustArous(a)
+		adjustArousal(a)
+		//adjustArous(a)
 	return
 
 	/*var/list/genital_list = list() // original code
