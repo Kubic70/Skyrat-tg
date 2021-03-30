@@ -140,11 +140,6 @@
 	set src in view(1)
 	show_arousal_panel(usr)
 
-/*/mob/living/carbon/human/verb/climax_panel()
-	set name = "Climax"
-	set category = "IC"
-	to_chat(world,"climax under cunstruct")*/
-
 /mob/living/carbon/human/proc/show_arousal_panel(mob/user)
 	var/obj/item/organ/genital/testicles/balls = getorganslot(ORGAN_SLOT_TESTICLES)
 	var/obj/item/organ/genital/breasts/breasts = getorganslot(ORGAN_SLOT_BREASTS)
@@ -299,7 +294,7 @@
 		pain_limit = 80
 	if(status == FALSE)
 		masohism = status
-		pain_limit = 50
+		pain_limit = 20
 
 /mob/living/proc/set_nymphomania(status) //TRUE or FALSE
 	if(status == TRUE)
@@ -354,9 +349,24 @@
 /////////////
 
 /mob/living/proc/adjustArous(arous = 0, pleas = 0, pn = 0)
-	arousal += arous
-	pleasure += pleas
-	pain += pn
+	if(stat != DEAD)
+		arousal += arous
+		pleasure += pleas
+
+		if(pain > pain_limit || pn > pain_limit / 10) // pain system
+			arousal -= pn
+			if(prob(2) && pain > pain_limit)
+				emote(pick("scream","shiver")) //SCREAM!!!
+		else
+			arousal += pn
+			if(masohism == TRUE)
+				pleasure += pn / 2
+		pain += pn
+
+	else
+		arousal -= abs(arous)
+		pleasure -= abs(pleas)
+		pain -= abs(pn)
 
 	if(nymphomania == TRUE)
 		arousal = min(max(arousal,20),100)
@@ -371,7 +381,7 @@
 	else if(arousal >= AROUS_SYS_STRONG)
 		arousal_flag = AROUSAL_FULL
 
-	if(arousal_status != arousal_flag)
+	if(arousal_status != arousal_flag) // Set organ arousal status
 		arousal_status = arousal_flag
 		if(istype(src,/mob/living/carbon/human))
 			var/mob/living/carbon/human/M = src
@@ -382,8 +392,24 @@
 						M.internal_organs[i].update_sprite_suffix()
 			M.update_body()
 
-	if(pleasure >= 100)
+	if(pleasure >= 100) // lets cum
 		climax(FALSE)
+
+// get damage for pain system
+/datum/species/apply_damage(damage, damagetype, def_zone, blocked, mob/living/carbon/human/H, forced, spread_damage, wound_bonus, bare_wound_bonus, sharpness)
+	. = ..()
+	var/hit_percent = (100-(blocked+armor))/100
+	hit_percent = (hit_percent * (100-H.physiology.damage_resistance))/100
+	switch(damagetype)
+		if(BRUTE)
+			var/amount = forced ? damage : damage * hit_percent * brutemod * H.physiology.brute_mod
+			H.adjustArous(pn = amount)
+			//to_chat(world,"ToArous brute - amount")
+		if(BURN)
+			var/amount = forced ? damage : damage * hit_percent * burnmod * H.physiology.burn_mod
+			H.adjustArous(pn = amount)
+			//to_chat(world,"ToArous burn - amount")
+
 
 /datum/status_effect/aroused
 	id = "aroused"
@@ -410,9 +436,6 @@
 
 		if(owner.pain > owner.pain_limit)
 			temp_arousal -= 0.1
-			if(prob(3))
-				owner.emote(pick("scream","shiver"))
-			//SCREAM!!!
 		if(owner.arousal >= AROUS_SYS_STRONG)
 			if(prob(3))
 				owner.emote(pick("moan","blush"))
