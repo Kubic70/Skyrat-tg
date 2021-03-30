@@ -23,7 +23,8 @@
 					M.emote(pick("laugh","giggle","twitch","twitch_s"))
 				M.do_jitter_animation()
 				M.adjustStaminaLoss(4)
-				M.adjustArous(3)
+				//M.adjustArous(3)
+				M.adjustArousal(3)
 				user.visible_message("<font color=purple>[user] [message].</font>")
 				playsound(loc, pick('sound/items/handling/cloth_drop.ogg', 					//i duplicate this part of code because im useless shitcoder that can't make it work properly without tons of repeating code blocks
             			            'sound/items/handling/cloth_pickup.ogg',				//if you can make it better - go ahead, modify it, please.
@@ -39,7 +40,8 @@
 					M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
 				M.do_jitter_animation()
 				M.adjustStaminaLoss(4)
-				M.adjustArous(3)
+				//M.adjustArous(3)
+				M.adjustArousal(3)
 				user.visible_message("<font color=purple>[user] [message].</font>")
 				playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
             			            'sound/items/handling/cloth_pickup.ogg',
@@ -56,7 +58,8 @@
 						M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
 					M.do_jitter_animation()
 					M.adjustStaminaLoss(4)
-					M.adjustArous(3)
+					//M.adjustArous(3)
+					M.adjustArousal(3)
 					user.visible_message("<font color=purple>[user] [message].</font>")
 					playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
             				            'sound/items/handling/cloth_pickup.ogg',
@@ -76,7 +79,8 @@
 						M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
 					M.do_jitter_animation()
 					M.adjustStaminaLoss(4)
-					M.adjustArous(3)
+					//M.adjustArous(3)
+					M.adjustArousal(3)
 					user.visible_message("<font color=purple>[user] [message].</font>")
 					playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
             				            'sound/items/handling/cloth_pickup.ogg',

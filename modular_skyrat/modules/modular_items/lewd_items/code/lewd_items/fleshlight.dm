@@ -70,7 +70,9 @@
 							message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
 							if(prob(40))
 								M.emote(pick("twitch_s","moan","blush"))
-							M.adjustArous(6,9)
+							//M.adjustArous(6,9)
+							M.adjustArousal(6)
+							M.adjustPleasure(9)
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
@@ -82,7 +84,9 @@
 							message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
 							if(prob(40))
 								M.emote(pick("twitch_s","moan","blush"))
-							M.adjustArous(6,9)
+							//M.adjustArous(6,9)
+							M.adjustArousal(6)
+							M.adjustPleasure(9)
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
@@ -94,7 +98,9 @@
 							message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their belly with [src]") : pick("Teases [M]'s belly with [src]", "Uses [src] to tickle [M]'s belly","Tickles [M] with [src]")
 							if(prob(40))
 								M.emote(pick("twitch_s","moan","blush"))
-							M.adjustArous(6,9)
+							//M.adjustArous(6,9)
+							M.adjustArousal(6)
+							M.adjustPleasure(9)
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg',
