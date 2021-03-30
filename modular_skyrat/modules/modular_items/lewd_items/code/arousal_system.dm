@@ -315,7 +315,6 @@
 
 /datum/status_effect/body_fluid_regen/tick()
 	if(owner.stat != DEAD)
-		//to_chat(world,"Name:[owner.name]")
 		var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
 		var/obj/item/organ/genital/breasts/breasts = owner.getorganslot(ORGAN_SLOT_BREASTS)
 		var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
@@ -325,14 +324,15 @@
 			if(owner.arousal >= AROUS_SYS_LITTLE)
 				var/regen = (owner.arousal/100) * (balls.internal_fluids.maximum_volume/235) * interval
 				balls.internal_fluids.add_reagent(/datum/reagent/consumable/cum, regen)
-				//to_chat(world,"Cum regen:[regen]")
 
 		if(breasts)
 			if(breasts.lactates == TRUE)
 				var/regen = ((owner.nutrition / (NUTRITION_LEVEL_WELL_FED/100))/100) * (breasts.internal_fluids.maximum_volume/11000) * interval
 				breasts.internal_fluids.add_reagent(/datum/reagent/consumable/breast_milk, regen)
-				//to_chat(world,"Milk regen:[regen]")
-				//NEED DROOL
+				if(!breasts.internal_fluids.holder_full)
+					owner.adjust_nutrition(regen / 2)
+				else
+					regen = regen // place for drool
 
 		if(vagina)
 			if(owner.arousal >= AROUS_SYS_LITTLE)
@@ -347,6 +347,14 @@
 /////////////
 ///AROUSAL///
 /////////////
+/mob/living/proc/get_arousal()
+	return arousal
+
+/mob/living/proc/get_pain()
+	return pain
+
+/mob/living/proc/get_pleasure()
+	return pleasure
 
 /mob/living/proc/adjustArous(arous = 0, pleas = 0, pn = 0)
 	if(stat != DEAD)
@@ -376,10 +384,10 @@
 	pain = min(max(pain,0),100)
 
 	var/arousal_flag = AROUSAL_NONE
-	if(arousal >= AROUS_SYS_LITTLE)
-		arousal_flag = AROUSAL_PARTIAL
-	else if(arousal >= AROUS_SYS_STRONG)
+	if(arousal >= AROUS_SYS_STRONG)
 		arousal_flag = AROUSAL_FULL
+	else if(arousal >= AROUS_SYS_LITTLE)
+		arousal_flag = AROUSAL_PARTIAL
 
 	if(arousal_status != arousal_flag) // Set organ arousal status
 		arousal_status = arousal_flag
@@ -387,9 +395,10 @@
 			var/mob/living/carbon/human/M = src
 			for(var/i=1,i<=M.internal_organs.len,i++)
 				if(istype(M.internal_organs[i],/obj/item/organ/genital))
-					if(!M.internal_organs[i].aroused == AROUSAL_CANT)
-						M.internal_organs[i].aroused = arousal_status
-						M.internal_organs[i].update_sprite_suffix()
+					var/obj/item/organ/genital/G = M.internal_organs[i]
+					if(!G.aroused == AROUSAL_CANT)
+						G.aroused = arousal_status
+						G.update_sprite_suffix()
 			M.update_body()
 
 	if(pleasure >= 100) // lets cum
@@ -404,11 +413,9 @@
 		if(BRUTE)
 			var/amount = forced ? damage : damage * hit_percent * brutemod * H.physiology.brute_mod
 			H.adjustArous(pn = amount)
-			//to_chat(world,"ToArous brute - amount")
 		if(BURN)
 			var/amount = forced ? damage : damage * hit_percent * burnmod * H.physiology.burn_mod
 			H.adjustArous(pn = amount)
-			//to_chat(world,"ToArous burn - amount")
 
 
 /datum/status_effect/aroused
