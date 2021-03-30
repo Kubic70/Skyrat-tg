@@ -329,7 +329,7 @@
 			if(breasts.lactates == TRUE)
 				var/regen = ((owner.nutrition / (NUTRITION_LEVEL_WELL_FED/100))/100) * (breasts.internal_fluids.maximum_volume/11000) * interval
 				breasts.internal_fluids.add_reagent(/datum/reagent/consumable/breast_milk, regen)
-				if(!breasts.internal_fluids.holder_full)
+				if(!breasts.internal_fluids.holder_full())
 					owner.adjust_nutrition(regen / 2)
 				else
 					regen = regen // place for drool
@@ -342,7 +342,7 @@
 					regen = regen // place for drool
 			else
 				vagina.internal_fluids.remove_any(0.05)
-				owner.adjustArous()
+				//owner.adjustArous()
 
 /////////////
 ///AROUSAL///
@@ -350,20 +350,90 @@
 /mob/living/proc/get_arousal()
 	return arousal
 
+/mob/living/proc/adjustArousal(arous = 0)
+	if(stat != DEAD)
+		arousal += arous
+
+		var/arousal_flag = AROUSAL_NONE
+		if(arousal >= AROUS_SYS_STRONG)
+			arousal_flag = AROUSAL_FULL
+		else if(arousal >= AROUS_SYS_LITTLE)
+			arousal_flag = AROUSAL_PARTIAL
+
+		if(arousal_status != arousal_flag) // Set organ arousal status
+			arousal_status = arousal_flag
+			if(istype(src,/mob/living/carbon/human))
+				var/mob/living/carbon/human/M = src
+				for(var/i=1,i<=M.internal_organs.len,i++)
+					if(istype(M.internal_organs[i],/obj/item/organ/genital))
+						var/obj/item/organ/genital/G = M.internal_organs[i]
+						if(!G.aroused == AROUSAL_CANT)
+							G.aroused = arousal_status
+							G.update_sprite_suffix()
+				M.update_body()
+	else
+		arousal -= abs(arous)
+
+	if(nymphomania == TRUE)
+		arousal = min(max(arousal,20),100)
+	else
+		arousal = min(max(arousal,0),100)
+
 /mob/living/proc/get_pain()
 	return pain
+
+/mob/living/proc/adjustPain(pn = 0)
+	if(stat != DEAD)
+		if(pain > pain_limit || pn > pain_limit / 10) // pain system
+			if(masohism == TRUE)
+				var/p = pn - (pain_limit / 10)
+				if(p > 0)
+					//arousal -= p
+					adjustArousal(-p)
+			else
+				//arousal -= pn
+				if(pn > 0)
+					adjustArousal(-abs(pn))
+			if(prob(2) && pain > pain_limit && pn > pain_limit / 10)
+				emote(pick("scream","shiver")) //SCREAM!!!
+		else
+			//arousal += pn
+			if(pn > 0)
+				adjustArousal(pn)
+			if(masohism == TRUE)
+				//pleasure += pn / 4
+				var/p = pn / 4
+				adjustPleasure(p)
+		pain += pn
+	else
+		pain -= abs(pn)
+	pain = min(max(pain,0),100)
 
 /mob/living/proc/get_pleasure()
 	return pleasure
 
-/mob/living/proc/adjustArous(arous = 0, pleas = 0, pn = 0)
+/mob/living/proc/adjustPleasure(pleas = 0)
+	if(stat != DEAD)
+		pleasure += pleas
+		if(pleasure >= 100) // lets cum
+			climax(FALSE)
+	else
+		pleasure -= abs(pleas)
+	pleasure = min(max(pleasure,0),100)
+
+/*/mob/living/proc/adjustArous(arous = 0, pleas = 0, pn = 0)
 	if(stat != DEAD)
 		arousal += arous
 		pleasure += pleas
 
 		if(pain > pain_limit || pn > pain_limit / 10) // pain system
-			arousal -= pn
-			if(prob(2) && pain > pain_limit)
+			if(masohism == TRUE)
+				var/p = pn - (pain_limit / 10)
+				if(p > 0)
+					arousal -= p
+			else
+				arousal -= pn
+			if(prob(2) && pain > pain_limit && pn > pain_limit / 10)
 				emote(pick("scream","shiver")) //SCREAM!!!
 		else
 			arousal += pn
@@ -380,6 +450,7 @@
 		arousal = min(max(arousal,20),100)
 	else
 		arousal = min(max(arousal,0),100)
+
 	pleasure = min(max(pleasure,0),100)
 	pain = min(max(pain,0),100)
 
@@ -402,7 +473,7 @@
 			M.update_body()
 
 	if(pleasure >= 100) // lets cum
-		climax(FALSE)
+		climax(FALSE)*/
 
 // get damage for pain system
 /datum/species/apply_damage(damage, damagetype, def_zone, blocked, mob/living/carbon/human/H, forced, spread_damage, wound_bonus, bare_wound_bonus, sharpness)
@@ -412,10 +483,12 @@
 	switch(damagetype)
 		if(BRUTE)
 			var/amount = forced ? damage : damage * hit_percent * brutemod * H.physiology.brute_mod
-			H.adjustArous(pn = amount)
+			//H.adjustArous(pn = amount)
+			H.adjustPain(amount)
 		if(BURN)
 			var/amount = forced ? damage : damage * hit_percent * burnmod * H.physiology.burn_mod
-			H.adjustArous(pn = amount)
+			//H.adjustArous(pn = amount)
+			H.adjustPain(amount)
 
 
 /datum/status_effect/aroused
@@ -453,7 +526,10 @@
 				owner.emote(pick("moan","twitch_s"))
 			//moan x2
 
-	owner.adjustArous(temp_arousal, temp_pleasure, temp_pain)
+	owner.adjustArousal(temp_arousal)
+	owner.adjustPleasure(temp_pleasure)
+	owner.adjustPain(temp_pain)
+	//owner.adjustArous(temp_arousal, temp_pleasure, temp_pain)
 
 ////////////
 ///CLIMAX///
@@ -489,7 +565,9 @@
 		vagina.reagents.remove_all()
 		//NEED ADD SPRITE
 
-	owner.adjustArous(temp_arousal, temp_pleasure, 0)
+	owner.adjustArousal(temp_arousal)
+	owner.adjustPleasure(temp_pleasure)
+	//owner.adjustArous(temp_arousal, temp_pleasure, 0)
 
 /*
 
