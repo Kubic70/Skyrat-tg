@@ -10,7 +10,7 @@
 	desc = "A 6mm bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sl-casing"
-	caliber = "6mm"
+	caliber = CALIBER_6MM
 	projectile_type = /obj/projectile/bullet/advanced/b6mm
 
 /obj/projectile/bullet/advanced/b6mm
@@ -23,7 +23,7 @@
 	desc = "A 6mm rubber bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sr-casing"
-	caliber = "6mm"
+	caliber = CALIBER_6MM
 	projectile_type = /obj/projectile/bullet/advanced/b6mm/rubber
 
 /obj/projectile/bullet/advanced/b6mm/rubber
@@ -36,7 +36,7 @@
 	ricochet_chance = 130
 	ricochet_decay_damage = 0.8
 	shrapnel_type = null
-	sharpness = SHARP_NONE
+	sharpness = NONE
 	embedding = null
 
 /obj/item/ammo_casing/b6mm/ihdf
@@ -44,13 +44,14 @@
 	desc = "A 6mm intelligent high-impact dispersal foam bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "si-casing"
-	caliber = "6mm"
+	caliber = CALIBER_6MM
 	projectile_type = /obj/projectile/bullet/advanced/b6mm/ihdf
 
 /obj/projectile/bullet/advanced/b6mm/ihdf
 	name = "6mm ihdf bullet"
 	icon_state = "bullet_i"
 	damage = 15
+	embedding = list(embed_chance=0, fall_chance=3, jostle_chance=4, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=5, jostle_pain_mult=6, rip_time=10)
 	damage_type = STAMINA
 
 ///////////////////////////9mm
@@ -61,7 +62,7 @@
 	desc = "A 9mm bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sl-casing"
-	caliber = "9mm"
+	caliber = CALIBER_9MM
 	projectile_type = /obj/projectile/bullet/advanced/b9mm
 
 /obj/projectile/bullet/advanced/b9mm
@@ -74,7 +75,7 @@
 	desc = "A 9mm hollowpoint bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sh-casing"
-	caliber = "9mm"
+	caliber = CALIBER_9MM
 	projectile_type = /obj/projectile/bullet/advanced/b9mm/hp
 
 /obj/projectile/bullet/advanced/b9mm/hp
@@ -90,7 +91,7 @@
 	desc = "A 9mm rubber bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sr-casing"
-	caliber = "9mm"
+	caliber = CALIBER_9MM
 	projectile_type = /obj/projectile/bullet/advanced/b9mm/rubber
 
 /obj/projectile/bullet/advanced/b9mm/rubber
@@ -103,7 +104,7 @@
 	ricochet_chance = 130
 	ricochet_decay_damage = 0.8
 	shrapnel_type = null
-	sharpness = SHARP_NONE
+	sharpness = NONE
 	embedding = null
 
 /obj/item/ammo_casing/b9mm/ihdf
@@ -111,7 +112,7 @@
 	desc = "A 9mm intelligent high-impact dispersal foam bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "si-casing"
-	caliber = "9mm"
+	caliber = CALIBER_9MM
 	projectile_type = /obj/projectile/bullet/advanced/b9mm/ihdf
 
 /obj/projectile/bullet/advanced/b9mm/ihdf
@@ -119,6 +120,7 @@
 	icon_state = "bullet_i"
 	damage = 25
 	damage_type = STAMINA
+	embedding = list(embed_chance=0, fall_chance=3, jostle_chance=4, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=5, jostle_pain_mult=6, rip_time=10)
 
 
 ///////////////////////////10mm
@@ -129,7 +131,7 @@
 	desc = "A 10mm bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sl-casing"
-	caliber = "10mm"
+	caliber = CALIBER_10MM
 	projectile_type = /obj/projectile/bullet/advanced/b10mm
 
 /obj/projectile/bullet/advanced/b10mm
@@ -142,7 +144,7 @@
 	desc = "A 10mm hollowpoint bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sh-casing"
-	caliber = "10mm"
+	caliber = CALIBER_10MM
 	projectile_type = /obj/projectile/bullet/advanced/b10mm/hp
 
 /obj/projectile/bullet/advanced/b10mm/hp
@@ -158,7 +160,7 @@
 	desc = "A 10mm rubber bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sr-casing"
-	caliber = "10mm"
+	caliber = CALIBER_10MM
 	projectile_type = /obj/projectile/bullet/advanced/b10mm/rubber
 
 /obj/projectile/bullet/advanced/b10mm/rubber
@@ -171,7 +173,7 @@
 	ricochet_chance = 130
 	ricochet_decay_damage = 0.8
 	shrapnel_type = null
-	sharpness = SHARP_NONE
+	sharpness = NONE
 	embedding = null
 
 /obj/item/ammo_casing/b10mm/ihdf
@@ -179,7 +181,7 @@
 	desc = "A 10mm intelligent high-impact dispersal foam bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "si-casing"
-	caliber = "10mm"
+	caliber = CALIBER_10MM
 	projectile_type = /obj/projectile/bullet/advanced/b10mm/ihdf
 
 /obj/projectile/bullet/advanced/b10mm/ihdf
@@ -187,7 +189,7 @@
 	icon_state = "bullet_i"
 	damage = 30
 	damage_type = STAMINA
-
+	embedding = list(embed_chance=0, fall_chance=3, jostle_chance=4, ignore_throwspeed_threshold=TRUE, pain_stam_pct=0.4, pain_mult=5, jostle_pain_mult=6, rip_time=10)
 
 //////////////////12mm
 //RUBBER | LETHAL | HP
@@ -197,7 +199,7 @@
 	desc = "A 12mm bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sl-casing"
-	caliber = "12mm"
+	caliber = CALIBER_12MM
 	projectile_type = /obj/projectile/bullet/advanced/b12mm
 
 /obj/projectile/bullet/advanced/b12mm
@@ -210,7 +212,7 @@
 	desc = "A 12mm hollowpoint bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sh-casing"
-	caliber = "12mm"
+	caliber = CALIBER_12MM
 	projectile_type = /obj/projectile/bullet/advanced/b12mm/hp
 
 /obj/projectile/bullet/advanced/b12mm/hp
@@ -226,7 +228,7 @@
 	desc = "A 12mm rubber bullet casing."
 	icon = 'modular_skyrat/modules/sec_haul/icons/guns/ammo_cartridges.dmi'
 	icon_state = "sr-casing"
-	caliber = "12mm"
+	caliber = CALIBER_12MM
 	projectile_type = /obj/projectile/bullet/advanced/b12mm/rubber
 
 /obj/projectile/bullet/advanced/b12mm/rubber
@@ -239,7 +241,7 @@
 	ricochet_chance = 130
 	ricochet_decay_damage = 0.8
 	shrapnel_type = null
-	sharpness = SHARP_NONE
+	sharpness = NONE
 	embedding = null
 
 
@@ -252,8 +254,9 @@
 /obj/projectile/bullet/advanced/b577
 	name = "577 bullet"
 	damage = 40
-	wound_bonus = 10
-	bare_wound_bonus = 15
+	wound_bonus = 15
+	bare_wound_bonus = 30
+	dismemberment = 15
 
 //SMARTGUN
 /obj/item/ammo_casing/smartgun

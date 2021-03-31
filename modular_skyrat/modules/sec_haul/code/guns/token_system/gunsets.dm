@@ -13,6 +13,7 @@
 	lefthand_file = 'icons/mob/inhands/equipment/briefcase_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/briefcase_righthand.dmi'
 	resistance_flags = FLAMMABLE
+	w_class = WEIGHT_CLASS_BULKY
 	drop_sound = 'sound/items/handling/ammobox_drop.ogg'
 	pickup_sound =  'sound/items/handling/ammobox_pickup.ogg'
 	foldable = FALSE
@@ -97,7 +98,7 @@
 
 // MK-58
 /obj/item/storage/box/gunset/ladon
-	name = "mk-58 supply box"
+	name = "ladon supply box"
 
 /obj/item/gun/ballistic/automatic/pistol/mk58/nomag
 	spawnwithmagazine = FALSE
@@ -112,7 +113,7 @@
 
 //CROON
 /obj/item/storage/box/gunset/croon
-	name = "mk-58 supply box"
+	name = "croon supply box"
 
 /obj/item/gun/ballistic/automatic/croon/nomag
 	spawnwithmagazine = FALSE
@@ -162,8 +163,10 @@
 /obj/item/storage/box/gunset/zeta/PopulateContents()
 	. = ..()
 	new /obj/item/gun/ballistic/revolver/zeta(src)
-	new /obj/item/ammo_box/revolver/multi_sprite/zeta/rubber(src)
-	new /obj/item/ammo_box/revolver/multi_sprite/zeta/rubber(src)
+	new /obj/item/ammo_box/revolver/zeta(src) //These start empty.
+	new /obj/item/ammo_box/revolver/zeta(src)
+	new /obj/item/ammo_box/revolver/zeta(src)
+	new /obj/item/ammo_box/advanced/b10mm/rubber(src)
 
 //REVOLUTION
 /obj/item/storage/box/gunset/revolution
@@ -172,8 +175,10 @@
 /obj/item/storage/box/gunset/revolution/PopulateContents()
 	. = ..()
 	new /obj/item/gun/ballistic/revolver/revolution(src)
-	new /obj/item/ammo_box/revolver/multi_sprite/revolution/rubber(src)
-	new /obj/item/ammo_box/revolver/multi_sprite/revolution/rubber(src)
+	new /obj/item/ammo_box/revolver/revolution(src)
+	new /obj/item/ammo_box/revolver/revolution(src)
+	new /obj/item/ammo_box/revolver/revolution(src)
+	new /obj/item/ammo_box/advanced/b12mm/rubber(src)
 
 
 /////////////////
@@ -190,8 +195,8 @@
 	new /obj/item/gun/ballistic/automatic/pcr/nomag(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/pcr/rubber(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/pcr/rubber(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/pcr(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/pcr(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/pcr/rubber(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/pcr/rubber(src)
 
 /obj/item/storage/box/gunset/norwind
 	name = "lg-2 norwind supply box"
@@ -204,8 +209,8 @@
 	new /obj/item/gun/ballistic/automatic/norwind/nomag(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/norwind/rubber(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/norwind/rubber(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/norwind(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/norwind(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/norwind/rubber(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/norwind/rubber(src)
 
 /obj/item/storage/box/gunset/ostwind
 	name = "ostwind supply box"
@@ -218,8 +223,8 @@
 	new /obj/item/gun/ballistic/automatic/ostwind/nomag(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/ostwind/rubber(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/ostwind/rubber(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/ostwind(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/ostwind(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/ostwind/rubber(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/ostwind/rubber(src)
 
 /obj/item/storage/box/gunset/vintorez
 	name = "vintorez supply box"
@@ -232,8 +237,8 @@
 	new /obj/item/gun/ballistic/automatic/vintorez/nomag(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/vintorez/rubber(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/vintorez/rubber(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/vintorez(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/vintorez(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/vintorez/rubber(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/vintorez/rubber(src)
 
 /obj/item/storage/box/gunset/pitbull
 	name = "pitbull supply box"
@@ -246,8 +251,8 @@
 	new /obj/item/gun/ballistic/automatic/pitbull/nomag(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/pitbull/rubber(src)
 	new /obj/item/ammo_box/magazine/multi_sprite/pitbull/rubber(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/pitbull(src)
-	new /obj/item/ammo_box/magazine/multi_sprite/pitbull(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/pitbull/rubber(src)
+	new /obj/item/ammo_box/magazine/multi_sprite/pitbull/rubber(src)
 
 /////////////////
 //JOB SPECIFIC GUNSETS
@@ -256,6 +261,7 @@
 //CAPTAIN
 /obj/item/storage/box/gunset/pdh_captain
 	name = "pdh 'socom' supply box"
+	w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/gun/ballistic/automatic/pistol/pdh/alt/nomag
 	spawnwithmagazine = FALSE
@@ -271,7 +277,7 @@
 //HOS
 /obj/item/storage/box/gunset/glock18_hos
 	name = "glock-18 supply box"
-
+	w_class = WEIGHT_CLASS_NORMAL
 /obj/item/gun/ballistic/automatic/pistol/g18/nomag
 	spawnwithmagazine = FALSE
 
@@ -286,7 +292,7 @@
 //HOP
 /obj/item/storage/box/gunset/pdh_hop
 	name = "pdh 'osprey' supply box"
-
+	w_class = WEIGHT_CLASS_NORMAL
 /obj/item/gun/ballistic/automatic/pistol/pdh/nomag
 	spawnwithmagazine = FALSE
 
@@ -300,7 +306,7 @@
 //CORPO
 /obj/item/storage/box/gunset/pdh_corpo
 	name = "pdh 'corporate' supply box"
-
+	w_class = WEIGHT_CLASS_NORMAL
 /obj/item/gun/ballistic/automatic/pistol/pdh/corpo/nomag
 	spawnwithmagazine = FALSE
 
@@ -316,7 +322,7 @@
 //SECURITY MEDIC
 /obj/item/storage/box/gunset/security_medic
 	name = "firefly supply box"
-
+	w_class = WEIGHT_CLASS_NORMAL
 /obj/item/gun/ballistic/automatic/pistol/firefly/nomag
 	spawnwithmagazine = FALSE
 
@@ -336,3 +342,18 @@
 /obj/item/storage/box/gunset/blaster/PopulateContents()
 	. = ..()
 	new /obj/item/gun/energy/laser/hitscan(src)
+
+//PEPPERBALLS
+/obj/item/storage/box/gunset/pepperball
+	name = "pepperball supply box"
+	w_class = WEIGHT_CLASS_NORMAL
+/obj/item/gun/ballistic/automatic/pistol/pepperball/nomag
+	spawnwithmagazine = FALSE
+
+/obj/item/storage/box/gunset/pepperball/PopulateContents()
+	. = ..()
+	new /obj/item/gun/ballistic/automatic/pistol/pepperball/nomag(src)
+	new /obj/item/ammo_box/magazine/pepperball(src)
+	new /obj/item/ammo_box/magazine/pepperball(src)
+	new /obj/item/ammo_box/magazine/pepperball(src)
+	new /obj/item/ammo_box/magazine/pepperball(src)

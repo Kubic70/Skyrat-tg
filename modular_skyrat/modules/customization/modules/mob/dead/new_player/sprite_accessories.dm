@@ -104,7 +104,7 @@
 	icon = 'modular_skyrat/modules/customization/icons/mob/mutant_bodyparts.dmi'
 	special_render_case = TRUE
 	default_color = DEFAULT_SECONDARY
-	recommended_species = list("lizard", "unathi", "ashlizard")
+	recommended_species = list("lizard", "unathi", "ashlizard", "silverlizard")
 	relevent_layers = list(BODY_BEHIND_LAYER, BODY_ADJ_LAYER)
 
 /datum/sprite_accessory/spines/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
@@ -219,6 +219,9 @@
 	name = "Thigh-high - Rainbow"
 	icon_state = "rainbow_thigh"
 
+/datum/sprite_accessory/socks/fishnet_thigh
+	name = "Thigh-high - Fishnet"
+	icon_state = "fishnet"
 
 /datum/sprite_accessory/underwear
 	icon = 'modular_skyrat/modules/customization/icons/mob/clothing/underwear.dmi'

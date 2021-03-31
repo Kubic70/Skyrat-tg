@@ -46,7 +46,7 @@
 
 /mob/living/carbon/proc/can_catch_item(skip_throw_mode_check)
 	. = FALSE
-	if(!skip_throw_mode_check && !in_throw_mode)
+	if(!skip_throw_mode_check && !throw_mode)
 		return
 	if(get_active_held_item())
 		return
@@ -61,7 +61,7 @@
 		if(get_active_held_item() == I) //if our attack_hand() picks up the item...
 			visible_message("<span class='warning'>[src] catches [I]!</span>", \
 							"<span class='userdanger'>You catch [I] in mid-air!</span>")
-			throw_mode_off()
+			throw_mode_off(THROW_MODE_TOGGLE)
 			return TRUE
 	return ..()
 
@@ -86,7 +86,7 @@
 				I.add_mob_blood(src)
 				var/turf/location = get_turf(src)
 				add_splatter_floor(location)
-				if(get_dist(user, src) <= 1)	//people with TK won't get smeared with blood
+				if(get_dist(user, src) <= 1) //people with TK won't get smeared with blood
 					user.add_mob_blood(src)
 				if(affecting.body_zone == BODY_ZONE_HEAD)
 					if(wear_mask)
@@ -151,7 +151,7 @@
 	return //so we don't call the carbon's attack_hand().
 
 //ATTACK HAND IGNORING PARENT RETURN VALUE
-/mob/living/carbon/attack_hand(mob/living/carbon/human/user, modifiers)
+/mob/living/carbon/attack_hand(mob/living/carbon/human/user, list/modifiers)
 
 	if(SEND_SIGNAL(src, COMSIG_ATOM_ATTACK_HAND, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
 		. = TRUE
@@ -176,31 +176,28 @@
 		if(W.try_handling(user))
 			return TRUE
 
-	if (user.apply_martial_art(src, modifiers))
-		return TRUE
-
 	return FALSE
 
 
-/mob/living/carbon/attack_paw(mob/living/carbon/human/M, modifiers)
+/mob/living/carbon/attack_paw(mob/living/carbon/human/user, list/modifiers)
 
-	if(can_inject(M, TRUE))
+	if(try_inject(user, injection_flags = INJECT_TRY_SHOW_ERROR_MESSAGE))
 		for(var/thing in diseases)
 			var/datum/disease/D = thing
 			if((D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN) && prob(85))
-				M.ContactContractDisease(D)
+				user.ContactContractDisease(D)
 
-	for(var/thing in M.diseases)
+	for(var/thing in user.diseases)
 		var/datum/disease/D = thing
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
-	if(!M.combat_mode)
-		help_shake_act(M)
+	if(!user.combat_mode)
+		help_shake_act(user)
 		return FALSE
 
 	if(..()) //successful monkey bite.
-		for(var/thing in M.diseases)
+		for(var/thing in user.diseases)
 			var/datum/disease/D = thing
 			ForceContractDisease(D)
 		return TRUE
@@ -485,12 +482,16 @@
 		to_chat(M, "<span class='notice'>You shake [src] trying to pick [p_them()] up!</span>")
 		to_chat(src, "<span class='notice'>[M] shakes you to get you up!</span>")
 
-	//SKYRAT EDIT ADDITION BEGIN - EMOTES
+	//SKYRAT EDIT ADDITION BEGIN - EMOTES -- SENSITIVE SNOUT TRAIT ADDITION
 	else if(M.zone_selected == BODY_ZONE_PRECISE_MOUTH)
 		nosound = TRUE
-		M.visible_message("<span class='notice'>[M] boops [src]'s nose.", \
-					"<span class='notice'>You boop [src] on the nose.</span>")
 		playsound(src, 'modular_skyrat/modules/emotes/sound/emotes/Nose_boop.ogg', 50, 0)
+		if(HAS_TRAIT(src, TRAIT_SENSITIVESNOUT) && get_location_accessible(src, BODY_ZONE_PRECISE_MOUTH))
+			to_chat(src, "<span class='warning'>[M] boops you on your sensitive nose, sending you to the ground!</span>")
+			src.Knockdown(20)
+			src.apply_damage(30, STAMINA, BODY_ZONE_CHEST)
+		M.visible_message("<span class='notice'>[M] boops [src]'s nose.", \
+		"<span class='notice'>You boop [src] on the nose.</span>")
 	//SKYRAT EDIT ADDITION END
 
 	else if(check_zone(M.zone_selected) == BODY_ZONE_HEAD) //Headpats!
@@ -593,7 +594,7 @@
 	return embeds
 
 
-/mob/living/carbon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0)
+/mob/living/carbon/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
 	var/obj/item/organ/eyes/eyes = getorganslot(ORGAN_SLOT_EYES)
 	if(!eyes) //can't flash what can't see!
 		return

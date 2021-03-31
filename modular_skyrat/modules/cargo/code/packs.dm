@@ -80,13 +80,13 @@
 	contains = list(/obj/item/clothing/suit/space/hardsuit/medical)
 	crate_name = "medical hardsuit crate"
 
-/datum/supply_pack/medical/advanced_defib
-	name = "Advanced Defibrillator Crate"
-	desc = "Contains a single high-tech NT defibrillator, capable of self-charging and applying reviving shocks through thick clothing materials."
-	cost = CARGO_CRATE_VALUE * 25
-	access = ACCESS_CMO
-	contains = list(/obj/item/defibrillator/compact/combat/loaded/nanotrasen)
-	crate_name = "advanced defibrillator crate"
+/datum/supply_pack/medical/compact_defib
+	name = "Compact Defibrillator Crate"
+	desc = "Contains a single compact defibrillator. Capable of being worn as a belt."
+	cost = CARGO_CRATE_VALUE * 5
+	access = ACCESS_MEDICAL
+	contains = list(/obj/item/defibrillator/compact)
+	crate_name = "compact defibrillator crate"
 
 /datum/supply_pack/medical/medigun
 	name = "Experimental Medical Beam Crate"
@@ -108,6 +108,16 @@
 	contains = list(/obj/item/clothing/suit/space/hardsuit/security)
 	crate_name = "security hardsuit crate"
 
+/datum/supply_pack/security/baton_peacekeeper
+	name = "Batons Crate"
+	desc = "Arm the Civil Protection Forces with three batons. Requires Security access to open."
+	cost = CARGO_CRATE_VALUE * 2
+	access_view = ACCESS_SECURITY
+	contains = list(/obj/item/melee/classic_baton/peacekeeper,
+					/obj/item/melee/classic_baton/peacekeeper,
+					/obj/item/melee/classic_baton/peacekeeper)
+	crate_name = "baton crate"
+
 //////////////////////////////////////////////////////////////////////////////
 ///////////////////////////// Engineering ////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -121,6 +131,7 @@
 	cost = CARGO_CRATE_VALUE * 40
 	crate_name = "industrial RCD crate"
 
+/* Removed pending rebalance
 /datum/supply_pack/engineering/experimental_rcd
 	name = "Experimental RCD Crate"
 	desc = "Contains a single highly advanced RCD, capable of projecting its improved construction nanites at an increased range."
@@ -129,6 +140,7 @@
 	contains = list(/obj/item/construction/rcd/arcd)
 	cost = CARGO_CRATE_VALUE * 50
 	crate_name = "experimental RCD crate"
+*/
 
 /datum/supply_pack/engineering/material_pouches
 	name = "Material Pouches Crate"
@@ -214,6 +226,7 @@
 					/obj/item/storage/box/matches)
 	crate_name = "candle crate"
 
+/*
 /datum/supply_pack/misc/jukebox
 	name = "Jukebox Crate"
 	desc = "Contains a regular old jukebox. It can play music!"
@@ -227,6 +240,16 @@
 	cost = CARGO_CRATE_VALUE * 50
 	contains = list(/obj/machinery/jukebox/disco)
 	crate_name = "dance machine crate"
+*/
+
+/datum/supply_pack/misc/fuel_pellets
+	name = "Exploration Drone Fuel Crate"
+	desc = "Atmos on fire, and you still really wanna explore the stars? We've got you covered, for the fuel atleast."
+	cost = CARGO_CRATE_VALUE * 15
+	contains = list(/obj/item/fuel_pellet,
+					/obj/item/fuel_pellet,
+					/obj/item/fuel_pellet)
+	crate_name = "drone fuel crate"
 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////// Food Stuff //////////////////////////////////////
