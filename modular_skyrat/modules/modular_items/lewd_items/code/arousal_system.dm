@@ -54,16 +54,36 @@
 	glass_name = "dopamine"
 	glass_desc = "Delicious flavored reagent. You feel happy even looking at it."
 	reagent_state = LIQUID
-	overdosed = TRUE
-	trippy = TRUE
+	overdose_threshold = 10
 
-/*/datum/reagent/drug/dopamine/overdose_start(mob/living/M)
-	to_chat(M, "<span class='userdanger'>You start tripping hard!</span>")
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overdose, name)
+/datum/reagent/drug/dopamine/on_mob_add(mob/living/M)
+	to_chat(world, "dopamine adding")
+	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_start", /datum/mood_event/orgasm, name)
+	to_chat(world, "dopamine added")
 	..()
 
-/datum/reagent/drug/dopamine/overdose_process(mob/living/M)*/
+/datum/reagent/drug/dopamine/on_mob_life(mob/living/carbon/M)
+	M.set_drugginess(2)
+	if(prob(7))
+		M.emote(pick("shaking","moan"))
+	..()
 
+/datum/reagent/drug/dopamine/overdose_start(mob/living/M)
+	..()
+	to_chat(world, "overdose start")
+	to_chat(M, "<span class='userdanger'>You start tripping hard!</span>")
+	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overgasm, name)
+	to_chat(world, "overdose end")
+
+/datum/reagent/drug/dopamine/overdose_process(mob/living/M)
+	M.adjustArousal(0.5)
+	M.adjustPleasure(0.3)
+	M.adjustPain(-0.5)
+	if(prob(2))
+		M.emote(pick("moan","twitch_s"))
+		//say(message)
+	to_chat(world, "overdose processing...")
+	..()
 
 ///////////-----Initilaze------///////////
 
@@ -379,118 +399,6 @@
 	else
 		arousal = min(max(arousal,0),100)
 
-/mob/living/proc/get_pain()
-	return pain
-
-/mob/living/proc/adjustPain(pn = 0)
-	if(stat != DEAD)
-		if(pain > pain_limit || pn > pain_limit / 10) // pain system
-			if(masohism == TRUE)
-				var/p = pn - (pain_limit / 10)
-				if(p > 0)
-					//arousal -= p
-					adjustArousal(-p)
-			else
-				//arousal -= pn
-				if(pn > 0)
-					adjustArousal(-abs(pn))
-			if(prob(2) && pain > pain_limit && pn > pain_limit / 10)
-				emote(pick("scream","shiver")) //SCREAM!!!
-		else
-			//arousal += pn
-			if(pn > 0)
-				adjustArousal(pn)
-			if(masohism == TRUE)
-				//pleasure += pn / 4
-				var/p = pn / 4
-				adjustPleasure(p)
-		pain += pn
-	else
-		pain -= abs(pn)
-	pain = min(max(pain,0),100)
-
-/mob/living/proc/get_pleasure()
-	return pleasure
-
-/mob/living/proc/adjustPleasure(pleas = 0)
-	if(stat != DEAD)
-		pleasure += pleas
-		if(pleasure >= 100) // lets cum
-			climax(FALSE)
-	else
-		pleasure -= abs(pleas)
-	pleasure = min(max(pleasure,0),100)
-
-/*/mob/living/proc/adjustArous(arous = 0, pleas = 0, pn = 0)
-	if(stat != DEAD)
-		arousal += arous
-		pleasure += pleas
-
-		if(pain > pain_limit || pn > pain_limit / 10) // pain system
-			if(masohism == TRUE)
-				var/p = pn - (pain_limit / 10)
-				if(p > 0)
-					arousal -= p
-			else
-				arousal -= pn
-			if(prob(2) && pain > pain_limit && pn > pain_limit / 10)
-				emote(pick("scream","shiver")) //SCREAM!!!
-		else
-			arousal += pn
-			if(masohism == TRUE)
-				pleasure += pn / 2
-		pain += pn
-
-	else
-		arousal -= abs(arous)
-		pleasure -= abs(pleas)
-		pain -= abs(pn)
-
-	if(nymphomania == TRUE)
-		arousal = min(max(arousal,20),100)
-	else
-		arousal = min(max(arousal,0),100)
-
-	pleasure = min(max(pleasure,0),100)
-	pain = min(max(pain,0),100)
-
-	var/arousal_flag = AROUSAL_NONE
-	if(arousal >= AROUS_SYS_STRONG)
-		arousal_flag = AROUSAL_FULL
-	else if(arousal >= AROUS_SYS_LITTLE)
-		arousal_flag = AROUSAL_PARTIAL
-
-	if(arousal_status != arousal_flag) // Set organ arousal status
-		arousal_status = arousal_flag
-		if(istype(src,/mob/living/carbon/human))
-			var/mob/living/carbon/human/M = src
-			for(var/i=1,i<=M.internal_organs.len,i++)
-				if(istype(M.internal_organs[i],/obj/item/organ/genital))
-					var/obj/item/organ/genital/G = M.internal_organs[i]
-					if(!G.aroused == AROUSAL_CANT)
-						G.aroused = arousal_status
-						G.update_sprite_suffix()
-			M.update_body()
-
-	if(pleasure >= 100) // lets cum
-		climax(FALSE)*/
-
-// get damage for pain system
-/datum/species/apply_damage(damage, damagetype, def_zone, blocked, mob/living/carbon/human/H, forced, spread_damage, wound_bonus, bare_wound_bonus, sharpness)
-	. = ..()
-	var/hit_percent = (100-(blocked+armor))/100
-	hit_percent = (hit_percent * (100-H.physiology.damage_resistance))/100
-	switch(damagetype)
-		if(BRUTE)
-			var/amount = forced ? damage : damage * hit_percent * brutemod * H.physiology.brute_mod
-			//H.adjustArous(pn = amount)
-			H.adjustPain(amount)
-		if(BURN)
-			var/amount = forced ? damage : damage * hit_percent * burnmod * H.physiology.burn_mod
-			//H.adjustArous(pn = amount)
-			H.adjustPain(amount)
-
-
 /datum/status_effect/aroused
 	id = "aroused"
 	tick_interval = 10
@@ -529,18 +437,86 @@
 	owner.adjustArousal(temp_arousal)
 	owner.adjustPleasure(temp_pleasure)
 	owner.adjustPain(temp_pain)
-	//owner.adjustArous(temp_arousal, temp_pleasure, temp_pain)
+
+////Pain////
+/mob/living/proc/get_pain()
+	return pain
+
+/mob/living/proc/adjustPain(pn = 0)
+	if(stat != DEAD)
+		if(pain > pain_limit || pn > pain_limit / 10) // pain system
+			if(masohism == TRUE)
+				var/p = pn - (pain_limit / 10)
+				if(p > 0)
+					adjustArousal(-p)
+			else
+				if(pn > 0)
+					adjustArousal(-pn)
+			if(prob(2) && pain > pain_limit && pn > pain_limit / 10)
+				emote(pick("scream","shiver")) //SCREAM!!!
+		else
+			if(pn > 0)
+				adjustArousal(pn)
+			if(masohism == TRUE)
+				var/p = pn / 2
+				adjustPleasure(p)
+		pain += pn
+	else
+		pain -= abs(pn)
+	pain = min(max(pain,0),100)
+
+////Pleasure////
+/mob/living/proc/get_pleasure()
+	return pleasure
+
+/mob/living/proc/adjustPleasure(pleas = 0)
+	if(stat != DEAD)
+		pleasure += pleas
+		if(pleasure >= 100) // lets cum
+			climax(FALSE)
+	else
+		pleasure -= abs(pleas)
+	pleasure = min(max(pleasure,0),100)
+
+// get damage for pain system
+/datum/species/apply_damage(damage, damagetype, def_zone, blocked, mob/living/carbon/human/H, forced, spread_damage, wound_bonus, bare_wound_bonus, sharpness)
+	. = ..()
+	var/hit_percent = (100-(blocked+armor))/100
+	hit_percent = (hit_percent * (100-H.physiology.damage_resistance))/100
+	switch(damagetype)
+		if(BRUTE)
+			var/amount = forced ? damage : damage * hit_percent * brutemod * H.physiology.brute_mod
+			H.adjustPain(amount)
+		if(BURN)
+			var/amount = forced ? damage : damage * hit_percent * burnmod * H.physiology.burn_mod
+			H.adjustPain(amount)
 
 ////////////
 ///CLIMAX///
 ////////////
 
+/datum/mood_event/orgasm
+	description = "<span class='nicegreen'>You feel...TEXT UNDER DEVELOPMENT!</span>\n"
+	mood_change = 10
+	timeout = 5 MINUTES
+
+/datum/mood_event/overgasm
+	description = "<span class='nicegreen'>You cant live with out sex!</span>\n"
+	mood_change = -10
+	timeout = 20 MINUTES
+
+
 /mob/living/proc/climax(manual = TRUE)
 	if(manual == TRUE && arousal > 90 && !has_status_effect(/datum/status_effect/climax))
 		apply_status_effect(/datum/status_effect/climax)
+		/*var/datum/component/mood/mood = src.GetComponent(/datum/component/mood)
+		mood.add_event(null, "climax", /datum/mood_event/orgasm)*/
+
 		return TRUE
 	else if(manual == FALSE)
 		apply_status_effect(/datum/status_effect/climax)
+		/*var/datum/component/mood/mood = src.GetComponent(/datum/component/mood)
+		mood.add_event(null, "climax", /datum/mood_event/orgasm)*/
 		return TRUE
 	else
 		return FALSE
@@ -554,6 +530,7 @@
 /datum/status_effect/climax/tick()
 	var/temp_arousal = -12
 	var/temp_pleasure = -12
+	var/temp_stamina = -12
 	var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
 	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
 
@@ -565,9 +542,10 @@
 		vagina.reagents.remove_all()
 		//NEED ADD SPRITE
 
+	owner.reagents.add_reagent(/datum/reagent/drug/dopamine, 0.5)
+	owner.adjustStaminaLoss(temp_stamina)
 	owner.adjustArousal(temp_arousal)
 	owner.adjustPleasure(temp_pleasure)
-	//owner.adjustArous(temp_arousal, temp_pleasure, 0)
 
 /*
 
