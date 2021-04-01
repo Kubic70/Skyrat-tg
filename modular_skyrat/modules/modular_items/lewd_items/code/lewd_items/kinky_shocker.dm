@@ -44,7 +44,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						M.adjustArous(0,0,9)
+						//M.adjustArous(0,0,9)
+						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 
@@ -54,7 +55,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						M.adjustArous(0,0,9)
+						//M.adjustArous(0,0,9)
+						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 
@@ -64,7 +66,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						M.adjustArous(0,0,9)
+						//M.adjustArous(0,0,9)
+						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 					else
@@ -73,7 +76,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						M.adjustArous(0,0,9)
+						//M.adjustArous(0,0,9)
+						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 
@@ -90,7 +94,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						M.adjustArous(0,0,9)
+						//M.adjustArous(0,0,9)
+						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 					else
@@ -99,7 +104,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						M.adjustArous(0,0,9)
+						//M.adjustArous(0,0,9)
+						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 				else
@@ -114,7 +120,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						M.adjustArous(0,0,9)
+						//M.adjustArous(0,0,9)
+						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 					else
@@ -132,7 +139,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						M.adjustArous(0,0,9)
+						//M.adjustArous(0,0,9)
+						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 					else
@@ -149,7 +157,8 @@
 						M.emote(pick("twitch","twitch_s","shiver","scream"))
 					M.do_jitter_animation()
 					M.adjustStaminaLoss(2)
-					M.adjustArous(0,0,9)
+					//M.adjustArous(0,0,9)
+					M.adjustPain(9)
 					user.visible_message("<font color=purple>[user] [message].</font>")
 					playsound(loc,'sound/weapons/taserhit.ogg')
 				else
@@ -165,7 +174,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(2)
-						M.adjustArous(3)
+						//M.adjustArous(3)
+						M.adjustArousal(3)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 					else
@@ -183,7 +193,8 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(2)
-						M.adjustArous(3)
+						//M.adjustArous(3)
+						M.adjustArousal(3)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 
