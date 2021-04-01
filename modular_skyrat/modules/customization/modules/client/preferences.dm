@@ -986,6 +986,12 @@ GLOBAL_LIST_INIT(food, list(
 
 			//aphrodisiac pref
 			dat += "<b>Be affected by aphrodisiacs:</b> <a href='?_src_=prefs;preference=aphrodisiacs_pref'>[(skyrat_toggles & APHRO_PREF) ? "Enabled":"Disabled"]</a><br>"
+			//Genitals enlargement pref
+			dat += "<b>Be affected by breast enlargement chemicals:</b> <a href='?_src_=prefs;preference=breast_enlargement_pref'>[(skyrat_toggles & BREAST_ENLARGEMENT) ? "Enabled":"Disabled"]</a><br>"
+			dat += "<b>Be affected by penis enlargement chemicals:</b> <a href='?_src_=prefs;preference=penis_enlargement_pref'>[(skyrat_toggles & PENIS_ENLARGEMENT) ? "Enabled":"Disabled"]</a><br>"
+			//Gender changing pref
+			dat += "<b>Forced feminization:</b> <a href='?_src_=prefs;preference=forced_fem_pref'>[(skyrat_toggles & FORCED_FEM) ? "Enabled":"Disabled"]</a><br>"
+			dat += "<b>Forced masculinization:</b> <a href='?_src_=prefs;preference=forced_male_pref'>[(skyrat_toggles & FORCED_MALE) ? "Enabled":"Disabled"]</a><br>"
 			dat += "<br>"
 
 			dat += "<b>FPS:</b> <a href='?_src_=prefs;preference=clientfps;task=input'>[clientfps]</a><br>"
@@ -2648,6 +2654,20 @@ GLOBAL_LIST_INIT(food, list(
 				//aphro pref
 				if("aphrodisiacs_pref")
 					skyrat_toggles ^= APHRO_PREF
+
+				//Genitals enlargement pref
+				if("breast_enlargement_pref")
+					skyrat_toggles ^= BREAST_ENLARGEMENT
+
+				if("penis_enlargement_pref")
+					skyrat_toggles ^= PENIS_ENLARGEMENT
+
+				//Gender changing pref
+				if("forced_fem_pref")
+					skyrat_toggles ^= FORCED_FEM
+
+				if("forced_male_pref")
+					skyrat_toggles ^= FORCED_MALE
 
 				if("parallaxup")
 					parallax = WRAP(parallax + 1, PARALLAX_INSANE, PARALLAX_DISABLE + 1)
