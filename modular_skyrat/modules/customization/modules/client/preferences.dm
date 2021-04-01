@@ -21,7 +21,7 @@ GLOBAL_LIST_INIT(food, list(
 	var/client/parent
 	//doohickeys for savefiles
 	var/path
-	var/default_slot = 1 //Holder so it doesn't default to slot 1, rather the last one used
+	var/default_slot = 1				//Holder so it doesn't default to slot 1, rather the last one used
 	var/max_save_slots = 20
 
 	//non-preference stuff
@@ -30,20 +30,17 @@ GLOBAL_LIST_INIT(food, list(
 	var/last_id
 
 	//game-preferences
-	var/lastchangelog = "" //Saved changlog filesize to detect if there was a change
+	var/lastchangelog = ""				//Saved changlog filesize to detect if there was a change
 	var/ooccolor = "#c43b23"
-	var/asaycolor = "#ff4500" //This won't change the color for current admins, only incoming ones.
-	/// If we spawn an ERT as an admin and choose to spawn as the briefing officer, we'll be given this outfit
-	var/brief_outfit = /datum/outfit/centcom/commander
+	var/asaycolor = "#ff4500"			//This won't change the color for current admins, only incoming ones.
 	var/enable_tips = TRUE
 	var/tip_delay = 500 //tip delay in milliseconds
 
 	//Antag preferences
-	var/list/be_special = list() //Special role selection
-	var/tmp/old_be_special = 0 //Bitflag version of be_special, used to update old savefiles and nothing more
+	var/list/be_special = list()		//Special role selection
+	var/tmp/old_be_special = 0			//Bitflag version of be_special, used to update old savefiles and nothing more
 										//If it's 0, that's good, if it's anything but 0, the owner of this prefs file's antag choices were,
 										//autocorrected this round, not that you'd need to check that.
-	var/be_antag = TRUE //Does this player wish to be an antag this round?
 
 	var/UI_style = null
 	var/buttons_locked = FALSE
@@ -81,30 +78,28 @@ GLOBAL_LIST_INIT(food, list(
 
 	//aphrodisiac preference
 	var/aphrodisiacs_pref = 1
-	var/cumfaced_pref = 0
 
 	var/uses_glasses_colour = 0
 
 	//character preferences
-	var/slot_randomized //keeps track of round-to-round randomization of the character slot, prevents overwriting
-	var/real_name //our character's name
-	var/gender = MALE //gender of character (well duh)
-	var/age = 30 //age of character
-	var/underwear = "Nude" //underwear type
-	var/underwear_color = "FFF" //underwear color
-	var/undershirt = "Nude" //undershirt type
-	var/undershirt_color = "FFF" //underwear color
-	var/socks = "Nude" //socks type
+	var/slot_randomized					//keeps track of round-to-round randomization of the character slot, prevents overwriting
+	var/real_name						//our character's name
+	var/gender = MALE					//gender of character (well duh)
+	var/age = 30						//age of character
+	var/underwear = "Nude"				//underwear type
+	var/underwear_color = "FFF"			//underwear color
+	var/undershirt = "Nude"				//undershirt type
+	var/undershirt_color = "FFF"			//underwear color
+	var/socks = "Nude"					//socks type
 	var/socks_color = "FFF"			//underwear color
-	var/backpack = DBACKPACK //backpack type
-	var/jumpsuit_style = PREF_SUIT //suit/skirt
-	var/hairstyle = "Bald" //Hair type
-	var/hair_color = "000" //Hair color
-	var/facial_hairstyle = "Shaved" //Face hair type
-	var/facial_hair_color = "000" //Facial hair color
-	var/skin_tone = "caucasian1" //Skin color
-	var/eye_color = "000" //Eye color
-	var/datum/scream_type/pref_scream = new /datum/scream_type/human() //Scream type
+	var/backpack = DBACKPACK				//backpack type
+	var/jumpsuit_style = PREF_SUIT		//suit/skirt
+	var/hairstyle = "Bald"				//Hair type
+	var/hair_color = "000"				//Hair color
+	var/facial_hairstyle = "Shaved"	//Face hair type
+	var/facial_hair_color = "000"		//Facial hair color
+	var/skin_tone = "caucasian1"		//Skin color
+	var/eye_color = "000"				//Eye color
 	var/datum/species/pref_species = new /datum/species/human()	//Mutant race
 	//Has to include all information that extra organs from mutant bodyparts would need. (so far only genitals now)
 	var/list/features = MANDATORY_FEATURE_LIST
@@ -117,7 +112,7 @@ GLOBAL_LIST_INIT(food, list(
 
 	var/list/custom_names = list()
 	var/preferred_ai_core_display = "Blue"
-	var/prefered_security_department = SEC_DEPT_NONE
+	var/prefered_security_department = SEC_DEPT_RANDOM
 
 	//Quirk list
 	var/list/all_quirks = list()
@@ -138,13 +133,6 @@ GLOBAL_LIST_INIT(food, list(
 	var/clientfps = 40
 
 	var/parallax
-
-	///Do we show screentips, if so, how big?
-	var/screentip_pref = TRUE
-	///Color of screentips at top of screen
-	var/screentip_color = "#ffd391"
-	///Do we show item hover outlines?
-	var/itemoutline_pref = TRUE
 
 	var/ambientocclusion = TRUE
 	///Should we automatically fit the viewport?
@@ -173,12 +161,15 @@ GLOBAL_LIST_INIT(food, list(
 	var/hearted_until
 	/// Agendered spessmen can choose whether to have a male or female bodytype
 	var/body_type
+
 	/// If we have persistent scars enabled
 	var/persistent_scars = TRUE
 	///If we want to broadcast deadchat connect/disconnect messages
 	var/broadcast_login_logout = FALSE
-	///What outfit typepaths we've favorited in the SelectEquipment menu
-	var/list/favorite_outfits = list()
+	/// We have 5 slots for persistent scars, if enabled we pick a random one to load (empty by default) and scars at the end of the shift if we survived as our original person
+	var/list/scars_list = list("1" = "", "2" = "", "3" = "", "4" = "", "5" = "")
+	/// Which of the 5 persistent scar slots we randomly roll to load for this round, if enabled. Actually rolled in [/datum/preferences/proc/load_character(slot)]
+	var/scars_index = 1
 	/// Will the person see accessories not meant for their species to choose from
 	var/mismatched_customization = FALSE
 	var/allow_advanced_colors = FALSE
@@ -221,8 +212,6 @@ GLOBAL_LIST_INIT(food, list(
 	var/show_body_size = FALSE
 	///The arousal state of the previewed character, can be toggled by the user
 	var/arousal_preview = AROUSAL_NONE
-	///The current volume setting for announcements
-	var/announcement_volume = 60
 
 /datum/preferences/New(client/C)
 	parent = C
@@ -242,13 +231,13 @@ GLOBAL_LIST_INIT(food, list(
 		if(load_character())
 			return
 	//we couldn't load character data so just randomize the character appearance + name
-	random_character() //let's create a random character then - rather than a fat, bald and naked man.
+	random_character()		//let's create a random character then - rather than a fat, bald and naked man.
 	key_bindings = deepCopyList(GLOB.hotkey_keybinding_list_by_key) // give them default keybinds and update their movement keys
-	C?.set_macros()
+	C?.set_macros(src)
 	real_name = pref_species.random_name(gender,1)
 	if(!loaded_preferences_successfully)
 		save_preferences()
-	save_character() //let's save this new random character so it doesn't keep generating new ones.
+	save_character()		//let's save this new random character so it doesn't keep generating new ones.
 	menuoptions = list()
 	return
 
@@ -427,7 +416,6 @@ GLOBAL_LIST_INIT(food, list(
 
 					dat += "<table width='100%'><tr><td width='17%' valign='top'>"
 					dat += "<b>Species:</b><BR><a href='?_src_=prefs;preference=species;task=input'>[pref_species.name]</a><BR>"
-					dat += "<b>Scream:</b><BR><a href='?_src_=prefs;preference=scream;task=input'>[pref_scream.name]</a><BR>"
 					dat += "<b>Species Naming:</b><BR><a href='?_src_=prefs;preference=custom_species;task=input'>[(features["custom_species"]) ? features["custom_species"] : "Default"]</a><BR>"
 					dat += "<b>Sprite body size:</b><BR><a href='?_src_=prefs;preference=body_size;task=input'>[(features["body_size"] * 100)]%</a> <a href='?_src_=prefs;preference=show_body_size;task=input'>[show_body_size ? "Hide preview" : "Show preview"]</a><BR>"
 					dat += "<h2>Flavor Text</h2>"
@@ -996,6 +984,16 @@ GLOBAL_LIST_INIT(food, list(
 			dat += "<b>Income Updates:</b> <a href='?_src_=prefs;preference=income_pings'>[(chat_toggles & CHAT_BANKCARD) ? "Allowed" : "Muted"]</a><br>"
 			dat += "<br>"
 
+			//aphrodisiac pref
+			dat += "<b>Be affected by aphrodisiacs:</b> <a href='?_src_=prefs;preference=aphrodisiacs_pref'>[(skyrat_toggles & APHRO_PREF) ? "Enabled":"Disabled"]</a><br>"
+			//Genitals enlargement pref
+			dat += "<b>Be affected by breast enlargement chemicals:</b> <a href='?_src_=prefs;preference=breast_enlargement_pref'>[(skyrat_toggles & BREAST_ENLARGEMENT) ? "Enabled":"Disabled"]</a><br>"
+			dat += "<b>Be affected by penis enlargement chemicals:</b> <a href='?_src_=prefs;preference=penis_enlargement_pref'>[(skyrat_toggles & PENIS_ENLARGEMENT) ? "Enabled":"Disabled"]</a><br>"
+			//Gender changing pref
+			dat += "<b>Forced feminization:</b> <a href='?_src_=prefs;preference=forced_fem_pref'>[(skyrat_toggles & FORCED_FEM) ? "Enabled":"Disabled"]</a><br>"
+			dat += "<b>Forced masculinization:</b> <a href='?_src_=prefs;preference=forced_male_pref'>[(skyrat_toggles & FORCED_MALE) ? "Enabled":"Disabled"]</a><br>"
+			dat += "<br>"
+
 			dat += "<b>FPS:</b> <a href='?_src_=prefs;preference=clientfps;task=input'>[clientfps]</a><br>"
 
 			dat += "<b>Parallax (Fancy Space):</b> <a href='?_src_=prefs;preference=parallaxdown' oncontextmenu='window.location.href=\"?_src_=prefs;preference=parallaxup\";return false;'>"
@@ -1011,11 +1009,6 @@ GLOBAL_LIST_INIT(food, list(
 				else
 					dat += "High"
 			dat += "</a><br>"
-
-			dat += "<b>Set screentip mode:</b> <a href='?_src_=prefs;preference=screentipmode'>[screentip_pref ? "Enabled" : "Disabled"]</a><br>"
-			dat += "<b>Screentip color:</b><span style='border: 1px solid #161616; background-color: [screentip_color];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=screentipcolor'>Change</a><BR>"
-			dat += "<b>Item Hover Outlines:</b> <a href='?_src_=prefs;preference=itemoutline_pref'>[itemoutline_pref ? "Enabled" : "Disabled"]</a><br>"
-
 
 			dat += "<b>Ambient Occlusion:</b> <a href='?_src_=prefs;preference=ambientocclusion'>[ambientocclusion ? "Enabled" : "Disabled"]</a><br>"
 			dat += "<b>Fit Viewport:</b> <a href='?_src_=prefs;preference=auto_fit_viewport'>[auto_fit_viewport ? "Auto" : "Manual"]</a><br>"
@@ -1087,14 +1080,7 @@ GLOBAL_LIST_INIT(food, list(
 			dat += "<b>Play Lobby Music:</b> <a href='?_src_=prefs;preference=lobby_music'>[(toggles & SOUND_LOBBY) ? "Enabled":"Disabled"]</a><br>"
 			dat += "<b>Play End of Round Sounds:</b> <a href='?_src_=prefs;preference=endofround_sounds'>[(toggles & SOUND_ENDOFROUND) ? "Enabled":"Disabled"]</a><br>"
 			dat += "<b>Play Combat Mode Sounds:</b> <a href='?_src_=prefs;preference=combat_mode_sound'>[(toggles & SOUND_COMBATMODE) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<b>Announcement Sound Volume:</b> <a href='?_src_=prefs;preference=announcement_volume_level'>[announcement_volume]</a><br>"
 			dat += "<b>See Pull Requests:</b> <a href='?_src_=prefs;preference=pull_requests'>[(chat_toggles & CHAT_PULLR) ? "Enabled":"Disabled"]</a><br>"
-			dat += "<br>"
-
-			//aphrodisiac pref
-			dat += "<b>Be Affected by Aphrodisiacs:</b> <a href='?_src_=prefs;preference=aphrodisiacs_pref'>[(skyrat_toggles & APHRO_PREF) ? "Enabled":"Disabled"]</a><br>"
-			//cumface pref
-			dat += "<b>Be Able To Get Covered In \"Reproductive Reagent\":</b> <a href='?_src_=prefs;preference=cumfaced_pref'>[(skyrat_toggles & CUMFACE_PREF) ? "Enabled":"Disabled"]</a><br>"
 			dat += "<br>"
 
 
@@ -1124,7 +1110,6 @@ GLOBAL_LIST_INIT(food, list(
 				dat += "<b>Hide Radio Messages:</b> <a href = '?_src_=prefs;preference=toggle_radio_chatter'>[(chat_toggles & CHAT_RADIO)?"Shown":"Hidden"]</a><br>"
 				dat += "<b>Hide Prayers:</b> <a href = '?_src_=prefs;preference=toggle_prayers'>[(chat_toggles & CHAT_PRAYER)?"Shown":"Hidden"]</a><br>"
 				dat += "<b>Ignore Being Summoned as Cult Ghost:</b> <a href = '?_src_=prefs;preference=toggle_ignore_cult_ghost'>[(toggles & ADMIN_IGNORE_CULT_GHOST)?"Don't Allow Being Summoned":"Allow Being Summoned"]</a><br>"
-				dat += "<b>Briefing Officer Outfit:</b> <a href = '?_src_=prefs;preference=briefoutfit;task=input'>[brief_outfit]</a><br>"
 				if(CONFIG_GET(flag/allow_admin_asaycolor))
 					dat += "<br>"
 					dat += "<b>ASAY Color:</b> <span style='border: 1px solid #161616; background-color: [asaycolor ? asaycolor : "#FF4500"];'>&nbsp;&nbsp;&nbsp;</span> <a href='?_src_=prefs;preference=asaycolor;task=input'>Change</a><br>"
@@ -1182,7 +1167,7 @@ GLOBAL_LIST_INIT(food, list(
 				dat += "<h3>[category]</h3>"
 				for (var/i in kb_categories[category])
 					var/datum/keybinding/kb = i
-					if(!length(user_binds[kb.name]) || user_binds[kb.name][1] == "Unbound")
+					if(!length(user_binds[kb.name]))
 						dat += "<label>[kb.full_name]</label> <a href ='?_src_=prefs;preference=keybindings_capture;keybinding=[kb.name];old_key=["Unbound"]'>Unbound</a>"
 						var/list/default_keys = hotkeys ? kb.hotkey_keys : kb.classic_keys
 						if(LAZYLEN(default_keys))
@@ -1222,7 +1207,7 @@ GLOBAL_LIST_INIT(food, list(
 #undef APPEARANCE_CATEGORY_COLUMN
 #undef MAX_MUTANT_ROWS
 
-/datum/preferences/proc/CaptureKeybinding(mob/user, datum/keybinding/kb, old_key)
+/datum/preferences/proc/CaptureKeybinding(mob/user, datum/keybinding/kb, var/old_key)
 	var/HTML = {"
 	<div id='focus' style="outline: 0;" tabindex=0>Keybinding: [kb.full_name]<br>[kb.description]<br><br><b>Press any key to change<br>Press ESC to clear</b></div>
 	<script>
@@ -1505,7 +1490,7 @@ GLOBAL_LIST_INIT(food, list(
 		if(SSquirks.quirk_points[q] > 0)
 			.++
 
-/datum/preferences/Topic(href, href_list, hsrc) //yeah, gotta do this I guess..
+/datum/preferences/Topic(href, href_list, hsrc)			//yeah, gotta do this I guess..
 	. = ..()
 	if(href_list["close"])
 		var/client/C = usr.client
@@ -1523,7 +1508,7 @@ GLOBAL_LIST_INIT(food, list(
 				continue
 			ban_details = i
 			break //we only want to get the most recent ban's details
-		if(ban_details?.len)
+		if(ban_details && ban_details.len)
 			var/expires = "This is a permanent ban."
 			if(ban_details["expiration_time"])
 				expires = " The ban is for [DisplayTimeText(text2num(ban_details["duration"]) MINUTES)] and expires on [ban_details["expiration_time"]] (server time)."
@@ -2221,22 +2206,6 @@ GLOBAL_LIST_INIT(food, list(
 					else
 						features["custom_species"] = null
 
-				if("scream")
-					var/list/available_screams = list()
-					for(var/spath in subtypesof(/datum/scream_type)) //We need to build a custom list of available screams!
-						var/datum/scream_type/scream = spath
-						if(initial(scream.restricted_species_type))
-							if(!istype(pref_species, initial(scream.restricted_species_type)))
-								continue
-						if(initial(scream.donator_only) && !GLOB.donator_list[parent.ckey] && !check_rights(R_ADMIN, FALSE))
-							continue
-						available_screams[initial(scream.name)] = spath
-					var/new_scream_id = input(user, "Choose your character's scream:", "Character Scream")  as null|anything in available_screams
-					var/datum/scream_type/scream = available_screams[new_scream_id]
-					if(scream)
-						pref_scream = new scream
-						SEND_SOUND(user, pick(pref_scream.male_screamsounds))
-
 				if("species")
 					ShowSpeciesMenu(user)
 					return TRUE
@@ -2347,11 +2316,6 @@ GLOBAL_LIST_INIT(food, list(
 					if(new_moth_wings)
 						features["moth_wings"] = new_moth_wings
 
-				if("moth_antennae")
-					var/new_moth_antennae
-					new_moth_antennae = input(user, "Choose your character's antennae:", "Character Preference") as null|anything in GLOB.moth_antennae_list
-					if(new_moth_antennae)
-						features["moth_antennae"] = new_moth_antennae
 				if("moth_markings")
 					var/new_moth_markings
 					new_moth_markings = input(user, "Choose your character's markings:", "Character Preference") as null|anything in GLOB.moth_markings_list
@@ -2367,21 +2331,12 @@ GLOBAL_LIST_INIT(food, list(
 				if("ooccolor")
 					var/new_ooccolor = input(user, "Choose your OOC colour:", "Game Preference",ooccolor) as color|null
 					if(new_ooccolor)
-						ooccolor = sanitize_ooccolor(new_ooccolor)
+						ooccolor = new_ooccolor
 
 				if("asaycolor")
 					var/new_asaycolor = input(user, "Choose your ASAY color:", "Game Preference",asaycolor) as color|null
 					if(new_asaycolor)
-						asaycolor = sanitize_ooccolor(new_asaycolor)
-
-				if("briefoutfit")
-					var/list/valid_paths = list()
-					for(var/datum/outfit/outfit_path as anything in subtypesof(/datum/outfit))
-						valid_paths[initial(outfit_path.name)] = outfit_path
-					var/new_outfit = input(user, "Choose your briefing officer outfit:", "Game Preference") as null|anything in valid_paths
-					new_outfit = valid_paths[new_outfit]
-					if(new_outfit)
-						brief_outfit = new_outfit
+						asaycolor = new_asaycolor
 
 				if("bag")
 					var/new_backpack = input(user, "Choose your character's style of bag:", "Character Preference")  as null|anything in GLOB.backpacklist
@@ -2405,7 +2360,7 @@ GLOBAL_LIST_INIT(food, list(
 						playtime_reward_cloak = !playtime_reward_cloak
 
 				if("ai_core_icon")
-					var/ai_core_icon = input(user, "Choose your preferred AI core display screen:", "AI Core Display Screen Selection") as null|anything in GLOB.ai_core_display_screens - "Portrait"
+					var/ai_core_icon = input(user, "Choose your preferred AI core display screen:", "AI Core Display Screen Selection") as null|anything in GLOB.ai_core_display_screens
 					if(ai_core_icon)
 						preferred_ai_core_display = ai_core_icon
 
@@ -2435,8 +2390,8 @@ GLOBAL_LIST_INIT(food, list(
 				if ("clientfps")
 					var/desiredfps = input(user, "Choose your desired fps. (0 = synced with server tick rate (currently:[world.fps]))", "Character Preference", clientfps)  as null|num
 					if (!isnull(desiredfps))
-						clientfps = sanitize_integer(desiredfps, -1, 1000, clientfps)
-						parent.fps = (clientfps < 0) ? RECOMMENDED_FPS : clientfps
+						clientfps = desiredfps
+						parent.fps = desiredfps
 				if("ui")
 					var/pickedui = input(user, "Choose your UI style.", "Character Preference", UI_style)  as null|anything in sortList(GLOB.available_ui_styles)
 					if(pickedui)
@@ -2557,8 +2512,6 @@ GLOBAL_LIST_INIT(food, list(
 							full_key = "[AltMod][CtrlMod][new_key]"
 						else
 							full_key = "[AltMod][CtrlMod][ShiftMod][numpad][new_key]"
-					if(kb_name in key_bindings[full_key]) //We pressed the same key combination that was already bound here, so let's remove to re-add and re-sort.
-						key_bindings[full_key] -= kb_name
 					if(key_bindings[old_key])
 						key_bindings[old_key] -= kb_name
 						if(!length(key_bindings[old_key]))
@@ -2571,7 +2524,7 @@ GLOBAL_LIST_INIT(food, list(
 					save_preferences()
 
 				if("keybindings_reset")
-					var/choice = tgui_alert(user, "Would you prefer 'hotkey' or 'classic' defaults?", "Setup keybindings", list("Hotkey", "Classic", "Cancel"))
+					var/choice = tgalert(user, "Would you prefer 'hotkey' or 'classic' defaults?", "Setup keybindings", "Hotkey", "Classic", "Cancel")
 					if(choice == "Cancel")
 						ShowChoices(user)
 						return
@@ -2642,9 +2595,12 @@ GLOBAL_LIST_INIT(food, list(
 					persistent_scars = !persistent_scars
 
 				if("clear_scars")
-					var/path = "data/player_saves/[user.ckey[1]]/[user.ckey]/scars.sav"
-					fdel(path)
-					to_chat(user, "<span class='notice'>All scar slots cleared.</span>")
+					to_chat(user, "<span class='notice'>All scar slots cleared. Please save character to confirm.</span>")
+					scars_list["1"] = ""
+					scars_list["2"] = ""
+					scars_list["3"] = ""
+					scars_list["4"] = ""
+					scars_list["5"] = ""
 
 				if("hear_midis")
 					toggles ^= SOUND_MIDI
@@ -2661,11 +2617,6 @@ GLOBAL_LIST_INIT(food, list(
 
 				if("combat_mode_sound")
 					toggles ^= SOUND_COMBATMODE
-
-				if("announcement_volume_level")
-					var/new_annoumcenent_volume = clamp(input(user, "Please enter the new announcement volume(1-100)", "New volume setting", 0) as num|null, 1, 100)
-					if(new_annoumcenent_volume)
-						announcement_volume = new_annoumcenent_volume
 
 				if("ghost_ears")
 					chat_toggles ^= CHAT_GHOSTEARS
@@ -2704,9 +2655,19 @@ GLOBAL_LIST_INIT(food, list(
 				if("aphrodisiacs_pref")
 					skyrat_toggles ^= APHRO_PREF
 
-				//cumface pref
-				if("cumfaced_pref")
-					skyrat_toggles ^= CUMFACE_PREF
+				//Genitals enlargement pref
+				if("breast_enlargement_pref")
+					skyrat_toggles ^= BREAST_ENLARGEMENT
+
+				if("penis_enlargement_pref")
+					skyrat_toggles ^= PENIS_ENLARGEMENT
+
+				//Gender changing pref
+				if("forced_fem_pref")
+					skyrat_toggles ^= FORCED_FEM
+
+				if("forced_male_pref")
+					skyrat_toggles ^= FORCED_MALE
 
 				if("parallaxup")
 					parallax = WRAP(parallax + 1, PARALLAX_INSANE, PARALLAX_DISABLE + 1)
@@ -2718,20 +2679,9 @@ GLOBAL_LIST_INIT(food, list(
 					if (parent && parent.mob && parent.mob.hud_used)
 						parent.mob.hud_used.update_parallax_pref(parent.mob)
 
-				if("screentipmode")
-					screentip_pref = !screentip_pref
-
-				if("screentipcolor")
-					var/new_screentipcolor = input(user, "Choose your screentip color:", "Character Preference", screentip_color) as color|null
-					if(new_screentipcolor)
-						screentip_color = sanitize_ooccolor(new_screentipcolor)
-
-				if("itemoutline_pref")
-					itemoutline_pref = !itemoutline_pref
-
 				if("ambientocclusion")
 					ambientocclusion = !ambientocclusion
-					if(parent?.screen && parent.screen.len)
+					if(parent && parent.screen && parent.screen.len)
 						var/atom/movable/screen/plane_master/game_world/PM = locate(/atom/movable/screen/plane_master/game_world) in parent.screen
 						PM.backdrop(parent.mob)
 
@@ -2783,10 +2733,6 @@ GLOBAL_LIST_INIT(food, list(
 						save_character()
 					else
 						needs_update = TRUE
-
-					if(istype(parent.mob, /mob/dead/new_player)) //is this shitcode? probably - I DONT CAREEE~
-						var/mob/dead/new_player/NP = parent.mob
-						NP.new_player_panel()
 
 				if("tab")
 					if (href_list["tab"])
@@ -2854,7 +2800,7 @@ GLOBAL_LIST_INIT(food, list(
 		if(CONFIG_GET(flag/humans_need_surnames) && (pref_species.id == "human"))
 			var/firstspace = findtext(real_name, " ")
 			var/name_length = length(real_name)
-			if(!firstspace) //we need a surname
+			if(!firstspace)	//we need a surname
 				real_name += " [pick(GLOB.last_names)]"
 			else if(firstspace == name_length)
 				real_name += "[pick(GLOB.last_names)]"
@@ -2891,8 +2837,6 @@ GLOBAL_LIST_INIT(food, list(
 	character.backpack = backpack
 
 	character.jumpsuit_style = jumpsuit_style
-
-	character.selected_scream = pref_scream
 
 	var/datum/species/chosen_species
 	chosen_species = pref_species.type

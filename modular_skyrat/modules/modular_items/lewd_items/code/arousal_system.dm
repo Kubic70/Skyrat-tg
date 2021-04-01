@@ -44,26 +44,6 @@
 	glass_desc = "Almost like a normal milk."
 	reagent_state = LIQUID
 
-///datum/reagent/consumable/milk
-
-/datum/reagent/drug/dopamine
-	name = "dopamine"
-	description = "Pure happines"
-	taste_description = "passion fruit, banana and hint of apple"
-	color = "#97ffee"
-	glass_name = "dopamine"
-	glass_desc = "Delicious flavored reagent. You feel happy even looking at it."
-	reagent_state = LIQUID
-	overdosed = TRUE
-	trippy = TRUE
-
-/*/datum/reagent/drug/dopamine/overdose_start(mob/living/M)
-	to_chat(M, "<span class='userdanger'>You start tripping hard!</span>")
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overdose, name)
-	..()
-
-/datum/reagent/drug/dopamine/overdose_process(mob/living/M)*/
-
 ///////////-----Reagent holders------///////////
 /obj/item/organ/genital
 	var/datum/reagents/internal_fluids
