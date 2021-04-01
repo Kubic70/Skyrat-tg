@@ -15,35 +15,24 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
-	if(!..()) //a check failed or the item has already found its slot
-		return
-
+	. = ..()
 	if(ITEM_SLOT_GLOVES)
-		if(gloves)
-			return
-		gloves = I
-
-		if(I.flags_inv)
-			update_inv_w_uniform()
-		if(gloves.breakouttime) //when equipping a ball mittens
+		if(gloves?.breakouttime) //when equipping a ball mittens
 			ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
+			stop_pulling()
 			update_action_buttons_icon() //certain action buttons will no longer be usable.
 		update_inv_gloves()
 
 /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..() //See mob.dm for an explanation on this and some rage about people copypasting instead of calling ..() like they should.
-
 	if(I == gloves)
-		if(s_store && invdrop)
-			dropItemToGround(s_store, TRUE) //It makes no sense for your suit storage to stay on you if you drop your suit.
-		if(gloves.breakouttime) //when unequipping a ball mittens
+		if(gloves?.breakouttime) //when unequipping a ball mittens
 			REMOVE_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
-			drop_all_held_items() //mittens is restraining
+			drop_all_held_items()
 			update_action_buttons_icon() //certain action buttons may be usable again.
 		gloves = null
 		if(!QDELETED(src))
 			update_inv_gloves()
-
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ///////i needed this code for ballgag, because it doesn't muzzle, it kinda voxbox///////
@@ -234,3 +223,36 @@
 /datum/component/redirect/proc/turf_change(datum/source, path, new_baseturfs, flags, list/transfers)
 	transfers += src
 	return turfchangeCB?.InvokeAsync(arglist(args))
+
+///////////////////////////////////////////////////////////////
+///This code needed for changing character's gender by chems///
+///////////////////////////////////////////////////////////////
+
+/mob/living/proc/set_gender(ngender = NEUTER, silent = FALSE, update_icon = TRUE, forced = FALSE)
+	if(forced || (!ckey || client?.prefs.skyrat_toggles & (ngender == FEMALE ? FORCED_FEM : FORCED_MALE)))
+		gender = ngender
+		return TRUE
+	return FALSE
+
+/mob/living/carbon/set_gender(ngender = NEUTER, silent = FALSE, update_icon = TRUE, forced = FALSE)
+	var/bender = !(gender == ngender)
+	. = ..()
+	if(!.)
+		return
+	if(dna && bender)
+		if(ngender == MALE || ngender == FEMALE)
+			dna.features["body_model"] = ngender
+			if(!silent)
+				var/adj = ngender == MALE ? "masculine" : "feminine"
+				visible_message("<span class='boldnotice'>[src] suddenly looks more [adj]!</span>", "<span class='boldwarning'>You suddenly feel more [adj]!</span>")
+		else if(ngender == NEUTER)
+			dna.features["body_model"] = MALE
+	if(update_icon)
+		update_body()
+
+/////////////////////////////
+///Breasts enlarging chems///
+/////////////////////////////
+
+/mob/living/carbon/human
+	var/breast_enlarger_amount = 0
