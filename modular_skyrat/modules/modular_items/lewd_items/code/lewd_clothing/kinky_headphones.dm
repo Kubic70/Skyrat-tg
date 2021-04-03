@@ -81,6 +81,7 @@
 		populate_kinkphones_designs()
 
 /obj/item/clothing/ears/kinky_headphones/update_icon_state()
+	. = ..()
 	icon_state = "[initial(icon_state)]_[current_kinkphones_color]_[kinky_headphones_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_kinkphones_color]_[kinky_headphones_on? "on" : "off"]"
 

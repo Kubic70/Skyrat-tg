@@ -68,6 +68,7 @@
 		populate_shackles_designs()
 
 /obj/item/clothing/suit/straight_jacket/shackles/update_icon_state()
+	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
