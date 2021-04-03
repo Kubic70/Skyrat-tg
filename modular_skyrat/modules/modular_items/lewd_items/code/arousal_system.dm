@@ -44,6 +44,8 @@
 	glass_desc = "Almost like a normal milk."
 	reagent_state = LIQUID
 
+///datum/reagent/consumable/milk
+
 /datum/reagent/drug/dopamine
 	name = "dopamine"
 	description = "Pure happines"

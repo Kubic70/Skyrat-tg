@@ -60,9 +60,8 @@
 	if(!length(eggvib_designs))
 		populate_eggvib_designs()
 
-/obj/item/eggvib/proc/update_icon_state()
+/obj/item/eggvib/update_icon_state()
 	. = ..()
-	update_icon_state()
 	icon_state = "[initial(icon_state)]_[current_color]_[vibration_mode]_[toy_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 

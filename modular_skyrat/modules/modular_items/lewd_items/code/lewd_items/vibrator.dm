@@ -59,9 +59,8 @@
 	if(!length(vibrator_designs))
 		populate_vibrator_designs()
 
-/obj/item/vibrator/proc/update_icon_state()
+/obj/item/vibrator/update_icon_state()
 	. = ..()
-	update_icon_state()
 	icon_state = "[initial(icon_state)]_[current_color]_[vibration_mode]_[toy_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
