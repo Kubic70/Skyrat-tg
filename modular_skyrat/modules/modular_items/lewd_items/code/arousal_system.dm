@@ -57,9 +57,9 @@
 	overdose_threshold = 10
 
 /datum/reagent/drug/dopamine/on_mob_add(mob/living/M)
-	to_chat(world, "dopamine adding")
+	//to_chat(world, "dopamine adding")
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_start", /datum/mood_event/orgasm, name)
-	to_chat(world, "dopamine added")
+	//to_chat(world, "dopamine added")
 	..()
 
 /datum/reagent/drug/dopamine/on_mob_life(mob/living/carbon/M)
@@ -70,10 +70,10 @@
 
 /datum/reagent/drug/dopamine/overdose_start(mob/living/M)
 	..()
-	to_chat(world, "overdose start")
+	//to_chat(world, "overdose start")
 	to_chat(M, "<span class='userdanger'>You start tripping hard!</span>")
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overgasm, name)
-	to_chat(world, "overdose end")
+	//to_chat(world, "overdose end")
 
 /datum/reagent/drug/dopamine/overdose_process(mob/living/M)
 	M.adjustArousal(0.5)
@@ -82,7 +82,7 @@
 	if(prob(2))
 		M.emote(pick("moan","twitch_s"))
 		//say(message)
-	to_chat(world, "overdose processing...")
+	//to_chat(world, "overdose processing...")
 	..()
 
 ///////////-----Initilaze------///////////
