@@ -47,6 +47,7 @@
 		populate_candle_designs()
 
 /obj/item/bdsm_candle/update_icon_state()
+	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[lit ? "lit" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]_[lit ? "lit" : "off"]"
 

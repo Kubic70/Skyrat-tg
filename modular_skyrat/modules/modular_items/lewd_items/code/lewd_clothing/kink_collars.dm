@@ -105,7 +105,6 @@
 	if(unique_reskin && !current_skin && user.canUseTopic(src, BE_CLOSE, NO_DEXTERITY))
 		reskin_obj(user)
 
-
 //locking or unlocking collar code
 
 /obj/item/clothing/neck/kink_collar/locked/proc/IsLocked(var/L,mob/user)

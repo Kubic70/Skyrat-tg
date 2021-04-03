@@ -296,6 +296,7 @@
 
 //updating both and icon in hands and icon worn
 /obj/item/clothing/head/helmet/space/deprivation_helmet/update_icon_state()
+	. = ..()
 	icon_state = icon_state = "[initial(icon_state)]_[current_helmet_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_helmet_color]"
 

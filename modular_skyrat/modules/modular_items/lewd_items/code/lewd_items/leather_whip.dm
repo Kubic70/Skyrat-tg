@@ -91,6 +91,7 @@
 		populate_whip_types()
 
 /obj/item/leatherwhip/update_icon_state()
+	. = ..()
 	icon_state = icon_state = "[initial(icon_state)]_[current_whip_form]_[current_whip_color]_[current_whip_type]"
 	inhand_icon_state = "[initial(icon_state)]_[current_whip_form]_[current_whip_color]_[current_whip_type]"
 
