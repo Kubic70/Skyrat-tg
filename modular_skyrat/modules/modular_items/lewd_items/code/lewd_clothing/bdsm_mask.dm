@@ -87,8 +87,9 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 // To update icon state properly
-/obj/item/clothing/mask/gas/bdsm_mask/update_icon_state()
-	. = ..()
+/obj/item/clothing/mask/gas/bdsm_mask/proc/update_icon_state()
+	.=..()
+	update_icon_state()
 	icon_state = "[initial(icon_state)]_[current_mask_color]_[mask_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_mask_color]_[mask_on? "on" : "off"]"
 
