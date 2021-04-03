@@ -23,7 +23,7 @@
 			var/aroused_message = pick("You feel frisky.", "You're having trouble suppressing your urges.", "You feel in the mood.")
 			to_chat(M, "<span class='notice'>[aroused_message]</span>")
 		if(ishuman(M))
-			M.adjustArous(1)
+			// M.adjustArous(1)
 			for(var/obj/item/organ/genital/G)
 				if(!G.aroused == AROUSAL_CANT)
 					G.aroused = AROUSAL_FULL
@@ -39,7 +39,7 @@
 					Addiction withdrawals can cause brain damage and shortness of breath. Overdosage can lead to brain traumas."
 	taste_description = "liquid desire"
 	color = "#FF2BFF"//dark pink
-	addiction_threshold = 20
+	// addiction_threshold = 20
 	overdose_threshold = 20
 
 /datum/reagent/drug/hexacrocin/on_mob_life(mob/living/M)
@@ -57,7 +57,7 @@
 				aroused_message = pick("You feel a bit hot.", "You feel strong sexual urges.", "You feel in the mood.", "You're ready to go down on someone.")
 			to_chat(M, "<font color=purple>[aroused_message]</font>")
 		if(ishuman(M))
-			M.adjustArous(2,1,0.1)
+			// M.adjustArous(2,1,0.1)
 			for(var/obj/item/organ/genital/G)
 				if(!G.aroused == AROUSAL_CANT)
 					G.aroused = AROUSAL_FULL
@@ -65,22 +65,22 @@
 			M.update_body()
 	..()
 
-/datum/reagent/drug/hexacrocin/addiction_act_stage2(mob/living/M)
-	if(prob(20))
-		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
-			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
-	..()
-/datum/reagent/drug/hexacrocin/addiction_act_stage3(mob/living/M)
-	if(prob(40))
-		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
-			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
-	..()
+// /datum/reagent/drug/hexacrocin/addiction_act_stage2(mob/living/M)
+// 	if(prob(20))
+// 		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
+// 			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
+// 	..()
+// /datum/reagent/drug/hexacrocin/addiction_act_stage3(mob/living/M)
+// 	if(prob(40))
+// 		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
+// 			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
+// 	..()
 
-/datum/reagent/drug/hexacrocin/addiction_act_stage4(mob/living/M)
-	if(prob(70))
-		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
-			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
-	..()
+// /datum/reagent/drug/hexacrocin/addiction_act_stage4(mob/living/M)
+// 	if(prob(70))
+// 		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
+// 			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
+// 	..()
 
 /datum/reagent/drug/hexacrocin/overdose_process(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF) && prob(33))
@@ -137,7 +137,7 @@
 /datum/reagent/drug/camphor/on_mob_life(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		if(ishuman(M))
-			M.adjustArous(-3)
+			// M.adjustArous(-3)
 			if(M.arousal <= 0)
 				to_chat(M, "<span class='notice'>You no longer feel aroused.")
 	..()
@@ -151,12 +151,12 @@
 	color = "#D9D9D9"//rgb(217, 217, 217)
 	reagent_state = SOLID
 	overdose_threshold = 20
-	can_synth = FALSE
+	// can_synth = FALSE
 
 /datum/reagent/drug/pentacamphor/on_mob_life(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		if(ishuman(M))
-			M.adjustArous(-6)
+			// M.adjustArous(-6)
 			if(M.arousal <= 0)
 				to_chat(M, "<span class='notice'>You no longer feel aroused.")
 	..()

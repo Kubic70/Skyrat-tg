@@ -12,7 +12,7 @@
 	equip_delay_other = 60
 	custom_materials = list(/datum/material/iron = 5000, /datum/material/glass = 2000)
 
-	var/tagname = null
+	// var/tagname = null
 
 /datum/design/electropack/shockcollar
 	name = "Shockcollar"
@@ -76,7 +76,7 @@ Code:
 	return
 
 /obj/item/electropack/shockcollar
-	var/random = TRUE
+	// var/random = TRUE
 
 /obj/item/electropack/shockcollar/Initialize()
 	if (random)
