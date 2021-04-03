@@ -452,7 +452,7 @@ const MilkingMachineContent = (props, context) => {
                         )}
                         </Stack.Item>
                       <Stack.Item grow basis="1rem">
-                        <Section backgroundColor="#1f071f" textAlign="center">
+                        <Section backgroundColor={palette.SectionBackgroundColor} textAlign="center">
                             {Math.round(semenTankCurrentVolume)} / {Math.round(semenTankMaxVolume)}
                         </Section>
                       </Stack.Item>
