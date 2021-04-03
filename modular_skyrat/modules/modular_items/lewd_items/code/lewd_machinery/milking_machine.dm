@@ -11,10 +11,10 @@
 	//////////////////////
 	var/obj/item/stock_parts/cell/cell = null
 	// Lamella TODO: Values need to be calibrated to balance power management
-	var/charge_rate = 50 // Power charge per tick devided by delta_time (always about ~2)
+	var/charge_rate = 200 // Power charge per tick devided by delta_time (always about ~2)
 	var/power_draw_rate = 50 // Power draw per tick multiplied by delta_time (always about ~2)
 	// Additional power consumption multiplier for different operating modes. Fractional value to reduce consumption
-	var/power_draw_multiplier_list = list("off" = 0, "low" = 1, "medium" = 2, "hard" = 3)
+	var/power_draw_multiplier_list = list("off" = 0, "low" = 0.5, "medium" = 1, "hard" = 1.5)
 	var/panel_open = FALSE
 
 	/////////////////////////////
@@ -39,9 +39,9 @@
 	//////////////////////
 	// Liquids are taken every tick, no additional modifiers
 	// Lamella TODO: It is necessary to calibrate the values of the intake of liquids for all modes of operation of the machine
-	var/milk_retrive_amount = list("off" = 0, "low" = 1,"medium" = 2,"hard" = 3)
-	var/girlcum_retrive_amount = list("off" = 0, "low" = 1,"medium" = 2,"hard" = 3)
-	var/semen_retrive_amount = list("off" = 0, "low" = 1,"medium" = 2,"hard" = 3)
+	var/milk_retrive_amount = list("off" = 0, "low" = 2,"medium" = 4,"hard" = 8)
+	var/girlcum_retrive_amount = list("off" = 0, "low" = 2,"medium" = 4,"hard" = 8)
+	var/semen_retrive_amount = list("off" = 0, "low" = 2,"medium" = 4,"hard" = 8)
 
 	//////////////////////////
 	// Vessels and parameters //
@@ -213,6 +213,7 @@
 	update_overlays()
 	M.layer = BELOW_MOB_LAYER
 	update_all_visuals()
+	ADD_TRAIT(M, TRAIT_RESTRAINED, src)
 	return
 
 // Clear the cache of the organs of the mob and update the state of the machine
@@ -244,41 +245,97 @@
 	update_all_visuals()
 	return
 
+// // Mob detachment handler
+// /obj/structure/chair/milking_machine/unbuckle_mob(mob/living/buckled_mob, force = FALSE)
+// 	var/mob/living/M = buckled_mob
+// 	// Have difficulty unbuckling if overly aroused
+// 	if(M.arousal >= 60)
+// 		if(current_mode != mode_list[1])
+// 			to_chat(buckled_mob, "You're too horny to get out on your own")
+// 			// // Uncomment/Comment the block if you need to be able/unable to get out with high arousal
+// 			// // Lamella TODO: Place for text about starting an attempt to get out when very aroused
+// 			// if(do_after(user, 120 SECONDS,user))
+// 			// 	unbuckle_mob(buckled_mobs[1])
+// 			// 	// Lamella TODO: Place for text, after a successful attempt to get out with strong arousal from a switched on machine
+// 			// 	return
+// 			// else
+// 			// 	// Lamella TODO: Place for text after a failed attempt to get out of the machine with great arousal
+// 			// 	return
+// 		else
+// 			// Lamella TODO: Place for text about starting an attempt to get out when very aroused, but the machine is turned off
+// 			if(do_after(buckled_mob, 60 SECONDS,buckled_mob))
+// 				.=..()
+// 				REMOVE_TRAIT(M, TRAIT_RESTRAINED, src)
+// 				// Lamella TODO: Place for text, after a successful attempt to get out of a turned off machine with strong arousal
+// 				return
+// 			else
+// 				// Lamella TODO: Place for text after failing to get out of a turned off machine with great arousal
+// 				return
+// 	else
+// 		// Lamella TODO: Place for text about starting an attempt to get out without being too aroused
+// 		if(do_after(buckled_mob, 5 SECONDS,buckled_mob))
+// 			.=..()
+// 			REMOVE_TRAIT(M, TRAIT_RESTRAINED, src)
+// 			// Lamella TODO: Place for a text about successfully freeing yourself without being too aroused
+// 			return
+// 		else
+// 			// Lamella TODO: Place for text about an unsuccessful attempt to get out of the machine without great arousal
+// 			return
+
+
 // Mob attachment handler
-/obj/structure/chair/milking_machine/unbuckle_mob(mob/living/buckled_mob, force = FALSE)
-	var/mob/living/M = buckled_mob
-	// Have difficulty unbuckling if overly aroused
-	if(M.arousal >= 60)
-		if(current_mode != mode_list[1])
-			to_chat(buckled_mob, "You're too horny to get out on your own")
-			// // Uncomment/Comment the block if you need to be able/unable to get out with high arousal
-			// // Lamella TODO: Place for text about starting an attempt to get out when very aroused
-			// if(do_after(user, 120 SECONDS,user))
-			// 	unbuckle_mob(buckled_mobs[1])
-			// 	// Lamella TODO: Place for text, after a successful attempt to get out with strong arousal from a switched on machine
-			// 	return
-			// else
-			// 	// Lamella TODO: Place for text after a failed attempt to get out of the machine with great arousal
-			// 	return
-		else
-			// Lamella TODO: Place for text about starting an attempt to get out when very aroused, but the machine is turned off
-			if(do_after(buckled_mob, 60 SECONDS,buckled_mob))
-				.=..()
-				// Lamella TODO: Place for text, after a successful attempt to get out of a turned off machine with strong arousal
-				return
+// /obj/structure/chair/milking_machine/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+// 	.=..()
+
+
+/obj/structure/chair/milking_machine/user_unbuckle_mob(mob/living/M, mob/user, check_loc = TRUE)
+
+	if(M)
+		if(M == user)
+			// Have difficulty unbuckling if overly aroused
+			if(M.arousal >= 60)
+				if(current_mode != mode_list[1])
+					to_chat(M, "You're too horny to get out on your own")
+					// // Uncomment/Comment the block if you need to be able/unable to get out with high arousal
+					// // Lamella TODO: Place for text about starting an attempt to get out when very aroused
+					// if(do_after(user, 120 SECONDS,user))
+					// 	unbuckle_mob(buckled_mobs[1])
+					// 	// Lamella TODO: Place for text, after a successful attempt to get out with strong arousal from a switched on machine
+					// 	return
+					// else
+					// 	// Lamella TODO: Place for text after a failed attempt to get out of the machine with great arousal
+					// 	return
+				else
+					// Lamella TODO: Place for text about starting an attempt to get out when very aroused, but the machine is turned off
+					REMOVE_TRAIT(M, TRAIT_RESTRAINED, src)
+					if(do_after(M, 60 SECONDS,M))
+
+						unbuckle_mob(M)
+						// Lamella TODO: Place for text, after a successful attempt to get out of a turned off machine with strong arousal
+						return
+					else
+						ADD_TRAIT(M, TRAIT_RESTRAINED, src)
+						// Lamella TODO: Place for text after failing to get out of a turned off machine with great arousal
+						return
 			else
-				// Lamella TODO: Place for text after failing to get out of a turned off machine with great arousal
-				return
-	else
-		// Lamella TODO: Place for text about starting an attempt to get out without being too aroused
-		if(do_after(buckled_mob, 5 SECONDS,buckled_mob))
-			.=..()
-			// Lamella TODO: Place for a text about successfully freeing yourself without being too aroused
-			return
+				// Lamella TODO: Place for text about starting an attempt to get out without being too aroused
+				REMOVE_TRAIT(M, TRAIT_RESTRAINED, src)
+
+				if(do_after(M, 5 SECONDS,M))
+					unbuckle_mob(M)
+					// Lamella TODO: Place for a text about successfully freeing yourself without being too aroused
+					return
+				else
+					ADD_TRAIT(M, TRAIT_RESTRAINED, src)
+
+					// Lamella TODO: Place for text about an unsuccessful attempt to get out of the machine without great arousal
+					return
 		else
-			// Lamella TODO: Place for text about an unsuccessful attempt to get out of the machine without great arousal
-			return
-	.=..()
+			REMOVE_TRAIT(M, TRAIT_RESTRAINED, src)
+			unbuckle_mob(M)
+	else
+		.=..()
+		return
 
 //////////////////////////////////////
 // Milking machine main logic block //
@@ -296,7 +353,8 @@
 	// Block the ability to open the interface of the car if we are attached to it
 	if(LAZYLEN(buckled_mobs))
 		if(user == buckled_mobs[1])
-			unbuckle_mob(user)
+			REMOVE_TRAIT(user, TRAIT_RESTRAINED, src)
+			user_unbuckle_mob(user,user)
 			return
 	// Standard processing, open the machine interface
 	. = ..()
@@ -374,8 +432,10 @@
 	if(beaker)
 		try_put_in_hand(beaker, user)
 		beaker = null
+		to_chat(user, "You took the beaker out of the machine")
 	if(new_beaker)
 		beaker = new_beaker
+		to_chat(user, "You put the beaker in the machine")
 	return TRUE
 
 // We will try to take the item in our hand, if it doesn’t work, then drop it into the car tile
@@ -777,7 +837,9 @@
 	if(.)
 		return
 	if(action == "ejectCreature")
+		REMOVE_TRAIT(current_mob, TRAIT_RESTRAINED, src)
 		unbuckle_mob(current_mob)
+		to_chat(usr,"You ecject creature from the machine") //Lamella TODO
 		return TRUE
 
 	if(action == "ejectBeaker")
@@ -789,24 +851,28 @@
 		current_mode = mode_list[1]
 		pump_state = pump_state_list[1]
 		update_all_visuals()
+		to_chat(usr,"You turn off the machine")
 		return TRUE
 
 	if(action == "setLowMode")
 		current_mode = mode_list[2]
 		pump_state = pump_state_list[2]
 		update_all_visuals()
+		to_chat(usr,"You switched the machine in Low mode")
 		return TRUE
 
 	if(action == "setMediumMode")
 		current_mode = mode_list[3]
 		pump_state = pump_state_list[2]
 		update_all_visuals()
+		to_chat(usr,"You switched the machine in Medium mode")
 		return TRUE
 
 	if(action == "setHardMode")
 		current_mode = mode_list[4]
 		pump_state = pump_state_list[2]
 		update_all_visuals()
+		to_chat(usr,"You switched the machine in Hard mode")
 		return TRUE
 
 	if(action == "unplug")
@@ -815,21 +881,25 @@
 		pump_state = pump_state_list[1]
 		current_organ = null
 		update_all_visuals()
+		to_chat(usr,"You detach liner from organs")
 		return TRUE
 
 	if(action == "setBreasts")
 		current_organ = current_breasts
 		update_all_visuals()
+		to_chat(usr,"You attach liner to the breasts")
 		return TRUE
 
 	if(action == "setVagina")
 		current_organ = current_vagina
 		update_all_visuals()
+		to_chat(usr,"You attach liner to the vagina")
 		return TRUE
 
 	if(action == "setTesticles")
 		current_organ = current_testicles
 		update_all_visuals()
+		to_chat(usr,"You attach liner to the testicles")
 		return TRUE
 
 	if(action == "setMilk")
@@ -853,5 +923,8 @@
 
 		var/amount = text2num(params["amount"])
 		current_vessel.reagents.trans_to(beaker, amount)
+		current_milk.reagents.reagent_list[1].name
 		update_all_visuals()
+		to_chat(usr,"You transfer [amount] of [current_milk.reagents.reagent_list[1].name] to [beaker.name]")
 		return TRUE
+
