@@ -288,7 +288,8 @@
 			B.color = SKINTONE2HEX(M.skin_tone)
 		to_chat(M, "<span class='warning'>Your chest feels warm, tingling with newfound sensitivity.</b></span>")
 		B.Insert(M)
-		M.update_body()
+		B.update_body()
+		B.update_sprite_suffix()
 
 	if(M.gender == MALE)
 		M.set_gender(FEMALE)
@@ -373,29 +374,52 @@ obj/item/reagent_containers/glass/bottle/breast_enlarger
 	name = "crocin pill (10u)"
 	desc = "I've fallen, and I can't get it up!"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_pills.dmi'
-	icon_state = "crocin_pill"
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_pills.dmi'
+	icon_state = "crocin"
 	list_reagents = list(/datum/reagent/drug/crocin = 10)
 
 /obj/item/reagent_containers/pill/hexacrocin
 	name = "hexacrocin pill (10u)"
-	desc = "It has a creepy oozing heart on it."
-	icon_state = "hexacrocin_pill"
+	desc = "Pill in creepy heart form."
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_pills.dmi'
+	icon_state = "hexacrocin"
 	list_reagents = list(/datum/reagent/drug/hexacrocin = 10)
 
 /obj/item/reagent_containers/pill/dopamine
-	name = "dopamine pill (10u)"
+	name = "dopamine pill (5u)"
 	desc = "Feelings from orgasm, contained in a pill... Weird."
-	icon_state = "dopamine_pill"
-	list_reagents = list(/datum/reagent/drug/dopamine = 10)
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_pills.dmi'
+	icon_state = "dopamine"
+	list_reagents = list(/datum/reagent/drug/dopamine = 5)
 
 /obj/item/reagent_containers/pill/camphor
 	name = "camphor pill (10u)"
 	desc = "For the early bird."
-	icon_state = "camphor_pill"
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_pills.dmi'
+	icon_state = "camphor"
 	list_reagents = list(/datum/reagent/drug/camphor = 10)
 
 /obj/item/reagent_containers/pill/pentacamphor
 	name = "pentacamphor pill (10u)"
 	desc = "The chemical equivalent of horny jail."
-	icon_state = "pentacamphor_pill"
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_pills.dmi'
+	icon_state = "pentacamphor"
 	list_reagents = list(/datum/reagent/drug/pentacamphor = 10)
+
+//keg
+
+/obj/structure/reagent_dispensers/keg/aphro
+	name = "keg of aphrodisiac"
+	desc = "A keg of aphrodisiac."
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/kegs.dmi'
+	icon_state = "crocin"
+	reagent_id = /datum/reagent/drug/crocin
+	tank_volume = 150
+
+/obj/structure/reagent_dispensers/keg/aphro/strong
+	name = "keg of strong aphrodisiac"
+	desc = "A keg of strong and addictive aphrodisiac."
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/kegs.dmi'
+	icon_state = "hexacrocin"
+	reagent_id = /datum/reagent/drug/hexacrocin
+	tank_volume = 120

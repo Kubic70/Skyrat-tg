@@ -11,8 +11,9 @@
 	strip_delay = 60
 	equip_delay_other = 60
 	custom_materials = list(/datum/material/iron = 5000, /datum/material/glass = 2000)
-
-	// var/tagname = null
+	var/randon = TRUE
+	var/freq_in_name = TRUE
+	var/tagname = null
 
 /datum/design/electropack/shockcollar
 	name = "Shockcollar"
@@ -32,12 +33,14 @@
 	if(!signal || signal.data["code"] != code)
 		return
 
-	if(isliving(loc) && on)
+	if(isliving(loc) && on) //the "on" arg is currently useless
+		var/mob/living/L = loc
+		if(!L.get_item_by_slot(ITEM_SLOT_NECK)) //**properly** stops pocket shockers
+			return
 		if(shock_cooldown == TRUE)
 			return
 		shock_cooldown = TRUE
 		addtimer(VARSET_CALLBACK(src, shock_cooldown, FALSE), 100)
-		var/mob/living/L = loc
 		step(L, pick(GLOB.cardinals))
 
 		to_chat(L, "<span class='danger'>You feel a sharp shock from the collar!</span>")
@@ -46,8 +49,12 @@
 		s.start()
 
 		L.Paralyze(30)
+		L.adjustPain(10)
 
 	if(master)
+		if(isassembly(master))
+			var/obj/item/assembly/master_as_assembly = master
+			master_as_assembly.pulsed()
 		master.receive_signal()
 	return
 
@@ -57,6 +64,9 @@
 		if(t)
 			tagname = t
 			name = "[initial(name)] - [t]"
+		return
+	if(istype(W, /obj/item/clothing/head/helmet))
+		return
 	else
 		return ..()
 
@@ -75,13 +85,25 @@ Code:
 	onclose(user, "radio")
 	return
 
-/obj/item/electropack/shockcollar
-	// var/random = TRUE
-
 /obj/item/electropack/shockcollar/Initialize()
 	if (random)
 		code = rand(1,100)
 		frequency = rand(MIN_FREE_FREQ, MAX_FREE_FREQ)
 		if(ISMULTIPLE(frequency, 2))//signaller frequencies are always uneven!
 			frequency++
+	if (freq_in_name)
+		name = initial(name) + " - freq: [frequency/10] code: [code]"
 	. = ..()
+
+/obj/item/electropack/shockcollar/pacify
+	name = "pacifying collar"
+	desc = "A reinforced metal collar that latches onto the wearer and halts any harmful thoughts."
+
+/obj/item/electropack/shockcollar/pacify/equipped(mob/living/carbon/human/user, slot)
+	. = ..()
+	if(slot == ITEM_SLOT_NECK)
+		ADD_TRAIT(user, TRAIT_PACIFISM, "pacifying-collar")
+
+/obj/item/electropack/shockcollar/pacify/dropped(mob/living/carbon/human/user)
+	. = ..()
+	REMOVE_TRAIT(user, TRAIT_PACIFISM, "pacifying-collar")

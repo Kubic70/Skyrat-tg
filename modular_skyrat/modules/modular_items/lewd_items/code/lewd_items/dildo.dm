@@ -21,19 +21,20 @@
 
 //radial menu for sizes
 /obj/item/dildo/proc/populate_dildo_sizes()
-	dildo_designs = list(
+	dildo_sizes = list(
 		"small" = image (icon = src.icon, icon_state = "dildo_poly_small"),
 		"medium" = image(icon = src.icon, icon_state = "dildo_poly_medium"),
 		"big" = image(icon = src.icon, icon_state = "dildo_poly_big"))
 
 //create radial menu
 /obj/item/dildo/proc/populate_dildo_designs()
-	dildo_sizes = list(
-		"" = image (icon = src.icon, icon_state = ""),
-		"" = image(icon = src.icon, icon_state = ""),
-		"" = image(icon = src.icon, icon_state = ""),
-		"" = image(icon = src.icon, icon_state = ""),
-		"" = image(icon = src.icon, icon_state = ""))
+	dildo_designs = list(
+		"avian" = image (icon = src.icon, icon_state = "dildo_avian"),
+		"canine" = image(icon = src.icon, icon_state = "dildo_canine"),
+		"equine" = image(icon = src.icon, icon_state = "dildo_equine"),
+		"dragon" = image(icon = src.icon, icon_state = "dildo_dragon"),
+		"human" = image(icon = src.icon, icon_state = "dildo_human"),
+		"tentacle" = image(icon = src.icon, icon_state = "dildo_tentacle"))
 
 /obj/item/dildo/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
