@@ -84,8 +84,9 @@
 	if(!length(dildo_sizes))
 		populate_dildo_sizes()
 
-/obj/item/dildo/update_icon_state()
+/obj/item/dildo/proc/update_icon_state()
 	. = ..()
+	update_icon_state()
 	switch(is_polychromic)
 		if(FALSE)
 			icon_state = "[initial(icon_state)]_[current_color]"

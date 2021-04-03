@@ -86,8 +86,9 @@
 	var/servleft = "4"
 	w_class = WEIGHT_CLASS_SMALL
 
-/obj/item/serviette_pack/update_icon_state()
+/obj/item/serviette_pack/proc/update_icon_state()
 	. = ..()
+	update_icon_state()
 	icon_state = "[initial(icon_state)]_[servleft]"
 
 /obj/item/serviette_pack/Initialize()
