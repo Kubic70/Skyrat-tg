@@ -73,8 +73,9 @@
 	if(!length(buttplug_forms))
 		populate_buttplug_forms()
 
-/obj/item/buttplug/update_icon_state()
+/obj/item/buttplug/proc/update_icon_state()
 	. = ..()
+	update_icon_state()
 	icon_state = "[initial(icon_state)]_[current_color]_[current_size]"
 	worn_icon_state = "[initial(icon_state)]_[current_color]"
 
