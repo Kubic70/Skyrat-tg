@@ -83,9 +83,7 @@
 	if(!length(bag_inf_states))
 		populate_bag_inf_states()
 
-/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/proc/update_icon_state()
-	. = ..()
-	update_icon_state()
+/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/update_icon_state()
 	icon_state = "[initial(icon_state)]_[bag_color]_[bag_state]_[bag_fold? "folded" : "unfolded"]"
 	inhand_icon_state = "[initial(icon_state)]_[bag_color]_[bag_state]_[bag_fold? "folded" : "unfolded"]"
 
