@@ -73,8 +73,6 @@
 	if(!length(hypnogoggles_designs))
 		populate_hypnogoggles_designs()
 
-/obj/item/clothing/glasses/hypno/proc/update_icon_state()
-	. = ..()
-	update_icon_state()
+/obj/item/clothing/glasses/hypno/update_icon_state()
 	icon_state = icon_state = "[initial(icon_state)]_[current_hypnogoggles_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_hypnogoggles_color]"
