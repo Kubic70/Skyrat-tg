@@ -23,7 +23,7 @@
 			var/aroused_message = pick("You feel frisky.", "You're having trouble suppressing your urges.", "You feel in the mood.")
 			to_chat(M, "<span class='notice'>[aroused_message]</span>")
 		if(ishuman(M))
-			// M.adjustArous(1)
+			M.adjustArousal(1)
 			for(var/obj/item/organ/genital/G)
 				if(!G.aroused == AROUSAL_CANT)
 					G.aroused = AROUSAL_FULL
@@ -39,8 +39,8 @@
 					Addiction withdrawals can cause brain damage and shortness of breath. Overdosage can lead to brain traumas."
 	taste_description = "liquid desire"
 	color = "#FF2BFF"//dark pink
-	// addiction_threshold = 20
-	overdose_threshold = 20
+	addiction_threshold = 30
+	overdose_threshold = 40 //this one have REALLY important overdose consequences.
 
 /datum/reagent/drug/hexacrocin/on_mob_life(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
@@ -57,7 +57,9 @@
 				aroused_message = pick("You feel a bit hot.", "You feel strong sexual urges.", "You feel in the mood.", "You're ready to go down on someone.")
 			to_chat(M, "<font color=purple>[aroused_message]</font>")
 		if(ishuman(M))
-			// M.adjustArous(2,1,0.1)
+			M.adjustArousal(2)
+			M.adjustPleasure(1)
+			M.adjustPain(0.1)
 			for(var/obj/item/organ/genital/G)
 				if(!G.aroused == AROUSAL_CANT)
 					G.aroused = AROUSAL_FULL
@@ -65,28 +67,29 @@
 			M.update_body()
 	..()
 
-// /datum/reagent/drug/hexacrocin/addiction_act_stage2(mob/living/M)
-// 	if(prob(20))
-// 		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
-// 			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
-// 	..()
-// /datum/reagent/drug/hexacrocin/addiction_act_stage3(mob/living/M)
-// 	if(prob(40))
-// 		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
-// 			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
-// 	..()
+/datum/reagent/drug/hexacrocin/addiction_act_stage2(mob/living/M)
+	if(prob(20))
+		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
+			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
+	..()
+/datum/reagent/drug/hexacrocin/addiction_act_stage3(mob/living/M)
+	if(prob(40))
+		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
+			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
+	..()
 
-// /datum/reagent/drug/hexacrocin/addiction_act_stage4(mob/living/M)
-// 	if(prob(70))
-// 		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
-// 			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
-// 	..()
+/datum/reagent/drug/hexacrocin/addiction_act_stage4(mob/living/M)
+	if(prob(70))
+		if(!HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
+			ADD_TRAIT(M,TRAIT_NYMPHOMANIA,APHRO_TRAIT)
+	..()
 
 /datum/reagent/drug/hexacrocin/overdose_process(mob/living/M)
-	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF) && prob(33))
-		if(prob(5) && ishuman(M)/* && M.has_dna() && some shit about bimbofication*/) //yes, pal. an i'm the horseman of the Apocalypse that will make it work. Sorry.
+	var/mob/living/carbon/human/H = M
+	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
+		if(prob(5) && ishuman(M) && !HAS_TRAIT(M, TRAIT_BIMBO) && !HAS_TRAIT(M, TRAIT_SOBSESSED)/* && M.has_dna() && some shit about bimbofication*/) //yes, pal. an i'm the horseman of the Apocalypse that will make it work. Sorry.
 			to_chat(M, "<font color=purple>Your libido is going haywire!</font>")
-			ADD_TRAIT(M,TRAIT_BIMBO,APHRO_TRAIT) //what am i doing with my life.
+			H.gain_trauma(/datum/brain_trauma/special/bimbo, TRAUMA_RESILIENCE_LOBOTOMY) //what am i doing with my life.
 	..()
 
 //Dopamine. Generates in character after orgasm.
@@ -99,24 +102,35 @@
 	glass_name = "dopamine"
 	glass_desc = "Delicious flavored reagent. You feel happy even looking at it."
 	reagent_state = LIQUID
-	overdose_threshold = 15
+	overdose_threshold = 10
 	overdosed = TRUE
 	trippy = TRUE
+
+/datum/reagent/drug/dopamine/on_mob_add(mob/living/M)
+	to_chat(world, "dopamine adding")
+	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_start", /datum/mood_event/orgasm, name)
+	to_chat(world, "dopamine added")
+	..()
 
 /datum/reagent/drug/dopamine/on_mob_life(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		M.set_drugginess(5)
 		if(prob(7))
-			M.emote(pick("twitch","drool","moan","giggle"))
+			M.emote(pick("twitch","drool","moan","giggle","shaking"))
 	..()
 
 /datum/reagent/drug/dopamine/overdose_start(mob/living/M)
 	to_chat(M, "<font color=purple>You feel yourself so happy!</font>")
-	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overdose, name)
+	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overgasm, name)
 
 /datum/reagent/drug/dopamine/overdose_process(mob/living/M)
 	if(M.hallucination < volume && prob(20))
 		M.hallucination += 5
+		M.adjustArousal(0.5)
+		M.adjustPleasure(0.3)
+		M.adjustPain(-0.5)
+		if(prob(2))
+			M.emote(pick("moan","twitch_s"))
 	..()
 
 ////////////////////
@@ -137,9 +151,9 @@
 /datum/reagent/drug/camphor/on_mob_life(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		if(ishuman(M))
-			// M.adjustArous(-3)
+			M.adjustArousal(-3)
 			if(M.arousal <= 0)
-				to_chat(M, "<span class='notice'>You no longer feel aroused.")
+				to_chat(M, "<span class='notice'>You no longer feel aroused.</span>")
 	..()
 
 //Pentacamphor. Used to PERMANENTLY reduce libido. Possibly can cure bimbofication. I wrote this with a straight face, what am i doing?
@@ -151,26 +165,27 @@
 	color = "#D9D9D9"//rgb(217, 217, 217)
 	reagent_state = SOLID
 	overdose_threshold = 20
-	// can_synth = FALSE
+	can_synth = FALSE
 
 /datum/reagent/drug/pentacamphor/on_mob_life(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		if(ishuman(M))
-			// M.adjustArous(-6)
+			M.adjustArousal(-6)
 			if(M.arousal <= 0)
-				to_chat(M, "<span class='notice'>You no longer feel aroused.")
+				to_chat(M, "<span class='notice'>You no longer feel aroused.</span>")
 	..()
 
-/datum/reagent/drug/anaphrodisiacplus/overdose_process(mob/living/M)
+/datum/reagent/drug/pentacamphor/overdose_process(mob/living/M)
+	var/mob/living/carbon/human/H = M
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		if(!HAS_TRAIT(M, TRAIT_BIMBO))
-			to_chat(M, "<span class='userlove'>You feel like you'll never feel aroused again...</span>") //Go to horny jail *bonk*
-			ADD_TRAIT(M,TRAIT_NEVERBONER,APHRO_TRAIT)
+			to_chat(M, "<span class='notice'>You feel like you'll never feel aroused again...</span>") //Go to horny jail *bonk*
+			ADD_TRAIT(M,TRAIT_NEVERBONER, APHRO_TRAIT)
 
 		if(HAS_TRAIT(M, TRAIT_BIMBO))
 			if(prob(30))
-				REMOVE_TRAIT(M,TRAIT_BIMBO,APHRO_TRAIT)
-				to_chat(M, "<span class='notice'>Your mind is free from purple liquid substance. Your thoughts are pure and innocent again.")
+				to_chat(M, "<span class='notice'>Your mind is free from purple liquid substance. Your thoughts are pure and innocent again.</span>")
+				H.cure_trauma_type(/datum/brain_trauma/special/bimbo, TRAUMA_RESILIENCE_LOBOTOMY)
 	..()
 
 ///////////////////////////////////
@@ -295,6 +310,11 @@
 		qdel(T)
 
 	return ..()
+
+/*
+Кубик, надо сделать добавление груди т.к сейчас она не отображается и не наследует цвет от тела.
+А также проверить уменьшение гениталий от этой штуки и сделать тоже самое для таблеток, увеличивающих пенис
+*/
 
 ////////////////////////
 ///CHEMICAL REACTIONS///

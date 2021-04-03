@@ -130,7 +130,9 @@ Icons, maybe?
 	if(!length(leash_designs))
 		populate_leash_designs()
 
-/obj/item/leash/update_icon_state()
+/obj/item/leash/proc/update_icon_state()
+	. = ..()
+	update_icon_state()
 	icon_state = icon_state = "[initial(icon_state)]_[current_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 

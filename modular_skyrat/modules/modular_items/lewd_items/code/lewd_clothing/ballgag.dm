@@ -105,7 +105,9 @@
 	if(!length(ballgag_designs))
 		populate_ballgag_designs()
 
-/obj/item/clothing/mask/ballgag/update_icon_state()
+/obj/item/clothing/mask/ballgag/proc/update_icon_state()
+	. = ..()
+	update_icon_state()
 	icon_state = icon_state = "[initial(icon_state)]_[current_ballgag_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_ballgag_color]"
 
