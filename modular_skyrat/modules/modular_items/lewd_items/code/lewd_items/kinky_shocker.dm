@@ -21,9 +21,8 @@
 	update_icon_state()
 	update_icon()
 
-/obj/item/kinky_shocker/proc/update_icon_state()
+/obj/item/kinky_shocker/update_icon_state()
 	. = ..()
-	update_icon_state()
 	icon_state = "[initial(icon_state)]_[shocker_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[shocker_on? "on" : "off"]"
 

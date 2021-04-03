@@ -76,9 +76,7 @@
 	update_icon()
 	. = ..()
 
-/obj/item/clothing/accessory/lewdapron/proc/update_icon_state()
-	. = ..()
-	update_icon_state()
+/obj/item/clothing/accessory/lewdapron/update_icon_state()
 	icon_state = icon_state = "[initial(icon_state)]_[current_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
