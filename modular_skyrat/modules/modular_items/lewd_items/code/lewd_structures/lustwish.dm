@@ -3,8 +3,9 @@
 	desc = "A vending machine for erotic games or even BDSM"
 	icon_state = "lustwish"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/lustwish.dmi'
+	light_mask = "lustwish-light-mask"
 	age_restrictions = TRUE
-	product_ads = "Try me!;Kinky!;Don't by shy, we all do that;Lewd, but fun!"
+	product_ads = "Try me!;Kinky!;Don't by shy, we all do that;Lewd, but fun!;Hey you, yeah you... wanna take a look at my collection?;Come on, take a look!;Remember, always adhere to Nanotrasen corporate policy!"
 	vend_reply = "Enjoy!;We glad to satisfly your desires!"
 	products = list(/obj/item/clothing/gloves/ball_mittens = 8,
 					/obj/item/clothing/mask/ballgag = 8,
@@ -25,6 +26,7 @@
 	payment_department = ACCOUNT_SRV
 	default_price = PAYCHECK_ASSISTANT * 2
 	extra_price = PAYCHECK_COMMAND * 0.5
+
 /obj/item/vending_refill/wardrobe/lustwish
 	machine_name = "LustWish"
 	icon_state = "lustwish_refill"
