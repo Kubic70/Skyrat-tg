@@ -35,9 +35,7 @@
 	if(!length(fleshlight_designs))
 		populate_fleshlight_designs()
 
-/obj/item/fleshlight/proc/update_icon_state()
-	. = ..()
-	update_icon_state()
+/obj/item/fleshlight/update_icon_state()
 	icon_state = "[initial(icon_state)]_[current_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
