@@ -341,7 +341,19 @@
 		to_chat(usr, "<span class='warning'>You can't toggle arousal right now...</span>")
 		return
 
-	var/list/genital_list = list()
+	//new code
+	var/list/gen_arous_trans = list("Not aroused" = 30,
+												"Partly aroused" = 70,
+												"Very aroused" = 100
+												)
+	var/picked_arousal = input(src, "Choose arousal", "Toggle Arousal") as null|anything in gen_arous_trans
+	var/a = gen_arous_trans[picked_arousal] - get_arousal()
+	if(a > 0)
+		adjustArousal(a)
+		//adjustArous(a)
+	return
+
+	/*var/list/genital_list = list() // original code
 	for(var/obj/item/organ/genital/G in internal_organs)
 		if(!G.aroused == AROUSAL_CANT)
 			genital_list += G
@@ -359,5 +371,4 @@
 		if(picked_arousal && picked_organ && (picked_organ in internal_organs))
 			picked_organ.aroused = gen_arous_trans[picked_arousal]
 			picked_organ.update_sprite_suffix()
-			update_body()
-	return
+			update_body()*/
