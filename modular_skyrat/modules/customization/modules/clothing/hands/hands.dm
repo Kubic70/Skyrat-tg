@@ -1,5 +1,5 @@
 /obj/item/clothing/gloves/evening
-	icon = 'modular_skyrat/modules/customization/icons/obj/clothing/gloves.dmi'
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_gloves.dmi'
 	worn_icon = 'modular_skyrat/modules/customization/icons/mob/clothing/hands.dmi'
 	name = "evening gloves"
 	desc = "Thin, pretty gloves intended for use in regal feminine attire, but knowing Space China these are just for some maid fetish."

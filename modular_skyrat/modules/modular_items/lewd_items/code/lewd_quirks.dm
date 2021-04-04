@@ -70,45 +70,45 @@
 /datum/brain_trauma/special/nymphomania/on_life(delta_time, times_fired)
 	if(owner.stat != CONSCIOUS)
 		return
-
-	switch(rand(1,6))
-		if(1)
-			if(stress >= 100)
-				to_chat(owner, "<font color=purple>You feel slightly aroused...</font>")
-			else
-				to_chat(owner, "<font color=purple>Lust spreads over your body!</font>")
-				owner.emote("moan")
-		if(2)
-			if(stress >= 100)
-				to_chat(owner, "<font color=purple>You can't stop shaking...</font>")
-				owner.do_jitter_animation(20)
-			else
-				to_chat(owner, "<font color=purple>You feel hot and seduced!</font>")
-				owner.dizziness += 20
-				owner.add_confusion(20)
-				owner.Jitter(20)
-				owner.do_jitter_animation(20)
-				owner.adjustStaminaLoss(50)
-		if(3, 4)
-			if(stress >= 100)
-				to_chat(owner, "<font color=purple>You bring your hips together in lust.</font>")
-			else
-				to_chat(owner, "<font color=purple>Desire driving you mad!</font>")
-				owner.hallucination += 30
-		if(5)
-			if(stress >= 100)
-				to_chat(owner, "<font color=purple>You feel like your genitalias are burning...</font>")
-				owner.adjustOxyLoss(8)
-				owner.blur_eyes(10)
-			else
-				to_chat(owner, "<font color=purple>You need something to satisfy this desire! Something... Or someone?</font>")
-				owner.adjustOxyLoss(16)
-				owner.blur_eyes(15)
-				owner.visible_message(pick("<font color=purple>[owner] seductively wags the hips.</font>\n",
-									"<font color=purple>[owner] moans in lust!</font>\n",
-									"<font color=purple>[owner] touches themselves in intimate places...</font>\n",
-									"<font color=purple>[owner] trembling longingly.</font>\n",
-									"<font color=purple>[owner] moans indecently!</font>\n"))
+	if(satisfaction <= 0)
+		switch(rand(1,6))
+			if(1)
+				if(stress >= 100)
+					to_chat(owner, "<font color=purple>You feel slightly aroused...</font>")
+				else
+					to_chat(owner, "<font color=purple>Lust spreads over your body!</font>")
+					owner.emote("moan")
+			if(2)
+				if(stress >= 100)
+					to_chat(owner, "<font color=purple>You can't stop shaking...</font>")
+					owner.do_jitter_animation(20)
+				else
+					to_chat(owner, "<font color=purple>You feel hot and seduced!</font>")
+					owner.dizziness += 20
+					owner.add_confusion(20)
+					owner.Jitter(20)
+					owner.do_jitter_animation(20)
+					owner.adjustStaminaLoss(50)
+			if(3, 4)
+				if(stress >= 100)
+					to_chat(owner, "<font color=purple>You bring your hips together in lust.</font>")
+				else
+					to_chat(owner, "<font color=purple>Desire driving you mad!</font>")
+					owner.hallucination += 30
+			if(5)
+				if(stress >= 100)
+					to_chat(owner, "<font color=purple>You feel like your genitalias are burning...</font>")
+					owner.adjustOxyLoss(8)
+					owner.blur_eyes(10)
+				else
+					to_chat(owner, "<font color=purple>You need something to satisfy this desire! Something... Or someone?</font>")
+					owner.adjustOxyLoss(16)
+					owner.blur_eyes(15)
+					owner.visible_message(pick("<font color=purple>[owner] seductively wags the hips.</font>\n",
+										"<font color=purple>[owner] moans in lust!</font>\n",
+										"<font color=purple>[owner] touches themselves in intimate places...</font>\n",
+										"<font color=purple>[owner] trembling longingly.</font>\n",
+										"<font color=purple>[owner] moans indecently!</font>\n"))
 	if(in_company() && satisfaction >= 0.02)
 		satisfaction -= 0.02
 		owner.adjustArousal(2)
@@ -116,14 +116,14 @@
 			stress +=1
 
 /datum/brain_trauma/special/nymphomania/proc/in_company()
-	to_chat(world, "IN COMPANY") //REMOVE LATER, TEST MESSAGE.
 	if(HAS_TRAIT(owner, TRAIT_BLIND))
 		return FALSE
-	for(var/mob/M in oview(owner, 7))
+	for(var/mob/living/carbon/human/M in oview(owner, 7))
 		if(!isliving(M)) //ghosts ain't people
-			continue
+			return FALSE
 		if(istype(M, M.ckey))
 			return TRUE
+			to_chat(world, "IN COMPANY") //REMOVE LATER, TEST MESSAGE.
 	return FALSE
 
 //////////////////////
@@ -288,7 +288,7 @@
 		if(Player.mind && Player.stat != DEAD && !isnewplayer(Player) && !isbrain(Player) && Player.client && Player != owner && SSjob.GetJob(Player.mind.assigned_role))
 			viable_minds += Player.mind
 	for(var/datum/mind/possible_target in viable_minds)
-		if(possible_target != owner && ishuman(possible_target.current && client.prefs.noncon_pref))
+		if(possible_target != owner && ishuman(possible_target.current))
 			possible_targets += possible_target.current
 
 	//Do we have any special target?

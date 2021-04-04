@@ -1,5 +1,4 @@
 
-#define APHRO_TRAIT "aphrodisiac"
 #define SKINTONE2HEX(skin_tone) GLOB.skin_tones[skin_tone] || skin_tone //we creating new genitals when changing gender, need to color them.
 
 //////////////////
@@ -288,7 +287,7 @@
 			B.color = SKINTONE2HEX(M.skin_tone)
 		to_chat(M, "<span class='warning'>Your chest feels warm, tingling with newfound sensitivity.</b></span>")
 		B.Insert(M)
-		B.update_body()
+		M.update_body()
 		B.update_sprite_suffix()
 
 	if(M.gender == MALE)
@@ -363,7 +362,7 @@
 	desc = "A bottle of strong anaphrodisiac. Reduces libido."
 	list_reagents = list(/datum/reagent/drug/pentacamphor = 30)
 
-obj/item/reagent_containers/glass/bottle/breast_enlarger
+/obj/item/reagent_containers/glass/bottle/breast_enlarger
 	name = "Succubus milk bottle"
 	desc = "A bottle of strong breast enlargement reagent."
 	list_reagents = list(/datum/reagent/breast_enlarger/ = 30)
