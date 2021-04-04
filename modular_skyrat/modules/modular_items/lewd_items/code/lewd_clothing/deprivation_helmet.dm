@@ -5,6 +5,7 @@
 	name = "deprivation helmet"
 	desc = "Сompletely cuts the wearer from the outside world."
 	icon_state = "dephelmet"
+	worn_icon_state = "dephelmet"
 	inhand_icon_state = "dephelmet"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_hats.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_hats.dmi'
@@ -50,20 +51,32 @@
 //Vision switcher
 /datum/action/item_action/toggle_vision/Trigger()
 	var/obj/item/clothing/head/helmet/space/deprivation_helmet/H = target
+	var/mob/living/carbon/C = usr
 	if(istype(H))
-		H.SwitchHelmet("vision")
+		if(src == C.head)
+			to_chat(usr, "<span class ='notice'> You can't reach the deprivation switch! </span>")
+		else
+			H.SwitchHelmet("vision")
 
 //Hearing switcher
 /datum/action/item_action/toggle_hearing/Trigger()
 	var/obj/item/clothing/head/helmet/space/deprivation_helmet/H = target
+	var/mob/living/carbon/C = usr
 	if(istype(H))
-		H.SwitchHelmet("hearing")
+		if(src == C.head)
+			to_chat(usr, "<span class ='notice'> You can't reach the deprivation switch! </span>")
+		else
+			H.SwitchHelmet("hearing")
 
 //Speech switcher
 /datum/action/item_action/toggle_speech/Trigger()
 	var/obj/item/clothing/head/helmet/space/deprivation_helmet/H = target
+	var/mob/living/carbon/C = usr
 	if(istype(H))
-		H.SwitchHelmet("speech")
+		if(src == C.head)
+			to_chat(usr, "<span class ='notice'> You can't reach the deprivation switch! </span>")
+		else
+			H.SwitchHelmet("speech")
 
 //Helmet switcher
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/SwitchHelmet(button)
@@ -296,9 +309,10 @@
 
 //updating both and icon in hands and icon worn
 /obj/item/clothing/head/helmet/space/deprivation_helmet/update_icon_state()
-	. = ..()
+	.=..()
 	icon_state = icon_state = "[initial(icon_state)]_[current_helmet_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_helmet_color]"
+	worn_icon_state = "[initial(icon_state)]_[current_helmet_color]"
 
 //Here goes code that applies stuff on the wearer
 /obj/item/clothing/head/helmet/space/deprivation_helmet/equipped(mob/living/carbon/human/user, slot)

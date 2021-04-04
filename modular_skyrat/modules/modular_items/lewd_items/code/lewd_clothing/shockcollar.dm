@@ -11,7 +11,7 @@
 	strip_delay = 60
 	equip_delay_other = 60
 	custom_materials = list(/datum/material/iron = 5000, /datum/material/glass = 2000)
-	var/randon = TRUE
+	var/random = TRUE
 	var/freq_in_name = TRUE
 	var/tagname = null
 

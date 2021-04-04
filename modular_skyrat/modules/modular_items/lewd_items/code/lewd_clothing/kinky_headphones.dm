@@ -1,5 +1,5 @@
 /obj/item/clothing/ears/kinky_headphones
-	name = "kinky_headphones"
+	name = "kinky headphones"
 	desc = "Protects your hearing from loud noises, looks like it have switch on right side..."
 	icon_state = "kinkphones"
 	inhand_icon_state = "kinkphones"
