@@ -13,8 +13,8 @@
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	can_adjust = FALSE
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	equip_delay_other = 80
-	equip_delay_self = 80
+	// equip_delay_other = 80
+	// equip_delay_self = 80
 	strip_delay = 80
 	mutant_variants = STYLE_DIGITIGRADE|STYLE_TAUR_ALL
 	// fitted = NO_FEMALE_UNIFORM

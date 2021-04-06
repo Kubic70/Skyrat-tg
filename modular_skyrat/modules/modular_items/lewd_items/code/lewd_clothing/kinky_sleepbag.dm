@@ -21,7 +21,7 @@
 	var/tt
 	var/static/list/bag_colors
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDEHAIR
-	equip_delay_self = 300
+	// equip_delay_self = 300
 	strip_delay = 300
 	breakouttime = 3000 //do not touch. First - It's contraband item, Second - It's damn expensive, Third - it's ERP item, so you can't legally use it on characters without enabled non-con.
 	var/static/list/bag_inf_states

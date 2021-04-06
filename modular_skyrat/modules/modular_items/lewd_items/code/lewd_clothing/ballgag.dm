@@ -57,7 +57,7 @@
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	gas_transfer_coefficient = 0.9
-	equip_delay_other = 40
+	// equip_delay_other = 40
 	moans = list("Mmmph...", "Hmmphh", "Mmmfhg", "Gmmmh...")
 	moans_alt = list("Mhgm...", "Hmmmp!...", "GMmmhp!")
 	moans_alt_probability = 5
@@ -125,7 +125,7 @@
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	gas_transfer_coefficient = 0.9
-	equip_delay_other = 40
+	// equip_delay_other = 40
 	moans = list("Mmmph...", "Hmmphh", "Mmmfhg", "Gmmmh...")
 	moans_alt = list("Mhgm...", "Hmmmp!...", "GMmmhp!")
 	moans_alt_probability = 5
