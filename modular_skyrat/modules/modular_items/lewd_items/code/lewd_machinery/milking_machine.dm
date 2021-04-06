@@ -174,12 +174,6 @@
 		return
 	. = ..()
 
-// //
-// /obj/structure/chair/milking_machine/CtrlClick(mob/user)
-// 	if(LAZYLEN(buckled_mobs))
-// 		if(user == buckled_mobs[1])
-// 			user_unbuckle_mob(user, user)
-
 // Checking if we can use the menu
 /obj/structure/chair/milking_machine/proc/check_menu(mob/living/user)
 	if(!istype(user))
@@ -224,13 +218,11 @@
 	lastsaved_keybindings = M.client.movement_keys
 	M.client.movement_keys = null
 	var/mob/living/carbon/N = M
-	// N.set_handcuffed(1)
 	N.set_usable_hands(0)
 
 	update_overlays()
 	M.layer = BELOW_MOB_LAYER
 	update_all_visuals()
-	// ADD_TRAIT(M, TRAIT_RESTRAINED, "milkingmachine")
 	return
 
 // Clear the cache of the organs of the mob and update the state of the machine
@@ -264,55 +256,11 @@
 
 	var/mob/living/carbon/N = M
 
-	// N.set_handcuffed(null)
 	N.set_usable_hands(2)
 
 	M.layer = initial(M.layer)
 	update_all_visuals()
 	return
-
-// // Mob detachment handler
-// /obj/structure/chair/milking_machine/unbuckle_mob(mob/living/buckled_mob, force = FALSE)
-// 	var/mob/living/M = buckled_mob
-// 	// Have difficulty unbuckling if overly aroused
-// 	if(M.arousal >= 60)
-// 		if(current_mode != mode_list[1])
-// 			to_chat(buckled_mob, "You're too horny to get out on your own")
-// 			// // Uncomment/Comment the block if you need to be able/unable to get out with high arousal
-// 			// // Lamella TODO: Place for text about starting an attempt to get out when very aroused
-// 			// if(do_after(user, 120 SECONDS,user))
-// 			// 	unbuckle_mob(buckled_mobs[1])
-// 			// 	// Lamella TODO: Place for text, after a successful attempt to get out with strong arousal from a switched on machine
-// 			// 	return
-// 			// else
-// 			// 	// Lamella TODO: Place for text after a failed attempt to get out of the machine with great arousal
-// 			// 	return
-// 		else
-// 			// Lamella TODO: Place for text about starting an attempt to get out when very aroused, but the machine is turned off
-// 			if(do_after(buckled_mob, 60 SECONDS,buckled_mob))
-// 				.=..()
-// 				REMOVE_TRAIT(M, TRAIT_RESTRAINED, "milkingmachine")
-// 				// Lamella TODO: Place for text, after a successful attempt to get out of a turned off machine with strong arousal
-// 				return
-// 			else
-// 				// Lamella TODO: Place for text after failing to get out of a turned off machine with great arousal
-// 				return
-// 	else
-// 		// Lamella TODO: Place for text about starting an attempt to get out without being too aroused
-// 		if(do_after(buckled_mob, 5 SECONDS,buckled_mob))
-// 			.=..()
-// 			REMOVE_TRAIT(M, TRAIT_RESTRAINED, "milkingmachine")
-// 			// Lamella TODO: Place for a text about successfully freeing yourself without being too aroused
-// 			return
-// 		else
-// 			// Lamella TODO: Place for text about an unsuccessful attempt to get out of the machine without great arousal
-// 			return
-
-
-// Mob attachment handler
-// /obj/structure/chair/milking_machine/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
-// 	.=..()
-
 
 /obj/structure/chair/milking_machine/user_unbuckle_mob(mob/living/M, mob/user, check_loc = TRUE)
 
@@ -333,32 +281,30 @@
 					// 	return
 				else
 					// Lamella TODO: Place for text about starting an attempt to get out when very aroused, but the machine is turned off
-					// REMOVE_TRAIT(M, TRAIT_RESTRAINED, "milkingmachine")
+
 					if(do_after(M, 60 SECONDS,M))
 
 						unbuckle_mob(M)
 						// Lamella TODO: Place for text, after a successful attempt to get out of a turned off machine with strong arousal
 						return
 					else
-						// ADD_TRAIT(M, TRAIT_RESTRAINED, "milkingmachine")
+
 						// Lamella TODO: Place for text after failing to get out of a turned off machine with great arousal
 						return
 			else
 				// Lamella TODO: Place for text about starting an attempt to get out without being too aroused
-				// REMOVE_TRAIT(M, TRAIT_RESTRAINED, "milkingmachine")
+
 
 				if(do_after(M, 5 SECONDS,M))
 					unbuckle_mob(M)
 					// Lamella TODO: Place for a text about successfully freeing yourself without being too aroused
 					return
 				else
-					// ADD_TRAIT(M, TRAIT_RESTRAINED, src)
 
 					// Lamella TODO: Place for text about an unsuccessful attempt to get out of the machine without great arousal
 					return
 		else
-			// REMOVE_TRAIT(M, TRAIT_RESTRAINED, "milkingmachine")
-			unbuckle_mob(M)
+			// unbuckle_mob(M)
 	else
 		.=..()
 		return
@@ -379,7 +325,6 @@
 	// Block the ability to open the interface of the car if we are attached to it
 	if(LAZYLEN(buckled_mobs))
 		if(user == buckled_mobs[1])
-			// REMOVE_TRAIT(user, TRAIT_RESTRAINED, "milkingmachine")
 			user_unbuckle_mob(user,user)
 			return
 	// Standard processing, open the machine interface
@@ -576,7 +521,6 @@
 			M.client.movement_keys = null
 			return
 
-
 // Liquid intake handler
 /obj/structure/chair/milking_machine/proc/retrive_liquids()
 	// Climax check
@@ -587,48 +531,18 @@
 
 	if(istype(current_organ, /obj/item/organ/genital/breasts))
 		if(current_organ.reagents.total_volume > 0)
-			switch(current_mode)
-				if("low")
-					current_organ.internal_fluids.trans_to(current_milk, milk_retrive_amount[2] * X)
-				if("medium")
-					current_organ.internal_fluids.trans_to(current_milk, milk_retrive_amount[3] * X)
-				if("hard")
-					current_organ.internal_fluids.trans_to(current_milk, milk_retrive_amount[4] * X)
-				else
-					// A place for an error handler for the wrong mode of the machine
-					return
+			current_organ.internal_fluids.trans_to(current_milk, milk_retrive_amount[current_mode] * X)
 		else
-			// Space for a mob's missing milk handler
 			return
 	else if (istype(current_organ, /obj/item/organ/genital/vagina))
 		if(current_organ.reagents.total_volume > 0)
-			switch(current_mode)
-				if("low")
-					current_organ.internal_fluids.trans_to(current_girlcum, girlcum_retrive_amount[2] * X)
-				if("medium")
-					current_organ.internal_fluids.trans_to(current_girlcum, girlcum_retrive_amount[3] * X)
-				if("hard")
-					current_organ.internal_fluids.trans_to(current_girlcum, girlcum_retrive_amount[4] * X)
-				else
-					// A place for an error handler for the wrong mode of the machine
-					return
+			current_organ.internal_fluids.trans_to(current_girlcum, girlcum_retrive_amount[current_mode] * X)
 		else
-			// Place for the handler of the missing vaginal secretion from the mob
 			return
 	else if (istype(current_organ, /obj/item/organ/genital/testicles))
 		if(current_organ.reagents.total_volume > 0)
-			switch(current_mode)
-				if("low")
-					current_organ.internal_fluids.trans_to(current_semen, semen_retrive_amount[2] * X)
-				if("medium")
-					current_organ.internal_fluids.trans_to(current_semen, semen_retrive_amount[3] * X)
-				if("hard")
-					current_organ.internal_fluids.trans_to(current_semen, semen_retrive_amount[4] * X)
-				else
-					// A place for an error handler for the wrong mode of the machine
-					return
+			current_organ.internal_fluids.trans_to(current_semen, semen_retrive_amount[current_mode] * X)
 		else
-			// Place for the handler of the missing seed on the mob
 			return
 	else
 		// A place for a handler for missing genitals
@@ -636,7 +550,6 @@
 
 // Handling the process of the impact of the machine on the organs of the mob
 /obj/structure/chair/milking_machine/proc/return_influence()
-	//src.current_mob.adjustArous(src.arousal_amounts[src.current_mode],src.pleasure_amounts[src.current_mode],src.pain_amounts[src.current_mode])
 	src.current_mob.adjustArousal(src.arousal_amounts[src.current_mode])
 	src.current_mob.adjustPleasure(src.pleasure_amounts[src.current_mode])
 	src.current_mob.adjustPain(src.pain_amounts[src.current_mode])
@@ -834,27 +747,27 @@
 /obj/structure/chair/milking_machine/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 
-	// Standard behavior. Uncomment for UI debugging
-	if(!ui)
-		ui = new(user, src, "MilkingMachine", name)
-		ui.open()
-	///////////////////////////////////////////////////////////
-
-	// //Block the interface if we are in the machine. Use in production
-	// if(LAZYLEN(buckled_mobs))
-	// 	if(user != src.buckled_mobs[1])
-	// 		if(!ui)
-	// 			ui = new(user, src, "MilkingMachine", name)
-	// 			ui.open()
-	// 			return
-	// 	else if(ui)
-	// 		ui.close()
-	// 		return
-	// else if(!ui)
+	// // Standard behavior. Uncomment for UI debugging
+	// if(!ui)
 	// 	ui = new(user, src, "MilkingMachine", name)
 	// 	ui.open()
-	// 	return
-	// ///////////////////////////////////////
+	// ///////////////////////////////////////////////////////////
+
+	//Block the interface if we are in the machine. Use in production
+	if(LAZYLEN(buckled_mobs))
+		if(user != src.buckled_mobs[1])
+			if(!ui)
+				ui = new(user, src, "MilkingMachine", name)
+				ui.open()
+				return
+		else if(ui)
+			ui.close()
+			return
+	else if(!ui)
+		ui = new(user, src, "MilkingMachine", name)
+		ui.open()
+		return
+	///////////////////////////////////////
 
 // Interface data filling handler
 /obj/structure/chair/milking_machine/ui_data(mob/user)
@@ -891,9 +804,8 @@
 	if(.)
 		return
 	if(action == "ejectCreature")
-		// REMOVE_TRAIT(current_mob, TRAIT_RESTRAINED, "milkingmachine")
 		unbuckle_mob(current_mob)
-		to_chat(usr,"You                       ecject creature from the machine") //Lamella TODO
+		to_chat(usr,"You ecject creature from the machine") //Lamella TODO
 		return TRUE
 
 	if(action == "ejectBeaker")
