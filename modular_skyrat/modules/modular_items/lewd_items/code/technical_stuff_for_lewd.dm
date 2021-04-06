@@ -52,7 +52,7 @@
 	return FALSE
 
 /mob/living/carbon/is_ballgagged()
-	return(istype(src.wear_mask, /obj/item/clothing/mask/ballgag))
+	return(istype(src.wear_mask, /obj/item/clothing/mask/ballgag) || istype(src.wear_mask, /obj/item/clothing/mask/ballgag_phallic))
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////this shouldn't be put anywhere, get your dirty hands off!////////////////

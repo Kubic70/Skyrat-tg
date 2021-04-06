@@ -12,31 +12,32 @@
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	body_parts_covered = CHEST
-	equip_delay_self = 200
 	strip_delay = 200
 	slowdown = 1 //you can't run with that thing literally squeezing your chest
-	var/time_to_sound = 20
-	var/time_to_sound_left
-	var/time = 2
-	var/tt
 	var/corset_laced_hard = FALSE
 
 /obj/item/clothing/suit/corset/AltClick(mob/user)
-    corset_laced_hard = !corset_laced_hard
-    to_chat(user, "<span class='notice'>You laced corset [corset_laced_hard? "hard. I do not envy whoever has to wear this..." : "weak."]</span>")
-    playsound(user, corset_laced_hard? 'sound/items/handling/cloth_pickup.ogg' : 'sound/items/handling/cloth_drop.ogg', 40, TRUE)
+	corset_laced_hard = !corset_laced_hard
+	to_chat(user, "<span class='notice'>You laced corset [corset_laced_hard? "hard. I do not envy whoever has to wear this..." : "weak."]</span>")
+	playsound(user, corset_laced_hard? 'sound/items/handling/cloth_pickup.ogg' : 'sound/items/handling/cloth_drop.ogg', 40, TRUE)
+	switch(corset_laced_hard)
+		if(TRUE)
+			slowdown = 2
+		if(FALSE)
+			slowdown = 1
 
-//message when equipping that thing. Also start processing
+//message when equipping that thing.
 /obj/item/clothing/suit/corset/equipped(mob/user, slot)
 	. = ..()
 	var/mob/living/carbon/human/C = user
 	if(src == C.wear_suit)
 		if(corset_laced_hard == TRUE)
-			user.visible_message("<font color=purple>Something squeezes your ribs tight! Breathing now is much harder.</font>")
+			to_chat(user,"<font color=purple>Something squeezes your ribs tight! Breathing now is much harder.</font>")
 	else
 		return
 
 //message when unequipping that thing
 /obj/item/clothing/suit/corset/dropped(mob/user)
 	. = ..()
-	user.visible_message("<font color=purple>Phew. Now you can breath normally.</font>")
+	if(corset_laced_hard == TRUE)
+		to_chat(user,"<font color=purple>Phew. Now you can breath normally.</font>")

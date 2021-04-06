@@ -1,5 +1,6 @@
-//Ok, shortly the idea is - almost all forms similar EXCEPT ONE THING - polychromic form.
-//It changes the whole item and it's stuff. Why? Because i dumb and stupid, i don't want to make 2-th dildo item.
+//////////////////
+///NORMAL DILDO///
+//////////////////
 
 /obj/item/dildo
 	name = "dildo"
@@ -64,16 +65,14 @@
 		return
 
 	var/message = ""
-	switch(user.zone_selected) //to let code know what part of body we gonna tickle
+	var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
+	switch(user.zone_selected) //to let code know what part of body we gonna fuck
 		if(BODY_ZONE_PRECISE_GROIN)
-			if(M.is_bottomless())
-				var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
-				if(vagina)
+			if(vagina)
+				if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
 					message = (user == M) ? pick("rubs their vagina with the [src]","gently jams their pussy with [src]","fucks their vagina with a [src]") : pick("delicately rubs [M]'s vagina with [src]", "uses [src] to fuck [M]'s vagina","jams [M]'s pussy with a [src]", "teasing [M]'s pussy with a [src]")
-					//M.adjustArous(6,8)
 					M.adjustArousal(6)
 					M.adjustPleasure(8)
-
 					if(prob(40))
 						M.emote(pick("twitch_s","moan"))
 					user.visible_message("<font color=purple>[user] [message].</font>")
@@ -84,17 +83,15 @@
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 60, TRUE)
 				else
-					user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
-
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
+				user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
 				return
 
-		if(BODY_ZONE_HEAD) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
+		if(BODY_ZONE_HEAD, BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_PRECISE_EYES) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
 			if(!M.is_mouth_covered())
 				message = (user == M) ? pick("sucks [src] with their mouth","licks [src], then slowly inserting it into their throat") : pick("fucks [M]'s mouth with [src]", "choking [M] by inserting [src] into [M]'s throat", "forcing [M] to suck a [src]", "inserts [src] into [M]'s throat")
-				//M.adjustArous(4,1)
 				M.adjustArousal(4)
 				M.adjustPleasure(1)
 				M.adjustOxyLoss(3)
@@ -115,7 +112,6 @@
 		else
 			if(M.is_bottomless())
 				message = (user == M) ? pick("puts [src] into their anus","slowly inserts [src] into their ass") : pick("fucks [M]'s ass with a [src]", "uses [src] to fuck [M]'s anus", "jams [M]'s ass with a [src]", "roughly fucks [M]'s ass with a [src], making [M] roll eyes up")
-				//M.adjustArous(5,5)
 				M.adjustArousal(5)
 				M.adjustPleasure(5)
 				if(prob(60))
@@ -129,7 +125,7 @@
 									'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 100, TRUE)
 
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s mouth is covered!</span>")
+				user.visible_message("<span class='danger'>Looks like [M]'s anus is covered!</span>")
 				return
 
 ///////////////////////
@@ -219,8 +215,6 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	if(can_customize)
 		. += "<span class='notice'>Alt-Click \the [src.name] to customize it.</span>"
 
-/
-
 //to check if we can change dildo's model
 /obj/item/custom_dildo/proc/check_menu(mob/living/user)
 	if(!istype(user))
@@ -239,6 +233,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 /obj/item/custom_dildo/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[poly_size]"
+	inhand_icon_state = "[initial(icon_state)]_[poly_size]"
 
 /obj/item/custom_dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
@@ -246,13 +241,12 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		return
 
 	var/message = ""
-	switch(user.zone_selected) //to let code know what part of body we gonna tickle
+	var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
+	switch(user.zone_selected) //to let code know what part of body we gonna fuck
 		if(BODY_ZONE_PRECISE_GROIN)
-			if(M.is_bottomless())
-				var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
-				if(vagina)
+			if(vagina)
+				if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
 					message = (user == M) ? pick("rubs their vagina with the [src]","gently jams their pussy with [src]","fucks their vagina with a [src]") : pick("delicately rubs [M]'s vagina with [src]", "uses [src] to fuck [M]'s vagina","jams [M]'s pussy with a [src]", "teasing [M]'s pussy with a [src]")
-					//M.adjustArous(6,8)
 					M.adjustArousal(6)
 					M.adjustPleasure(8)
 
@@ -266,17 +260,15 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 60, TRUE)
 				else
-					user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
-
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
+				user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
 				return
 
-		if(BODY_ZONE_HEAD) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
+		if(BODY_ZONE_HEAD, BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_PRECISE_EYES) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
 			if(!M.is_mouth_covered())
 				message = (user == M) ? pick("sucks [src] with their mouth","licks [src], then slowly inserting it into their throat") : pick("fucks [M]'s mouth with [src]", "choking [M] by inserting [src] into [M]'s throat", "forcing [M] to suck a [src]", "inserts [src] into [M]'s throat")
-				//M.adjustArous(4,1)
 				M.adjustArousal(4)
 				M.adjustPleasure(1)
 				M.adjustOxyLoss(3)
@@ -297,7 +289,6 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		else
 			if(M.is_bottomless())
 				message = (user == M) ? pick("puts [src] into their anus","slowly inserts [src] into their ass") : pick("fucks [M]'s ass with a [src]", "uses [src] to fuck [M]'s anus", "jams [M]'s ass with a [src]", "roughly fucks [M]'s ass with a [src], making [M] roll eyes up")
-				//M.adjustArous(5,5)
 				M.adjustArousal(5)
 				M.adjustPleasure(5)
 				if(prob(60))
@@ -311,5 +302,5 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 									'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 100, TRUE)
 
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s mouth is covered!</span>")
+				user.visible_message("<span class='danger'>Looks like [M]'s anus is covered!</span>")
 				return

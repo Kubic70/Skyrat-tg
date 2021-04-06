@@ -115,10 +115,14 @@
 		if(satisfaction <= 0)
 			stress +=1
 
+	if(in_company() && owner.has_status_effect(/datum/status_effect/climax))
+		stress = 0
+		satisfaction = 100
+
 /datum/brain_trauma/special/nymphomania/proc/in_company()
 	if(HAS_TRAIT(owner, TRAIT_BLIND))
 		return FALSE
-	for(var/mob/living/carbon/human/M in oview(owner, 7))
+	for(var/mob/living/carbon/human/M in oview(owner, 4))
 		if(!isliving(M)) //ghosts ain't people
 			return FALSE
 		if(istype(M, M.ckey))
@@ -337,15 +341,16 @@
 
 /datum/brain_trauma/special/bimbo/handle_speech(datum/source, list/speech_args)
 	SIGNAL_HANDLER
-	var/message = speech_args[SPEECH_MESSAGE]
-	var/list/split_message = splittext(message, " ") //List each word in the message
-	for (var/i in 1 to length(split_message))
-		if(findtext(split_message[i], "*") || findtext(split_message[i], ";") || findtext(split_message[i], ":"))
-			continue
-		split_message[i] = pick("Mmmph... Guuuh.","Hmmphh","Mmmfhg","Gmmmh...","Hnnnnngh... Ghh","Fmmmmph...")
+	if(HAS_TRAIT(owner, TRAIT_BIMBO))
+		var/message = speech_args[SPEECH_MESSAGE]
+		var/list/split_message = splittext(message, " ") //List each word in the message
+		for (var/i in 1 to length(split_message))
+			if(findtext(split_message[i], "*") || findtext(split_message[i], ";") || findtext(split_message[i], ":"))
+				continue
+			split_message[i] = pick("Mmmph... Guuuh.","Hmmphh","Mmmfhg","Gmmmh...","Hnnnnngh... Ghh","Fmmmmph...")
 
-	message = jointext(split_message, " ")
-	speech_args[SPEECH_MESSAGE] = message
+		message = jointext(split_message, " ")
+		speech_args[SPEECH_MESSAGE] = message
 
 /datum/brain_trauma/special/bimbo/on_gain()
 	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "bimbo", /datum/mood_event/bimbo)
@@ -404,12 +409,3 @@
 					if(91.01 to INFINITY)
 						. += "<font color=purple>[t_He] [t_is] extremely excited, exhausting from entolerable desire.</font>\n"
 
-///////////////////////
-///BIMBO CURSE STUFF///
-///////////////////////
-
-/*ADD BIMBO CURSE HERE
-Заменять любую речь на стоны
-Постоянное поддерживание возбуждения на 100.
-Изредка сообщения в чат о развратных микродействиях проклятого персонажа
-*/

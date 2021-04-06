@@ -5,10 +5,10 @@
 	name = "deprivation helmet"
 	desc = "Сompletely cuts the wearer from the outside world."
 	icon_state = "dephelmet"
-	worn_icon_state = "dephelmet"
 	inhand_icon_state = "dephelmet"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_hats.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_hats.dmi'
+	worn_icon_muzzled = 'modular_skyrat/master_files/icons/mob/clothing/head_muzzled.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDESNOUT|HIDEFACIALHAIR
@@ -22,7 +22,6 @@
 		//
 	var/current_helmet_color = "pink"
 	var/static/list/helmet_designs
-	var/static/list/functions
 	actions_types = list(/datum/action/item_action/toggle_vision,
 						 /datum/action/item_action/toggle_hearing,
 						 /datum/action/item_action/toggle_speech)
@@ -264,12 +263,6 @@
 		"pinkn" = image(icon = src.icon, icon_state = "dephelmet_pinkn"),
 		"tealn" = image(icon = src.icon, icon_state = "dephelmet_tealn"))
 
-/obj/item/clothing/head/helmet/space/deprivation_helmet/proc/populate_functions()
-	functions = list(
-		"muzzle" = image(icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_masks.dmi', icon_state = "ballgag_pink"),
-		"earmuffs" = image(icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_ears.dmi', icon_state = "kinkphones_pink_off"),
-		"prevent vision" = image(icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_eyes.dmi', icon_state = "kblindfold_pink"))
-
 //to update model
 /obj/item/clothing/head/helmet/space/deprivation_helmet/ComponentInitialize()
 	. = ..()
@@ -304,15 +297,12 @@
 	update_icon()
 	if(!length(helmet_designs))
 		populate_helmet_designs()
-	if(!length(functions))
-		populate_functions()
 
 //updating both and icon in hands and icon worn
 /obj/item/clothing/head/helmet/space/deprivation_helmet/update_icon_state()
 	.=..()
-	icon_state = icon_state = "[initial(icon_state)]_[current_helmet_color]"
+	icon_state = "[initial(icon_state)]_[current_helmet_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_helmet_color]"
-	worn_icon_state = "[initial(icon_state)]_[current_helmet_color]"
 
 //Here goes code that applies stuff on the wearer
 /obj/item/clothing/head/helmet/space/deprivation_helmet/equipped(mob/living/carbon/human/user, slot)

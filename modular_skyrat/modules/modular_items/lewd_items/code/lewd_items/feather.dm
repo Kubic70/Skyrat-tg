@@ -23,7 +23,7 @@
 					M.emote(pick("laugh","giggle","twitch","twitch_s"))
 				M.do_jitter_animation()
 				M.adjustStaminaLoss(4)
-				//M.adjustArous(3)
+				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "tickled", /datum/mood_event/tickled)
 				M.adjustArousal(3)
 				user.visible_message("<font color=purple>[user] [message].</font>")
 				playsound(loc, pick('sound/items/handling/cloth_drop.ogg', 					//i duplicate this part of code because im useless shitcoder that can't make it work properly without tons of repeating code blocks
@@ -34,13 +34,14 @@
 				return
 
 		if(BODY_ZONE_CHEST)
-			if(M.is_topless())
+			var/obj/item/organ/genital/badonkers = M.getorganslot(ORGAN_SLOT_BREASTS)
+			if(M.is_topless() || badonkers.visibility_preference == GENITAL_ALWAYS_SHOW)
 				message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their nipples with [src]") : pick("Teases [M]'s nipples with [src]", "Uses [src] to tickle [M]'s left nipple", "Uses [src] to tickle [M]'s right nipple")
 				if(prob(70))
 					M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
 				M.do_jitter_animation()
 				M.adjustStaminaLoss(4)
-				//M.adjustArous(3)
+				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "tickled", /datum/mood_event/tickled)
 				M.adjustArousal(3)
 				user.visible_message("<font color=purple>[user] [message].</font>")
 				playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
@@ -58,7 +59,7 @@
 						M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
 					M.do_jitter_animation()
 					M.adjustStaminaLoss(4)
-					//M.adjustArous(3)
+					SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "tickled", /datum/mood_event/tickled)
 					M.adjustArousal(3)
 					user.visible_message("<font color=purple>[user] [message].</font>")
 					playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
@@ -79,7 +80,7 @@
 						M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
 					M.do_jitter_animation()
 					M.adjustStaminaLoss(4)
-					//M.adjustArous(3)
+					SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "tickled", /datum/mood_event/tickled)
 					M.adjustArousal(3)
 					user.visible_message("<font color=purple>[user] [message].</font>")
 					playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
@@ -92,3 +93,45 @@
 			else
 				user.visible_message("<span class='danger'>Looks like [M] don't have any legs!</span>")
 				return
+
+		if(BODY_ZONE_R_ARM)
+			if(M.is_topless())
+				message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their armpit with [src]") : pick("Teases [M]'s right armpit with [src]", "Uses [src] to tickle [M]'s right armpit", "Uses [src] to tickle [M]'s underarm")
+				if(prob(70))
+					M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
+				M.do_jitter_animation()
+				M.adjustStaminaLoss(4)
+				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "tickled", /datum/mood_event/tickled)
+				M.adjustArousal(3)
+				user.visible_message("<font color=purple>[user] [message].</font>")
+				playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
+           				            'sound/items/handling/cloth_pickup.ogg',
+       	        	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
+
+			else
+				user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
+				return
+
+		if(BODY_ZONE_L_ARM)
+			if(M.is_topless())
+				message = (user == M) ? pick("tickles themselves with the [src]","Gently teases their armpit with [src]") : pick("Teases [M]'s left armpit with [src]", "Uses [src] to tickle [M]'s left armpit", "Uses [src] to tickle [M]'s underarm")
+				if(prob(70))
+					M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
+				M.do_jitter_animation()
+				M.adjustStaminaLoss(4)
+				SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "tickled", /datum/mood_event/tickled)
+				M.adjustArousal(3)
+				user.visible_message("<font color=purple>[user] [message].</font>")
+				playsound(loc, pick('sound/items/handling/cloth_drop.ogg',
+           				            'sound/items/handling/cloth_pickup.ogg',
+       	        	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
+
+			else
+				user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
+				return
+
+//Mood boost
+/datum/mood_event/tickled
+	description = "<span class='nicegreen'>Wooh... I was tickled. It was... Funny!</span>\n"
+	mood_change = 4
+	timeout = 2 MINUTES

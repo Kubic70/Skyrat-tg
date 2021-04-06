@@ -53,6 +53,7 @@
 	inhand_icon_state = "ballgag"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_masks.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_masks.dmi'
+	worn_icon_muzzled = 'modular_skyrat/master_files/icons/mob/clothing/mask_muzzled.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	gas_transfer_coefficient = 0.9
@@ -120,6 +121,7 @@
 	inhand_icon_state = "blindfold"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_masks.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_masks.dmi'
+	worn_icon_muzzled = 'modular_skyrat/master_files/icons/mob/clothing/mask_muzzled.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	gas_transfer_coefficient = 0.9
@@ -226,14 +228,17 @@
 	tt += delta_time
 	if(tt >= time)
 		if(ballgag_size == "small")
-			U.adjustOxyLoss(rand(0, 1))
-			U.emote(pick("gasp","choke","moan"))
+			U.adjustOxyLoss(rand(0, 2))
+			if(prob(30))
+				U.emote(pick("gasp","choke","moan"))
 			tt = 0
 		if(ballgag_size == "medium")
 			U.adjustOxyLoss(rand(0, 3))
-			U.emote(pick("gasp","choke","moan"))
+			if(prob(40))
+				U.emote(pick("gasp","choke","moan"))
 			tt = 0
 		if(ballgag_size == "big")
 			U.adjustOxyLoss(rand(1, 4))
-			U.emote(pick("gasp","choke","moan"))
+			if(prob(50))
+				U.emote(pick("gasp","choke","moan"))
 			tt = 0

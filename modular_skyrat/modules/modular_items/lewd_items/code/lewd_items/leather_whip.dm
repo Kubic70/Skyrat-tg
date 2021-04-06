@@ -171,7 +171,11 @@
 //toggle low pain mode. Because sometimes screaming isn't good
 /obj/item/leatherwhip/attack_self(mob/user, obj/item/I)
 	toggle_mode()
-	to_chat(user, "<span class='notice'>Whip now is [current_whip_type? "weak. Easy mode!" : "hard. Someone need to be punished!"]</span>")
+	switch(mode)
+		if("hard")
+			to_chat(user, "<span class='notice'>Whip now is hard. Someone need to be punished!</span>")
+		if("weak")
+			to_chat(user, "<span class='notice'>Whip now is weak. Easy mode!</span>")
 	update_icon()
 	update_icon_state()
 
