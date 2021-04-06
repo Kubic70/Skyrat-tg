@@ -6,7 +6,7 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_ears.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_ears.dmi'
 	strip_delay = 15
-	equip_delay_other = 25
+	// equip_delay_other = 25
 	custom_price = PAYCHECK_ASSISTANT * 2
 	var/kinky_headphones_on = FALSE
 	var/current_kinkphones_color = "pink"

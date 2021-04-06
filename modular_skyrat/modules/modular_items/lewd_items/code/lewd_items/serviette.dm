@@ -21,7 +21,7 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
 	w_class = WEIGHT_CLASS_TINY
 
-/obj/item/serviette/afterattack(atom/target, obj/item/I, mob/user, proximity)
+/obj/item/serviette/afterattack(atom/target, mob/user, proximity)
 	. = ..()
 	if(!proximity || !check_allowed_items(target))
 		return
@@ -39,11 +39,11 @@
 			var/obj/effect/decal/cleanable/cleanies = target
 			user.mind?.adjust_experience(/datum/skill/cleaning, max(round(cleanies.beauty/CLEAN_SKILL_BEAUTY_ADJUSTMENT),0)) //again, intentional that this does NOT round but mops do.
 			qdel(target)
+			qdel(src)
 			var/obj/item/serviette_used/W = new /obj/item/serviette_used
 			remove_item_from_storage(user)
 			user.put_in_hands(W)
-			qdel(I)
-			qdel(src)
+
 
 	else if(istype(target, /obj/structure/window))
 		user.visible_message("<span class='notice'>[user] begins to clean \the [target.name] with [src]...</span>", "<span class='notice'>You begin to clean \the [target.name] with [src]...</span>")
@@ -52,11 +52,11 @@
 			target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 			target.set_opacity(initial(target.opacity))
 			user.mind?.adjust_experience(/datum/skill/cleaning, CLEAN_SKILL_GENERIC_WASH_XP)
+			qdel(src)
 			var/obj/item/serviette_used/W = new /obj/item/serviette_used
 			remove_item_from_storage(user)
 			user.put_in_hands(W)
-			qdel(I)
-			qdel(src)
+
 	else
 		user.visible_message("<span class='notice'>[user] begins to clean \the [target.name] with [src]...</span>", "<span class='notice'>You begin to clean \the [target.name] with [src]...</span>")
 		if(do_after(user, clean_speedies, target = target))
@@ -67,11 +67,11 @@
 			target.wash(CLEAN_SCRUB)
 			target.remove_atom_colour(WASHABLE_COLOUR_PRIORITY)
 			user.mind?.adjust_experience(/datum/skill/cleaning, CLEAN_SKILL_GENERIC_WASH_XP)
+			qdel(src)
 			var/obj/item/serviette_used/W = new /obj/item/serviette_used
 			remove_item_from_storage(user)
 			user.put_in_hands(W)
-			qdel(I)
-			qdel(src)
+
 	return
 
 ///////////////////////////

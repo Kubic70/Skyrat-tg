@@ -13,7 +13,7 @@
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	body_parts_covered = null//they don't cover anything, but these code parts need to be here, because if they are not here - they make clothing disappear. Magic.
 	flags_inv = null
-	equip_delay_self = 100
+	// equip_delay_self = 100
 	strip_delay = 120
 	breakouttime = 10
 	slowdown = 1
