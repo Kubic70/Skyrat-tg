@@ -1,3 +1,10 @@
+//GEMINEE, READ ME
+// В общем вот тебе путь к файлу, учти что там названия у иконок. Переименовывай как хочется если будет нужно.
+//	icon_state = "mute"
+//	var/ears = "ears"
+//	var/color = "pink"
+//	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
+
 //seems like it kinda SPACE helmet. So probably abusable, but not really.
 //If you want to make it less abusable and remove from helmet/space to just /helmet/ - please, add code that removes hair on use. Because we weren't able to do that.
 
@@ -37,23 +44,22 @@
 /datum/action/item_action/toggle_vision
     name = "Vision switch"
     desc = "Makes it impossible to see anything"
-	//TODO: make icon for vision switch
+
 /datum/action/item_action/toggle_hearing
     name = "Hearing switch"
     desc = "Makes it impossible to hear anything"
-	//TODO: make icon for hearing switch
+
 /datum/action/item_action/toggle_speech
     name = "Speech switch"
     desc = "Makes it impossible to say anything"
-	//TODO: make icon for Speech switch
 
 //Vision switcher
 /datum/action/item_action/toggle_vision/Trigger()
 	var/obj/item/clothing/head/helmet/space/deprivation_helmet/H = target
 	var/mob/living/carbon/C = usr
 	if(istype(H))
-		if(src == C.head)
-			to_chat(usr, "<span class ='notice'> You can't reach the deprivation switch! </span>")
+		if(H == C.head)
+			to_chat(usr, "<span class ='notice'> You can't reach the deprivation helmet switch! </span>")
 		else
 			H.SwitchHelmet("vision")
 
@@ -62,8 +68,8 @@
 	var/obj/item/clothing/head/helmet/space/deprivation_helmet/H = target
 	var/mob/living/carbon/C = usr
 	if(istype(H))
-		if(src == C.head)
-			to_chat(usr, "<span class ='notice'> You can't reach the deprivation switch! </span>")
+		if(H == C.head)
+			to_chat(usr, "<span class ='notice'> You can't reach the deprivation helmet switch! </span>")
 		else
 			H.SwitchHelmet("hearing")
 
@@ -72,8 +78,8 @@
 	var/obj/item/clothing/head/helmet/space/deprivation_helmet/H = target
 	var/mob/living/carbon/C = usr
 	if(istype(H))
-		if(src == C.head)
-			to_chat(usr, "<span class ='notice'> You can't reach the deprivation switch! </span>")
+		if(H == C.head)
+			to_chat(usr, "<span class ='notice'> You can't reach the deprivation helmet switch! </span>")
 		else
 			H.SwitchHelmet("speech")
 
@@ -83,12 +89,14 @@
 	if(C == "speech")
 		if(muzzle == TRUE)
 			muzzle = FALSE
+			playsound(usr, 'sound/weapons/magout.ogg', 40, TRUE)
 			to_chat(usr,"Speech switch off")
 			if(usr.get_item_by_slot(ITEM_SLOT_HEAD) == src)
 				REMOVE_TRAIT(usr, TRAIT_MUTE, CLOTHING_TRAIT)
 				to_chat(usr,"<font color=purple>Your mouth is free. you breathe out with relief.</font>")
 		else
 			muzzle = TRUE
+			playsound(usr, 'sound/weapons/magin.ogg', 40, TRUE)
 			to_chat(usr,"Speech switch on")
 			if(usr.get_item_by_slot(ITEM_SLOT_HEAD) == src)
 				ADD_TRAIT(usr, TRAIT_MUTE, CLOTHING_TRAIT)
@@ -96,6 +104,7 @@
 	if(C == "hearing")
 		if(earmuffs == TRUE)
 			earmuffs = FALSE
+			playsound(usr, 'sound/weapons/magout.ogg', 40, TRUE)
 			to_chat(usr,"Hearing switch off")
 			if(usr.get_item_by_slot(ITEM_SLOT_HEAD) == src)
 				REMOVE_TRAIT(usr, TRAIT_DEAF, CLOTHING_TRAIT)
@@ -103,6 +112,7 @@
 				to_chat(usr,"<font color=purple>Finally you can hear the world around again.</font>")
 		else
 			earmuffs = TRUE
+			playsound(usr, 'sound/weapons/magin.ogg', 40, TRUE)
 			to_chat(usr,"Hearing switch on")
 			if(usr.get_item_by_slot(ITEM_SLOT_HEAD) == src)
 				ADD_TRAIT(usr, TRAIT_DEAF, CLOTHING_TRAIT)
@@ -113,12 +123,14 @@
 		var/mob/living/carbon/human/user = usr
 		if(prevent_vision == TRUE)
 			prevent_vision = FALSE
+			playsound(usr, 'sound/weapons/magout.ogg', 40, TRUE)
 			to_chat(usr,"Vision switch off")
 			if(usr.get_item_by_slot(ITEM_SLOT_HEAD) == src)
 				user.cure_blind("deprivation_helmet_[REF(src)]")
 				to_chat(usr,"<font color=purple>Helmet no longer restricts your vision.</font>")
 		else
 			prevent_vision = TRUE
+			playsound(usr, 'sound/weapons/magin.ogg', 40, TRUE)
 			to_chat(usr,"Vision switch on")
 			if(usr.get_item_by_slot(ITEM_SLOT_HEAD) == src)
 				user.become_blind("deprivation_helmet_[REF(src)]")
@@ -246,10 +258,12 @@
 	set desc = "Hear Ship Ambience Roar"
 	usr.client.prefs.toggles ^= SOUND_SHIP_AMBIENCE
 	usr.client.prefs.save_preferences()
+
+//	STUFF THAT IS "//" NOT REALLY USEFUL
 	if(usr.client.prefs.toggles & SOUND_SHIP_AMBIENCE)
-		to_chat(usr, "You will now hear ship ambience.")
+//		to_chat(usr, "You will now hear ship ambience.")
 	else
-		to_chat(usr, "You will no longer hear ship ambience.")
+//		to_chat(usr, "You will no longer hear ship ambience.")
 		usr.stop_sound_channel(CHANNEL_BUZZ)
 //Ship ambience check status function
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Ship_Ambience_Get_Checked(client/C)
@@ -335,16 +349,13 @@
 	. = ..()
 	if(muzzle == TRUE)
 		REMOVE_TRAIT(user, TRAIT_MUTE, CLOTHING_TRAIT)
-		to_chat(usr,"<font color=purple>Your mouth is free. you breathe out with relief.</font>")
 	if(earmuffs == TRUE)
 		earmuffs = FALSE
 		REMOVE_TRAIT(user, TRAIT_DEAF, CLOTHING_TRAIT)
 		Toggle_Sounds()
-		to_chat(usr,"<font color=purple>Finally you can hear the world around again.</font>")
 		earmuffs=  TRUE
 	if(prevent_vision == TRUE)
 		user.cure_blind("deprivation_helmet_[REF(src)]")
-		to_chat(usr,"<font color=purple>Helmet no longer restricts your vision.</font>")
 	//Let's drop sound states
 	ambience_sound_state = null
 	instruments_sound_state = null
