@@ -8,7 +8,7 @@
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_gloves.dmi'
 	// equip_delay_other = 60
 	// equip_delay_self = 60
-	strip_delay = 60
+	// strip_delay = 60
 	breakouttime = 10
 
 //That part allows reinforcing this item with handcuffs
@@ -32,9 +32,9 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_gloves.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_gloves.dmi'
 	clothing_flags = DANGEROUS_OBJECT
-	equip_delay_other = 80
-	equip_delay_self = 80
-	strip_delay = 80
+	// equip_delay_other = 80
+	// equip_delay_self = 80
+	// strip_delay = 80
 	breakouttime = 1000 //do not touch this, i beg you.
 
 //latex gloves
