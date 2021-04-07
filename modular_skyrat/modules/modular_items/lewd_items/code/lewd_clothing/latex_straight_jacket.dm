@@ -14,7 +14,7 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	clothing_flags = DANGEROUS_OBJECT
-	// equip_delay_self = 100
+	equip_delay_self = NONE
 	strip_delay = 120
 	breakouttime = 10
 
@@ -45,6 +45,6 @@
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS|HANDS
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	clothing_flags = DANGEROUS_OBJECT
-	equip_delay_self = 100
+	equip_delay_self = NONE
 	strip_delay = 120
 	breakouttime = 3000

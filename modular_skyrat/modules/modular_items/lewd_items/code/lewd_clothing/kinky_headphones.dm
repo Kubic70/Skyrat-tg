@@ -20,8 +20,8 @@
 //create radial menu
 /obj/item/clothing/ears/kinky_headphones/proc/populate_kinkphones_designs()
 	kinkphones_designs = list(
-		"pink"    = image (icon = src.icon, icon_state = "kinkphones_pink_on"),
-		"teal"      = image(icon = src.icon, icon_state = "kinkphones_teal_on"))
+		"pink" = image (icon = src.icon, icon_state = "kinkphones_pink_on"),
+		"teal" = image(icon = src.icon, icon_state = "kinkphones_teal_on"))
 
 //to prevent hearing and e.t.c
 /obj/item/clothing/ears/kinky_headphones/ComponentInitialize()
@@ -56,19 +56,21 @@
 //we equipping it so we deaf now
 /obj/item/clothing/ears/kinky_headphones/equipped(mob/user, slot)
 	. = ..()
+	var/mob/living/carbon/human/H = user
 	if(ishuman(user) && slot == ITEM_SLOT_EARS)
 		if(kinky_headphones_on == FALSE)
 			ADD_TRAIT(user, TRAIT_DEAF, CLOTHING_TRAIT)
-			to_chat(usr,"<font color=purple>You can barely hear anything! Other sensations have escalated...</font>")
+			to_chat(H,"<font color=purple>You can barely hear anything! Other sensations have escalated...</font>")
 		if(kinky_headphones_on == TRUE)
 			ADD_TRAIT(user, TRAIT_DEAF, CLOTHING_TRAIT)
-			to_chat(usr,"<font color=purple>Strange, but relaxing music fills your mind. You feel so... Calm.</font>")
+			to_chat(H,"<font color=purple>Strange, but relaxing music fills your mind. You feel so... Calm.</font>")
 
 //we dropping item so we not deaf now. hurray.
 /obj/item/clothing/ears/kinky_headphones/dropped(mob/user)
 	. = ..()
+	var/mob/living/carbon/human/H = user
 	REMOVE_TRAIT(user, TRAIT_DEAF, CLOTHING_TRAIT)
-	to_chat(usr,"<font color=purple>Finally you can hear the world around again.</font>")
+	to_chat(H,"<font color=purple>Finally you can hear the world around again.</font>")
 
 
 //to make it change model on click

@@ -13,7 +13,7 @@
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	body_parts_covered = null//they don't cover anything, but these code parts need to be here, because if they are not here - they make clothing disappear. Magic.
 	flags_inv = null
-	// equip_delay_self = 100
+	equip_delay_self = NONE
 	strip_delay = 120
 	breakouttime = 10
 	slowdown = 1
@@ -77,14 +77,14 @@
 	. = ..()
 	var/mob/living/carbon/human/C = user
 	if(src == C.wear_suit)
-		user.visible_message("<font color=purple>Shackles restrainting your body! But locks look like... Plastic?</font>")
+		to_chat(user, "<font color=purple>Shackles restrainting your body! But locks look like... Plastic?</font>")
 	else
 		return
 
 //message when unequipping that thing
 /obj/item/clothing/suit/straight_jacket/shackles/dropped(mob/user)
 	. = ..()
-	user.visible_message("<font color=purple>Shackles no longer restraints your body. It wasn't too hard, huh?.</font>")
+	to_chat(user, "<font color=purple>Shackles no longer restraints your body. It wasn't too hard, huh?.</font>")
 
 
 //reinforcing normal version by using handcuffs on it.
@@ -124,11 +124,11 @@
 	. = ..()
 	var/mob/living/carbon/human/C = user
 	if(src == C.wear_suit)
-		user.visible_message("<font color=purple>Shackles restrainting your body!</font>")
+		to_chat(user, "<font color=purple>Shackles restrainting your body!</font>")
 	else
 		return
 
 //message when unequipping that thing
 /obj/item/clothing/suit/straight_jacket/shackles/reinforced/dropped(mob/user)
 	. = ..()
-	user.visible_message("<font color=purple>Shackles no longer restraints your body. You are free!</font>")
+	to_chat(user, "<font color=purple>Shackles no longer restraints your body. You are free!</font>")

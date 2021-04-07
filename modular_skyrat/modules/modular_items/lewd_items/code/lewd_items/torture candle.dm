@@ -96,7 +96,8 @@
 	open_flame()
 	update_brightness()
 
-/obj/item/bdsm_candle/attack_self(mob/user, obj/item/I)
+/obj/item/bdsm_candle/AltClick(mob/user, obj/item/I)
+	. = ..()
 	if(lit == FALSE)
 		if(color_changed == FALSE)
 			var/choice = show_radial_menu(user,src, candle_designs, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)

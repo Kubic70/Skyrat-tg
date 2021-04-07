@@ -13,33 +13,10 @@
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	can_adjust = FALSE
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
-	// equip_delay_other = 80
-	// equip_delay_self = 80
 	strip_delay = 80
 	mutant_variants = STYLE_DIGITIGRADE|STYLE_TAUR_ALL
-	// fitted = NO_FEMALE_UNIFORM
-	// var/suit_gender = "male"
-	// gender = PLURAL
-
-// //to update icon on mob
-// /obj/item/clothing/under/misc/latex_catsuit/ComponentInitialize()
-// 	. = ..()
-// 	AddElement(/datum/element/update_icon_updates_onmob)
-
-// //to spawn catsuit with sprite
-// /obj/item/clothing/under/misc/latex_catsuit/Initialize()
-// 	. = ..()
-// 	update_icon_state()
-// 	update_icon()
-
-// /obj/item/clothing/under/misc/latex_catsuit/update_icon()
-
-// //need to correctly change sprite
-// /obj/item/clothing/under/misc/latex_catsuit/update_icon_state()
-// 	icon_state = "[initial(icon_state)]_[suit_gender]"
-// 	worn_icon_state = icon_state
-// 	update_icon()
-// 	// update_inv_w_uniform()
+	var/mutable_appearance/breasts_overlay
+	var/mutable_appearance/breasts_icon_overlay
 
 //this fragment of code makes unequipping not instant
 /obj/item/clothing/under/misc/latex_catsuit/attack_hand(mob/user)
@@ -53,23 +30,68 @@
 // //some gender identification magic
 /obj/item/clothing/under/misc/latex_catsuit/equipped(mob/living/U, slot)
 	var/mob/living/carbon/human/C = U
+	var/obj/item/organ/genital/breasts/B = C.getorganslot(ORGAN_SLOT_BREASTS)
 	if(src == C.w_uniform)
 		if(U.gender == FEMALE)
 			to_chat(U,"gender female")
 			icon_state = "latex_catsuit_female"
-			// update_icon()
-			// update_icon_state()
 			U.update_inv_w_uniform()
 
 		if(U.gender == MALE)
 			icon_state = "latex_catsuit_male"
-			// update_icon()
-			// update_icon_state()
 			U.update_inv_w_uniform()
 		. = ..()
+
+	//For giving taurs proper sprites
+	if(C.dna.species.mutant_bodyparts["taur"])
+		breasts_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_uniform/lewd_uniform-snake.dmi', "none")
+		update_overlays()
+	else
+		breasts_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_uniform/lewd_uniform.dmi', "none")
+		update_overlays()
+	. = ..()
+
+	//Breasts overlay for catsuit
+	if(B.genital_size >= 6 || B.genital_type == "pair")
+		breasts_overlay.icon_state = "breasts_double"
+		breasts_icon_overlay.icon_state = "iconbreasts_double"
+		accessory_overlay = breasts_overlay
+		add_overlay(breasts_icon_overlay)
+		update_overlays()
+	if(B.genital_type == "quad")
+		breasts_overlay.icon_state = "breasts_quad"
+		breasts_icon_overlay.icon_state = "iconbreasts_quad"
+		accessory_overlay = breasts_overlay
+		add_overlay(breasts_icon_overlay)
+		update_overlays()
+	if(B.genital_type == "sextuple")
+		breasts_overlay.icon_state = "breasts_sextuple"
+		breasts_icon_overlay.icon_state = "iconbreasts_sextuple"
+		accessory_overlay = breasts_overlay
+		add_overlay(breasts_icon_overlay)
+		update_overlays()
+	. = ..()
+
+	if(C.dna.species.mutant_bodyparts["taur"])
+		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][C.dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
+		S.hide_legs = TRUE
+
+/obj/item/clothing/under/misc/latex_catsuit/dropped(mob/living/U)
+	. = ..()
+	var/mob/living/carbon/human/C = U
+	var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][C.dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
+	accessory_overlay = null
+	breasts_overlay.icon_state = "none"
+	cut_overlay(breasts_icon_overlay)
+	breasts_icon_overlay.icon_state = "none"
+	S.hide_legs = FALSE
+
 //Plug to bypass the bug with instant suit equip/drop
 /obj/item/clothing/under/misc/latex_catsuit/MouseDrop(atom/over_object)
 
-
-
-
+/obj/item/clothing/under/misc/latex_catsuit/Initialize()
+	. = ..()
+	breasts_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_uniform/lewd_uniform.dmi', "none", ABOVE_MOB_LAYER)
+	breasts_overlay.icon_state = "breasts"
+	breasts_icon_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_uniform.dmi', "none")
+	breasts_icon_overlay.icon_state = "breasts"

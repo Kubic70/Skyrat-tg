@@ -148,7 +148,7 @@
 		"pink" = image (icon = src.icon, icon_state = "chokegag_[ballgag_size]_pink"),
 		"teal" = image(icon = src.icon, icon_state = "chokegag_[ballgag_size]_teal"))
 
-//to change size
+//to change size and colour
 /obj/item/clothing/mask/ballgag_phallic/AltClick(mob/user, obj/item/I)
 	if(was_reformed == FALSE)
 		. = ..()
@@ -161,22 +161,14 @@
 		update_icon()
 		update_icon_state()
 		was_reformed = TRUE
-	else
-		return
-
-//to change color
-/obj/item/clothing/mask/ballgag_phallic/attack_self(mob/user, obj/item/I)
-	if(was_recolored == FALSE)
-		. = ..()
-		if(.)
-			return
-		var/choice = show_radial_menu(user,src, gag_colors, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
-		if(!choice)
-			return FALSE
-		ballgag_color = choice
-		update_icon()
-		update_icon_state()
-		was_recolored = TRUE
+	if(was_reformed == TRUE)
+		if(was_recolored == FALSE)
+			var/choice = show_radial_menu(user,src, gag_colors, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
+			if(!choice)
+			ballgag_color = choice
+			update_icon()
+			update_icon_state()
+			was_recolored = TRUE
 	else
 		return
 

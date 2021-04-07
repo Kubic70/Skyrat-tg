@@ -38,7 +38,7 @@
 					Addiction withdrawals can cause brain damage and shortness of breath. Overdosage can lead to brain traumas."
 	taste_description = "liquid desire"
 	color = "#FF2BFF"//dark pink
-	overdose_threshold = 40 //Heavy consequences. Supposed to be big value.
+	overdose_threshold = 25 //Heavy consequences. Supposed to be big value.
 
 /datum/reagent/drug/hexacrocin/on_mob_life(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))

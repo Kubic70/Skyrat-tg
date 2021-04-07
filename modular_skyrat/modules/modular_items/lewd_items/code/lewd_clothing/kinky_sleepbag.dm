@@ -94,23 +94,24 @@
 	if(ishuman(user) && slot == ITEM_SLOT_OCLOTHING)
 		ADD_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
 		if(bag_state == "inflated")
-			to_chat(usr,"<font color=purple>You realize that you can't move even an inch. Inflated sleepbag squeezes you from all sides.</font>")
+			to_chat(H,"<font color=purple>You realize that you can't move even an inch. Inflated sleepbag squeezes you from all sides.</font>")
 
 		if(bag_state == "deflated")
-			to_chat(usr,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
+			to_chat(H,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
 
 		START_PROCESSING(SSobj, src)
 			time_to_sound_left = time_to_sound
 
 //to inflate/deflate that thing
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/attack_self(mob/user, obj/item/I)
+	var/mob/living/carbon/human/H = user
 	if(bag_fold == FALSE)
 		toggle_mode()
-		to_chat(user, "<span class='notice'>Sleepbag now is [bag_state? "inflated." : "deflated."]</span>")
+		to_chat(H, "<span class='notice'>Sleepbag now is [bag_state? "inflated." : "deflated."]</span>")
 		update_icon()
 		update_icon_state()
 	else
-		to_chat(usr, "<span class ='notice'> You can't inflate bag while its folded! </span>")
+		to_chat(H, "<span class ='notice'> You can't inflate bag while its folded! </span>")
 		return
 
 //to fold that thing
@@ -127,9 +128,9 @@
 	var/mob/living/carbon/human/C = usr
 	var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/H = src
 	if(src == C.wear_suit)
-		to_chat(usr, "<span class ='notice'> You can't fold bag when you strapped inside it! </span>")
+		to_chat(C, "<span class ='notice'> You can't fold bag when you strapped inside it! </span>")
 	if(bag_state == "inflated")
-		to_chat(usr, "<span class ='notice'> Sleepbag is inflated, you can't fold it! </span>")
+		to_chat(C, "<span class ='notice'> Sleepbag is inflated, you can't fold it! </span>")
 	else
 		fold(H)
 

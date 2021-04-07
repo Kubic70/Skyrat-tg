@@ -62,11 +62,12 @@
 	. = ..()
 	var/mob/living/carbon/C = user
 	if(src == C.glasses)
-		user.visible_message("<font color=purple>Blindfold is blocking your vision! You feel yourself so helpless...</font>")
+		to_chat(C, "<font color=purple>Blindfold is blocking your vision! You feel yourself so helpless...</font>")
 	else
 		return
 
 //message when unequipping that thing
 /obj/item/clothing/glasses/blindfold/kinky/dropped(mob/user)
 	. = ..()
-	user.visible_message("<font color=purple>Blindfold no longer restricts your vision.</font>")
+	var/mob/living/carbon/C = user
+	to_chat(C, "<font color=purple>Blindfold no longer restricts your vision.</font>")
