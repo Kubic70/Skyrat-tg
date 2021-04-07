@@ -17,23 +17,41 @@
 /mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
 	. = ..()
 	if(ITEM_SLOT_GLOVES)
-		if(gloves?.breakouttime) //when equipping a ball mittens
-			ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
-			stop_pulling()
-			update_action_buttons_icon() //certain action buttons will no longer be usable.
-		update_inv_gloves()
+		if(I)
+			if(I.breakouttime) //when equipping a ball mittens
+				ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
+				stop_pulling()
+				update_action_buttons_icon() //certain action buttons will no longer be usable.
+				return
+			update_inv_gloves()
 
 /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..() //See mob.dm for an explanation on this and some rage about people copypasting instead of calling ..() like they should.
-	if(I == gloves)
-		if(gloves?.breakouttime) //when unequipping a ball mittens
+	if(I)
+		if(I.breakouttime) //when unequipping a ball mittens
 			REMOVE_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
 			drop_all_held_items()
 			update_action_buttons_icon() //certain action buttons may be usable again.
-		gloves = null
+		I = null
 		if(!QDELETED(src))
 			update_inv_gloves()
 
+/mob/living/carbon/human/resist_restraints()
+	var/obj/item/clothing/gloves/G = usr.get_item_by_slot(ITEM_SLOT_GLOVES)
+	if(G != null)
+		if(istype(G, /obj/item/clothing/gloves/))
+			if(G.breakouttime)
+				to_chat(usr, "You try to unequip [G].")
+				if(do_after(usr,G.breakouttime, usr))
+					REMOVE_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
+					usr.put_in_hands(G)
+					drop_all_held_items()
+					update_inv_gloves()
+					to_chat(usr, "You succesefuly unequipped [src].")
+				else
+					to_chat(usr, "You failed to unequipped [G].")
+					return
+	..()
 ////////////////////////////////////////////////////////////////////////////////////////
 ///////i needed this code for ballgag, because it doesn't muzzle, it kinda voxbox///////
 //wearer for moaning. So i really need it, don't touch or whole ballgag will be broken//
