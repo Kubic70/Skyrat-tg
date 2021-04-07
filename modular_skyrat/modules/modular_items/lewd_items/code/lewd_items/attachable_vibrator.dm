@@ -93,7 +93,33 @@
 			vibration_mode = "hard"
 			playsound(loc, 'sound/weapons/magin.ogg', 20, TRUE)
 
-//Дальше пусть резвится кубик. На заметку - учти что оно НЕ должно работать если игрушка выключена.
+/obj/item/eggvib/equipped(mob/user, slot, initial)
+	. = ..()
+	if(slot == "vagina" || slot == "anus" || slot == "penis" || slot == "breasts")
+		START_PROCESSING(SSobj, src)
+		to_chat(world, "vibrating ON")
+
+/obj/item/eggvib/dropped(mob/user, silent)
+	. = ..()
+	STOP_PROCESSING(SSobj, src)
+	to_chat(world, "vibrating OFF")
+
+/obj/item/eggvib/process(delta_time)
+	. = ..()
+	var/mob/living/U = loc
+	var/bzz = 0
+	if(toy_on == TRUE)
+		switch(vibration_mode)
+			if("low")
+				bzz = 0.1
+			if("medium")
+				bzz = 0.3
+			if("hard")
+				bzz = 0.5
+		U.adjustArousal(bzz * delta_time)
+		U.adjustPleasure(bzz * delta_time)
+	to_chat(world, "vibrating...[bzz]")
+
 
 //////////////////////////
 ///Signal vibrating egg///
