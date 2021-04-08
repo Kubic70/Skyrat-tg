@@ -1,3 +1,7 @@
+///////////////////
+///NORMAL COLLAR///
+///////////////////
+
 //To determine what kind of stuff we can put in collar.
 
 /datum/component/storage/concrete/pockets/small/kink_collar
@@ -15,6 +19,11 @@
 	/obj/item/food/cookie,
 	/obj/item/food/cookie/sugar,
 	/obj/item/key/kink_collar))
+
+/datum/component/storage/concrete/pockets/small/mind_collar/Initialize()
+	. = ..()
+	max_items = 1
+	can_hold = typecacheof(/obj/item/connect/mind_controller)
 
 //Here goes code for normal collar
 
@@ -70,7 +79,9 @@
 	tagname = stripped_input(user, "Would you like to change the name on the tag?", "Name your new pet", "Spot", MAX_NAME_LEN)
 	name = "[initial(name)] - [tagname]"
 
-//Here goes code for lockable version
+////////////////////////
+///COLLAR WITH A LOCK///
+////////////////////////
 
 /obj/item/clothing/neck/kink_collar/locked
 	name = "locked collar"
@@ -157,7 +168,9 @@
 		add_fingerprint(usr)
 	..()
 
-//And here some code for key thingy
+//This is a KEY moment of this code. You got it. Key.
+//...
+//It's 2:56 of 08.04.2021, i want to sleep. Please laugh.
 
 /obj/item/key/kink_collar
 	name = "kink collar key"
@@ -239,4 +252,44 @@
 		else
 			to_chat(user, "<span class='warning'>Looks like the lock is broken.</span>")
 
+/////////////////////////
+///MIND CONTROL COLLAR///
+/////////////////////////
 
+//Ok, first - it's not mind control. Just forcing someone to do emotes that user added to remote thingy. Just a funny illegal ERP toy.
+
+
+/obj/item/connect/mind_controller
+	name = "mind controller"
+	desc = "Small remote for sending basic emotion patterns to collar."
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
+	icon_state = "mindcontroller"
+	var/remote_id = null //Adding same unique id to key
+
+/obj/item/clothing/neck/mind_collar
+	name = "mind collar"
+	desc = "Tight collar. Looks like it has some strange high-tech emitters on its sides."
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_neck.dmi'
+	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_neck.dmi'
+	icon_state = "mindcollar"
+	inhand_icon_state = "mindcollar"
+	pocket_storage_component_path = /datum/component/storage/concrete/pockets/small/mind_collar
+	var/treat_path = /obj/item/key/kink_collar
+	var/remote_id = null //Adding unique id to collar
+
+/obj/item/clothing/neck/mind_collar/Initialize()
+	. = ..()
+	var/remote
+	if(treat_path)
+		remote = new treat_path(src)
+		if(istype(remote,/obj/item/connect/mind_controller))
+			var/id = rand(111111,999999)
+			var/obj/item/connect/mind_controller/L = src
+			var/obj/item/clothing/neck/mind_collar/K = remote
+			L.remote_id = id
+			K.remote_id = id
+
+//Окей, Джемини. Тут все подготовлено, у них в теории должен быть одинаковый ИД но ты на всякий проверь.
+//Осталось сделать так что при нажатии пульта с альтом выводится штука принимающая текстовую инфу (в гипноочках есть такая)
+//И затем при нажатии на пульт сигнал посылался носителю ошейника. Обязательно сделай дефолтную эмоцию вроде "Дрожит"
+//Естественно на английском. И тут нельзя использовать emote, нужно тоже самое что используется для /me

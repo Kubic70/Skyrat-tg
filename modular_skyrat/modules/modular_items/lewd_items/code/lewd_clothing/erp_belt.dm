@@ -31,7 +31,7 @@
 		/obj/item/buttplug,
 		/obj/item/tickle_feather,
 		/obj/item/kinky_shocker,
-		/obj/item/leatherwhip,
+		/obj/item/clothing/mask/leatherwhip,
 		/obj/item/magic_wand,
 		/obj/item/restraints/handcuffs/lewd,
 		/obj/item/bdsm_candle,

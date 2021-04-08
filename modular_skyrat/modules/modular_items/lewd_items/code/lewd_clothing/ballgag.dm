@@ -1,6 +1,6 @@
 //things for normal ballgag
 /obj/item/clothing/mask/ballgag
-	var/list/moans ///phrases to be said when the player attempts to talk when speech modification / voicebox is enabled.
+	var/list/moans ///phrases to be said when the player attempts to talk when speech modification.
 	var/list/moans_alt ///lower probability phrases to be said when talking.
 	var/moans_alt_probability ///probability for alternative sounds to play.
 
@@ -125,7 +125,6 @@
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	gas_transfer_coefficient = 0.9
-	// equip_delay_other = 40
 	moans = list("Mmmph...", "Hmmphh", "Mmmfhg", "Gmmmh...")
 	moans_alt = list("Mhgm...", "Hmmmp!...", "GMmmhp!")
 	moans_alt_probability = 5
@@ -165,6 +164,7 @@
 		if(was_recolored == FALSE)
 			var/choice = show_radial_menu(user,src, gag_colors, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
 			if(!choice)
+				return FALSE
 			ballgag_color = choice
 			update_icon()
 			update_icon_state()

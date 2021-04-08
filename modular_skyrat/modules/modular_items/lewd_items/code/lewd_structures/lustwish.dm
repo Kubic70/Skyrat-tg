@@ -32,7 +32,7 @@
 					/obj/item/tickle_feather = 8,
 					/obj/item/fleshlight = 8,
 					/obj/item/kinky_shocker = 4,
-					/obj/item/leatherwhip = 4,
+					/obj/item/clothing/mask/leatherwhip = 4,
 					/obj/item/magic_wand = 4,
 					/obj/item/bdsm_candle = 4,
 					/obj/item/vibrator = 4,

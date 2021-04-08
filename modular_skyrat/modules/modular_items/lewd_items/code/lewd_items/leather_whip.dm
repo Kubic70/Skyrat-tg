@@ -1,13 +1,17 @@
-/obj/item/leatherwhip
+/obj/item/clothing/mask/leatherwhip
 	name = "leather whip"
 	desc = "A tool that used for domination. Hurts in a way you like it."
 	icon_state = "leather"
+	worn_icon_state = "leather"
 	inhand_icon_state = "leather"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
+	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_masks.dmi'
+	worn_icon_muzzled = 'modular_skyrat/master_files/icons/mob/clothing/mask_muzzled.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	w_class = WEIGHT_CLASS_NORMAL
 	hitsound = 'sound/weapons/whip.ogg'
+	//Customization
 	var/color_changed = FALSE
 	var/form_changed = FALSE
 	var/current_whip_color = "pink"
@@ -16,34 +20,54 @@
 	var/static/list/whip_designs
 	var/static/list/whip_forms
 	var/static/list/whip_types
+
+	//Changing pain mode
 	var/list/modes = list("hard" = "weak", "weak" = "hard")
 	var/mode = "hard"
 
+	//When taking that thing in mouth
+	modifies_speech = TRUE
+	flags_cover = MASKCOVERSMOUTH
+	var/list/moans ///phrases to be said when the player attempts to talk when speech modification
+	var/list/moans_alt ///lower probability phrases to be said when talking.
+	var/moans_alt_probability
+	moans = list("Mmmph...", "Hmmphh", "Mmmfhg", "Gmmmh...")
+	moans_alt = list("Mhgm...", "Hmmmp!...", "GMmmhp!")
+	moans_alt_probability = 5
+
+//No speaking
+/obj/item/clothing/mask/leatherwhip/handle_speech(datum/source, list/speech_args)
+	speech_args[SPEECH_MESSAGE] = pick((prob(moans_alt_probability) && LAZYLEN(moans_alt)) ? moans_alt : moans)
+	playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f1.ogg',
+						'modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f2.ogg',
+						'modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f3.ogg',
+						'modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f4.ogg'), 70, 1, -1)
+
 //create radial menu
-/obj/item/leatherwhip/proc/populate_whip_designs()
+/obj/item/clothing/mask/leatherwhip/proc/populate_whip_designs()
 	whip_designs = list(
 		"pink" = image (icon = src.icon, icon_state = "leather_whip_pink_hard"),
 		"teal" = image(icon = src.icon, icon_state = "leather_whip_teal_hard"))
 
 //radial menu for changing form
-/obj/item/leatherwhip/proc/populate_whip_forms()
+/obj/item/clothing/mask/leatherwhip/proc/populate_whip_forms()
 	whip_forms = list(
 		"whip" = image (icon = src.icon, icon_state = "leather_whip_pink_hard"),
 		"crotch" = image(icon = src.icon, icon_state = "leather_crotch_pink_hard"))
 
 //radial menu for changing type
-/obj/item/leatherwhip/proc/populate_whip_types()
+/obj/item/clothing/mask/leatherwhip/proc/populate_whip_types()
 	whip_types = list(
 		"weak" = image (icon = src.icon, icon_state = "leather_whip_pink_weak"),
 		"hard" = image(icon = src.icon, icon_state = "leather_crotch_pink_hard"))
 
 //to update model lol
-/obj/item/leatherwhip/ComponentInitialize()
+/obj/item/clothing/mask/leatherwhip/ComponentInitialize()
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
 
 //to change color
-/obj/item/leatherwhip/AltClick(mob/user, obj/item/I)
+/obj/item/clothing/mask/leatherwhip/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -72,14 +96,14 @@
 		return
 
 //to check if we can change whip's model
-/obj/item/leatherwhip/proc/check_menu(mob/living/user)
+/obj/item/clothing/mask/leatherwhip/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/leatherwhip/Initialize()
+/obj/item/clothing/mask/leatherwhip/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
@@ -90,13 +114,14 @@
 	if(!length(whip_types))
 		populate_whip_types()
 
-/obj/item/leatherwhip/update_icon_state()
+/obj/item/clothing/mask/leatherwhip/update_icon_state()
 	. = ..()
 	icon_state = icon_state = "[initial(icon_state)]_[current_whip_form]_[current_whip_color]_[current_whip_type]"
 	inhand_icon_state = "[initial(icon_state)]_[current_whip_form]_[current_whip_color]_[current_whip_type]"
+	worn_icon_state = "[initial(icon_state)]_[current_whip_form]"
 
 //safely discipline someone without damage
-/obj/item/leatherwhip/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/clothing/mask/leatherwhip/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return
@@ -169,7 +194,7 @@
 				return
 
 //toggle low pain mode. Because sometimes screaming isn't good
-/obj/item/leatherwhip/attack_self(mob/user, obj/item/I)
+/obj/item/clothing/mask/leatherwhip/attack_self(mob/user, obj/item/I)
 	toggle_mode()
 	switch(mode)
 		if("hard")
@@ -180,7 +205,7 @@
 	update_icon_state()
 
 //pain mode switch
-/obj/item/leatherwhip/proc/toggle_mode()
+/obj/item/clothing/mask/leatherwhip/proc/toggle_mode()
 	mode = modes[mode]
 	switch(mode)
 		if("hard")

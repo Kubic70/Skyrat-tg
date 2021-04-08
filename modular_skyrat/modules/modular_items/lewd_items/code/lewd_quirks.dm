@@ -4,6 +4,7 @@
 
 #define TRAIT_NYMPHOMANIA	"nymphomania"
 #define TRAIT_MASOCHISM		"masochism"
+#define TRAIT_SADISM		"sadism"
 #define TRAIT_BIMBO 		"bimbo"
 #define TRAIT_NEVERBONER	"neverboner"
 #define TRAIT_SOBSESSED		"sexual obsession"
@@ -381,6 +382,54 @@
 	medical_record_text = "Subject has masochism."
 
 //All this stuff calculated in arousal_system.dm, by transfering pain into pleasure.
+
+////////////
+///SADISM///
+////////////
+
+/datum/quirk/sadism
+	name = "Sadism"
+	desc = "You feel pleasure when you see someone in agony."
+	value = 0 //ERP Traits don't have price. They are priceless. Ba-dum-tss
+	mob_trait = TRAIT_SADISM
+	gain_text = "<span class='danger'>You feel more pleasured when someone feeling pain.</font>"
+	lose_text = "<span class='notice'>Pain doesn't satisfy you anymore.</font>"
+	medical_record_text = "Subject has sadism."
+
+/datum/quirk/sadism/post_add()
+	. = ..()
+	var/mob/living/carbon/human/H = quirk_holder
+	H.gain_trauma(/datum/brain_trauma/special/sadism, TRAUMA_RESILIENCE_ABSOLUTE)
+
+/datum/quirk/sadism/remove()
+	. = ..()
+	var/mob/living/carbon/human/H = quirk_holder
+	H?.cure_trauma_type(/datum/brain_trauma/special/sadism, TRAUMA_RESILIENCE_ABSOLUTE)
+
+
+/datum/brain_trauma/special/sadism
+	name = "Sadism"
+	desc = "The subject's cerebral pleasure centers are more active when someone is suffering."
+	scan_desc = "sadistic tendencies"
+	gain_text = "<font color=purple>You feel like you need to hurt somebody.</font>"
+	lose_text = "<span class='notice'>You feel compassion again.</font>"
+	can_gain = TRUE
+	random_gain = FALSE
+	resilience = TRAUMA_RESILIENCE_ABSOLUTE
+
+/datum/brain_trauma/special/sadism/on_life(delta_time, times_fired)
+	if(someone_suffering())
+		owner.adjustArousal(1)
+
+/datum/brain_trauma/special/sadism/proc/someone_suffering()
+	if(HAS_TRAIT(owner, TRAIT_BLIND))
+		return FALSE
+	for(var/mob/living/carbon/human/M in oview(owner, 4))
+		if(!isliving(M)) //ghosts ain't people
+			return FALSE
+		if(istype(M) && M.pain >= 10) //,M.ckey
+			return TRUE
+	return FALSE
 
 //////////////////
 ///EMPATH BOUNS///
