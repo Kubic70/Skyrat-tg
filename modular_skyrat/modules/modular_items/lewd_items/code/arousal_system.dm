@@ -17,7 +17,7 @@
 	beauty = -150
 
 ///////////-----Reagents-----///////////
-/datum/reagent/consumable/girlcum
+/datum/reagent/girlcum
 	name = "girlcum"
 	description = "Uhh... Someone had fun."
 	taste_description = "astringent and sweetish"
@@ -26,7 +26,7 @@
 	glass_desc = "Strange white liquid... Eww!"
 	reagent_state = LIQUID
 
-/datum/reagent/consumable/cum
+/*/datum/reagent/consumable/cum
 	name = "cum"
 	description = "Eww... Well, someone was having a good time."
 	taste_description = "astringent and salty"
@@ -42,7 +42,7 @@
 	color = "#ffffffff"
 	glass_name = "glass of Breast milk"
 	glass_desc = "Almost like a normal milk."
-	reagent_state = LIQUID
+	reagent_state = LIQUID*/
 
 /datum/reagent/drug/dopamine
 	name = "dopamine"
@@ -244,7 +244,7 @@
 		user.show_arousal_panel(src)
 
 	if(href_list["breasts"])
-		if(!extract_item(user, "breasts"))
+		if(!extract_item(user, "nipples"))
 			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to nipple.</span>")
 		user.show_arousal_panel(src)
 
@@ -259,12 +259,12 @@
 	var/mob/living/carbon/human/O = src
 	var/slotText = slotName
 
-	if(slotText == "vagina" || slotText == "breasts" || slotText == "penis")
+	if(slotText == "vagina" || slotText == "nipples" || slotText == "penis")
 		var/obj/item/organ/genital/organ = null
 		var/list/wList = null
 		if(slotText == "vagina")
 			organ = O.getorganslot(ORGAN_SLOT_VAGINA)
-		else if(slotText == "breasts")
+		else if(slotText == "nipples")
 			organ = O.getorganslot(ORGAN_SLOT_BREASTS)
 		else if(slotText == "penis")
 			organ = O.getorganslot(ORGAN_SLOT_PENIS)
@@ -282,6 +282,7 @@
 				return FALSE
 			for(var/T in wList)
 				if(istype(I,T))
+					//equip_to_slot_if_possible(I, slotText)
 					if(!transferItemToLoc(I, organ.inserted_item))
 						return FALSE
 					organ.inserted_item = I
@@ -341,12 +342,12 @@
 		if(balls)
 			if(owner.arousal >= AROUS_SYS_LITTLE)
 				var/regen = (owner.arousal/100) * (balls.internal_fluids.maximum_volume/235) * interval
-				balls.internal_fluids.add_reagent(/datum/reagent/consumable/cum, regen)
+				balls.internal_fluids.add_reagent(/datum/reagent/cum, regen)
 
 		if(breasts)
 			if(breasts.lactates == TRUE)
 				var/regen = ((owner.nutrition / (NUTRITION_LEVEL_WELL_FED/100))/100) * (breasts.internal_fluids.maximum_volume/11000) * interval
-				breasts.internal_fluids.add_reagent(/datum/reagent/consumable/breast_milk, regen)
+				breasts.internal_fluids.add_reagent(/datum/reagent/consumable/milk, regen)
 				if(!breasts.internal_fluids.holder_full())
 					owner.adjust_nutrition(regen / 2)
 				else
@@ -355,7 +356,7 @@
 		if(vagina)
 			if(owner.arousal >= AROUS_SYS_LITTLE)
 				var/regen = (owner.arousal/100) * (vagina.internal_fluids.maximum_volume/250) * interval
-				vagina.internal_fluids.add_reagent(/datum/reagent/consumable/girlcum, regen)
+				vagina.internal_fluids.add_reagent(/datum/reagent/girlcum, regen)
 				if(vagina.internal_fluids.holder_full() && regen >= 0.15)
 					regen = regen // place for drool
 			else
