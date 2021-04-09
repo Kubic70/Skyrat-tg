@@ -39,6 +39,7 @@
 					/obj/item/kinky_shocker = 4,
 					/obj/item/clothing/mask/leatherwhip = 4,
 					/obj/item/magic_wand = 4,
+					/obj/item/clothing/under/misc/gear_harness = 4,
 					/obj/item/bdsm_candle = 4,
 					/obj/item/vibrator = 4,
 					/obj/item/serviette_pack = 10,
