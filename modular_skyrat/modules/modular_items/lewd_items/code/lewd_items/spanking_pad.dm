@@ -62,7 +62,7 @@
 	switch(user.zone_selected) //to let code know what part of body we gonna spank.
 		if(BODY_ZONE_PRECISE_GROIN)
 			if(M.is_bottomless())
-				message = (user == M) ? pick("spanks themselves with [src]","uses [src] to slap their hips") : pick("Slaps [M]'s hips with [src]", "Uses [src] to slap [M]'s butt","Spanks [M] with [src], making a savory slap")
+				message = (user == M) ? pick("spanks themselves with [src]","uses [src] to slap their hips") : pick("Slaps [M]'s hips with [src]", "Uses [src] to slap [M]'s butt","Spanks [M] with [src], making a savory slap","slaps [M]'s thighs")
 				if(prob(40))
 					M.emote(pick("twitch_s","moan","blush","gasp"))
 				M.adjustArousal(2)
@@ -74,3 +74,19 @@
 				return
 		else
 			return
+
+//Hips are red after spanking
+/datum/status_effect/spanked
+	id = "spanked"
+	duration = 300
+	alert_type = null
+
+/mob/living/carbon/human/examine(mob/user)
+	.=..()
+	var/t_his = p_their()
+	var/mob/living/U = user
+
+	if(stat != DEAD && !HAS_TRAIT(src, TRAIT_FAKEDEATH) && src != U)
+		if(src != user)
+			if(has_status_effect(/datum/status_effect/spanked))
+				. += "<font color=purple>[t_his] thighs turned red.</font>\n"

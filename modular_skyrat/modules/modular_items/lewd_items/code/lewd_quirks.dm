@@ -254,7 +254,7 @@
 		satisfaction -= 0.02
 
 	if(get_dist(get_turf(owner), get_turf(obsession)) < 2)
-		if(obsession.pleasure >= 20 && owner.pleasure >= 100)
+		if(obsession.pleasure >= 20 && owner.has_status_effect(/datum/status_effect/climax))
 			satisfaction = 100
 			stress = 0
 

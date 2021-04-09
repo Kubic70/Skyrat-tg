@@ -123,7 +123,6 @@
 
 	//Giving proper overlay
 	bag_overlay.icon_state = icon_state
-	accessory_overlay = bag_overlay
 	update_overlays()
 	. = ..()
 
