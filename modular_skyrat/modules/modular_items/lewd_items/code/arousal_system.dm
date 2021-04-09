@@ -67,11 +67,11 @@
 	..()
 
 /datum/reagent/drug/dopamine/overdose_start(mob/living/M)
-	..()
 	//to_chat(world, "overdose start")
 	to_chat(M, "<span class='userdanger'>You start tripping hard!</span>")
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overgasm, name)
 	//to_chat(world, "overdose end")
+	return
 
 /datum/reagent/drug/dopamine/overdose_process(mob/living/M)
 	M.adjustArousal(0.5)
@@ -79,9 +79,9 @@
 	M.adjustPain(-0.5)
 	if(prob(2))
 		M.emote(pick("moan","twitch_s"))
-		//say(message)
 	//to_chat(world, "overdose processing...")
-	..()
+	return
+		//say(message)
 
 ///////////-----Initilaze------///////////
 
