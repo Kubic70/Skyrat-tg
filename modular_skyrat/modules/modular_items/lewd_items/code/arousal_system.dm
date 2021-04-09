@@ -4,8 +4,8 @@
 #define PAIN_SYS_LIMIT 50
 #define PLEAS_SYS_EDGE 85
 
-#define CUM_MALE 1
-#define CUM_FEMALE 2
+//#define CUM_MALE 1
+//#define CUM_FEMALE 2
 
 ///////////-----Decals-----//////////
 /obj/effect/decal/cleanable/cum
@@ -14,7 +14,7 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_decals/lewd_decals.dmi'
 	icon_state = "cum_1"
 	random_icon_states = list("cum_1", "cum_2", "cum_3", "cum_4")
-	beauty = -150
+	beauty = -50
 
 ///////////-----Reagents-----///////////
 /datum/reagent/girlcum
@@ -156,9 +156,9 @@
 	set name = "Arousal panel"
 	set category = "IC"
 	set src in view(1)
-	show_arousal_panel(usr)
+	show_arousal_panel()
 
-/mob/living/carbon/human/proc/show_arousal_panel(mob/user)
+/mob/living/carbon/human/proc/show_arousal_panel()
 	var/obj/item/organ/genital/testicles/balls = getorganslot(ORGAN_SLOT_TESTICLES)
 	var/obj/item/organ/genital/breasts/breasts = getorganslot(ORGAN_SLOT_BREASTS)
 	var/obj/item/organ/genital/vagina/vagina = getorganslot(ORGAN_SLOT_VAGINA)
@@ -166,21 +166,24 @@
 
 	var/list/dat = list()
 
-	if(user == src)
+	if(usr == src)
 		dat += "<div>"
 		dat += {"<table style="float: left">"}
-		dat += "<tr><td><label>Arousal:</lable></td><td><lable>[arousal]%</label></td></tr>"
-		dat += "<tr><td><label>Pleasure:</lable></td><td><lable>[pleasure]%</label></td></tr>"
-		dat += "<tr><td><label>Pain:</lable></td><td><lable>[pain]%</label></td></tr>"
+		dat += "<tr><td><label>Arousal:</lable></td><td><lable>[round(arousal)]%</label></td></tr>"
+		dat += "<tr><td><label>Pleasure:</lable></td><td><lable>[round(pleasure)]%</label></td></tr>"
+		dat += "<tr><td><label>Pain:</lable></td><td><lable>[round(pain)]%</label></td></tr>"
 		dat += "</table>"
 
 		dat += {"<table style="float: left"; margin-left: 50px;>"}
-		if(balls)
-			dat += "<tr><td><label>Semen:</lable></td><td><lable>[balls.internal_fluids.total_volume]/[balls.internal_fluids.maximum_volume]</label></td></tr>"
-		if(breasts)
-			dat += "<tr><td><label>Milk:</lable></td><td><lable>[breasts.internal_fluids.total_volume]/[breasts.internal_fluids.maximum_volume]</label></td></tr>"
-		if(vagina)
-			dat += "<tr><td><label>GirlCum:</lable></td><td><lable>[vagina.internal_fluids.total_volume]/[vagina.internal_fluids.maximum_volume]</label></td></tr>"
+		if(balls && balls.internal_fluids.holder_full())
+			//dat += "<tr><td><label>Semen:</lable></td><td><lable>[balls.internal_fluids.total_volume]/[balls.internal_fluids.maximum_volume]</label></td></tr>"
+			dat += "<tr><td><lable>You balls is full!</label></td></tr>"
+		if(breasts && (breasts.internal_fluids.total_volume / breasts.internal_fluids.maximum_volume) > 0.9)
+			//dat += "<tr><td><label>Milk:</lable></td><td><lable>[breasts.internal_fluids.total_volume]/[breasts.internal_fluids.maximum_volume]</label></td></tr>"
+			dat += "<tr><td><lable>You breasts full of milk!</label></td></tr>"
+		if(vagina && vagina.internal_fluids.holder_full())
+			//dat += "<tr><td><label>GirlCum:</lable></td><td><lable>[vagina.internal_fluids.total_volume]/[vagina.internal_fluids.maximum_volume]</label></td></tr>"
+			dat += "<tr><td><lable>You so wet!</label></td></tr>"
 		dat += "</table>"
 		dat += "</div>"
 
@@ -198,9 +201,7 @@
 
 		dat += "<div>"
 		dat += "<A href='?src=[REF(src)];climax=1'>Climax</A>"
-		dat += "<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"
-		dat += "<A href='?src=[REF(src)];refresh=1'>Refresh</A>"
-		dat += "</div>"
+
 	else
 		dat += "<div>"
 		dat += {"<table style="float: left">"}
@@ -215,20 +216,27 @@
 		dat += "</div>"
 
 		dat += "<div>"
-		dat += "<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"
-		dat += "<A href='?src=[REF(src)];refresh=1'>Refresh</A>"
-		dat += "</div>"
+
+	dat += "<A href='?src=[REF(usr)];mach_close=mob[REF(src)]'>Close</A>"
+	dat += "<A href='?src=[REF(src)];refresh=1'>Refresh</A>"
+	dat += "</div>"
 
 	var/datum/browser/popup = new(usr, "mob[REF(src)]", "[src]", 440, 510)
-	popup.title = "Arousal panel"
+	popup.title = "[src] Arousal panel"
 	popup.set_content(dat.Join())
 	popup.open()
 
 /mob/living/carbon/human/Topic(href, href_list)
 	.=..()
-	var/mob/living/carbon/human/user = usr
+	var/mob/living/carbon/human/user = src
+
+	if(!(usr in view(1)))
+		to_chat(world, "Not in range")
+		return
+
 	if(href_list["refresh"])
-		user.show_arousal_panel(src)
+		to_chat(world, "usr = [usr] / src = [src]")
+		user.show_arousal_panel()
 
 	if(href_list["climax"])
 		climax(TRUE)
@@ -236,22 +244,22 @@
 	if(href_list["anus"])
 		if(!extract_item(user, "anus"))
 			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in anus.</span>")
-		user.show_arousal_panel(src)
+		user.show_arousal_panel()
 
 	if(href_list["vagina"])
 		if(!extract_item(user, "vagina"))
 			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in vagina.</span>")
-		user.show_arousal_panel(src)
+		user.show_arousal_panel()
 
 	if(href_list["breasts"])
 		if(!extract_item(user, "nipples"))
 			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to nipple.</span>")
-		user.show_arousal_panel(src)
+		user.show_arousal_panel()
 
 	if(href_list["penis"])
 		if(!extract_item(user, "penis"))
 			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to penis.</span>")
-		user.show_arousal_panel(src)
+		user.show_arousal_panel()
 
 ///////////-----Procs------///////////
 /mob/living/proc/extract_item(user, slotName)
@@ -351,14 +359,14 @@
 				if(!breasts.internal_fluids.holder_full())
 					owner.adjust_nutrition(regen / 2)
 				else
-					regen = regen // place for drool
+					regen = regen // Need to add eximine text for wet clothing
 
 		if(vagina)
 			if(owner.arousal >= AROUS_SYS_LITTLE)
 				var/regen = (owner.arousal/100) * (vagina.internal_fluids.maximum_volume/250) * interval
 				vagina.internal_fluids.add_reagent(/datum/reagent/girlcum, regen)
 				if(vagina.internal_fluids.holder_full() && regen >= 0.15)
-					regen = regen // place for drool
+					regen = regen // Need to add sprite of girlcum on floor
 			else
 				vagina.internal_fluids.remove_any(0.05)
 				//owner.adjustArous()
