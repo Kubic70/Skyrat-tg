@@ -49,7 +49,6 @@
     update_icon()
     update_brightness()
 
-
 /obj/structure/pole/proc/check_menu(mob/living/user, obj/item/multitool)
 	if(!istype(user))
 		return FALSE

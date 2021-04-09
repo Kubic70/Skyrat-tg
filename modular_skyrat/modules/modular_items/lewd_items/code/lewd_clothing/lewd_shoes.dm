@@ -8,8 +8,7 @@
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_shoes.dmi'
 	worn_icon_digi = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_shoes_digi.dmi'
 	var/discomfort = 0
-	var/messagewas = FALSE
-	var/messagewas2 = FALSE
+	var/message_sent = FALSE
 	strip_delay = 120
 	slowdown = 4
 
@@ -22,43 +21,47 @@
 				return
 	. = ..()
 
-///obj/item/clothing/shoes/latexheels/equipped(mob/user, slot)
-//	. = ..()
-//	var/mob/living/carbot/human/C = user
-//	if(src == C.shoes)
-//		START_PROCESSING(SSobj, src)
+//start processing
+/obj/item/clothing/shoes/latexheels/equipped(mob/user, slot)
+	. = ..()
+	var/mob/living/carbon/human/C = user
+	if(src == C.shoes)
+		START_PROCESSING(SSobj, src)
 
-
-//we dropping item so we not deaf now. hurray.
+//stop processing
 /obj/item/clothing/shoes/latexheels/dropped(mob/user)
 	. = ..()
 	var/mob/living/carbon/human/H = user
 	STOP_PROCESSING(SSobj, src)
-	messagewas = FALSE
-	messagewas2 = FALSE
 	if(discomfort >= 80)
-		to_chat(H,"<font color=purple>Painful heels no longer hurts you</font>")
+		to_chat(H,"<font color=purple>Painful heels no longer hurt your legs</font>")
 	discomfort = 0
-
-//TO GEMINEE, DELETE AFTER COMPLETING CODE
-// Привет, Джемини. Надо сделать так чтобы каждые 4 секунды дискомфорт увеличивался на 1 если персонаж надел балетки.
-// Затем увеличивался параметр adjustPain на 2 единицы, при пресечении 80 ед дискомфорта выводилось одно сообщение, при 100 - другое
-// Оставь там затычки, я все это доделаю. Тебе нужно лишь сделать то что выше.
+	slowdown = 4
 
 // Heels pain processor
-///obj/item/clothing/shoes/latexheels/process(delta_time)
-//	var/mob/living/carbon/human/U = loc
-//	if(discomfort >= 100)
-//		discomfort += 1
+/obj/item/clothing/shoes/latexheels/process(delta_time)
+	var/mob/living/carbon/human/U = loc
+	if(discomfort <= 100 && U.body_position != LYING_DOWN)
+		discomfort += 1
+	if(discomfort >= 0 && U.body_position == LYING_DOWN)
+		discomfort -= 2
+		message_sent = FALSE
+		slowdown = 4
 
 	//Pain effect
-//	if(discomfort >= 80)
-//		if(messagewas = FALSE)
-//			messagewas = TRUE
+	if(discomfort >= 80 && U.body_position != LYING_DOWN)
+		U.adjustPain(1)
 
-//	if(discomfort >=100)
-//		if(messagewas2 = FALSE)
-//			messagewas2 = TRUE
+	if(discomfort >=100 && U.body_position != LYING_DOWN)
+		U.adjustPain(4)
+		slowdown = 6
+		if(prob(10))
+			U.Knockdown(1)
+
+	//Discomfort milestone signalling that something is really wrong
+	if(discomfort >= 100 && U.body_position != LYING_DOWN && message_sent == FALSE)
+		to_chat(U, "<span class='notice'>These heels hurt my feet terribly!</span>")
+		message_sent = TRUE
 
 //to make sound when we walking in this
 /obj/item/clothing/shoes/latexheels/Initialize()

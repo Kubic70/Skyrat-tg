@@ -420,6 +420,9 @@
 /datum/brain_trauma/special/sadism/on_life(delta_time, times_fired)
 	if(someone_suffering())
 		owner.adjustArousal(1)
+		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "sadistic", /datum/mood_event/sadistic)
+	else
+		SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "sadistic", /datum/mood_event/sadistic)
 
 /datum/brain_trauma/special/sadism/proc/someone_suffering()
 	if(HAS_TRAIT(owner, TRAIT_BLIND))
@@ -427,9 +430,14 @@
 	for(var/mob/living/carbon/human/M in oview(owner, 4))
 		if(!isliving(M)) //ghosts ain't people
 			return FALSE
-		if(istype(M) && M.pain >= 10) //,M.ckey
+		if(istype(M, M.ckey) && M.pain >= 10)
 			return TRUE
 	return FALSE
+
+//Mood boost
+/datum/mood_event/sadistic
+	description = "<font color=purple>Someone else's suffering makes me happier</font>\n"
+	mood_change = 4
 
 //////////////////
 ///EMPATH BOUNS///

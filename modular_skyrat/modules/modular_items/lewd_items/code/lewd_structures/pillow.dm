@@ -42,6 +42,7 @@
 		current_color = choice
 		update_icon()
 		color_changed = TRUE
+		update_icon_state()
 	if(color_changed == TRUE)
 		if(form_changed == FALSE)
 			. = ..()
@@ -53,6 +54,7 @@
 			current_form = choice
 			update_icon()
 			form_changed = TRUE
+			update_icon_state()
 	else
 		return
 
