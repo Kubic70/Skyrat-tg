@@ -554,6 +554,32 @@
 	owner.adjustArousal(temp_arousal)
 	owner.adjustPleasure(temp_pleasure)
 
+////////////////////////
+///SPANKING PROCEDURE///
+////////////////////////
+
+//Hips are red after spanking
+/datum/status_effect/spanked
+	id = "spanked"
+	duration = 300 SECONDS
+	alert_type = null
+
+/mob/living/carbon/human/examine(mob/user)
+	.=..()
+	var/t_his = p_their()
+	var/mob/living/U = user
+
+	if(stat != DEAD && !HAS_TRAIT(src, TRAIT_FAKEDEATH) && src != U)
+		if(src != user)
+			if(has_status_effect(/datum/status_effect/spanked) && is_bottomless())
+				. += "<font color=purple>[t_his] thighs turned red.</font>\n"
+
+//Mood boost for masochist
+/datum/mood_event/perv_spanked
+	description = "<font color=purple>Ah, yes! More! Punish me!</font>\n"
+	mood_change = 3
+	timeout = 300 SECONDS
+
 /*
 
 Вот список того что должно быть при оргазме:
