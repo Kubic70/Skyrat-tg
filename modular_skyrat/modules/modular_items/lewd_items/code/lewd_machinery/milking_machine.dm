@@ -771,8 +771,9 @@
 
 // Interface data filling handler
 /obj/structure/chair/milking_machine/ui_data(mob/user)
-	var/list/data = list()
 	var/mob/living/carbon/human/M = user
+	var/list/data = list()
+
 	data["mobName"] = current_mob ? current_mob.name : null
 	data["mobCanLactate"] = current_breasts ? current_breasts.lactates : null
 	data["cellName"] = cell ? cell.name : null
@@ -792,17 +793,17 @@
 	data["current_vessel"] = current_vessel ? current_vessel : null
 	data["current_organ"] = current_organ ? current_organ : null
 	data["current_organ_name"] = current_organ ? current_organ.name : null
-	if(M.is_topless() || current_breasts.visibility_preference == GENITAL_ALWAYS_SHOW)
+	if(M.is_topless() || current_breasts?.visibility_preference == GENITAL_ALWAYS_SHOW)
 		data["current_breasts"] = current_breasts ? current_breasts : null
 	else
 		data["current_breasts"] = null
 
-	if(M.is_bottomless() || current_testicles.visibility_preference == GENITAL_ALWAYS_SHOW)
+	if(M.is_bottomless() || current_testicles?.visibility_preference == GENITAL_ALWAYS_SHOW)
 		data["current_testicles"] = current_testicles ? current_testicles : null
 	else
 		data["current_testicles"] = current_testicles = null
 
-	if(M.is_bottomless() || current_vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
+	if(M.is_bottomless() || current_vagina?.visibility_preference == GENITAL_ALWAYS_SHOW)
 		data["current_vagina"] = current_vagina ? current_vagina : null
 	else
 		data["current_vagina"] = current_vagina = null
