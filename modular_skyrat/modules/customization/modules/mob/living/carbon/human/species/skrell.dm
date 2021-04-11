@@ -27,8 +27,6 @@
 	mutantliver = /obj/item/organ/liver/skrell
 	mutanttongue = /obj/item/organ/tongue/skrell
 
-	learnable_languages = list(/datum/language/common, /datum/language/skrell)
-
 /obj/item/organ/tongue/skrell
 	name = "internal vocal sacs"
 	desc = "An Strange looking sac."

@@ -1,6 +1,6 @@
 /obj/machinery/firealarm/examine(mob/user)
 	. = ..()
-	switch(SSsecurity_level.current_level)
+	switch(GLOB.security_level)
 		if(SEC_LEVEL_GREEN)
 			. += "The current alert level is green."
 		if(SEC_LEVEL_BLUE)

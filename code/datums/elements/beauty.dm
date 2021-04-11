@@ -49,7 +49,7 @@
 	old_area.totalbeauty -= beauty * beauty_counter[source]
 	old_area.update_beauty()
 
-/datum/element/beauty/Detach(datum/source)
+/datum/element/beauty/Detach(datum/source, force)
 	if(!beauty_counter[source])
 		return ..()
 	var/area/current_area = get_area(source)

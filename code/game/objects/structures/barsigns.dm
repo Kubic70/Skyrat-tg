@@ -1,10 +1,7 @@
 /obj/structure/sign/barsign // All Signs are 64 by 32 pixels, they take two tiles
 	name = "bar sign"
 	desc = "A bar sign which has not been initialized, somehow. Complain at a coder!"
-	//SKYRAT EDIT CHANGE BEGIN - BARSIGNS
-	//icon = 'icons/obj/barsigns.dmi'
-	icon = 'modular_skyrat/modules/barsigns/icons/obj/barsigns.dmi'
-	//SKYRAT EDIT CHANGE END
+	icon = 'icons/obj/barsigns.dmi'
 	icon_state = "empty"
 	req_access = list(ACCESS_BAR)
 	max_integrity = 500

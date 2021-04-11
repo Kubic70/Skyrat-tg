@@ -15,12 +15,6 @@
 	. = ..()
 	icon_state = "turnstile"
 
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_EXIT = .proc/on_exit,
-	)
-
-	AddElement(/datum/element/connect_loc, loc_connections)
-
 /obj/machinery/turnstile/CanAtmosPass(turf/T)
 	return TRUE
 
@@ -62,20 +56,26 @@
 				return FALSE
 	return..()
 
-/obj/machinery/turnstile/proc/on_exit(datum/source, atom/movable/leaving, atom/new_location)
-	SIGNAL_HANDLER
-
-	if(isliving(leaving))
-		var/mob/living/M = leaving
+/obj/machinery/turnstile/CheckExit(atom/movable/AM as mob|obj, target)
+	if(isliving(AM))
+		var/mob/living/M = AM
 		var/outdir = dir
 		if(allowed_access(M))
-			outdir = REVERSE_DIR(dir)
+			switch(dir)
+				if(NORTH)
+					outdir = SOUTH
+				if(SOUTH)
+					outdir = NORTH
+				if(EAST)
+					outdir = WEST
+				if(WEST)
+					outdir = EAST
 		var/turf/outturf = get_step(src, outdir)
-		var/canexit = (new_location == src.loc) | (new_location == outturf)
+		var/canexit = (target == src.loc) | (target == outturf)
 
 		if(!canexit && world.time - M.last_bumped <= 5)
 			to_chat(usr, "<span class='notice'>\the [src] resists your efforts.</span>")
 		M.last_bumped = world.time
-
-		if(!canexit)
-			return COMPONENT_ATOM_BLOCK_EXIT
+		return canexit
+	else
+		return TRUE 

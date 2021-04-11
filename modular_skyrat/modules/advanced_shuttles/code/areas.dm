@@ -1,5 +1,5 @@
-/area/centcom/interlink
-	name = "The Interlink"
+/area/centcom/tram_dock
+	name = "Tram Dock"
 
 /area/shuttle/escape/no_light
 	dynamic_lighting = DYNAMIC_LIGHTING_IFSTARLIGHT

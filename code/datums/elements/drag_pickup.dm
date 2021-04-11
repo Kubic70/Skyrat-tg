@@ -12,7 +12,7 @@
 	RegisterSignal(target, COMSIG_MOUSEDROP_ONTO, .proc/pick_up)
 	return ..()
 
-/datum/element/drag_pickup/Detach(datum/source)
+/datum/element/drag_pickup/Detach(datum/source, force)
 	UnregisterSignal(source, COMSIG_MOUSEDROP_ONTO)
 	return ..()
 

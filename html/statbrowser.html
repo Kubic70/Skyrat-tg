@@ -146,34 +146,23 @@
 	.grid-item {
 		position: relative;
 		display: inline-block;
-		width: 100%;
-		box-sizing: border-box;
-		overflow: visible;
+		width: 150px;
 		padding: 3px 2px;
 		text-decoration: none;
+		overflow: visible;
 	}
 
-	@media only screen and (min-width: 300px) {
-		.grid-item {
-			width: 50%;
-		}
-	}
-
-	@media only screen and (min-width: 430px) {
-		.grid-item {
-			width: 33%;
-		}
-	}
-
-	@media only screen and (min-width: 560px) {
+	@media only screen and (min-width: 720px) {
 		.grid-item {
 			width: 25%;
+			box-sizing: border-box;
 		}
 	}
 
-	@media only screen and (min-width: 770px) {
+	@media only screen and (min-width: 800px) {
 		.grid-item {
 			width: 20%;
+			box-sizing: border-box;
 		}
 	}
 

@@ -92,10 +92,4 @@
 	name = "Brown Jackboots"
 	path = /obj/item/clothing/shoes/jungleboots
 
-/datum/loadout_item/shoes/disco
-	name = "Green Snakeskin Shoes"
-	path = /obj/item/clothing/shoes/discoshoes
-
-
-
 
