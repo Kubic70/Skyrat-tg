@@ -45,26 +45,14 @@
 /datum/action/item_action/toggle_vision
     name = "Vision switch"
     desc = "Makes it impossible to see anything"
-	// button_icon = 'icons/mob/actions/backgrounds.dmi' //This is the file for the BACKGROUND icon
-	// background_icon_state = ACTION_BUTTON_DEFAULT_BACKGROUND //And this is the state for the background icon
-	// icon_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi' //This is the file for the ACTION icon
-	// button_icon_state = "pink_blind" //And this is the state for the action icon
 
 /datum/action/item_action/toggle_hearing
     name = "Hearing switch"
     desc = "Makes it impossible to hear anything"
-	// button_icon = 'icons/mob/actions/backgrounds.dmi' //This is the file for the BACKGROUND icon
-	// background_icon_state = ACTION_BUTTON_DEFAULT_BACKGROUND //And this is the state for the background icon
-	// icon_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi' //This is the file for the ACTION icon
-	// button_icon_state = "pink_deaf" //And this is the state for the action icon
 
 /datum/action/item_action/toggle_speech
     name = "Speech switch"
     desc = "Makes it impossible to say anything"
-	// button_icon = 'icons/mob/actions/backgrounds.dmi' //This is the file for the BACKGROUND icon
-	// background_icon_state = ACTION_BUTTON_DEFAULT_BACKGROUND //And this is the state for the background icon
-	// icon_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi' //This is the file for the ACTION icon
-	// button_icon_state = "pink_mute" //And this is the state for the action icon
 
 //Vision switcher
 /datum/action/item_action/toggle_vision/Trigger()
@@ -209,9 +197,11 @@
 		usr.stop_sound_channel(CHANNEL_AMBIENCE)
 		usr.stop_sound_channel(CHANNEL_BUZZ)
 	usr.client.update_ambience_pref()
+
 //Ambience sound check status function
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Soundscape_Get_checked(client/C)
 	return C.prefs.toggles & SOUND_AMBIENCE
+
 //Instuments sound switch function
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Instruments()
 	usr.client.prefs.toggles ^= SOUND_INSTRUMENTS
@@ -220,9 +210,11 @@
 		to_chat(usr, "You will now hear people playing musical instruments.")
 	else
 		to_chat(usr, "You will no longer hear musical instruments.")
+
 //Instruments sound check status
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Instruments_Get_checked(client/C)
 	return C.prefs.toggles & SOUND_INSTRUMENTS
+
 //Combat sound switch function
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Combatmode_Sound()
 	usr.client.prefs.toggles ^= SOUND_COMBATMODE
@@ -231,9 +223,11 @@
 		to_chat(usr, "You will now hear a sound when combat mode is turned on.")
 	else
 		to_chat(usr, "You will no longer hear a sound when combat mode is turned on.")
+
 //Combat sound check status function
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Combatmode_Sound_Get_checked(client/C)
 	return C.prefs.toggles & SOUND_COMBATMODE
+
 //Midis sound switch function
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Midis()
 	usr.client.prefs.toggles ^= SOUND_MIDI
@@ -245,10 +239,12 @@
 		usr.stop_sound_channel(CHANNEL_ADMIN)
 		var/client/C = usr.client
 		C?.tgui_panel?.stop_music()
+
 //Midis sound check status function
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Midis_Get_checked(client/C)
 	return C.prefs.toggles & SOUND_MIDI
 //Anounce sound switch function
+
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Announcement_Sound()
 	set name = "Hear/Silence Announcements"
 	set category = "Preferences"
@@ -256,15 +252,18 @@
 	usr.client.prefs.toggles ^= SOUND_ANNOUNCEMENTS
 	to_chat(usr, "You will now [(usr.client.prefs.toggles & SOUND_ANNOUNCEMENTS) ? "hear announcement sounds" : "no longer hear announcements"].")
 	usr.client.prefs.save_preferences()
+
 //Anounce sound check status function
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Announcement_Sound_Get_checked(client/C)
 	return C.prefs.toggles & SOUND_ANNOUNCEMENTS
+
 //Stop sound function for immediatlely silence
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/stop_client_sounds()
 	SEND_SOUND(usr, sound(null))
 	var/client/C = usr.client
 	C?.tgui_panel?.stop_music()
 //Ship ambience switch function
+
 /obj/item/clothing/head/helmet/space/deprivation_helmet/proc/Toggle_Ship_Ambience()
 	set name = "Hear/Silence Ship Ambience"
 	set category = "Preferences"
@@ -386,6 +385,7 @@
 		earmuffs=  TRUE
 	if(prevent_vision == TRUE)
 		user.cure_blind("deprivation_helmet_[REF(src)]")
+
 	//Let's drop sound states
 	ambience_sound_state = null
 	instruments_sound_state = null

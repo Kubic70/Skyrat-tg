@@ -39,6 +39,18 @@
 	modifies_speech = TRUE
 	flags_cover = MASKCOVERSMOUTH
 
+/obj/item/clothing/mask/gas/bdsm_mask/proc/update_action_buttons_icons()
+	var/datum/action/item_action/M
+
+	for(M in src.actions)
+		if(istype(M, /datum/action/item_action/toggle_breathcontrol))
+			M.button_icon_state = "[current_mask_color]_switch_[mask_on? "on" : "off"]"
+			M.icon_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
+		if(istype(M, /datum/action/item_action/mask_inhale))
+			M.button_icon_state = "[current_mask_color]_breath"
+			M.icon_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
+	update_icon()
+
 /obj/item/clothing/mask/gas/bdsm_mask/handle_speech(datum/source, list/speech_args)
 	speech_args[SPEECH_MESSAGE] = pick((prob(moans_alt_probability) && LAZYLEN(moans_alt)) ? moans_alt : moans)
 	playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/under_moan_f1.ogg',
@@ -61,7 +73,9 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 		if(!choice)
 			return FALSE
 		current_mask_color = choice
+		update_icon_state()
 		update_icon()
+		update_action_buttons_icons()
 		color_changed = TRUE
 		return
 	. = ..()
@@ -79,6 +93,7 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	. = ..()
 	update_icon_state()
 	update_icon()
+	update_action_buttons_icons()
 	if(!length(mask_designs))
 		populate_mask_designs()
 
@@ -148,7 +163,6 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 /datum/action/item_action/mask_inhale
     name = "Inhale oxygen"
     desc = "You must inhale oxygen!"
-  // TODO: icon_icon = make icon for inhaling
 
 // Open the valve when press the button
 /datum/action/item_action/mask_inhale/Trigger()
@@ -199,6 +213,7 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	to_chat(user, "<span class='notice'>You turn the air filter [mask_on? "on. Use with caution!" : "off. Now it's safe to wear"]</span>")
 	playsound(user, mask_on ? 'sound/weapons/magin.ogg' : 'sound/weapons/magout.ogg', 40, TRUE)
 	update_icon_state()
+	update_action_buttons_icons()
 	update_icon()
 	var/mob/living/carbon/C = usr
 	if(mask_on)

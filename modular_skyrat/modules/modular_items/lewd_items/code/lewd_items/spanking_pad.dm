@@ -46,8 +46,8 @@
 		if(!choice)
 			return FALSE
 		current_color = choice
-		update_icon()
 		update_icon_state()
+		update_icon()
 		color_changed = TRUE
 	else
 		return
@@ -67,6 +67,9 @@
 					M.emote(pick("twitch_s","moan","blush","gasp"))
 				M.adjustArousal(2)
 				M.adjustPain(4)
+				M.apply_status_effect(/datum/status_effect/spanked)
+				if(HAS_TRAIT(M, TRAIT_MASOCHISM || TRAIT_NYMPHOMANIA || TRAIT_BIMBO))
+					SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "pervert spanked", /datum/mood_event/perv_spanked)
 				user.visible_message("<font color=purple>[user] [message].</font>")
 				playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/slap.ogg', 100, 1, -1)
 			else
@@ -74,19 +77,3 @@
 				return
 		else
 			return
-
-//Hips are red after spanking
-/datum/status_effect/spanked
-	id = "spanked"
-	duration = 300
-	alert_type = null
-
-/mob/living/carbon/human/examine(mob/user)
-	.=..()
-	var/t_his = p_their()
-	var/mob/living/U = user
-
-	if(stat != DEAD && !HAS_TRAIT(src, TRAIT_FAKEDEATH) && src != U)
-		if(src != user)
-			if(has_status_effect(/datum/status_effect/spanked))
-				. += "<font color=purple>[t_his] thighs turned red.</font>\n"
