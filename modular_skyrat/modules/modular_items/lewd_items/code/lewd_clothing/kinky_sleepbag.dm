@@ -20,7 +20,7 @@
 	var/time = 2
 	var/tt
 	var/static/list/bag_colors
-	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDEHAIR
+	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	strip_delay = 300
 	breakouttime = 3000 //do not touch. First - It's contraband item, Second - It's damn expensive, Third - it's ERP item, so you can't legally use it on characters without enabled non-con.
 	var/static/list/bag_inf_states
@@ -104,21 +104,16 @@
 		ADD_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
 		if(bag_state == "inflated")
 			to_chat(H,"<font color=purple>You realize that you can't move even an inch. Inflated sleepbag squeezes you from all sides.</font>")
-
+			H.cut_overlay(H.overlays_standing[HEAD_LAYER])
 		if(bag_state == "deflated")
 			to_chat(H,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
 
 		START_PROCESSING(SSobj, src)
-			time_to_sound_left = time_to_sound
+		time_to_sound_left = time_to_sound
+		H.remove_overlay(BODY_BEHIND_LAYER)
+		H.remove_overlay(MUTATIONS_LAYER)
 
-//MAKE IT WORK PLZ
-	//For hiding hair and e.t.c
-	if(H.dna.species.mutant_bodyparts["taur"])
-		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_special.dmi', "none", ABOVE_MOB_LAYER)
-		update_overlays()
-	else
-		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_normal.dmi', "none", )
-		update_overlays()
+	appearance_update()
 	. = ..()
 
 	//Giving proper overlay
@@ -160,12 +155,17 @@
 			bag_state = "inflated"
 			breakouttime = 6000 //do not touch
 			slowdown = 14 //it should be almost impossible to move in that thing, so this big slowdown have reasons.
+	appearance_update()
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/dropped(mob/user)
 	. = ..()
 	REMOVE_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
 	to_chat(usr,"<font color=purple>You are finally free! The tight bag no longer constricts your movements.</font>")
 	STOP_PROCESSING(SSobj, src)
+	var/mob/living/carbon/human/H = usr
+	H.apply_overlay(BODY_BEHIND_LAYER)
+	H.apply_overlay(MUTATIONS_LAYER)
+	H.add_overlay(H.overlays_standing[HEAD_LAYER])
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/process(delta_time)
 	if(time_to_sound_left <= 0)
@@ -176,3 +176,28 @@
 			tt -= delta_time
 	else
 		time_to_sound_left -= delta_time
+
+/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/proc/appearance_update()
+	var/mob/living/carbon/human/H = usr
+	if(H.dna.species.mutant_bodyparts["taur"])
+		cut_overlay(bag_overlay)
+		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_special.dmi', "none", ABOVE_MOB_LAYER)
+		add_overlay(bag_overlay)
+		update_overlays()
+	else
+		cut_overlay(bag_overlay)
+		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_normal.dmi', "none", )
+		add_overlay(bag_overlay)
+		update_overlays()
+
+	if(state_thing == "inflated")
+		H.remove_overlay(HAIR_LAYER)
+		H.cut_overlay(H.overlays_standing[HEAD_LAYER])
+
+	if(state_thing == "deflated")
+		H.apply_overlay(HAIR_LAYER)
+		H.add_overlay(H.overlays_standing[HEAD_LAYER])
+
+
+
+
