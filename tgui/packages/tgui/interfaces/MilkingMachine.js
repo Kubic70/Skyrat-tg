@@ -8,7 +8,7 @@ export const MilkingMachine = (props, context) => {
   const { data } = useBackend(context);
   const {machine_color} = data;
 
-colorChange(machine_color);
+ colorChange(machine_color);
 
   return (
     <Window resizable width={570} height={375}>
