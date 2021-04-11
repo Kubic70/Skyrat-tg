@@ -195,7 +195,7 @@
 		H.cut_overlay(H.overlays_standing[HEAD_LAYER])
 
 	if(state_thing == "deflated")
-		H.apply_overlay(HAIR_LAYER)
+		H.remove_overlay(HAIR_LAYER)
 		H.add_overlay(H.overlays_standing[HEAD_LAYER])
 
 
