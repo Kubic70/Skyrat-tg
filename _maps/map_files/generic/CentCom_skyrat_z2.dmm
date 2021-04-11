@@ -19209,7 +19209,7 @@
 /obj/effect/turf_decal/trimline/darkblue/line{
 	dir = 6
 	},
-/obj/machinery/vending/dorms,
+/obj/machinery/vending/lustwish,
 /turf/open/floor/iron/white,
 /area/centcom/interlink)
 "aYD" = (
@@ -21990,7 +21990,7 @@
 /turf/open/floor/iron,
 /area/centcom/interlink)
 "wjm" = (
-/obj/machinery/vending/dorms,
+/obj/machinery/vending/lustwish,
 /turf/open/floor/carpet/green,
 /area/centcom/interlink)
 "wkD" = (
@@ -22121,7 +22121,7 @@
 /turf/open/indestructible/hotelwood,
 /area/centcom/interlink)
 "yae" = (
-/obj/machinery/vending/dorms,
+/obj/machinery/vending/lustwish,
 /turf/open/floor/carpet/orange,
 /area/centcom/interlink)
 "ybH" = (
