@@ -18,4 +18,6 @@
 //message when unequipping that thing
 /obj/item/clothing/head/domina_cap/dropped(mob/user)
 	. = ..()
-	to_chat(user, "<font color=purple>BDSM session ended, huh?</font>")
+	var/mob/living/carbon/C = user
+	if(src == C.head)
+		to_chat(user, "<font color=purple>BDSM session ended, huh?</font>")

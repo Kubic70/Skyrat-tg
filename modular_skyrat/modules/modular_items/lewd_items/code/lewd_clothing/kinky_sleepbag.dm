@@ -159,13 +159,14 @@
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/dropped(mob/user)
 	. = ..()
-	REMOVE_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
-	to_chat(usr,"<font color=purple>You are finally free! The tight bag no longer constricts your movements.</font>")
-	STOP_PROCESSING(SSobj, src)
 	var/mob/living/carbon/human/H = usr
-	H.apply_overlay(BODY_BEHIND_LAYER)
-	H.apply_overlay(MUTATIONS_LAYER)
-	H.add_overlay(H.overlays_standing[HEAD_LAYER])
+	if(src == H.wear_suit)
+		REMOVE_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
+		to_chat(usr,"<font color=purple>You are finally free! The tight bag no longer constricts your movements.</font>")
+		STOP_PROCESSING(SSobj, src)
+		H.apply_overlay(BODY_BEHIND_LAYER)
+		H.apply_overlay(MUTATIONS_LAYER)
+		H.add_overlay(H.overlays_standing[HEAD_LAYER])
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/process(delta_time)
 	if(time_to_sound_left <= 0)

@@ -39,5 +39,6 @@
 //message when unequipping that thing
 /obj/item/clothing/suit/corset/dropped(mob/user)
 	. = ..()
-	if(corset_laced_hard == TRUE)
+	var/mob/living/carbon/human/C = user
+	if(corset_laced_hard == TRUE && src == C.wear_suit)
 		to_chat(user,"<font color=purple>Phew. Now you can breath normally.</font>")

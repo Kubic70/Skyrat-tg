@@ -69,8 +69,9 @@
 /obj/item/clothing/ears/kinky_headphones/dropped(mob/user)
 	. = ..()
 	var/mob/living/carbon/human/H = user
-	REMOVE_TRAIT(user, TRAIT_DEAF, CLOTHING_TRAIT)
-	to_chat(H,"<font color=purple>Finally you can hear the world around again.</font>")
+	if(src == H.ears)
+		REMOVE_TRAIT(user, TRAIT_DEAF, CLOTHING_TRAIT)
+		to_chat(H,"<font color=purple>Finally you can hear the world around again.</font>")
 
 
 //to make it change model on click

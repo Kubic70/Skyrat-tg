@@ -70,4 +70,5 @@
 /obj/item/clothing/glasses/blindfold/kinky/dropped(mob/user)
 	. = ..()
 	var/mob/living/carbon/C = user
-	to_chat(C, "<font color=purple>Blindfold no longer restricts your vision.</font>")
+	if(src == C.glasses)
+		to_chat(C, "<font color=purple>Blindfold no longer restricts your vision.</font>")
