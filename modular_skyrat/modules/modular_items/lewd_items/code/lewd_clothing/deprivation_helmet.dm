@@ -1,10 +1,3 @@
-//GEMINEE, READ ME
-// В общем вот тебе путь к файлу, учти что там названия у иконок. Переименовывай как хочется если будет нужно.
-//	icon_state = "mute"
-//	var/ears = "ears"
-//	var/color = "pink"
-//	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
-
 //seems like it kinda SPACE helmet. So probably abusable, but not really.
 //If you want to make it less abusable and remove from helmet/space to just /helmet/ - please, add code that removes hair on use. Because we weren't able to do that.
 

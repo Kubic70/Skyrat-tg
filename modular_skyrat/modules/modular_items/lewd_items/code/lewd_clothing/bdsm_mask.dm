@@ -137,6 +137,7 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 				if(M.putItemFromInventoryInHandIfPossible(src, H.held_index))
 					add_fingerprint(usr)
 				. = ..()
+
 // Handler for clicking on a slot in a mask by hand whith a filter
 /datum/component/storage/concrete/pockets/small/bdsm_mask/attackby(datum/source, obj/item/I, mob/M, params)
 	var/obj/item/clothing/mask/gas/bdsm_mask/B = M.get_item_by_slot(ITEM_SLOT_MASK)

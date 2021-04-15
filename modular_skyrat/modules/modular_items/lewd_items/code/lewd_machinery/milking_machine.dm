@@ -5,23 +5,23 @@
 	icon_state = "milking_pink_off"
 	max_buckled_mobs = 1
 	item_chair = null
-	var/color_changed = FALSE
+	var/color_changed = FALSE // Variable to track the color change of the machine by the user. So that you can change it once.
 	var/static/list/milkingmachine_designs
 	//////////////////////
 	// Power management //
 	//////////////////////
-	var/obj/item/stock_parts/cell/cell = null
+	var/obj/item/stock_parts/cell/cell = null // Current cell in machine
 	// Lamella TODO: Values need to be calibrated to balance power management
 	var/charge_rate = 200 // Power charge per tick devided by delta_time (always about ~2)
 	var/power_draw_rate = 50 // Power draw per tick multiplied by delta_time (always about ~2)
 	// Additional power consumption multiplier for different operating modes. Fractional value to reduce consumption
 	var/power_draw_multiplier_list = list("off" = 0, "low" = 0.5, "medium" = 1, "hard" = 1.5)
-	var/panel_open = FALSE
+	var/panel_open = FALSE // Сurrent maintenace panel state
 
 	/////////////////////////////
 	// Machine operating modes //
 	/////////////////////////////
-	var/pump_state_list = list("pump_off","pump_on") // Удалить если не будет использоваться
+	var/pump_state_list = list("pump_off","pump_on")
 	var/pump_state
 	var/mode_list = list("off","low","medium","hard")
 	var/current_mode
@@ -48,7 +48,7 @@
 	//////////////////////////
 	// Vessels and parameters //
 	//////////////////////////
-	var/max_vessel_capacity = 500
+	var/max_vessel_capacity = 500 // Limits a max capacity of any internal vessel in machine
 	var/obj/item/reagent_containers/current_milk
 	var/obj/item/reagent_containers/current_girlcum
 	var/obj/item/reagent_containers/current_semen
@@ -90,9 +90,9 @@
 
 	var/lock_state = "open"
 
-	//////////////////////////
-	// Overlay Object Cache //
-	//////////////////////////
+	/////////////////////
+	// Overlay Objects //
+	/////////////////////
 	var/mutable_appearance/vessel_overlay
 	var/mutable_appearance/indicator_overlay
 	var/mutable_appearance/locks_overlay
@@ -282,7 +282,7 @@
 				else
 					// Lamella TODO: Place for text about starting an attempt to get out when very aroused, but the machine is turned off
 
-					if(do_after(M, 60 SECONDS,M))
+					if(do_after(M, 1 MINUTES,M))
 
 						unbuckle_mob(M)
 						// Lamella TODO: Place for text, after a successful attempt to get out of a turned off machine with strong arousal
@@ -465,7 +465,7 @@
 		pump_state = pump_state_list[1]
 		update_all_visuals()
 		return
-	cell.give(charge_rate / delta_time)
+	cell.give(charge_rate * delta_time)
 
 	// Check if the machine should work
 	if(!current_mob)
@@ -500,8 +500,8 @@
 
 	if(cell != null && current_mode != mode_list[1])
 		pump_state = pump_state_list[2]
-		retrive_liquids()
-		return_influence()
+		retrive_liquids(delta_time)
+		return_influence(delta_time)
 		draw_power(delta_time)
 	else
 		current_mode = mode_list[1]
@@ -522,7 +522,7 @@
 			return
 
 // Liquid intake handler
-/obj/structure/chair/milking_machine/proc/retrive_liquids()
+/obj/structure/chair/milking_machine/proc/retrive_liquids(delta_time)
 	// Climax check
 	var/X = 1
 	if(current_mob != null)
@@ -531,17 +531,17 @@
 
 	if(istype(current_organ, /obj/item/organ/genital/breasts))
 		if(current_organ.reagents.total_volume > 0)
-			current_organ.internal_fluids.trans_to(current_milk, milk_retrive_amount[current_mode] * X)
+			current_organ.internal_fluids.trans_to(current_milk, milk_retrive_amount[current_mode] * X * delta_time)
 		else
 			return
 	else if (istype(current_organ, /obj/item/organ/genital/vagina))
 		if(current_organ.reagents.total_volume > 0)
-			current_organ.internal_fluids.trans_to(current_girlcum, girlcum_retrive_amount[current_mode] * X)
+			current_organ.internal_fluids.trans_to(current_girlcum, girlcum_retrive_amount[current_mode] * X * delta_time)
 		else
 			return
 	else if (istype(current_organ, /obj/item/organ/genital/testicles))
 		if(current_organ.reagents.total_volume > 0)
-			current_organ.internal_fluids.trans_to(current_semen, semen_retrive_amount[current_mode] * X)
+			current_organ.internal_fluids.trans_to(current_semen, semen_retrive_amount[current_mode] * X * delta_time)
 		else
 			return
 	else
@@ -549,10 +549,10 @@
 		return
 
 // Handling the process of the impact of the machine on the organs of the mob
-/obj/structure/chair/milking_machine/proc/return_influence()
-	src.current_mob.adjustArousal(src.arousal_amounts[src.current_mode])
-	src.current_mob.adjustPleasure(src.pleasure_amounts[src.current_mode])
-	src.current_mob.adjustPain(src.pain_amounts[src.current_mode])
+/obj/structure/chair/milking_machine/proc/return_influence(delta_time)
+	src.current_mob.adjustArousal(src.arousal_amounts[src.current_mode] * delta_time)
+	src.current_mob.adjustPleasure(src.pleasure_amounts[src.current_mode] * delta_time)
+	src.current_mob.adjustPain(src.pain_amounts[src.current_mode] * delta_time)
 
 // Energy consumption processor
 /obj/structure/chair/milking_machine/proc/draw_power(delta_time)

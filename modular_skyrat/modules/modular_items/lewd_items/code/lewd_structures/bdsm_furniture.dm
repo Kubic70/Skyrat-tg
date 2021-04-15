@@ -61,7 +61,7 @@
 	var/list/stand_states = list("open" = "close", "close" = "open")
 	var/state_thing = "open"
 	var/static/mutable_appearance/xstand_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/bdsm_furniture.dmi', "xstand_overlay", LYING_MOB_LAYER)
-	buckle_lying = NO_BUCKLE_LYING //Altrnative value is 0
+	buckle_lying = NO_BUCKLE_LYING //We no need mob lying
 
 //to make it have model when we constructing the thingy
 /obj/structure/bed/x_stand/Initialize()
@@ -112,7 +112,7 @@
 				"<span class='hear'>You hear metal clanking.</span>")
 			// Description of a successful mob attempt to unbuckle one mob with another mob
 		else
-			if(!do_after(user, 120 SECONDS, M)) // Timer to unbuckle the mob by itself
+			if(!do_after(user, 2 MINUTES, M)) // Timer to unbuckle the mob by itself
 				// Place to describe failed attempt
 				return FALSE
 			// Description of a successful mob attempt to unbuckle itself
