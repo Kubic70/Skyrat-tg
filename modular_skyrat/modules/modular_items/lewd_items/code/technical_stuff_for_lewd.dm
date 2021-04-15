@@ -335,7 +335,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			return BODY_ZONE_CHEST
 	..()
 
-// Defines of UI offsets
+// Defines of UI offsets. Need to be refactored
 #define ui_vagina "WEST+1:8,SOUTH+4:14"
 #define ui_vagina_down "WEST+1:8,SOUTH+1:8"
 #define ui_anus "WEST+2:10,SOUTH+4:14"
@@ -397,7 +397,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			H.penis.add_fingerprint(H,1)
 	return 1
 
-// Supplementing the data structure whith ERP slot data
+// Supplementing the data structure with ERP slot data
 /datum/outfit/get_json_data()
 	var/list/L = ..()
 
@@ -406,7 +406,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	L["nipples"] = nipples
 	L["penis"] = penis
 
-// Supplementing the data structure whith ERP slot data
+// Supplementing the data structure with ERP slot data
 /datum/outfit/load_from(list/outfit_data)
 	vagina = text2path(outfit_data["vagina"])
 	anus = text2path(outfit_data["anus"])
@@ -595,7 +595,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	update_inv_nipples()
 	update_inv_penis()
 
-//
+// Updating vagina slot
 /mob/living/carbon/human/update_inv_vagina()
 	var/datum/hud/human/H = src.hud_used
 	if(client && H)
@@ -610,7 +610,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 				client.screen += vagina
 			update_observer_view(vagina)
 
-//
+// Updating anus slot
 /mob/living/carbon/human/update_inv_anus()
 	var/datum/hud/human/H = src.hud_used
 	if(client && H)
@@ -625,7 +625,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 				client.screen += anus
 			update_observer_view(anus)
 
-//
+// Updating nipples slot
 /mob/living/carbon/human/update_inv_nipples()
 	var/datum/hud/human/H = src.hud_used
 	if(client && H)
@@ -640,7 +640,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 				client.screen += nipples
 			update_observer_view(nipples)
 
-//
+// Updating penis slot
 /mob/living/carbon/human/update_inv_penis()
 	var/datum/hud/human/H = src.hud_used
 	if(client && H)
@@ -655,7 +655,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 				client.screen += penis
 			update_observer_view(penis)
 
-//
+// Updating vagina hud slot
 /mob/living/carbon/human/update_hud_vagina(obj/item/I)
 	I.screen_loc = ui_vagina
 	if(client && src.hud_used?.hud_shown)
@@ -663,7 +663,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			client.screen += I
 	update_observer_view(I,1)
 
-//
+// Updating anus hud slot
 /mob/living/carbon/human/update_hud_anus(obj/item/I)
 	I.screen_loc = ui_anus
 	if(client && src.hud_used?.hud_shown)
@@ -671,7 +671,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			client.screen += I
 	update_observer_view(I,1)
 
-//
+// Updating nipples hud slot
 /mob/living/carbon/human/update_hud_nipples(obj/item/I)
 	I.screen_loc = ui_nipples
 	if(client && src.hud_used?.hud_shown)
@@ -679,7 +679,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			client.screen += I
 	update_observer_view(I,1)
 
-//
+// Updating penis hud slot
 /mob/living/carbon/human/update_hud_penis(obj/item/I)
 	I.screen_loc = ui_penis
 	if(client && src.hud_used?.hud_shown)
@@ -703,7 +703,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 /mob/living/carbon/proc/update_hud_penis(obj/item/I)
 	return
 
-//
+// Updating ERP slot icons to
 /obj/item/update_slot_icon()
 	. = ..()
 
@@ -723,16 +723,17 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // UI CONSTRUCTION AND HANDLING //
 //////////////////////////////////
 
-//
+// Add to hud class additional ERP variable boolean for check inventiry status (equipped or not)
 /datum/hud
 	var/list/ERP_toggleable_inventory = list() //the screen ERP objects which can be hidden
 	var/ERP_inventory_shown = FALSE //Equipped item ERP inventory
 
-//
+// Define additional button for ERP hud slots for expand/collapse like default inventory
 /atom/movable/screen/human/ERP_toggle
 	name = "ERP_toggle"
 	icon_state = "toggle"
 
+// ERP inventory button logic. Just expand/collapse
 /atom/movable/screen/human/ERP_toggle/Click()
 
 	var/mob/targetmob = usr
@@ -751,7 +752,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	targetmob.hud_used.hidden_inventory_update(usr)
 
-//
+// Extends default inventory button for chahge positions of ERP slots hud icons when expand/collapse default inventory
 /atom/movable/screen/human/toggle/Click()
 	. = ..()
 	var/mob/targetmob = usr
@@ -759,8 +760,9 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	if(usr.hud_used.inventory_shown && targetmob.hud_used)
 		for (var/atom/movable/screen/human/using in targetmob.hud_used.static_inventory)
 			if(using.screen_loc == ui_erp_inventory)
-				using.screen_loc = ui_erp_inventory_up
+				using.screen_loc = ui_erp_inventory_up // Move up ERP inventory button
 		for (var/atom/movable/screen/inventory/inv in targetmob.hud_used.ERP_toggleable_inventory)
+			// Move up ERP hud slots
 			if(inv.screen_loc == ui_vagina_down)
 				inv.screen_loc = ui_vagina
 			if(inv.screen_loc == ui_anus_down)
@@ -772,8 +774,9 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	else
 		for (var/atom/movable/screen/human/using in targetmob.hud_used.static_inventory)
 			if(using.screen_loc == ui_erp_inventory_up)
-				using.screen_loc = ui_erp_inventory
+				using.screen_loc = ui_erp_inventory // Move down ERP inventory button
 		for (var/atom/movable/screen/inventory/inv in targetmob.hud_used.ERP_toggleable_inventory)
+			// Move up ERP hud slots
 			if(inv.screen_loc == ui_vagina)
 				inv.screen_loc = ui_vagina_down
 			if(inv.screen_loc == ui_anus)
@@ -783,9 +786,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			if(inv.screen_loc == ui_penis)
 				inv.screen_loc = ui_penis_down
 
-
-
-//
+// Extend human hud creation with ERP hud elements
 /datum/hud/human/New(mob/living/carbon/human/owner)
 	..()
 
@@ -840,9 +841,9 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
 			inv.update_appearance()
 
-	update_locked_slots()
+	update_locked_slots() // Not sure this is realy need here
 
-//
+// Just extend default proc with ERP stuff
 /datum/hud/human/update_locked_slots()
 	. = ..()
 
@@ -856,7 +857,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			else
 				inv.alpha = initial(inv.alpha)
 
-//
+// Just extend default proc with ERP stuff
 /datum/hud/human/hidden_inventory_update(mob/viewer)
 	.=..()
 	// if(!mymob)
@@ -867,6 +868,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	if(screenmob.hud_used.ERP_inventory_shown && screenmob.hud_used.hud_shown)
 		if(H.vagina)
+			// This shity code need for hanlde an moving UI stuff when default inventory expand/collapse
 			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
 				H.vagina.screen_loc = ui_vagina
 			else
@@ -896,7 +898,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		if(H.nipples) screenmob.client.screen -= H.nipples
 		if(H.penis) screenmob.client.screen -= H.penis
 
-//
+// Just extend default proc with ERP stuff
 /datum/hud/human/persistent_inventory_update(mob/viewer)
 	.=..()
 	// if(!mymob)
@@ -930,7 +932,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			if(H.penis)
 				screenmob.client.screen -= H.penis
 
-//
+// Extend proc with supporting ERP stuff. ERP hud behaves like default inventory
 /datum/hud/show_hud(version = 0, mob/viewmob)
 	. = ..()
 	var/display_hud_version = version
@@ -954,7 +956,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			hud_shown = FALSE //Governs behavior of other procs
 			if(toggleable_inventory.len)
 				screenmob.client.screen -= ERP_toggleable_inventory
-
+	// Not sure all below code is realy needed here
 	hud_version = display_hud_version
 	persistent_inventory_update(screenmob)
 	screenmob.update_action_buttons(1)
@@ -972,48 +974,16 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	return TRUE
 
-//
+// Destroy must support ERP stuff to
 /datum/hud/Destroy()
 	if(mymob.hud_used == src)
 		mymob.hud_used = null
 
-	QDEL_NULL(hide_actions_toggle)
-	QDEL_NULL(module_store_icon)
-	QDEL_LIST(static_inventory)
-
-	inv_slots.Cut()
-	action_intent = null
-	zone_select = null
-	pull_icon = null
-
-	QDEL_LIST(toggleable_inventory)
-	QDEL_LIST(ERP_toggleable_inventory)
-	QDEL_LIST(hotkeybuttons)
-	throw_icon = null
-	QDEL_LIST(infodisplay)
-
-	healths = null
-	healthdoll = null
-	wanted_lvl = null
-	internals = null
-	spacesuit = null
-	lingchemdisplay = null
-	lingstingdisplay = null
-	blobpwrdisplay = null
-	alien_plasma_display = null
-	alien_queen_finder = null
-	combo_display = null
-
-	QDEL_LIST_ASSOC_VAL(plane_masters)
-	QDEL_LIST_ASSOC_VAL(plane_master_controllers)
-	QDEL_LIST(screenoverlays)
-	mymob = null
-
-	QDEL_NULL(screentip_text)
+	QDEL_LIST(ERP_toggleable_inventory) // Destroy ERP stuff
 
 	return ..()
 
-//
+// Extend default proc with ERP stuff
 /datum/hud/update_ui_style(new_ui_style)
 	if (initial(ui_style) || ui_style == new_ui_style)
 		return
