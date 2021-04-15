@@ -7,6 +7,7 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
+	slot_flags = ITEM_SLOT_ANUS|ITEM_SLOT_VAGINA
 	var/current_color = "pink"
 	var/current_size = "small"
 	var/color_changed = FALSE
