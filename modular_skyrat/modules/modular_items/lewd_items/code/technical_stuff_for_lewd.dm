@@ -347,6 +347,13 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 #define ui_erp_inventory "WEST:6,SOUTH+1:8"
 #define ui_erp_inventory_up "WEST:6,SOUTH+4:14"
 
+// Strippable Defines
+#define ERP_SLOT_EQUIP_DELAY (5 SECONDS) // Lamella TODO: delay need to be balanced
+
+#define STRIPPABLE_ITEM_VAGINA "vagina"
+#define STRIPPABLE_ITEM_ANUS "anus"
+#define STRIPPABLE_ITEM_NIPPLES "nipples"
+#define STRIPPABLE_ITEM_PEINS "penis"
 
 ////////////////////////////////////
 // OUTFIT SYSTEM ERP SLOT SUPPORT //
@@ -425,59 +432,12 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	return
 
 // Add variables for slots to the Carbon class
-/mob/living/carbon/
+/mob/living/carbon/human
 	var/obj/item/vagina = null
 	var/obj/item/anus = null
 	var/obj/item/nipples = null
 	var/obj/item/penis = null
 
-// Supplement a procedure for getting an item by ERP slot for carbon class
-/mob/living/carbon/get_item_by_slot(slot_id)
-	. = ..()
-	if(. == null)
-		switch(slot_id)
-			if(ITEM_SLOT_VAGINA)
-				return vagina
-			if(ITEM_SLOT_ANUS)
-				return anus
-			if(ITEM_SLOT_NIPPLES)
-				return nipples
-			if(ITEM_SLOT_PENIS)
-				return penis
-	return null
-
-// Supplement a procedure for equipping an ERP item in ERP slot
-/mob/living/carbon/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
-	var/not_handled = ..()
-	if(not_handled)
-		if(!slot)
-			return
-		if(!istype(I))
-			return
-		switch(slot)
-			if(ITEM_SLOT_VAGINA)
-				if(vagina)
-					return
-				vagina = I
-				update_inv_vagina()
-			if(ITEM_SLOT_ANUS)
-				if(anus)
-					return
-				anus = I
-				update_inv_anus()
-			if(ITEM_SLOT_NIPPLES)
-				if(nipples)
-					return
-				nipples = I
-				update_inv_nipples()
-			if(ITEM_SLOT_PENIS)
-				if(penis)
-					return
-				penis = I
-				update_inv_penis()
-			else
-				not_handled = TRUE
-	return not_handled
 
 // Extention can_equip checks for ERP slots
 /datum/species/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
@@ -513,16 +473,21 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 // Supplement a procedure for getting an item by ERP slot for human class (may be not needed if carbon class has this code to)
 /mob/living/carbon/human/get_item_by_slot(slot_id)
-	switch(slot_id)
-		if(ITEM_SLOT_VAGINA)
-			return vagina
-		if(ITEM_SLOT_ANUS)
-			return anus
-		if(ITEM_SLOT_NIPPLES)
-			return nipples
-		if(ITEM_SLOT_PENIS)
-			return penis
-	..()
+	var/obj/item/I = ..()
+	if(!I)
+		switch(slot_id)
+			if(ITEM_SLOT_VAGINA)
+				return vagina
+			if(ITEM_SLOT_ANUS)
+				return anus
+			if(ITEM_SLOT_NIPPLES)
+				return nipples
+			if(ITEM_SLOT_PENIS)
+				return penis
+			else
+				return null
+	else
+		return I
 
 // Supplement a procedure for getting a ERP body slots
 /mob/living/carbon/human/get_body_slots()
@@ -537,9 +502,10 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Extention equipping procedure for ERP slot
 /mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
 	var/not_handled = ..()
-	if(!.)
+	if(!not_handled)
 		switch(slot)
 			if(ITEM_SLOT_VAGINA)
+				to_chat(world, "usr=[usr]|src=[src]|vagina=[vagina]")
 				if(vagina)
 					return
 				vagina = I
@@ -860,8 +826,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Just extend default proc with ERP stuff
 /datum/hud/human/hidden_inventory_update(mob/viewer)
 	.=..()
-	// if(!mymob)
-	// 	return
+
 	var/mob/living/carbon/human/H = mymob
 
 	var/mob/screenmob = viewer || H
@@ -901,9 +866,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Just extend default proc with ERP stuff
 /datum/hud/human/persistent_inventory_update(mob/viewer)
 	.=..()
-	// if(!mymob)
-	// 	return
-	// ..()
+
 	var/mob/living/carbon/human/H = mymob
 
 	var/mob/screenmob = viewer || H
@@ -994,4 +957,63 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	..()
 
+////////////////////////////////////
+// STRIPPING ERP SYSTEM EXTENTION //
+////////////////////////////////////
+
+// Extend stripping menus with ERP slots
+/datum/strippable_item/mob_item_slot/vagina
+	key = STRIPPABLE_ITEM_VAGINA
+	item_slot = ITEM_SLOT_VAGINA
+
+/datum/strippable_item/mob_item_slot/anus
+	key = STRIPPABLE_ITEM_ANUS
+	item_slot = ITEM_SLOT_ANUS
+
+/datum/strippable_item/mob_item_slot/nipples
+	key = STRIPPABLE_ITEM_NIPPLES
+	item_slot = ITEM_SLOT_NIPPLES
+
+/datum/strippable_item/mob_item_slot/penis
+	key = STRIPPABLE_ITEM_PEINS
+	item_slot = ITEM_SLOT_PENIS
+
+// Obscuring fo ERP slots
+
+/datum/strippable_item/mob_item_slot/vagina/get_obscuring(atom/source)
+	return isnull(get_item(source)) \
+		? STRIPPABLE_OBSCURING_NONE \
+		: STRIPPABLE_OBSCURING_HIDDEN
+
+/datum/strippable_item/mob_item_slot/anus/get_obscuring(atom/source)
+	return isnull(get_item(source)) \
+		? STRIPPABLE_OBSCURING_NONE \
+		: STRIPPABLE_OBSCURING_HIDDEN
+
+/datum/strippable_item/mob_item_slot/nipples/get_obscuring(atom/source)
+	return isnull(get_item(source)) \
+		? STRIPPABLE_OBSCURING_NONE \
+		: STRIPPABLE_OBSCURING_HIDDEN
+
+/datum/strippable_item/mob_item_slot/penis/get_obscuring(atom/source)
+	return isnull(get_item(source)) \
+		? STRIPPABLE_OBSCURING_NONE \
+		: STRIPPABLE_OBSCURING_HIDDEN
+
+//Strippable ERP items slot list
+GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
+	/datum/strippable_item/mob_item_slot/vagina,
+	/datum/strippable_item/mob_item_slot/anus,
+	/datum/strippable_item/mob_item_slot/nipples,
+	/datum/strippable_item/mob_item_slot/penis,
+)))
+
 //
+/proc/create_erp_strippable_list(types)
+	var/list/strippable_items = list()
+
+	for (var/strippable_type in types)
+		var/datum/strippable_item/strippable_item = new strippable_type
+		strippable_items[strippable_item.key] = strippable_item
+	GLOB.strippable_human_items += strippable_items
+	return strippable_items
