@@ -112,6 +112,7 @@
 		time_to_sound_left = time_to_sound
 		H.remove_overlay(BODY_BEHIND_LAYER)
 		H.remove_overlay(MUTATIONS_LAYER)
+		H.remove_overlay(BODYPARTS_LAYER)
 
 	appearance_update()
 	. = ..()
@@ -166,6 +167,7 @@
 		STOP_PROCESSING(SSobj, src)
 		H.apply_overlay(BODY_BEHIND_LAYER)
 		H.apply_overlay(MUTATIONS_LAYER)
+		H.apply_overlay(BODYPARTS_LAYER)
 		H.add_overlay(H.overlays_standing[HEAD_LAYER])
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/process(delta_time)

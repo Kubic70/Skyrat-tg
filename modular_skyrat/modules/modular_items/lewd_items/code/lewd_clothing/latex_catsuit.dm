@@ -74,7 +74,7 @@
 
 	if(C.dna.species.mutant_bodyparts["taur"])
 		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][C.dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		S.hide_legs = TRUE
+		U.remove_overlay(MUTATIONS_LAYER)
 
 /obj/item/clothing/under/misc/latex_catsuit/dropped(mob/living/U)
 	. = ..()
@@ -84,7 +84,7 @@
 	breasts_overlay.icon_state = "none"
 	cut_overlay(breasts_icon_overlay)
 	breasts_icon_overlay.icon_state = "none"
-	S.hide_legs = FALSE
+	U.apply_overlay(MUTATIONS_LAYER)
 
 //Plug to bypass the bug with instant suit equip/drop
 /obj/item/clothing/under/misc/latex_catsuit/MouseDrop(atom/over_object)
