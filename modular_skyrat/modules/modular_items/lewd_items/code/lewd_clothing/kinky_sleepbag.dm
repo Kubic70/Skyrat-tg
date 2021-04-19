@@ -191,14 +191,10 @@
 		add_overlay(bag_overlay)
 		update_overlays()
 
-	if(state_thing == "inflated")
+	if(state_thing == "inflated" && src == H.wear_suit)
 		H.remove_overlay(HAIR_LAYER)
 		H.cut_overlay(H.overlays_standing[HEAD_LAYER])
 
-	if(state_thing == "deflated")
-		H.remove_overlay(HAIR_LAYER)
-		H.add_overlay(H.overlays_standing[HEAD_LAYER])
-
-
-
-
+//	if(state_thing == "deflated")
+//		H.remove_overlay(HAIR_LAYER)
+//		H.add_overlay(H.overlays_standing[HEAD_LAYER])
