@@ -86,6 +86,7 @@
 		C.apply_overlay(BODY_BEHIND_LAYER)
 		C.apply_overlay(BODY_FRONT_LAYER)
 
+
 //Plug to bypass the bug with instant suit equip/drop
 /obj/item/clothing/under/misc/latex_catsuit/MouseDrop(atom/over_object)
 

@@ -123,8 +123,12 @@
 		populate_vend_designs()
 
 /obj/machinery/vending/lustwish/update_icon_state()
-    . = ..()
-    icon_state = "[initial(icon_state)]_[current_color]"
+	..()
+	if(machine_stat & BROKEN)
+		icon_state = "[initial(icon_state)]_[current_color]-broken"
+	else
+		icon_state = "[initial(icon_state)]_[current_color][powered() ? null : "-off"]"
+
 
 //Refill item
 /obj/item/vending_refill/lustwish
