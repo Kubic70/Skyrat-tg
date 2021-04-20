@@ -129,7 +129,9 @@
 	icon_state = "janimaid"
 	inhand_icon_state = "janimaid"
 	body_parts_covered = CHEST|GROIN
-	fitted = FEMALE_UNIFORM_TOP
+	//DOESN'T WORK WITH MY REPSRITE SO I SUPPOSED TO CUT IT OUT.
+	//fitted = FEMALE_UNIFORM_TOP
+	//OR HOW I NAME IT... *LAMELLA CUT*
 	can_adjust = FALSE
 
 /obj/item/clothing/under/rank/civilian/lawyer

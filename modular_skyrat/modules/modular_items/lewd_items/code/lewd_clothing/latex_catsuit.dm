@@ -33,7 +33,6 @@
 	var/obj/item/organ/genital/breasts/B = C.getorganslot(ORGAN_SLOT_BREASTS)
 	if(src == C.w_uniform)
 		if(U.gender == FEMALE)
-			to_chat(U,"gender female")
 			icon_state = "latex_catsuit_female"
 			U.update_inv_w_uniform()
 
@@ -72,19 +71,20 @@
 		update_overlays()
 	. = ..()
 
-	if(C.dna.species.mutant_bodyparts["taur"])
-		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][C.dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		U.remove_overlay(MUTATIONS_LAYER)
+	if(C.dna.species.mutant_bodyparts["taur"] && src == C.w_uniform)
+		C.remove_overlay(BODY_BEHIND_LAYER)
+		C.remove_overlay(BODY_FRONT_LAYER)
 
 /obj/item/clothing/under/misc/latex_catsuit/dropped(mob/living/U)
 	. = ..()
 	var/mob/living/carbon/human/C = U
-	var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][C.dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
 	accessory_overlay = null
 	breasts_overlay.icon_state = "none"
 	cut_overlay(breasts_icon_overlay)
 	breasts_icon_overlay.icon_state = "none"
-	U.apply_overlay(MUTATIONS_LAYER)
+	if(C.dna.species.mutant_bodyparts["taur"] && src == C.w_uniform)
+		C.apply_overlay(BODY_BEHIND_LAYER)
+		C.apply_overlay(BODY_FRONT_LAYER)
 
 //Plug to bypass the bug with instant suit equip/drop
 /obj/item/clothing/under/misc/latex_catsuit/MouseDrop(atom/over_object)

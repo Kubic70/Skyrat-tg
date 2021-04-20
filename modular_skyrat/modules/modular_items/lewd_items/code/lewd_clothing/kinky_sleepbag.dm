@@ -111,6 +111,8 @@
 		START_PROCESSING(SSobj, src)
 		time_to_sound_left = time_to_sound
 		H.remove_overlay(BODY_BEHIND_LAYER)
+		H.remove_overlay(BODY_FRONT_LAYER)
+		H.remove_overlay(BODY_LAYER)
 		H.remove_overlay(MUTATIONS_LAYER)
 		H.remove_overlay(BODYPARTS_LAYER)
 
@@ -166,6 +168,8 @@
 		to_chat(usr,"<font color=purple>You are finally free! The tight bag no longer constricts your movements.</font>")
 		STOP_PROCESSING(SSobj, src)
 		H.apply_overlay(BODY_BEHIND_LAYER)
+		H.apply_overlay(BODY_FRONT_LAYER)
+		H.apply_overlay(BODY_LAYER)
 		H.apply_overlay(MUTATIONS_LAYER)
 		H.apply_overlay(BODYPARTS_LAYER)
 		H.add_overlay(H.overlays_standing[HEAD_LAYER])
@@ -196,7 +200,3 @@
 	if(state_thing == "inflated" && src == H.wear_suit)
 		H.remove_overlay(HAIR_LAYER)
 		H.cut_overlay(H.overlays_standing[HEAD_LAYER])
-
-//	if(state_thing == "deflated")
-//		H.remove_overlay(HAIR_LAYER)
-//		H.add_overlay(H.overlays_standing[HEAD_LAYER])

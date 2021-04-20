@@ -30,7 +30,7 @@
             			            'sound/items/handling/cloth_pickup.ogg',				//if you can make it better - go ahead, modify it, please.
         	       	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)	//selfdestruction - 100
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
 				return
 
 		if(BODY_ZONE_CHEST)
@@ -48,7 +48,7 @@
             			            'sound/items/handling/cloth_pickup.ogg',
         	       	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s chest is covered!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
 				return
 
 		if(BODY_ZONE_L_LEG)
@@ -66,10 +66,10 @@
             				            'sound/items/handling/cloth_pickup.ogg',
         	        	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s toes is covered!</span>")
 					return
 			else
-				user.visible_message("<span class='danger'>Looks like [M] don't have any legs!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M] don't have any legs!</span>")
 				return
 
 		if(BODY_ZONE_R_LEG)
@@ -88,10 +88,10 @@
         	        	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
 
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s toes is covered!</span>")
 					return
 			else
-				user.visible_message("<span class='danger'>Looks like [M] don't have any legs!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M] don't have any legs!</span>")
 				return
 
 		if(BODY_ZONE_R_ARM)
@@ -109,7 +109,7 @@
        	        	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
 
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M]'s toes is covered!</span>")
 				return
 
 		if(BODY_ZONE_L_ARM)
@@ -127,7 +127,7 @@
        	        	    		    'sound/items/handling/cloth_pickup.ogg'), 70, 1, -1)
 
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M]'s toes is covered!</span>")
 				return
 
 //Mood boost

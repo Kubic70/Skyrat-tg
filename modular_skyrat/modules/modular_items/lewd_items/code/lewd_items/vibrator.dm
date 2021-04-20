@@ -173,7 +173,7 @@
 							user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
 							return
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
 
 			if(BODY_ZONE_CHEST)
@@ -241,7 +241,7 @@
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 30, TRUE)
 
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s chest is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
 					return
 	else
 		to_chat(user, "<span class='notice'>You must turn on the toy, to use it!</span>")

@@ -1,3 +1,5 @@
+//Yes, whip is mask item, because character can take it in mouth. For some BDSM scenarios it would be cool, but if you make it better with same functionality - go ahead, make me proud.
+
 /obj/item/clothing/mask/leatherwhip
 	name = "leather whip"
 	desc = "A tool that used for domination. Hurts in a way you like it."
@@ -137,7 +139,6 @@
 						if(prob(60))
 							M.emote(pick("gasp","shiver"))
 						M.Paralyze(1)//don't touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
-						//M.adjustArous(0,0,5)
 						M.adjustPain(5)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc, 'sound/weapons/whip.ogg', 100)
@@ -148,12 +149,11 @@
 						if(prob(30))
 							M.emote(pick("gasp","shiver"))
 						M.Paralyze(1)//don't touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
-						//M.adjustArous(0,0,3)
 						M.adjustPain(3)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc, 'sound/weapons/whip.ogg', 60)
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s legs is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s legs is covered!</span>")
 					return
 
 		if(BODY_ZONE_HEAD)
@@ -161,7 +161,6 @@
 			message = (user == M) ? pick("Chokes themselves with [src]", "Uses [src] to choke themselves") : pick("Chokes [M] with [src]", "Twines a [src] around [M]'s neck!")
 			if(prob(70))
 				M.emote(pick("gasp","choke", "moan"))
-			//M.adjustArous(3,0,5)
 			M.adjustArousal(3)
 			M.adjustPain(5)
 			M.adjustOxyLoss(2)//DON'T TOUCH THIS TOO, IT DEALS REALLY LOW DAMAGE. I DARE YOU!
@@ -175,7 +174,6 @@
 				if(prob(50))
 					M.emote(pick("moan","twitch","twitch_s","scream"))
 				M.do_jitter_animation()
-				//M.adjustArous(0,0,7)
 				M.adjustPain(7)
 				user.visible_message("<font color=purple>[user] [message].</font>")
 				playsound(loc, 'sound/weapons/whip.ogg', 100)
@@ -186,7 +184,6 @@
 				if(prob(30))
 					M.emote(pick("moan","twitch"))
 				M.do_jitter_animation()
-				//M.adjustArous(0,0,4)
 				M.adjustPain(7)
 				user.visible_message("<font color=purple>[user] [message].</font>")
 				playsound(loc, 'sound/weapons/whip.ogg', 60)

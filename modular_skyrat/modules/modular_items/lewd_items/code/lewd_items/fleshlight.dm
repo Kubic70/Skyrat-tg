@@ -107,10 +107,10 @@
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 70, 1, -1)
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
 			else
-				user.visible_message("<span class = 'danger'> You realised that [M] don't have a penis.</span>")
+				to_chat(user, "<span class = 'danger'> You realised that [M] don't have a penis.</span>")
 				return
 		else
 			return

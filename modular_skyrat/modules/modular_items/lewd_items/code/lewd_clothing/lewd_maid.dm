@@ -8,9 +8,7 @@
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	body_parts_covered = CHEST|GROIN
-	fitted = FEMALE_UNIFORM_TOP
 	can_adjust = FALSE
-
 
 /obj/item/clothing/accessory/lewdapron
 	name = "shiny maid apron"

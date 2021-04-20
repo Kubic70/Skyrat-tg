@@ -44,7 +44,6 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						//M.adjustArous(0,0,9)
 						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
@@ -55,7 +54,6 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						//M.adjustArous(0,0,9)
 						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
@@ -66,7 +64,6 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						//M.adjustArous(0,0,9)
 						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
@@ -76,13 +73,12 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						//M.adjustArous(0,0,9)
 						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
 
 			if(BODY_ZONE_CHEST)
@@ -94,7 +90,6 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						//M.adjustArous(0,0,9)
 						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
@@ -104,12 +99,11 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						//M.adjustArous(0,0,9)
 						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s chest is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
 					return
 
 			if(BODY_ZONE_R_ARM)
@@ -120,15 +114,14 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						//M.adjustArous(0,0,9)
 						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 					else
-						user.visible_message("<span class='danger'>Looks like [M]'s arms is covered!</span>")
+						to_chat(user, "<span class='danger'>Looks like [M]'s arms is covered!</span>")
 						return
 				else
-					user.visible_message("<span class='danger'>Looks like [M] dont have any arms!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M] dont have any arms!</span>")
 					return
 
 			if(BODY_ZONE_L_ARM)
@@ -139,15 +132,14 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(3)
-						//M.adjustArous(0,0,9)
 						M.adjustPain(9)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 					else
-						user.visible_message("<span class='danger'>Looks like [M]'s arms is covered!</span>")
+						to_chat(user, "<span class='danger'>Looks like [M]'s arms is covered!</span>")
 						return
 				else
-					user.visible_message("<span class='danger'>Looks like [M] dont have any arms!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M] dont have any arms!</span>")
 					return
 
 			if(BODY_ZONE_HEAD)
@@ -157,14 +149,12 @@
 						M.emote(pick("twitch","twitch_s","shiver","scream"))
 					M.do_jitter_animation()
 					M.adjustStaminaLoss(2)
-					//M.adjustArous(0,0,9)
 					M.adjustPain(9)
 					user.visible_message("<font color=purple>[user] [message].</font>")
 					playsound(loc,'sound/weapons/taserhit.ogg')
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s head is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s head is covered!</span>")
 					return
-
 
 			if(BODY_ZONE_L_LEG)
 				if(M.has_feet())
@@ -174,15 +164,14 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(2)
-						//M.adjustArous(3)
 						M.adjustArousal(3)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 					else
-						user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
+						to_chat(user, "<span class='danger'>Looks like [M]'s toes is covered!</span>")
 						return
 				else
-					user.visible_message("<span class='danger'>Looks like [M] don't have any legs!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M] don't have any legs!</span>")
 					return
 
 			if(BODY_ZONE_R_LEG)
@@ -193,17 +182,16 @@
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
 						M.do_jitter_animation()
 						M.adjustStaminaLoss(2)
-						//M.adjustArous(3)
 						M.adjustArousal(3)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc,'sound/weapons/taserhit.ogg')
 
 					else
-						user.visible_message("<span class='danger'>Looks like [M]'s toes is covered!</span>")
+						to_chat(user, "<span class='danger'>Looks like [M]'s toes is covered!</span>")
 						return
 				else
-					user.visible_message("<span class='danger'>Looks like [M] don't have any legs!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M] don't have any legs!</span>")
 					return
 	else
-		user.visible_message("<span class='danger'>Shocker must be enabled before use!</span>")
+		to_chat(user, "<span class='danger'>Shocker must be enabled before use!</span>")
 		return

@@ -135,7 +135,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -145,7 +145,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -155,7 +155,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -165,7 +165,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -177,7 +177,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -187,7 +187,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -197,7 +197,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -207,7 +207,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -219,7 +219,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -229,7 +229,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -239,7 +239,7 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -249,13 +249,13 @@
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
 
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
 
 			if(BODY_ZONE_CHEST)
@@ -268,7 +268,7 @@
 							M.adjustPain(6)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -278,7 +278,7 @@
 							M.adjustPain(4)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -290,7 +290,7 @@
 							M.adjustPain(6)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -300,7 +300,7 @@
 							M.adjustPain(4)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -311,7 +311,7 @@
 							M.adjustPain(6)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
@@ -321,16 +321,16 @@
 							M.adjustPain(4)
 							M.do_jitter_animation()
 							if(prob(50))
-								M.emote(pick("twitch_s","choke","gasp","shiver"))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
 
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s chest is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
 					return
 	else
-		user.visible_message("<span class='danger'>Candle should be lit to produce hot liquid wax!</span>")
+		to_chat(user, "<span class='danger'>Candle should be lit to produce hot liquid wax!</span>")
 		return
 
 #undef CANDLE_LUMINOSITY

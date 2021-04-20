@@ -83,10 +83,10 @@
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 60, TRUE)
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
 			else
-				user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
 				return
 
 		if(BODY_ZONE_HEAD, BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_PRECISE_EYES) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
@@ -94,7 +94,7 @@
 				message = (user == M) ? pick("sucks [src] with their mouth","licks [src], then slowly inserting it into their throat") : pick("fucks [M]'s mouth with [src]", "choking [M] by inserting [src] into [M]'s throat", "forcing [M] to suck a [src]", "inserts [src] into [M]'s throat")
 				M.adjustArousal(4)
 				M.adjustPleasure(1)
-				M.adjustOxyLoss(3)
+				M.adjustOxyLoss(1.5)
 				if(prob(70))
 					M.emote(pick("gasp","moan"))
 				user.visible_message("<font color=purple>[user] [message].</font>")
@@ -106,7 +106,7 @@
 									'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 40, TRUE)
 
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s mouth is covered!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M]'s mouth is covered!</span>")
 				return
 
 		else
@@ -125,7 +125,7 @@
 									'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 100, TRUE)
 
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s anus is covered!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M]'s anus is covered!</span>")
 				return
 
 ///////////////////////
@@ -272,10 +272,10 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang5.ogg',
 										'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 60, TRUE)
 				else
-					user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
 					return
 			else
-				user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
 				return
 
 		if(BODY_ZONE_HEAD, BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_PRECISE_EYES) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
@@ -283,7 +283,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 				message = (user == M) ? pick("sucks [src] with their mouth","licks [src], then slowly inserting it into their throat") : pick("fucks [M]'s mouth with [src]", "choking [M] by inserting [src] into [M]'s throat", "forcing [M] to suck a [src]", "inserts [src] into [M]'s throat")
 				M.adjustArousal(4)
 				M.adjustPleasure(1)
-				M.adjustOxyLoss(3)
+				M.adjustOxyLoss(1.5)
 				if(prob(70))
 					M.emote(pick("gasp","moan"))
 				user.visible_message("<font color=purple>[user] [message].</font>")
@@ -295,7 +295,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 									'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 40, TRUE)
 
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s mouth is covered!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M]'s mouth is covered!</span>")
 				return
 
 		else
@@ -314,5 +314,5 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 									'modular_skyrat/modules/modular_items/lewd_items/sounds/bang6.ogg'), 100, TRUE)
 
 			else
-				user.visible_message("<span class='danger'>Looks like [M]'s anus is covered!</span>")
+				to_chat(user, "<span class='danger'>Looks like [M]'s anus is covered!</span>")
 				return
