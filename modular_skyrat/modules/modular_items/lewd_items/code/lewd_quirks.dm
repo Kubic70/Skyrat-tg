@@ -290,7 +290,8 @@
 
 	for(var/mob/Player in GLOB.player_list)//prevents crewmembers falling in love with nuke ops they never met, and other annoying hijinks
 		if(Player.mind && Player.stat != DEAD && !isnewplayer(Player) && !isbrain(Player) && Player.client && Player != owner && SSjob.GetJob(Player.mind.assigned_role))
-			viable_minds += Player.mind
+			if(Player.client.prefs?.erp_pref == "Yes" && Player.client.prefs?.noncon_pref == "Yes")
+				viable_minds += Player.mind
 	for(var/datum/mind/possible_target in viable_minds)
 		if(possible_target != owner && ishuman(possible_target.current))
 			possible_targets += possible_target.current
