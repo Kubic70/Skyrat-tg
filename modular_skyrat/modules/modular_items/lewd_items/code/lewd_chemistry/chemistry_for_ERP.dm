@@ -247,7 +247,7 @@
 
 	var/mob/living/carbon/human/H = M
 	//If they've opted out, then route processing though liver.
-	if(!(H.client.prefs.skyrat_toggles && BREAST_ENLARGEMENT))
+	if(!(H.client?.prefs.skyrat_toggles && BREAST_ENLARGEMENT))
 		var/obj/item/organ/liver/L = H.getorganslot(ORGAN_SLOT_LIVER)
 		if(L)
 			L.applyOrganDamage(0.25)
