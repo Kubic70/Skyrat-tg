@@ -440,12 +440,11 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/obj/item/nipples = null
 	var/obj/item/penis = null
 
-
 // Extention can_equip checks for ERP slots
 /datum/species/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
 	. = ..()
 	if(!.)
-		if(I.slot_flags & slot)
+		if(I.slot_flags & slot && H.client?.prefs.erp_pref == "Yes")
 			switch(slot)
 				if(ITEM_SLOT_VAGINA)
 					for(var/L in GLOB.vagina_items_allowed)
@@ -504,7 +503,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Extention equipping procedure for ERP slot
 /mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
 	var/not_handled = ..()
-	if(!not_handled)
+	if(!not_handled  && src.client?.prefs.erp_pref == "Yes")
 		switch(slot)
 			if(ITEM_SLOT_VAGINA)
 				to_chat(world, "usr=[usr]|src=[src]|vagina=[vagina]")
@@ -757,7 +756,6 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Extend human hud creation with ERP hud elements
 /datum/hud/human/New(mob/living/carbon/human/owner)
 	..()
-
 	var/atom/movable/screen/inventory/inv_box
 
 	inv_box = new /atom/movable/screen/inventory()
@@ -801,6 +799,9 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	using.icon = ui_style
 	using.screen_loc = ui_erp_inventory
 	using.hud = src
+	// When creating a character, we will check if the ERP is enabled on the client, if not, then the ERP button is immediately invisible
+	if(owner.client?.prefs.erp_pref != "Yes")
+		using.invisibility = 100
 	static_inventory += using
 
 	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory + ERP_toggleable_inventory))
@@ -833,7 +834,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	var/mob/screenmob = viewer || H
 
-	if(screenmob.hud_used.ERP_inventory_shown && screenmob.hud_used.hud_shown)
+	if(screenmob.hud_used.ERP_inventory_shown && screenmob.hud_used.hud_shown && H.client.prefs?.erp_pref == "Yes")
 		if(H.vagina)
 			// This shity code need for hanlde an moving UI stuff when default inventory expand/collapse
 			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
@@ -874,7 +875,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/mob/screenmob = viewer || H
 
 	if(screenmob.hud_used)
-		if(screenmob.hud_used.hud_shown)
+		if(screenmob.hud_used.hud_shown && H.client.prefs?.erp_pref == "Yes")
 			if(H.vagina)
 				H.vagina.screen_loc = ui_vagina
 				screenmob.client.screen += H.vagina
@@ -909,7 +910,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	switch(display_hud_version)
 		if(HUD_STYLE_STANDARD) //Default HUD
 			hud_shown = TRUE //Governs behavior of other procs
-			if(ERP_toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.ERP_inventory_shown)
+			if(ERP_toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.ERP_inventory_shown && viewmob.client.prefs.erp_pref == "Yes")
 				screenmob.client.screen += ERP_toggleable_inventory
 
 		if(HUD_STYLE_REDUCED) //Reduced HUD
@@ -980,29 +981,44 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	key = STRIPPABLE_ITEM_PEINS
 	item_slot = ITEM_SLOT_PENIS
 
-// Obscuring fo ERP slots
-
+// Obscuring for ERP slots
 /datum/strippable_item/mob_item_slot/vagina/get_obscuring(atom/source)
-	return isnull(get_item(source)) \
-		? STRIPPABLE_OBSCURING_NONE \
-		: STRIPPABLE_OBSCURING_HIDDEN
-
+	var/mob/M = source
+	if(M.client?.prefs.erp_pref == "Yes")
+		return isnull(get_item(source)) \
+			? STRIPPABLE_OBSCURING_NONE \
+			: STRIPPABLE_OBSCURING_HIDDEN
+	else
+		return STRIPPABLE_OBSCURING_COMPLETELY
+// Obscuring for ERP slots
 /datum/strippable_item/mob_item_slot/anus/get_obscuring(atom/source)
-	return isnull(get_item(source)) \
-		? STRIPPABLE_OBSCURING_NONE \
-		: STRIPPABLE_OBSCURING_HIDDEN
-
+	var/mob/M = source
+	if(M.client?.prefs.erp_pref == "Yes")
+		return isnull(get_item(source)) \
+			? STRIPPABLE_OBSCURING_NONE \
+			: STRIPPABLE_OBSCURING_HIDDEN
+	else
+		return STRIPPABLE_OBSCURING_COMPLETELY
+// Obscuring for ERP slots
 /datum/strippable_item/mob_item_slot/nipples/get_obscuring(atom/source)
-	return isnull(get_item(source)) \
-		? STRIPPABLE_OBSCURING_NONE \
-		: STRIPPABLE_OBSCURING_HIDDEN
-
+	var/mob/M = source
+	if(M.client?.prefs.erp_pref == "Yes")
+		return isnull(get_item(source)) \
+			? STRIPPABLE_OBSCURING_NONE \
+			: STRIPPABLE_OBSCURING_HIDDEN
+	else
+		return STRIPPABLE_OBSCURING_COMPLETELY
+// Obscuring for ERP slots
 /datum/strippable_item/mob_item_slot/penis/get_obscuring(atom/source)
-	return isnull(get_item(source)) \
-		? STRIPPABLE_OBSCURING_NONE \
-		: STRIPPABLE_OBSCURING_HIDDEN
+	var/mob/M = source
+	if(M.client?.prefs.erp_pref == "Yes")
+		return isnull(get_item(source)) \
+			? STRIPPABLE_OBSCURING_NONE \
+			: STRIPPABLE_OBSCURING_HIDDEN
+	else
+		return STRIPPABLE_OBSCURING_COMPLETELY
 
-//Strippable ERP items slot list
+// Strippable ERP items slot list
 GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 	/datum/strippable_item/mob_item_slot/vagina,
 	/datum/strippable_item/mob_item_slot/anus,
@@ -1010,7 +1026,7 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 	/datum/strippable_item/mob_item_slot/penis,
 )))
 
-//
+// This list is only needed in order to immediately add the necessary elements to a typical global list
 /proc/create_erp_strippable_list(types)
 	var/list/strippable_items = list()
 
@@ -1019,3 +1035,54 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 		strippable_items[strippable_item.key] = strippable_item
 	GLOB.strippable_human_items += strippable_items
 	return strippable_items
+
+// Handle ERP & noncon prefs changing
+/datum/preferences/process_link(mob/user, list/href_list)
+	. = ..()
+	if(.)
+		if(href_list["task"] == "input")
+			if(href_list["preference"] == "erp_pref")
+				// User changed state of ERP pref
+				var/mob/living/carbon/human/M = user
+				var/mob/targetmob = usr
+				// Some default checks
+				if(isobserver(usr))
+					if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+						var/mob/U = usr.client.eye
+						targetmob = U
+
+				if(erp_pref != "Yes")
+					// The user has set the ERP pref to a value other than "Yes", now we drop all items from ERP slots and can't use them
+					M.dropItemToGround(M.vagina, TRUE, M.loc, TRUE, FALSE, TRUE)
+					M.dropItemToGround(M.anus, TRUE, M.loc, TRUE, FALSE, TRUE)
+					M.dropItemToGround(M.nipples, TRUE, M.loc, TRUE, FALSE, TRUE)
+					M.dropItemToGround(M.penis, TRUE, M.loc, TRUE, FALSE, TRUE)
+
+					// If the user has an inventory of the ERP open, then we will hide it
+					if(usr.hud_used.ERP_inventory_shown && targetmob.hud_used)
+						usr.hud_used.ERP_inventory_shown = FALSE
+						usr.client.screen -= targetmob.hud_used.ERP_toggleable_inventory
+
+					// Find the ERP button of the inventory and make it invisible so that the user cannot interact with it
+					for(var/atom/movable/screen/human/ERP_toggle/E in targetmob.hud_used.static_inventory)
+						if(istype(E, /atom/movable/screen/human/ERP_toggle))
+							E.invisibility = 100
+				else
+					// User set ERP pref to "Yes", make the ERP button of the inventory visible and interactive again
+					for(var/atom/movable/screen/human/ERP_toggle/E in targetmob.hud_used.static_inventory)
+						if(istype(E, /atom/movable/screen/human/ERP_toggle))
+							E.invisibility = 0
+				// Perform standard inventory updates
+				targetmob.hud_used.hidden_inventory_update(usr)
+				user.hud_used.hidden_inventory_update()
+				user.hud_used.persistent_inventory_update()
+				return 1
+				// No need special actions for this case, just some comments for explain
+				// if("noncon_pref")
+				// 	switch(noncon_pref)
+				// 		if("Yes")
+				// 			// User set NonCon to "Ask", mob can't be a sex obsess target
+				// 		if("Ask")
+				// 			// User set NonCon to "No", mob can't be a sex obsess target
+				// 		if("No")
+				// 			// User set NonCon to "Yes", mob can be a sex obsess target
