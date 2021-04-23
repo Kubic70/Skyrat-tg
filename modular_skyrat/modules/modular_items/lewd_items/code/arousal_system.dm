@@ -157,7 +157,7 @@
 /mob/living/carbon/human/verb/arousal_panel()
 	set name = "Arousal panel"
 	set category = "IC"
-	set src in view(1)
+//	set src in view(1)
 	show_arousal_panel()
 
 /mob/living/carbon/human/proc/show_arousal_panel()
@@ -228,40 +228,40 @@
 	popup.set_content(dat.Join())
 	popup.open()
 
-/mob/living/carbon/human/Topic(href, href_list)
-	.=..()
-	var/mob/living/carbon/human/user = src
-
-	if(!(usr in view(1)))
-		to_chat(world, "Not in range")
-		return
-
-	if(href_list["refresh"])
-		to_chat(world, "usr = [usr] / src = [src]")
-		user.show_arousal_panel()
-
-	if(href_list["climax"])
-		climax(TRUE)
-
-	if(href_list["anus"])
-		if(!extract_item(user, "anus"))
-			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in anus.</span>")
-		user.show_arousal_panel()
-
-	if(href_list["vagina"])
-		if(!extract_item(user, "vagina"))
-			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in vagina.</span>")
-		user.show_arousal_panel()
-
-	if(href_list["breasts"])
-		if(!extract_item(user, "nipples"))
-			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to nipple.</span>")
-		user.show_arousal_panel()
-
-	if(href_list["penis"])
-		if(!extract_item(user, "penis"))
-			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to penis.</span>")
-		user.show_arousal_panel()
+///mob/living/carbon/human/Topic(href, href_list)
+//	.=..()
+//	var/mob/living/carbon/human/user = src
+//
+//	if(!(usr in view(1)))
+//		to_chat(world, "Not in range")
+//		return
+//
+//	if(href_list["refresh"])
+//		to_chat(world, "usr = [usr] / src = [src]")
+//		user.show_arousal_panel()
+//
+//	if(href_list["climax"])
+//		climax(TRUE)
+//
+//	if(href_list["anus"])
+//		if(!extract_item(user, "anus"))
+//			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in anus.</span>")
+//		user.show_arousal_panel()
+//
+//	if(href_list["vagina"])
+//		if(!extract_item(user, "vagina"))
+//			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in vagina.</span>")
+//		user.show_arousal_panel()
+//
+//	if(href_list["breasts"])
+//		if(!extract_item(user, "nipples"))
+//			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to nipple.</span>")
+//		user.show_arousal_panel()
+//
+//	if(href_list["penis"])
+//		if(!extract_item(user, "penis"))
+//			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to penis.</span>")
+//		user.show_arousal_panel()
 
 ///////////-----Procs------///////////
 /mob/living/proc/extract_item(user, slotName)
@@ -413,11 +413,6 @@
 	else
 		arousal = min(max(arousal,0),100)
 
-	if(neverboner == TRUE)
-		arousal = min(max(arousal,0),0)
-	else
-		arousal = min(max(arousal,0),100)
-
 /datum/status_effect/aroused
 	id = "aroused"
 	tick_interval = 10
@@ -441,8 +436,8 @@
 			temp_pleasure += 0.25
 			temp_arousal += 0.05
 		if(owner.neverboner)
-			temp_pleasure -=10
-			temp_arousal -= 10
+			temp_pleasure -= 50
+			temp_arousal -= 50
 
 		if(owner.pain > owner.pain_limit)
 			temp_arousal -= 0.1
