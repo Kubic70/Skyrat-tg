@@ -67,7 +67,7 @@
 
 /datum/reagent/drug/hexacrocin/overdose_process(mob/living/M)
 	var/mob/living/carbon/human/H = M
-	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
+	if(M.client && (M.client.prefs.skyrat_toggles & BIMBO_PREF))
 		if(prob(5) && ishuman(M) && !HAS_TRAIT(M, TRAIT_BIMBO) && !HAS_TRAIT(M, TRAIT_SOBSESSED)/* && M.has_dna() && some shit about bimbofication*/) //yes, pal. an i'm the horseman of the Apocalypse that will make it work. Sorry.
 			to_chat(M, "<font color=purple>Your libido is going haywire!</font>")
 			H.gain_trauma(pick(/datum/brain_trauma/special/bimbo, /datum/brain_trauma/special/nymphomania), TRAUMA_RESILIENCE_LOBOTOMY) //what am i doing with my life.

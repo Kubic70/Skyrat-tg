@@ -7,6 +7,7 @@
 #define TOGGLES_DEFAULT_SKYRAT (CHAT_LOOC_ADMIN|APHRO_PREF|CUMFACE_PREF)
 
 #define BREAST_ENLARGEMENT	(2<<3)
-#define PENIS_ENLARGEMENT	(3<<4)
-#define FORCED_FEM			(4<<5)
-#define	FORCED_MALE			(5<<6)
+#define PENIS_ENLARGEMENT	(2<<4)
+#define FORCED_FEM			(2<<5)
+#define	FORCED_MALE			(2<<6)
+#define BIMBO_PREF			(2<<7)

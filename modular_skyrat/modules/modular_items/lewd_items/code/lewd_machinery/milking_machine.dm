@@ -1,6 +1,6 @@
 /obj/structure/chair/milking_machine
 	name = "Milking machine"
-	desc = "Description here" // Lamella TODO: Description needed
+	desc = "Stationary device for milking people."
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/milking_machine.dmi'
 	icon_state = "milking_pink_off"
 	max_buckled_mobs = 1
@@ -11,11 +11,10 @@
 	// Power management //
 	//////////////////////
 	var/obj/item/stock_parts/cell/cell = null // Current cell in machine
-	// Lamella TODO: Values need to be calibrated to balance power management
 	var/charge_rate = 200 // Power charge per tick devided by delta_time (always about ~2)
-	var/power_draw_rate = 50 // Power draw per tick multiplied by delta_time (always about ~2)
+	var/power_draw_rate = 65 // Power draw per tick multiplied by delta_time (always about ~2)
 	// Additional power consumption multiplier for different operating modes. Fractional value to reduce consumption
-	var/power_draw_multiplier_list = list("off" = 0, "low" = 0.5, "medium" = 1, "hard" = 1.5)
+	var/power_draw_multiplier_list = list("off" = 0, "low" = 0.5, "medium" = 1, "hard" = 2)
 	var/panel_open = FALSE // Сurrent maintenace panel state
 
 	/////////////////////////////
@@ -30,19 +29,17 @@
 	// Return sensation parameters //
 	/////////////////////////////////
 	// Values are returned every tick, without additional modifiers
-	// Lamella TODO: Calibrate return sensation parameters for each mode of machine operation
 	var/arousal_amounts = list("off" = 0, "low" = 1,"medium" = 2,"hard" = 3)
-	var/pleasure_amounts = list("off" = 0, "low" = 1,"medium" = 2,"hard" = 3)
-	var/pain_amounts = list("off" = 0, "low" = 0,"medium" = 1,"hard" = 2)
+	var/pleasure_amounts = list("off" = 0, "low" = 0.2,"medium" = 1,"hard" = 1.5)
+	var/pain_amounts = list("off" = 0, "low" = 0,"medium" = 0.2,"hard" = 0.5)
 
 	//////////////////////
 	// Fluid management //
 	//////////////////////
 	// Liquids are taken every tick, no additional modifiers
-	// Lamella TODO: It is necessary to calibrate the values of the intake of liquids for all modes of operation of the machine
-	var/milk_retrive_amount = list("off" = 0, "low" = 2,"medium" = 4,"hard" = 8)
-	var/girlcum_retrive_amount = list("off" = 0, "low" = 2,"medium" = 4,"hard" = 8)
-	var/semen_retrive_amount = list("off" = 0, "low" = 2,"medium" = 4,"hard" = 8)
+	var/milk_retrive_amount = list("off" = 0, "low" = 1,"medium" = 2,"hard" = 3)
+	var/girlcum_retrive_amount = list("off" = 0, "low" = 1,"medium" = 2,"hard" = 3)
+	var/semen_retrive_amount = list("off" = 0, "low" = 1,"medium" = 2,"hard" = 3)
 	var/climax_retrive_multiplier = 2 // Climax intake volume multiplier
 
 	//////////////////////////
@@ -108,7 +105,7 @@
 // Additional examine text
 /obj/structure/chair/milking_machine/examine(mob/user)
 	. = ..()
-	. +="<span class='notice'>Examine text here</span>" // Lamella TODO: Write examine text
+	. +="<span class='notice'>Why are these metal mounts on the armrests?</span>"
 
 // Object initialization
 /obj/structure/chair/milking_machine/Initialize()
@@ -269,39 +266,38 @@
 			// Have difficulty unbuckling if overly aroused
 			if(M.arousal >= 60)
 				if(current_mode != mode_list[1])
-					to_chat(M, "You're too horny to get out on your own")
+					to_chat(M, "You are too horny to try to get out")
 					// // Uncomment/Comment the block if you need to be able/unable to get out with high arousal
-					// // Lamella TODO: Place for text about starting an attempt to get out when very aroused
 					// if(do_after(user, 120 SECONDS,user))
 					// 	unbuckle_mob(buckled_mobs[1])
-					// 	// Lamella TODO: Place for text, after a successful attempt to get out with strong arousal from a switched on machine
+					// 	to_chat(M, "With great difficulty, you were able to get out of milking machine")
 					// 	return
 					// else
-					// 	// Lamella TODO: Place for text after a failed attempt to get out of the machine with great arousal
+					// 	to_chat(M, "You helplessly try to break free from the grip of the mechanism")
 					// 	return
 				else
-					// Lamella TODO: Place for text about starting an attempt to get out when very aroused, but the machine is turned off
+					// to_chat(M, "You started trying to escape from milking machine")
 
 					if(do_after(M, 1 MINUTES,M))
 
 						unbuckle_mob(M)
-						// Lamella TODO: Place for text, after a successful attempt to get out of a turned off machine with strong arousal
+						to_chat(M, "With great difficulty, you were able to get out of milking machine")
 						return
 					else
 
-						// Lamella TODO: Place for text after failing to get out of a turned off machine with great arousal
+						to_chat(M, "You unsuccessfully struggling, chained to the milking machine")
 						return
 			else
-				// Lamella TODO: Place for text about starting an attempt to get out without being too aroused
+				to_chat(M, "You helplessly try to break free from the grip of the mechanism")
 
 
 				if(do_after(M, 5 SECONDS,M))
 					unbuckle_mob(M)
-					// Lamella TODO: Place for a text about successfully freeing yourself without being too aroused
+					to_chat(M, "You got out of the mechanism without much difficulty")
 					return
 				else
 
-					// Lamella TODO: Place for text about an unsuccessful attempt to get out of the machine without great arousal
+					to_chat(M, "You unsuccessfully struggling, chained to the milking machine")
 					return
 		else
 			// unbuckle_mob(M)
@@ -689,7 +685,6 @@
 		organ_overlay.icon_state = "none"
 
 	// Processing changes in the capacity overlay
-	// Lamella TODO: Calibrate vessel indicator value ranges
 	cut_overlay(vessel_overlay)
 	var/T = (current_milk.reagents.total_volume + current_girlcum.reagents.total_volume + current_semen.reagents.total_volume) / 3
 	if(T == 0)
@@ -711,7 +706,6 @@
 
 	// Indicator state control
 	if(cell != null)
-		// Lamella TODO: Calibrate indicator ranges of values
 		var/X = round(cell.charge / cell.maxcharge, 0.01)*100
 		if(X >= 0 && X < 25)
 			if(indicator_overlay.icon_state != indicator_state_list[2])
@@ -818,7 +812,7 @@
 		return
 	if(action == "ejectCreature")
 		unbuckle_mob(current_mob)
-		to_chat(usr,"You ecject creature from the machine") //Lamella TODO
+		to_chat(usr,"You ejected creature from the machine")
 		return TRUE
 
 	if(action == "ejectBeaker")

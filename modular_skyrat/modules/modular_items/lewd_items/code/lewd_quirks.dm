@@ -68,6 +68,12 @@
 	var/satisfaction = 100
 	var/stress = 0
 
+/datum/brain_trauma/special/nymphomania/on_gain()
+	owner.set_nymphomania(TRUE)
+
+/datum/brain_trauma/special/nymphomania/on_lose()
+	owner.set_nymphomania(FALSE)
+
 /datum/brain_trauma/special/nymphomania/on_life(delta_time, times_fired)
 	if(owner.stat != CONSCIOUS)
 		return
@@ -393,11 +399,15 @@
 	SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "bimbo", /datum/mood_event/bimbo)
 	ADD_TRAIT(owner,TRAIT_BIMBO, APHRO_TRAIT)
 	RegisterSignal(owner, COMSIG_MOB_SAY, .proc/handle_speech)
+	owner.set_masochism(TRUE)
+	owner.set_nymphomania(TRUE)
 
 /datum/brain_trauma/special/bimbo/on_lose()
 	SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "bimbo", /datum/mood_event/bimbo)
 	REMOVE_TRAIT(owner,TRAIT_BIMBO, APHRO_TRAIT)
 	UnregisterSignal(owner, COMSIG_MOB_SAY)
+	owner.set_masochism(FALSE)
+	owner.set_nymphomania(FALSE)
 
 //Mood boost
 /datum/mood_event/bimbo
@@ -417,7 +427,34 @@
 	lose_text = "<span class='notice'>Ouch! Pain is... Painful again! Ou-ou-ouch!</font>"
 	medical_record_text = "Subject has masochism."
 
-//All this stuff calculated in arousal_system.dm, by transfering pain into pleasure.
+/datum/quirk/masochism/post_add()
+	. = ..()
+	var/mob/living/carbon/human/H = quirk_holder
+	H.set_masochism(TRUE)
+
+/datum/quirk/masochism/remove()
+	. = ..()
+	var/mob/living/carbon/human/H = quirk_holder
+	H.set_masochism(FALSE)
+
+////////////////
+///NEVERBONER///
+////////////////
+
+/datum/brain_trauma/special/neverboner
+	name = "Loss of libido"
+	desc = "The patient has completely lost sexual interest."
+	scan_desc = "lack of libido"
+	gain_text = "<span class='notice'>You don't feel yourself horny anymore.</font>"
+	lose_text = "<span class='notice'>Pleasant warmth spreads over your body.</font>"
+	random_gain = FALSE
+	resilience = TRAUMA_RESILIENCE_ABSOLUTE
+
+/datum/brain_trauma/special/neverboner/on_gain()
+	owner.set_neverboner(TRUE)
+
+/datum/brain_trauma/special/neverboner/on_lose()
+	owner.set_neverboner(FALSE)
 
 ////////////
 ///SADISM///

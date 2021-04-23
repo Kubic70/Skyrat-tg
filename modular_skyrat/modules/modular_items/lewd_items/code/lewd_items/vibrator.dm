@@ -40,6 +40,7 @@
 		if(!choice)
 			return FALSE
 		current_color = choice
+		update_icon_state()
 		update_icon()
 		color_changed = TRUE
 	else

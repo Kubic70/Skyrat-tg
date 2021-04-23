@@ -60,7 +60,10 @@
 
 	//Discomfort milestone signalling that something is really wrong
 	if(discomfort >= 100 && U.body_position != LYING_DOWN && message_sent == FALSE)
-		to_chat(U, "<span class='notice'>These heels hurt my feet terribly!</span>")
+		if(HAS_TRAIT(U, TRAIT_MASOCHISM))
+			to_chat(U, "<span class='notice'>These heels is causing my feet incredible pain... Such a pleasant sensations!</span>")
+		else
+			to_chat(U, "<span class='notice'>These heels hurt my feet terribly!</span>")
 		message_sent = TRUE
 
 //to make sound when we walking in this

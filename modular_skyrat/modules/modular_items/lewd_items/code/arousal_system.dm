@@ -132,8 +132,9 @@
 	var/pleasure = 0
 	var/pain = 0
 
-	var/masohism = FALSE
+	var/masochism = FALSE
 	var/nymphomania = FALSE
+	var/neverboner = FALSE
 
 	var/pain_limit = 0
 	var/arousal_status = AROUSAL_NONE
@@ -144,7 +145,8 @@
 /mob/living/carbon/human/Initialize()
 	. = ..()
 	if(!istype(src,/mob/living/carbon/human/species/monkey))
-		set_masohism(FALSE)
+		set_masochism(FALSE)
+		set_neverboner(FALSE)
 		set_nymphomania(FALSE)
 		apply_status_effect(/datum/status_effect/aroused)
 		apply_status_effect(/datum/status_effect/body_fluid_regen)
@@ -315,12 +317,12 @@
 		return FALSE
 
 
-/mob/living/proc/set_masohism(status) //TRUE or FALSE
+/mob/living/proc/set_masochism(status) //TRUE or FALSE
 	if(status == TRUE)
-		masohism = status
+		masochism = status
 		pain_limit = 80
 	if(status == FALSE)
-		masohism = status
+		masochism = status
 		pain_limit = 20
 
 /mob/living/proc/set_nymphomania(status) //TRUE or FALSE
@@ -329,6 +331,11 @@
 	if(status == FALSE)
 		nymphomania = FALSE
 
+/mob/living/proc/set_neverboner(status) //TRUE or FALSE
+	if(status == TRUE)
+		neverboner = TRUE
+	if(status == FALSE)
+		neverboner = FALSE
 
 ////////////
 ///FLUIDS///
@@ -406,6 +413,11 @@
 	else
 		arousal = min(max(arousal,0),100)
 
+	if(neverboner == TRUE)
+		arousal = min(max(arousal,0),0)
+	else
+		arousal = min(max(arousal,0),100)
+
 /datum/status_effect/aroused
 	id = "aroused"
 	tick_interval = 10
@@ -423,11 +435,14 @@
 			if(balls.internal_fluids.holder_full())
 				temp_arousal += 0.08
 
-		if(owner.masohism)
+		if(owner.masochism)
 			temp_pain -= 0.5
 		if(owner.nymphomania)
 			temp_pleasure += 0.25
 			temp_arousal += 0.05
+		if(owner.neverboner)
+			temp_pleasure -=10
+			temp_arousal -= 10
 
 		if(owner.pain > owner.pain_limit)
 			temp_arousal -= 0.1
@@ -452,7 +467,7 @@
 /mob/living/proc/adjustPain(pn = 0)
 	if(stat != DEAD)
 		if(pain > pain_limit || pn > pain_limit / 10) // pain system
-			if(masohism == TRUE)
+			if(masochism == TRUE)
 				var/p = pn - (pain_limit / 10)
 				if(p > 0)
 					adjustArousal(-p)
@@ -464,7 +479,7 @@
 		else
 			if(pn > 0)
 				adjustArousal(pn)
-			if(masohism == TRUE)
+			if(masochism == TRUE)
 				var/p = pn / 2
 				adjustPleasure(p)
 		pain += pn

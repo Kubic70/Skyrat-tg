@@ -303,26 +303,28 @@
 // Allowed items for vagina slot
 GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
+	/obj/item/signalvib,
 	/obj/item/vibrator
 	)))
 
 // Allowed items for anus slot
 GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
+	/obj/item/signalvib,
 	/obj/item/vibrator,
 	/obj/item/buttplug
 	)))
 
 // Allowed items for nipples slot
 GLOBAL_LIST_INIT(nipples_items_allowed, typecacheof(list(
-	// /obj/item/eggvib,
-	/obj/item/vibrator
+	/obj/item/eggvib,
+	/obj/item/signalvib
 	)))
 
 // Allowed items for peins slot
 GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
-	// /obj/item/eggvib,
-	/obj/item/vibrator
+	/obj/item/eggvib,
+	/obj/item/signalvib
 	)))
 
 // From type2type.dm
