@@ -5,6 +5,7 @@
 	icon_state = "milking_pink_off"
 	max_buckled_mobs = 1
 	item_chair = null
+	flags_1 = NODECONSTRUCT_1
 	var/color_changed = FALSE // Variable to track the color change of the machine by the user. So that you can change it once.
 	var/static/list/milkingmachine_designs
 	//////////////////////
@@ -102,6 +103,9 @@
 	var/lastsaved_keybindings // Memory of the last saved binding list
 	var/current_keybindings // Memory of the current binding list
 
+	// Parts list for deconstruction process
+	var/list/component_parts
+
 // Additional examine text
 /obj/structure/chair/milking_machine/examine(mob/user)
 	. = ..()
@@ -141,6 +145,8 @@
 	organ_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/milking_machine.dmi', "none", ABOVE_MOB_LAYER)
 	organ_overlay.name = "organ_overlay"
 
+	// component_parts = list(/obj/structure/chair/milking_machine/constructionkit/)
+
 	add_overlay(locks_overlay)
 	add_overlay(vessel_overlay)
 
@@ -158,18 +164,34 @@
 		"teal" = image(icon = src.icon, icon_state = "milking_teal_off"))
 
 // Radial menu handler for color selection
-/obj/structure/chair/milking_machine/AltClick(mob/user, obj/item/I)
-	if(color_changed == FALSE)
-		if(.)
-			return
-		var/choice = show_radial_menu(user,src, milkingmachine_designs, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
-		if(!choice)
-			return FALSE
-		machine_color = choice
-		update_icon()
-		color_changed = TRUE
-		return
+// /obj/structure/chair/milking_machine/AltClick(mob/user, obj/item/I)
+// 	if(color_changed == FALSE)
+// 		if(.)
+// 			return
+// 		if(I.tool_behaviour == TOOL_MULTITOOL)
+// 			var/choice = show_radial_menu(user,src, milkingmachine_designs, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
+// 			if(!choice)
+// 				return FALSE
+// 			machine_color = choice
+// 			update_icon()
+// 			color_changed = TRUE
+// 			return
+// 		return
+// 	. = ..()
+
+// Radial menu handler for color selection by using multitool
+/obj/structure/chair/milking_machine/multitool_act(mob/living/user, obj/item/I)
 	. = ..()
+	if(!.)
+		var/choice = show_radial_menu(user,src, milkingmachine_designs, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
+		if(choice)
+			machine_color = choice
+			update_icon()
+			color_changed = TRUE
+		else
+			return FALSE
+	else
+		return
 
 // Checking if we can use the menu
 /obj/structure/chair/milking_machine/proc/check_menu(mob/living/user)
@@ -444,7 +466,15 @@
 
 // Object disassembly handler by crowbar
 /obj/structure/chair/milking_machine/proc/default_deconstruction_crowbar(obj/item/I, ignore_panel = 0)
+
 	. = (panel_open || ignore_panel) && !(flags_1 & NODECONSTRUCT_1) && I.tool_behaviour == TOOL_CROWBAR
+	if(.)
+		I.play_tool_sound(src, 50)
+		deconstruct(TRUE)
+
+// Object disassembly handler by wrench
+/obj/structure/chair/milking_machine/default_unfasten_wrench(mob/user, obj/item/I, time = 20)
+	. = !(flags_1 & NODECONSTRUCT_1) && I.tool_behaviour == TOOL_WRENCH
 	if(.)
 		I.play_tool_sound(src, 50)
 		deconstruct(TRUE)
@@ -596,15 +626,23 @@
 		var/mob/living/M = buckled_mobs[1]
 		M.client.movement_keys = lastsaved_keybindings
 		var/mob/living/carbon/N = M
-		// N.set_handcuffed(null)
 		N.set_usable_hands(2)
 	replace_beaker()
 	STOP_PROCESSING(SSobj, src)
+
 	if(cell)
 		cell.forceMove(drop_location())
 		adjust_item_drop_location(cell)
 		cell = null
 		update_all_visuals()
+
+	if(machine_color == machine_color_list[1])
+		var/P = /obj/item/milking_machine/constructionkit/pink
+		new P(src.loc)
+
+	if(machine_color == machine_color_list[2])
+		var/P = /obj/item/milking_machine/constructionkit/teal
+		new P(src.loc)
 	return ..()
 
 // Handler of the process of dispensing a glass from a machine to a tile
@@ -688,20 +726,15 @@
 	cut_overlay(vessel_overlay)
 	var/T = (current_milk.reagents.total_volume + current_girlcum.reagents.total_volume + current_semen.reagents.total_volume) / 3
 	if(T == 0)
-		if(vessel_overlay.icon_state != vessel_state_list[1])
-			vessel_overlay.icon_state = vessel_state_list[1]
-	if(T >= 0 && T < 50)
-		if(vessel_overlay.icon_state != vessel_state_list[2])
-			vessel_overlay.icon_state = vessel_state_list[2]
+		vessel_overlay.icon_state = vessel_state_list[1]
+	if(T >= 1 && T < 50)
+		vessel_overlay.icon_state = vessel_state_list[2]
 	if(T >= 50 && T < 350)
-		if(vessel_overlay.icon_state != vessel_state_list[3])
-			vessel_overlay.icon_state = vessel_state_list[3]
+		vessel_overlay.icon_state = vessel_state_list[3]
 	if(T >= 350 && T < 500)
-		if(vessel_overlay.icon_state != vessel_state_list[4])
-			vessel_overlay.icon_state = vessel_state_list[4]
+		vessel_overlay.icon_state = vessel_state_list[4]
 	if(T == 500)
-		if(vessel_overlay.icon_state != vessel_state_list[5])
-			vessel_overlay.icon_state = vessel_state_list[5]
+		vessel_overlay.icon_state = vessel_state_list[5]
 	add_overlay(vessel_overlay)
 
 	// Indicator state control
@@ -901,3 +934,35 @@
 		to_chat(usr,"You transfer [amount] of [current_milk.reagents.reagent_list[1].name] to [beaker.name]")
 		return TRUE
 
+// Pink construction kit
+/obj/item/milking_machine/constructionkit/pink
+	name = "Pink milking machine construction kit"
+	desc = "Description here" // Lamella TODO: Description needed
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/milking_machine.dmi'
+	icon_state = "milking_pink_build"
+
+// Teal construction kit
+/obj/item/milking_machine/constructionkit/teal
+	name = "Teal milking machine construction kit"
+	desc = "Description here" // Lamella TODO: Description needed
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/milking_machine.dmi'
+	icon_state = "milking_teal_build"
+
+// Default initialization
+/obj/item/milking_machine/constructionkit/Initialize()
+	. = ..()
+
+// Processor of the process of assembling a kit into a machine
+/obj/item/milking_machine/constructionkit/attackby(obj/item/I, mob/living/user, params)
+	. = ..()
+	if(I.tool_behaviour == TOOL_WRENCH)
+		var/M = /obj/structure/chair/milking_machine
+		var/obj/structure/chair/milking_machine/N = new M(src.loc)
+		if(istype(src, /obj/item/milking_machine/constructionkit/pink))
+			N.machine_color = N.machine_color_list[1]
+			N.icon_state = "milking_pink_off"
+		if(istype(src, /obj/item/milking_machine/constructionkit/teal))
+			N.machine_color = N.machine_color_list[2]
+			N.icon_state = "milking_teal_off"
+
+		qdel(src)
