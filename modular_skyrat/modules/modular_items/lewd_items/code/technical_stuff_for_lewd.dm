@@ -387,6 +387,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			H.equip_to_slot_or_del(new penis(H),ITEM_SLOT_PENIS, TRUE)
 		post_equip(H, visualsOnly)
 		H.update_body()
+		H?.hud_used?.hidden_inventory_update(H)
 	return TRUE
 
 
@@ -447,24 +448,40 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		if(I.slot_flags & slot && H.client?.prefs.erp_pref == "Yes")
 			switch(slot)
 				if(ITEM_SLOT_VAGINA)
-					for(var/L in GLOB.vagina_items_allowed)
-						if(istype(I,L))
-							return equip_delay_self_check(I, H, bypass_equip_delay_self)
+					if(H.is_bottomless())
+						if(H.getorganslot(ORGAN_SLOT_VAGINA))
+							for(var/L in GLOB.vagina_items_allowed)
+								if(istype(I,L))
+									return equip_delay_self_check(I, H, bypass_equip_delay_self)
+								continue
+							return FALSE
+						return FALSE
 					return FALSE
 				if(ITEM_SLOT_ANUS)
-					for(var/L in GLOB.anus_items_allowed)
-						if(istype(I,L))
-							return equip_delay_self_check(I, H, bypass_equip_delay_self)
+					if(H.is_bottomless())
+						for(var/L in GLOB.anus_items_allowed)
+							if(istype(I,L))
+								return equip_delay_self_check(I, H, bypass_equip_delay_self)
+							continue
+						return FALSE
 					return FALSE
 				if(ITEM_SLOT_NIPPLES)
-					for(var/L in GLOB.nipples_items_allowed)
-						if(istype(I,L))
-							return equip_delay_self_check(I, H, bypass_equip_delay_self)
+					if(H.is_topless())
+						for(var/L in GLOB.nipples_items_allowed)
+							if(istype(I,L))
+								return equip_delay_self_check(I, H, bypass_equip_delay_self)
+							continue
+						return FALSE
 					return FALSE
 				if(ITEM_SLOT_PENIS)
-					for(var/L in GLOB.peins_items_allowed)
-						if(istype(I,L))
-							return equip_delay_self_check(I, H, bypass_equip_delay_self)
+					if(H.is_bottomless())
+						if(H.getorganslot(ORGAN_SLOT_PENIS))
+							for(var/L in GLOB.peins_items_allowed)
+								if(istype(I,L))
+									return equip_delay_self_check(I, H, bypass_equip_delay_self)
+								continue
+							return FALSE
+						return FALSE
 					return FALSE
 				else
 					return FALSE
@@ -506,26 +523,37 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	if(!not_handled  && src.client?.prefs.erp_pref == "Yes")
 		switch(slot)
 			if(ITEM_SLOT_VAGINA)
-				to_chat(world, "usr=[usr]|src=[src]|vagina=[vagina]")
-				if(vagina)
+				if(src.is_bottomless())
+					if(vagina)
+						return
+					vagina = I
+					update_inv_vagina()
 					return
-				vagina = I
-				update_inv_vagina()
+				return to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
 			if(ITEM_SLOT_ANUS)
-				if(anus)
+				if(src.is_bottomless())
+					if(anus)
+						return
+					anus = I
+					update_inv_anus()
 					return
-				anus = I
-				update_inv_anus()
+				return to_chat(usr, "[src] is not bottomless, you cannot access to anus")
 			if(ITEM_SLOT_NIPPLES)
-				if(nipples)
+				if(src.is_topless())
+					if(nipples)
+						return
+					nipples = I
+					update_inv_nipples()
 					return
-				nipples = I
-				update_inv_nipples()
+				return to_chat(usr, "[src] is not topless, you cannot access to nipples")
 			if(ITEM_SLOT_PENIS)
-				if(penis)
+				if(src.is_bottomless())
+					if(penis)
+						return
+					penis = I
+					update_inv_penis()
 					return
-				penis = I
-				update_inv_penis()
+				return to_chat(usr, "[src] is not bottomless, you cannot access to penis")
 	else
 		return not_handled
 
@@ -576,6 +604,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			if(H.hud_shown)
 				client.screen += vagina
 			update_observer_view(vagina)
+			src.hud_used.hidden_inventory_update(src)
 
 // Updating anus slot
 /mob/living/carbon/human/update_inv_anus()
@@ -591,6 +620,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			if(H.hud_shown)
 				client.screen += anus
 			update_observer_view(anus)
+			src.hud_used.hidden_inventory_update(src)
 
 // Updating nipples slot
 /mob/living/carbon/human/update_inv_nipples()
@@ -606,6 +636,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			if(H.hud_shown)
 				client.screen += nipples
 			update_observer_view(nipples)
+			src.hud_used.hidden_inventory_update(src)
 
 // Updating penis slot
 /mob/living/carbon/human/update_inv_penis()
@@ -621,6 +652,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			if(src.hud_used.hud_shown)
 				client.screen += penis
 			update_observer_view(penis)
+			src.hud_used.hidden_inventory_update(src)
 
 // Updating vagina hud slot
 /mob/living/carbon/human/update_hud_vagina(obj/item/I)
