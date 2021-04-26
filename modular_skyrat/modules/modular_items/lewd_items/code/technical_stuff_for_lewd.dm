@@ -72,6 +72,13 @@
 /mob/living/carbon/is_ballgagged()
 	return(istype(src.wear_mask, /obj/item/clothing/mask/ballgag) || istype(src.wear_mask, /obj/item/clothing/mask/ballgag_phallic))
 
+//proc for condoms. Need to prevent cum appearing on the floor.
+/mob/proc/wear_condom()
+	return FALSE
+
+// /mob/living/carbon/wear_condom()
+// GEMINEE TODO: Добавь проверку для персонажа если он носит презерватив в слоте для пениса.
+
 //////////////////////////////////////////////////////////////////////////////////
 /////////this shouldn't be put anywhere, get your dirty hands off!////////////////
 /////////////////////////////for dancing pole/////////////////////////////////////

@@ -57,7 +57,7 @@
 	else
 		return
 
-//to check if we can change egg's model
+//to check if we can change buttplug model
 /obj/item/buttplug/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE

@@ -4,7 +4,7 @@
 
 /obj/item/vibroring
 	name = "vibrating ring"
-	desc = "Used to keep erection "
+	desc = "Used to keep erection"
 	icon_state = "vibroring"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
 	var/toy_on = FALSE
@@ -12,6 +12,7 @@
 	var/color_changed = FALSE
 	var/static/list/vibroring_designs
 	w_class = WEIGHT_CLASS_TINY
+	slot_flags = ITEM_SLOT_PENIS
 
 //create radial menu
 /obj/item/vibroring/proc/populate_vibroring_designs()
@@ -63,12 +64,10 @@
 	. = ..()
 	if(slot == "penis")
 		START_PROCESSING(SSobj, src)
-		to_chat(world, "vibroring ON")
 
 /obj/item/vibroring/dropped(mob/user, silent)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
-	to_chat(world, "vibroring OFF")
 
 /obj/item/vibroring/process(delta_time)
 	. = ..()
@@ -80,4 +79,3 @@
 		U.adjustArousal(bzz * delta_time)
 		U.adjustPleasure(bzz * delta_time)
 		P.aroused = AROUSAL_FULL //Vibroring keep penis erected.
-	to_chat(world, "vibroring works...[bzz]")
