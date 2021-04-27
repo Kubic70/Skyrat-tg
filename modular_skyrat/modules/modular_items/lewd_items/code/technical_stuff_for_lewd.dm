@@ -76,8 +76,16 @@
 /mob/proc/wear_condom()
 	return FALSE
 
-// /mob/living/carbon/wear_condom()
-// GEMINEE TODO: Добавь проверку для персонажа если он носит презерватив в слоте для пениса.
+//
+/mob/living/carbon/human/wear_condom()
+	. = ..()
+	if(.)
+		return TRUE
+	if(penis != null && istype(penis, /obj/item/condom))
+		return TRUE
+	return FALSE
+
+
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////this shouldn't be put anywhere, get your dirty hands off!////////////////
@@ -331,7 +339,8 @@ GLOBAL_LIST_INIT(nipples_items_allowed, typecacheof(list(
 // Allowed items for peins slot
 GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
-	/obj/item/signalvib
+	/obj/item/signalvib,
+	/obj/item/condom
 	)))
 
 // From type2type.dm
@@ -1090,12 +1099,16 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 						var/mob/U = usr.client.eye
 						targetmob = U
 
-				if(erp_pref != "Yes")
+				if(M != null && erp_pref != "Yes")
 					// The user has set the ERP pref to a value other than "Yes", now we drop all items from ERP slots and can't use them
-					M.dropItemToGround(M.vagina, TRUE, M.loc, TRUE, FALSE, TRUE)
-					M.dropItemToGround(M.anus, TRUE, M.loc, TRUE, FALSE, TRUE)
-					M.dropItemToGround(M.nipples, TRUE, M.loc, TRUE, FALSE, TRUE)
-					M.dropItemToGround(M.penis, TRUE, M.loc, TRUE, FALSE, TRUE)
+					if(M.vagina != null)
+						M.dropItemToGround(M.vagina, TRUE, M.loc, TRUE, FALSE, TRUE)
+					if(M.anus != null)
+						M.dropItemToGround(M.anus, TRUE, M.loc, TRUE, FALSE, TRUE)
+					if(M.nipples != null)
+						M.dropItemToGround(M.nipples, TRUE, M.loc, TRUE, FALSE, TRUE)
+					if(M.penis != null)
+						M.dropItemToGround(M.penis, TRUE, M.loc, TRUE, FALSE, TRUE)
 
 					// If the user has an inventory of the ERP open, then we will hide it
 					if(usr.hud_used.ERP_inventory_shown && targetmob.hud_used)
@@ -1125,3 +1138,40 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 				// 			// User set NonCon to "No", mob can't be a sex obsess target
 				// 		if("No")
 				// 			// User set NonCon to "Yes", mob can be a sex obsess target
+
+////////////////////////////////////////////////////////////////////
+// EXTENTIONS FOR SPRITE_ACCESSORY IS_HIDDEN CHECKS FOR ERP STUFF //
+////////////////////////////////////////////////////////////////////
+// For hidding tails
+/datum/sprite_accessory/tails/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default code
+	// if(H.wear_suit)
+	// 	if(H.try_hide_mutant_parts)
+	// 		return TRUE
+	// 	if(H.wear_suit.flags_inv & HIDEJUMPSUIT)
+	// 		if(istype(H.wear_suit, /obj/item/clothing/suit/space/hardsuit))
+	// 			var/obj/item/clothing/suit/space/hardsuit/HS = H.wear_suit
+	// 			if(HS.hardsuit_tail_colors)
+	// 				return FALSE
+	// 		return TRUE
+	// return FALSE
+
+// For hidding taurs
+
+
+// Extends default proc check for hidden ears for supporting our sleepbag to
+/datum/sprite_accessory/ears/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default proc code
+	// if(H.head && (H.head.flags_inv & HIDEHAIR) || (H.wear_mask && (H.wear_mask.flags_inv & HIDEHAIR)) || !HD)
+	// 	return TRUE
+	// return FALSE
+
+	// // First lets proc default code
+	// . = ..()
+	// if(!.) // If true, ears alreaady hidden
+	// 	if(H.wear_suit && (H.wear_suit.flags_inv & HIDEHAIR) || !HD) // Default check adapted for suit
+	// 		if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag)) // Additional check for our sleepbag item type in suit slot
+	// 			return TRUE
+	// 		return FALSE
+	// 	return FALSE
+	// return TRUE // Return TRUE if superfuncitons already retuns TRUE
