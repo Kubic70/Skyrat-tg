@@ -53,15 +53,14 @@
 
 //When condom equipped we doing stuff
 
-/obj/item/vibroring/equipped(mob/user, slot, initial)
+/obj/item/condom/equipped(mob/user, slot, initial)
 	. = ..()
-	if(slot == "penis")
+	if(slot == ITEM_SLOT_PENIS)
 		equipped = TRUE
 		update_icon_state()
 		update_icon()
 
 //used condom
-
 /obj/item/condom_used
 	name = "used condom"
 	desc = "Eww! Throw it in trash!"
@@ -78,4 +77,4 @@
 
 /obj/item/condom_used/update_icon_state()
 	. = ..()
-	icon_state = "[initial(icon_state)]_[current_color]
+	icon_state = "[initial(icon_state)]_[current_color]"
