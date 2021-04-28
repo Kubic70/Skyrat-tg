@@ -415,7 +415,7 @@
 
 // Handler for opening the panel with a screwdriver for maintenance
 /obj/structure/chair/milking_machine/proc/default_deconstruction_screwdriver(mob/user, icon_state_open, icon_state_closed, obj/item/I)
-	if(!(flags_1 & NODECONSTRUCT_1) && I.tool_behaviour == TOOL_SCREWDRIVER)
+	if(!flags_1 && I.tool_behaviour == TOOL_SCREWDRIVER)
 		I.play_tool_sound(src, 50)
 		if(!panel_open)
 			panel_open = TRUE
