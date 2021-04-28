@@ -1163,19 +1163,19 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 // For hidding taurs
 
 
-// // Extends default proc check for hidden ears for supporting our sleepbag to
-// /datum/sprite_accessory/ears/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+// Extends default proc check for hidden ears for supporting our sleepbag to
+/datum/sprite_accessory/ears/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
 	// // Default proc code
 	// if(H.head && (H.head.flags_inv & HIDEHAIR) || (H.wear_mask && (H.wear_mask.flags_inv & HIDEHAIR)) || !HD)
 	// 	return TRUE
 	// return FALSE
 
-	// // First lets proc default code
-	// . = ..()
-	// if(!.) // If true, ears alreaady hidden
-	// 	if(H.wear_suit && (H.wear_suit.flags_inv & HIDEHAIR) || !HD) // Default check adapted for suit
-	// 		if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag)) // Additional check for our sleepbag item type in suit slot
-	// 			return TRUE
-	// 		return FALSE
-	// 	return FALSE
-	// return TRUE // Return TRUE if superfuncitons already retuns TRUE
+	// First lets proc default code
+	. = ..()
+	if(!.) // If true, ears alreaady hidden
+		if(H.wear_suit && (H.wear_suit.flags_inv & HIDEHAIR) || !HD) // Default check adapted for suit
+			if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag)) // Additional check for our sleepbag item type in suit slot
+				return TRUE
+			return FALSE
+		return FALSE
+	return TRUE // Return TRUE if superfuncitons already retuns TRUE
