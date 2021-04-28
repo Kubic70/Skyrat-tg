@@ -1,3 +1,4 @@
+//This code huge and blocky, but we're working on update for... my god, 4 months. If you can upgrade it - do it, but don't remove or break something, test carefully. This item is insertable.
 /obj/item/vibrator
 	name = "vibrator"
 	desc = "Woah. What an... Interesting item. I wonder what this red button does..."
@@ -73,33 +74,58 @@
 
 	var/message = ""
 	if(toy_on == TRUE)
-		switch(user.zone_selected) //to let code know what part of body we gonna tickle
+		switch(user.zone_selected) //to let code know what part of body we gonna vibe
 			if(BODY_ZONE_PRECISE_GROIN)
-				if(M.is_bottomless())
-					var/obj/item/organ/genital/penis = M.getorganslot(ORGAN_SLOT_PENIS)
-					var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
-					if(vibration_mode == "low")
-						if(vagina && penis)
+				var/obj/item/organ/genital/penis = M.getorganslot(ORGAN_SLOT_PENIS)
+				var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
+				if(vibration_mode == "low")
+					if(vagina && penis)
+						if(vagina.visibility_preference == GENITAL_ALWAYS_SHOW && penis.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
 							message = (user == M) ? pick("massages their vagina with the [src]","gently their pussy with [src]","massages their penis with the [src]","gently teases their penis with [src]") : pick("delicately massages [M]'s vagina with [src]", "uses [src] to gently massage [M]'s crotch","leans the massager against [M]'s pussy","delicately massages [M]'s penis with [src]", "uses [src] to gently massage [M]'s penis","leans the massager against [M]'s penis")
-							//M.adjustArous(4,2)
 							M.adjustArousal(4)
 							M.adjustPleasure(2)
 							if(prob(50))
 								M.emote(pick("twitch_s","moan","blush"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
-						else if(penis)
-							message = (user == M) ? pick("massages their penis with the [src]","gently teases their penis with [src]") : pick("delicately massages [M]'s penis with [src]", "uses [src] to gently massage [M]'s penis","leans the massager against [M]'s penis")
-							//M.adjustArous(4,2)
-							M.adjustArousal(4)
-							M.adjustPleasure(2)
-							if(prob(50))
-								M.emote(pick("twitch_s","moan"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
-						else if(vagina)
+
+						else if(vagina.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
 							message = (user == M) ? pick("massages their vagina with the [src]","gently their pussy with [src]") : pick("delicately massages [M]'s vagina with [src]", "uses [src] to gently massage [M]'s crotch","leans the massager against [M]'s pussy")
-							//M.adjustArous(4,2)
+							M.adjustArousal(4)
+							M.adjustPleasure(2)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan","blush"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
+
+						else if(penis.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their penis with the [src]","gently teases their penis with [src]") : pick("delicately massages [M]'s penis with [src]", "uses [src] to gently massage [M]'s penis","leans the massager against [M]'s penis")
+							M.adjustArousal(4)
+							M.adjustPleasure(2)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan","blush"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(penis)
+						if(penis.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their penis with the [src]","gently teases their penis with [src]") : pick("delicately massages [M]'s penis with [src]", "uses [src] to gently massage [M]'s penis","leans the massager against [M]'s penis")
+							M.adjustArousal(4)
+							M.adjustPleasure(2)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(vagina)
+						if(vagina.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their vagina with the [src]","gently their pussy with [src]") : pick("delicately massages [M]'s vagina with [src]", "uses [src] to gently massage [M]'s crotch","leans the massager against [M]'s pussy")
 							M.adjustArousal(4)
 							M.adjustPleasure(2)
 							if(prob(50))
@@ -109,81 +135,146 @@
 						else
 							user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
 							return
+					else
+						user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+						return
 
-					if(vibration_mode == "medium")
-						if(vagina && penis)
+				if(vibration_mode == "medium")
+					if(vagina && penis)
+						if(vagina.visibility_preference == GENITAL_ALWAYS_SHOW && penis.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
 							message = (user == M) ? pick("massages their penis with the [src]","teases teases their penis with [src]","massages their vagina with the [src]","teases teases their pussy with [src]") : pick("massages [M]'s penis with [src]", "uses [src] to massage [M]'s penis","leans the massager against [M]'s penis","massages [M]'s vagina with [src]", "uses [src] to massage [M]'s crotch","leans the massager against [M]'s pussy")
-							//M.adjustArous(5,5)
 							M.adjustArousal(5)
 							M.adjustPleasure(5)
 							if(prob(50))
 								M.emote(pick("twitch_s","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 20, TRUE)
-						else if(penis)
-							message = (user == M) ? pick("massages their penis with the [src]","teases teases their penis with [src]") : pick("massages [M]'s penis with [src]", "uses [src] to massage [M]'s penis","leans the massager against [M]'s penis")
-							//M.adjustArous(5,5)
-							M.adjustArousal(5)
-							M.adjustPleasure(5)
-							if(prob(50))
-								M.emote(pick("twitch_s","moan"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 20, TRUE)
-						else if(vagina)
+
+						else if(vagina.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
 							message = (user == M) ? pick("massages their vagina with the [src]","teases teases their pussy with [src]") : pick("massages [M]'s vagina with [src]", "uses [src] to massage [M]'s crotch","leans the massager against [M]'s pussy")
-							//M.adjustArous(5,5)
-							M.adjustArousal(5)
-							M.adjustPleasure(5)
+							M.adjustArousal(4)
+							M.adjustPleasure(2)
 							if(prob(50))
-								M.emote(pick("twitch_s","moan"))
+								M.emote(pick("twitch_s","moan","blush"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 20, TRUE)
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
+
+						else if(penis.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their penis with the [src]","teases teases their penis with [src]") : pick("massages [M]'s penis with [src]", "uses [src] to massage [M]'s penis","leans the massager against [M]'s penis")
+							M.adjustArousal(4)
+							M.adjustPleasure(2)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan","blush"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
+
 						else
-							user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
 							return
 
-					if(vibration_mode == "hard")
-						if(vagina && penis)
-							message = (user == M) ? pick("massages their penis with the [src]","hardly teases their penis with [src]","massages their vagina with the [src]","hardly teases their pussy with [src]") : pick("leans massager tight to [M]'s penis with [src]", "uses [src] to agressively massage [M]'s penis","leans the massager against [M]'s penis","leans massager tight to [M]'s vagina with [src]", "uses [src] to agressively massage [M]'s crotch","leans the massager against [M]'s pussy")
-							//M.adjustArous(8,10)
-							M.adjustArousal(8)
-							M.adjustPleasure(10)
+					else if(penis)
+						if(penis.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their penis with the [src]","teases teases their penis with [src]") : pick("massages [M]'s penis with [src]", "uses [src] to massage [M]'s penis","leans the massager against [M]'s penis")
+							M.adjustArousal(5)
+							M.adjustPleasure(5)
 							if(prob(50))
 								M.emote(pick("twitch_s","moan"))
 							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 30, TRUE)
-						else if(penis)
-							message = (user == M) ? pick("massages their penis with the [src]","hardly teases their penis with [src]") : pick("leans massager tight to [M]'s penis with [src]", "uses [src] to agressively massage [M]'s penis","leans the massager against [M]'s penis")
-							//M.adjustArous(8,10)
-							M.adjustArousal(8)
-							M.adjustPleasure(10)
-							if(prob(50))
-								M.emote(pick("twitch_s","moan"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 30, TRUE)
-						else if(vagina)
-							message = (user == M) ? pick("massages their vagina with the [src]","hardly teases their pussy with [src]") : pick("leans massager tight to [M]'s vagina with [src]", "uses [src] to agressively massage [M]'s crotch","leans the massager against [M]'s pussy")
-							//M.adjustArous(8,10)
-							M.adjustArousal(8)
-							M.adjustPleasure(10)
-							if(prob(50))
-								M.emote(pick("twitch_s","moan"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 30, TRUE)
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 20, TRUE)
+
 						else
-							user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
 							return
-				else
-					to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
-					return
+
+					else if(vagina)
+						if(vagina.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their vagina with the [src]","teases teases their pussy with [src]") : pick("massages [M]'s vagina with [src]", "uses [src] to massage [M]'s crotch","leans the massager against [M]'s pussy")
+							M.adjustArousal(5)
+							M.adjustPleasure(5)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 20, TRUE)
+
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else
+						user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+						return
+
+				if(vibration_mode == "hard")
+					if(vagina && penis)
+						if(vagina.visibility_preference == GENITAL_ALWAYS_SHOW && penis.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their penis with the [src]","hardly teases their penis with [src]","massages their vagina with the [src]","hardly teases their pussy with [src]") : pick("leans massager tight to [M]'s penis with [src]", "uses [src] to agressively massage [M]'s penis","leans the massager against [M]'s penis","leans massager tight to [M]'s vagina with [src]", "uses [src] to agressively massage [M]'s crotch","leans the massager against [M]'s pussy")
+							M.adjustArousal(8)
+							M.adjustPleasure(10)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 30, TRUE)
+
+						else if(vagina.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their vagina with the [src]","hardly teases their pussy with [src]") : pick("leans massager tight to [M]'s vagina with [src]", "uses [src] to agressively massage [M]'s crotch","leans the massager against [M]'s pussy")
+							M.adjustArousal(4)
+							M.adjustPleasure(2)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan","blush"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
+
+						else if(penis.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their penis with the [src]","hardly teases their penis with [src]") : pick("leans massager tight to [M]'s penis with [src]", "uses [src] to agressively massage [M]'s penis","leans the massager against [M]'s penis")
+							M.adjustArousal(4)
+							M.adjustPleasure(2)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan","blush"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
+
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(penis)
+						if(penis.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their penis with the [src]","hardly teases their penis with [src]") : pick("leans massager tight to [M]'s penis with [src]", "uses [src] to agressively massage [M]'s penis","leans the massager against [M]'s penis")
+							M.adjustArousal(8)
+							M.adjustPleasure(10)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 30, TRUE)
+
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(vagina)
+						if(vagina.visibility_preference == GENITAL_ALWAYS_SHOW || M.is_bottomless())
+							message = (user == M) ? pick("massages their vagina with the [src]","hardly teases their pussy with [src]") : pick("leans massager tight to [M]'s vagina with [src]", "uses [src] to agressively massage [M]'s crotch","leans the massager against [M]'s pussy")
+							M.adjustArousal(8)
+							M.adjustPleasure(10)
+							if(prob(50))
+								M.emote(pick("twitch_s","moan"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 30, TRUE)
+
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else
+						user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+						return
 
 			if(BODY_ZONE_CHEST)
-				if(M.is_topless())
-					var/obj/item/organ/genital/breasts = M.getorganslot(ORGAN_SLOT_BREASTS)
+				var/obj/item/organ/genital/breasts = M.getorganslot(ORGAN_SLOT_BREASTS)
+				if(M.is_topless() || breasts.visibility_preference == GENITAL_ALWAYS_SHOW)
 					if(vibration_mode == "low")
 						if(breasts)
 							message = (user == M) ? pick("massages their breasts with the [src]","gently teases their tits with [src]") : pick("delicately teases [M]'s breasts with [src]", "uses [src] to slowly massage [M]'s tits", "uses [src] to tease [M]'s boobs", "rubs [M]'s tits with [src]")
-							//M.adjustArous(4,1)
 							M.adjustArousal(4)
 							M.adjustPleasure(1)
 							if(prob(30))
@@ -192,7 +283,6 @@
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
 						else
 							message = (user == M) ? pick("massages their nipples with the [src]","gently teases their nipples with [src]") : pick("delicately teases [M]'s nipples with [src]", "uses [src] to slowly massage [M]'s nipples", "uses [src] to tease [M]'s nipples")
-							//M.adjustArous(2,1)
 							M.adjustArousal(2)
 							M.adjustPleasure(1)
 							if(prob(30))
@@ -204,7 +294,6 @@
 					if(vibration_mode == "medium")
 						if(breasts)
 							message = (user == M) ? pick("massages their breasts with the [src]","teases their nipples with [src]") : pick("teases [M]'s nipples with [src]", "uses [src] to massage [M]'s tits", "uses [src] to tease [M]'s nipples")
-							//M.adjustArous(5,4)
 							M.adjustArousal(5)
 							M.adjustPleasure(4)
 							if(prob(30))
@@ -213,7 +302,6 @@
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 20, TRUE)
 						else
 							message = (user == M) ? pick("massages their nipples with the [src]","teases their nipples with [src]") : pick("teases [M]'s nipples with [src]", "uses [src] to massage [M]'s nipples", "uses [src] to tease [M]'s nipples")
-							//M.adjustArous(3,1)
 							M.adjustArousal(3)
 							M.adjustPleasure(1)
 							if(prob(30))
@@ -224,7 +312,6 @@
 					if(vibration_mode == "hard")
 						if(breasts)
 							message = (user == M) ? pick("massages their breasts with the [src]","hardly teases their nipples with [src]") : pick("leans massager tight against [M]'s nipples with [src]", "uses [src] to massage [M]'s tits", "uses [src] to tease [M]'s nipples")
-							//M.adjustArous(7,9)
 							M.adjustArousal(7)
 							M.adjustPleasure(9)
 							if(prob(30))
@@ -233,7 +320,6 @@
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 30, TRUE)
 						else
 							message = (user == M) ? pick("massages their nipples with the [src]","hardly teases their nipples with [src]") : pick("leans massager tight against [M]'s nipples with [src]", "uses [src] to massage [M]'s nipples", "uses [src] to tease [M]'s nipples")
-							//M.adjustArous(4,2)
 							M.adjustArousal(4)
 							M.adjustPleasure(2)
 							if(prob(30))

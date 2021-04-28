@@ -123,45 +123,14 @@
 
 	var/message = ""
 	if(lit == TRUE)
-		switch(user.zone_selected) //to let code know what part of body we gonna tickle
+		switch(user.zone_selected) //to let code know what part of body we gonna wax
 			if(BODY_ZONE_PRECISE_GROIN)
-				if(M.is_bottomless())
-					var/obj/item/organ/genital/penis = M.getorganslot(ORGAN_SLOT_PENIS)
-					var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
-					if(M.gender == MALE)
-						if(vagina && penis)
-							message = (user == M) ? pick("drips some wax on the [M]'s penis, he moans in pleasure","drips some wax on themselves, letting it reach his penis. he moans in pleasure.","drips some wax on themselves, letting it reach his vagina. He moans in pleasure.","drips some wax on the [M]'s pussy, he moans in pleasure") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, he slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made him moan.","drips some wax on the [M]'s vagina, he moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made him moan.")
-							//M.adjustArous(0,0,9)
-							M.adjustPain(9)
-							M.do_jitter_animation()
-							if(prob(50))
-								M.emote(pick("twitch_s" ,"gasp","shiver"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
-												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
-						else if(penis)
-							message = (user == M) ? pick("drips some wax on the [M]'s penis, he moans in pleasure","drips some wax on themselves, letting it reach his penis. he moans in pleasure.") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, he slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made him moan.")
-							//M.adjustArous(0,0,9)
-							M.adjustPain(9)
-							M.do_jitter_animation()
-							if(prob(50))
-								M.emote(pick("twitch_s" ,"gasp","shiver"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
-												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
-						else if(vagina)
-							message = (user == M) ? pick("drips some wax on themselves, letting it reach his vagina. He moans in pleasure.","drips some wax on the [M]'s pussy, he moans in pleasure") : pick("drips some wax on the [M]'s vagina, he moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made him moan.")
-							//M.adjustArous(0,0,9)
-							M.adjustPain(9)
-							M.do_jitter_animation()
-							if(prob(50))
-								M.emote(pick("twitch_s" ,"gasp","shiver"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
-												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
-						else
-							message = (user == M) ? pick("drips some wax on themselves, letting it reach his belly. He moans in pleasure.","drips some wax on the [M]'s tummy, he moans in pleasure") : pick("drips some wax on the [M]'s belly, he moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s tummy.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s groin, made him moan.")
-							//M.adjustArous(0,0,9)
+				var/obj/item/organ/genital/penis = M.getorganslot(ORGAN_SLOT_PENIS)
+				var/obj/item/organ/genital/vagina = M.getorganslot(ORGAN_SLOT_VAGINA)
+				if(M.gender == MALE)
+					if(vagina && penis)
+						if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW && penis.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the thier penis, he moans in pleasure","drips some wax on themselves, letting it reach his penis. he moans in pleasure","drips some wax on themselves, letting it reach his vagina. He moans in pleasure.","drips some wax on the [M]'s pussy, he moans in pleasure") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, he slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made him moan.","drips some wax on the [M]'s vagina, he moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made him moan.")
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -170,10 +139,8 @@
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
 
-					if(M.gender == FEMALE)
-						if(vagina && penis)
-							message = (user == M) ? pick("drips some wax on the [M]'s penis, she moans in pleasure","drips some wax on themselves, letting it reach her penis. she moans in pleasure.","drips some wax on themselves, letting it reach her vagina. She moans in pleasure.","drips some wax on the [M]'s pussy, she moans in pleasure") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, she slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made her moan.","drips some wax on the [M]'s vagina, she moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made her moan.")
-							//M.adjustArous(0,0,9)
+						else if(M.is_bottomless() ||penis.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the their penis, he moans in pleasure","drips some wax on themselves, letting it reach his penis. he moans in pleasure.") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, he slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made him moan.")
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -181,9 +148,9 @@
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
-						else if(penis)
-							message = (user == M) ? pick("drips some wax on the [M]'s penis, she moans in pleasure","drips some wax on themselves, letting it reach her penis. She moans in pleasure.") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, she slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made her moan.")
-							//M.adjustArous(0,0,9)
+
+						else if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on themselves, letting it reach his vagina. He moans in pleasure.","drips some wax on the [M]'s pussy, he moans in pleasure") : pick("drips some wax on the [M]'s vagina, he moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made him moan.")
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -191,9 +158,14 @@
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
-						else if(vagina)
-							message = (user == M) ? pick("drips some wax on themselves, letting it reach her vagina. She moans in pleasure.","drips some wax on the [M]'s pussy, she moans in pleasure") : pick("drips some wax on the [M]'s vagina, she moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made her moan.")
-							//M.adjustArous(0,0,9)
+
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(penis)
+						if(M.is_bottomless() || penis.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the their penis, he moans in pleasure","drips some wax on themselves, letting it reach his penis. he moans in pleasure.") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, he slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made him moan.")
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -202,8 +174,12 @@
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
 						else
-							message = (user == M) ? pick("drips some wax on themselves, letting it reach her belly. She moans in pleasure.","drips some wax on the [M]'s tummy, she moans in pleasure") : pick("drips some wax on the [M]'s belly, she moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s tummy.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s groin, made her moan.")
-							//M.adjustArous(0,0,9)
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(vagina)
+						if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on themselves, letting it reach his vagina. He moans in pleasure.","drips some wax on the [M]'s pussy, he moans in pleasure") : pick("drips some wax on the [M]'s vagina, he moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made him moan.")
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -211,31 +187,13 @@
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
 
 					else
-						if(vagina && penis)
-							message = (user == M) ? pick("drips some wax on the [M]'s penis, it moans in pleasure","drips some wax on themselves, letting it reach it's penis. It moans in pleasure.","drips some wax on themselves, letting it reach it's vagina. It moans in pleasure.","drips some wax on the [M]'s pussy, it moans in pleasure") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, it slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made it moan.","drips some wax on the [M]'s vagina, it moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made it moan.")
-							//M.adjustArous(0,0,9)
-							M.adjustPain(9)
-							M.do_jitter_animation()
-							if(prob(50))
-								M.emote(pick("twitch_s" ,"gasp","shiver"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
-												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
-						else if(penis)
-							message = (user == M) ? pick("drips some wax on the [M]'s penis, it moans in pleasure","drips some wax on themselves, letting it reach it's penis. It moans in pleasure.") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, it slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made it moan.")
-							//M.adjustArous(0,0,9)
-							M.adjustPain(9)
-							M.do_jitter_animation()
-							if(prob(50))
-								M.emote(pick("twitch_s" ,"gasp","shiver"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
-												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
-						else if(vagina)
-							message = (user == M) ? pick("drips some wax on the [M]'s vagina, it moans in pleasure","drips some wax on themselves, letting it reach it's vagina. It moans in pleasure.") : pick("drips some wax on the [M]'s vagina, it moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made it moan.")
-							//M.adjustArous(0,0,9)
+						if(M.is_bottomless())
+							message = (user == M) ? pick("drips some wax on themselves, letting it reach his belly. He moans in pleasure.","drips some wax on the [M]'s tummy, he moans in pleasure") : pick("drips some wax on the [M]'s belly, he moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s tummy.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s groin, made him moan.")
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -244,8 +202,13 @@
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
 						else
-							message = (user == M) ? pick("drips some wax on themselves, letting it reach it's belly. It moans in pleasure.","drips some wax on the [M]'s tummy. It moans in pleasure") : pick("drips some wax on the [M]'s belly, it moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s tummy.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s groin, made it moan.")
-							//M.adjustArous(0,0,9)
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+				if(M.gender == FEMALE)
+					if(vagina && penis)
+						if(M.is_bottomless() || penis.visibility_preference == GENITAL_ALWAYS_SHOW && vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the [M]'s penis, she moans in pleasure","drips some wax on themselves, letting it reach her penis. she moans in pleasure.","drips some wax on themselves, letting it reach her vagina. She moans in pleasure.","drips some wax on the [M]'s pussy, she moans in pleasure") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, she slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made her moan.","drips some wax on the [M]'s vagina, she moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made her moan.")
 							M.adjustPain(9)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -254,17 +217,153 @@
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
 
+						else if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on themselves, letting it reach her vagina. She moans in pleasure.","drips some wax on the [M]'s pussy, she moans in pleasure") : pick("drips some wax on the [M]'s vagina, she moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made her moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+
+						else if(M.is_bottomless() || penis.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the their penis, she moans in pleasure","drips some wax on themselves, letting it reach her penis. She moans in pleasure.") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, she slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made her moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(penis)
+						if(M.is_bottomless() || penis.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the their penis, she moans in pleasure","drips some wax on themselves, letting it reach her penis. She moans in pleasure.") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, she slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made her moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(vagina)
+						if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on themselves, letting it reach her vagina. She moans in pleasure.","drips some wax on the [M]'s pussy, she moans in pleasure") : pick("drips some wax on the [M]'s vagina, she moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made her moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+					else
+						if(M.is_bottomless())
+							message = (user == M) ? pick("drips some wax on themselves, letting it reach her belly. She moans in pleasure.","drips some wax on the [M]'s tummy, she moans in pleasure") : pick("drips some wax on the [M]'s belly, she moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s tummy.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s groin, made her moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
 				else
-					to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
-					return
+					if(vagina && penis)
+						if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW && penis.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the [M]'s penis, it moans in pleasure","drips some wax on themselves, letting it reach it's penis. It moans in pleasure.","drips some wax on themselves, letting it reach it's vagina. It moans in pleasure.","drips some wax on the [M]'s pussy, it moans in pleasure") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, it slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made it moan.","drips some wax on the [M]'s vagina, it moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made it moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+
+						else if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the [M]'s vagina, it moans in pleasure","drips some wax on themselves, letting it reach it's vagina. It moans in pleasure.") : pick("drips some wax on the [M]'s vagina, it moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made it moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+
+						else if(M.is_bottomless() || penis.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the [M]'s penis, it moans in pleasure","drips some wax on themselves, letting it reach it's penis. It moans in pleasure.") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, it slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made it moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(penis)
+						if(M.is_bottomless() || penis.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the [M]'s penis, it moans in pleasure","drips some wax on themselves, letting it reach it's penis. It moans in pleasure.") : pick("drips wax right on [M]'s penis. It slightly itches.","drips hot wax from the [src] on the [M]'s penis, it slightly shivers.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s penis, made it moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else if(vagina)
+						if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on the [M]'s vagina, it moans in pleasure","drips some wax on themselves, letting it reach it's vagina. It moans in pleasure.") : pick("drips some wax on the [M]'s vagina, it moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s vagina.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s pussy, made it moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
+
+					else
+						if(M.is_bottomless())
+							message = (user == M) ? pick("drips some wax on themselves, letting it reach it's belly. It moans in pleasure.","drips some wax on the [M]'s tummy. It moans in pleasure") : pick("drips some wax on the [M]'s belly, it moans in pleasure","tilts the candle. Wax slowly goes down, reaching the [M]'s tummy.","tilts the candle. Drops of wax, dripping right from [src] right on the [M]'s groin, made it moan.")
+							M.adjustPain(9)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s groin is covered!</span>")
+							return
 
 			if(BODY_ZONE_CHEST)
-				if(M.is_topless())
-					var/obj/item/organ/genital/breasts = M.getorganslot(ORGAN_SLOT_BREASTS)
-					if(M.gender == MALE)
-						if(breasts)
+				var/obj/item/organ/genital/breasts = M.getorganslot(ORGAN_SLOT_BREASTS)
+				if(M.gender == MALE)
+					if(breasts)
+						if(M.is_topless() || breasts.visibility_preference == GENITAL_ALWAYS_SHOW)
 							message = (user == M) ? pick("drips some wax on his breasts, releasing all his lustness","drips some wax right on his tits, made him become faint.") : pick("pours the wax that is slowly dripping from the [src] on the [M]'s breasts, he shows pure enjoyment.","tilts the candle. Right in the moment when wax drips on [M]'s breasts, he shivers","tilts the candle. Just when hot drops of wax fell on the [M]'s breasts, he quietly moans in pleasure")
-							//M.adjustArous(0,0,6)
 							M.adjustPain(6)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -273,41 +372,26 @@
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
 						else
-							message = (user == M) ? pick("drips some wax on his nipples, releasing all his lustness","drips some wax right on his chest, made him become faint.") : pick("drips wax from [src], that falls right on the [M]'s chest, he all shivers in pleasure.","tilts the candle. Right in the moment when wax drips on [M]'s nipples, he shivers","tilts the candle. Just when hot drops of wax fell on the [M]'s chest, he quietly moans in pleasure")
-							//M.adjustArous(0,0,4)
-							M.adjustPain(4)
-							M.do_jitter_animation()
-							if(prob(50))
-								M.emote(pick("twitch_s" ,"gasp","shiver"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
-												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
-
-					if(M.gender == FEMALE)
-						if(breasts)
-							message = (user == M) ? pick("drips some wax on her breasts, releasing all her lustness","drips some wax right on her tits, made her become faint.") : pick("pours the wax that is slowly dripping from the [src] on the [M]'s breasts, she shows pure enjoyment.","tilts the candle. Right in the moment when wax drips on [M]'s breasts, she shivers","tilts the candle. Just when hot drops of wax fell on the [M]'s breasts, she quietly moans in pleasure")
-							//M.adjustArous(0,0,6)
-							M.adjustPain(6)
-							M.do_jitter_animation()
-							if(prob(50))
-								M.emote(pick("twitch_s" ,"gasp","shiver"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
-												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
-						else
-							message = (user == M) ? pick("drips some wax on her nipples, releasing all her lustness","drips some wax right on her chest, made her become faint.") : pick("drips wax from [src], that falls right on the [M]'s chest, she all shivers in pleasure.","tilts the candle. Right in the moment when wax drips on [M]'s nipples, she shivers", "tilts the candle. Just when hot drops of wax fell on the [M]'s chest, she quietly moans in pleasure")
-							//M.adjustArous(0,0,4)
-							M.adjustPain(4)
-							M.do_jitter_animation()
-							if(prob(50))
-								M.emote(pick("twitch_s" ,"gasp","shiver"))
-							user.visible_message("<font color=purple>[user] [message].</font>")
-							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
-												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+							to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
+							return
 					else
-						if(breasts)
-							message = (user == M) ? pick("drips some wax on it's breasts, releasing all it's lustness","drips some wax right on it's tits, made it become faint.") : pick("pours the wax that is slowly dripping from the [src] on the [M]'s breasts, it shows pure enjoyment.","tilts the candle. Right in the moment when wax drips on [M]'s breasts, it shivers","tilts the candle. Just when hot drops of wax fell on the [M]'s breasts, it quietly moans in pleasure")
-							//M.adjustArous(0,0,6)
+						if(M.is_topless())
+							message = (user == M) ? pick("drips some wax on his nipples, releasing all his lustness","drips some wax right on his chest, made him become faint.") : pick("drips wax from [src], that falls right on the [M]'s chest, he all shivers in pleasure.","tilts the candle. Right in the moment when wax drips on [M]'s nipples, he shivers","tilts the candle. Just when hot drops of wax fell on the [M]'s chest, he quietly moans in pleasure")
+							M.adjustPain(4)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
+							return
+
+				if(M.gender == FEMALE)
+					if(breasts)
+						if(M.is_topless() || breasts.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on her breasts, releasing all her lustness","drips some wax right on her tits, made her become faint.") : pick("pours the wax that is slowly dripping from the [src] on the [M]'s breasts, she shows pure enjoyment.","tilts the candle. Right in the moment when wax drips on [M]'s breasts, she shivers","tilts the candle. Just when hot drops of wax fell on the [M]'s breasts, she quietly moans in pleasure")
 							M.adjustPain(6)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -316,8 +400,38 @@
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
 						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
+							return
+					else
+						if(M.is_topless())
+							message = (user == M) ? pick("drips some wax on her nipples, releasing all her lustness","drips some wax right on her chest, made her become faint.") : pick("drips wax from [src], that falls right on the [M]'s chest, she all shivers in pleasure.","tilts the candle. Right in the moment when wax drips on [M]'s nipples, she shivers", "tilts the candle. Just when hot drops of wax fell on the [M]'s chest, she quietly moans in pleasure")
+							M.adjustPain(4)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
+							return
+				else
+					if(breasts)
+						if(M.is_topless() || breasts.visibility_preference == GENITAL_ALWAYS_SHOW)
+							message = (user == M) ? pick("drips some wax on it's breasts, releasing all it's lustness","drips some wax right on it's tits, made it become faint.") : pick("pours the wax that is slowly dripping from the [src] on the [M]'s breasts, it shows pure enjoyment.","tilts the candle. Right in the moment when wax drips on [M]'s breasts, it shivers","tilts the candle. Just when hot drops of wax fell on the [M]'s breasts, it quietly moans in pleasure")
+							M.adjustPain(6)
+							M.do_jitter_animation()
+							if(prob(50))
+								M.emote(pick("twitch_s" ,"gasp","shiver"))
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
+												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
+							return
+					else
+						if(M.is_topless())
 							message = (user == M) ? pick("drips some wax on it's nipples, releasing all it's lustness","drips some wax right on it's chest, made it become faint.") : pick("drips wax from [src], that falls right on the [M]'s chest, it all shivers in pleasure.","tilts the candle. Right in the moment when wax drips on [M]'s nipples, it shivers", "tilts the candle. Just when hot drops of wax fell on the [M]'s chest, it quietly moans in pleasure")
-							//M.adjustArous(0,0,4)
 							M.adjustPain(4)
 							M.do_jitter_animation()
 							if(prob(50))
@@ -326,9 +440,9 @@
 							playsound(loc, pick('modular_skyrat/modules/modular_items/lewd_items/sounds/vax1.ogg',
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/vax2.ogg'), 70, TRUE)
 
-				else
-					to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
-					return
+						else
+							to_chat(user, "<span class='danger'>Looks like [M]'s chest is covered!</span>")
+							return
 	else
 		to_chat(user, "<span class='danger'>Candle should be lit to produce hot liquid wax!</span>")
 		return

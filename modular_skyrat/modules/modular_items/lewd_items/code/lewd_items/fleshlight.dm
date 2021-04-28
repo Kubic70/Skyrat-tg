@@ -65,7 +65,7 @@
 		if(BODY_ZONE_PRECISE_GROIN)
 			var/obj/item/organ/genital/penis = M.getorganslot(ORGAN_SLOT_PENIS)
 			if(penis)
-				if(M.is_bottomless())
+				if(M.is_bottomless() || penis.visibility_preference == GENITAL_ALWAYS_SHOW)
 					switch(M.gender)
 						if(MALE)
 							message = (user == M) ? pick("moans in ecstasy, as he uses the [src]","puts [src] on [M]'s penis and slowly moving it, he bends in pleasure","slightly shivers in pleasure while using a [src].") : pick("uses [src] on [M]'s penis","fucks [M] with a [src]","masturbates to [M], as he moans in ecstasy while [src] tightly holding his penis")
