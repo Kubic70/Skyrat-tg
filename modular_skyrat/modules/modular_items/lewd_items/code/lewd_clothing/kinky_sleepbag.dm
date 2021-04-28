@@ -20,15 +20,15 @@
 	var/time = 2
 	var/tt
 	var/static/list/bag_colors
-	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
+	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDEHAIR
 	strip_delay = 300
 	breakouttime = 3000 //do not touch. First - It's contraband item, Second - It's damn expensive, Third - it's ERP item, so you can't legally use it on characters without enabled non-con.
 	var/static/list/bag_inf_states
 	var/list/bag_states = list("deflated" = "inflated", "inflated" = "deflated")
 	var/state_thing = "deflated"
 	var/mutable_appearance/bag_overlay
-	var/obj/item/bodypart/l_leg/digitigrade/legr
-	var/obj/item/bodypart/l_leg/digitigrade/legl
+	var/obj/item/bodypart/l_leg/legr
+	var/obj/item/bodypart/l_leg/legl
 	slowdown = 2
 	equip_delay_other = 300
 	equip_delay_self = NONE
@@ -106,52 +106,50 @@
 		ADD_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
 		if(bag_state == "inflated")
 			to_chat(H,"<font color=purple>You realize that you can't move even an inch. Inflated sleepbag squeezes you from all sides.</font>")
-			H.cut_overlay(H.overlays_standing[HEAD_LAYER])
+			// H.cut_overlay(H.overlays_standing[HEAD_LAYER])
+			H.cut_overlay(H.overlays_standing[HAIR_LAYER])
 		if(bag_state == "deflated")
 			to_chat(H,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
 		var/i
-		var/list/mutable_appearance/L = H.overlays_standing[BODY_FRONT_LAYER]
-		for (i=1,i<=L.len,i++)
-			to_chat(world, "dbg 1| L[i].icon_state = [L[i].icon_state] | findtext(L[i].icon_state,\"ears\") = [findtext(L[i].icon_state,"ears")]")
-			if(findtext(L[i].icon_state,"ears") > 1)
-				H.cut_overlay(H.overlays_standing[BODY_FRONT_LAYER][i])
-			continue
-		L = H.overlays_standing[BODY_ADJ_LAYER]
-		for (i=1,i<=L.len,i++)
-			to_chat(world, "dbg 2| L[i].icon_state = [L[i].icon_state] | findtext(L[i].icon_state,\"ears\") = [findtext(L[i].icon_state,"ears")]")
-			if(findtext(L[i].icon_state,"ears") > 1)
-				H.cut_overlay(H.overlays_standing[BODY_ADJ_LAYER][i])
-			continue
-
+		// var/list/mutable_appearance/L = H.overlays_standing[BODY_FRONT_LAYER]
+		// if(LAZYLEN(L))
+		// 	for (i=1,i<=L.len,i++)
+		// 		if(findtext(L[i].icon_state,"ears") > 1)
+		// 			H.cut_overlay(H.overlays_standing[BODY_FRONT_LAYER][i])
+		// 		continue
+		// L = H.overlays_standing[BODY_ADJ_LAYER]
+		// if(LAZYLEN(L))
+		// 	for (i=1,i<=L.len,i++)
+		// 		if(findtext(L[i].icon_state,"ears") > 1)
+		// 			H.cut_overlay(H.overlays_standing[BODY_ADJ_LAYER][i])
+		// 		continue
 
 		H.cut_overlay(H.overlays_standing[SHOES_LAYER])
-		H.update_inv_shoes()
 		H.cut_overlay(H.overlays_standing[BELT_LAYER])
 		H.cut_overlay(H.overlays_standing[NECK_LAYER])
 		H.cut_overlay(H.overlays_standing[BACK_LAYER])
 		H.cut_overlay(H.overlays_standing[BODY_BEHIND_LAYER])
-
-		H.update_overlays()
-
-		for(i=1,i<=H.bodyparts.len,i++)
-			if(istype(H.bodyparts[i],/obj/item/bodypart/l_leg/digitigrade))
-				legl = H.bodyparts[i]
-				H.bodyparts[i] = null
-			if(istype(H.bodyparts[i],/obj/item/bodypart/r_leg/digitigrade))
-				legr = H.bodyparts[i]
-				H.bodyparts[i] = null
-			continue
+		if(LAZYLEN(H.bodyparts))
+			for(i=1,i<=H.bodyparts.len,i++)
+				if(istype(H.bodyparts[i],/obj/item/bodypart/l_leg))
+					legl = H.bodyparts[i]
+					H.bodyparts[i] = null
+				if(istype(H.bodyparts[i],/obj/item/bodypart/r_leg))
+					legr = H.bodyparts[i]
+					H.bodyparts[i] = null
+				continue
 
 		H.update_body_parts()
 		START_PROCESSING(SSobj, src)
 		time_to_sound_left = time_to_sound
 
-		appearance_update()
+		// appearance_update(user)
 		//Giving proper overlay
-		bag_overlay.icon_state = icon_state
-		update_overlays()
-	. = ..()
-	H.update_mutant_bodyparts()
+		// bag_overlay.icon_state = icon_state
+		// update_overlays()
+		// H.update_mutant_bodyparts()
+		// H.cut_overlay(H.overlays_standing[SHOES_LAYER])
+		// H.update_inv_shoes()
 
 //to inflate/deflate that thing
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/attack_self(mob/user, obj/item/I)
@@ -187,36 +185,41 @@
 			bag_state = "inflated"
 			breakouttime = 6000 //do not touch
 			slowdown = 14 //it should be almost impossible to move in that thing, so this big slowdown have reasons.
-	appearance_update()
+	// appearance_update()
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/dropped(mob/user)
 	. = ..()
-	var/mob/living/carbon/human/H = usr
+	var/mob/living/carbon/human/H = user
 
-	if(src == H.wear_suit)
-		REMOVE_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
-		to_chat(usr,"<font color=purple>You are finally free! The tight bag no longer constricts your movements.</font>")
-		STOP_PROCESSING(SSobj, src)
+	if(ishuman(user))
+		if(src == H.wear_suit)
+			REMOVE_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
+			to_chat(user,"<font color=purple>You are finally free! The tight bag no longer constricts your movements.</font>")
 
-		H.add_overlay(H.overlays_standing[SHOES_LAYER])
-		H.update_inv_shoes()
-		H.add_overlay(H.overlays_standing[BELT_LAYER])
-		H.add_overlay(H.overlays_standing[NECK_LAYER])
-		H.add_overlay(H.overlays_standing[BACK_LAYER])
-		H.add_overlay(H.overlays_standing[BODY_BEHIND_LAYER])
-		H.add_overlay(H.overlays_standing[BODY_FRONT_LAYER])
-		H.add_overlay(H.overlays_standing[HEAD_LAYER])
-		H.add_overlay(H.overlays_standing[HAIR_LAYER])
-		var/i
-		for(i=1,i<=H.bodyparts.len,i++)
-			if(H.bodyparts[i] == null)
-				H.bodyparts[i] = legl
-				legl = null
-			if(H.bodyparts[i] == null)
-				H.bodyparts[i] = legr
-				legr = null
-			continue
-		H.regenerate_icons()
+
+			H.add_overlay(H.overlays_standing[SHOES_LAYER])
+			H.update_inv_shoes()
+			H.add_overlay(H.overlays_standing[BELT_LAYER])
+			H.add_overlay(H.overlays_standing[NECK_LAYER])
+			H.add_overlay(H.overlays_standing[BACK_LAYER])
+			H.add_overlay(H.overlays_standing[BODY_BEHIND_LAYER])
+			H.add_overlay(H.overlays_standing[BODY_FRONT_LAYER])
+			H.add_overlay(H.overlays_standing[HEAD_LAYER])
+			H.add_overlay(H.overlays_standing[HAIR_LAYER])
+			var/i
+			if(LAZYLEN(H.bodyparts))
+				for(i=1,i<=H.bodyparts.len,i++)
+					if(H.bodyparts[i] == null)
+						H.bodyparts[i] = legl
+						legl = null
+					if(H.bodyparts[i] == null)
+						H.bodyparts[i] = legr
+						legr = null
+					continue
+			H.add_overlay(H.overlays_standing[SHOES_LAYER])
+			H.update_inv_shoes()
+			H.regenerate_icons()
+	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/process(delta_time)
 	if(time_to_sound_left <= 0)
@@ -228,19 +231,19 @@
 	else
 		time_to_sound_left -= delta_time
 
-/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/proc/appearance_update()
-	var/mob/living/carbon/human/H = usr
-	if(H.dna.species.mutant_bodyparts["taur"])
-		cut_overlay(bag_overlay)
-		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_special.dmi', "none", ABOVE_MOB_LAYER)
-		add_overlay(bag_overlay)
-		update_overlays()
-	else
-		cut_overlay(bag_overlay)
-		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_normal.dmi', "none", )
-		add_overlay(bag_overlay)
-		update_overlays()
+// /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/proc/appearance_update(mob/user)
+// 	var/mob/living/carbon/human/H = user
+// 	if(H.dna.species.mutant_bodyparts["taur"])
+// 		cut_overlay(bag_overlay)
+// 		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_special.dmi', "none", ABOVE_MOB_LAYER)
+// 		add_overlay(bag_overlay)
+// 		update_overlays()
+// 	else
+// 		cut_overlay(bag_overlay)
+// 		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_normal.dmi', "none", )
+// 		add_overlay(bag_overlay)
+// 		update_overlays()
 
-	if(state_thing == "inflated" && src == H.wear_suit)
-		H.cut_overlay(H.overlays_standing[HAIR_LAYER])
-		H.cut_overlay(H.overlays_standing[HEAD_LAYER])
+// 	if(state_thing == "inflated" && src == H.wear_suit)
+// 		H.cut_overlay(H.overlays_standing[HAIR_LAYER])
+// 		H.cut_overlay(H.overlays_standing[HEAD_LAYER])
