@@ -160,7 +160,7 @@
 
 // Radial menu handler for color selection by using multitool
 /obj/structure/chair/milking_machine/multitool_act(mob/living/user, obj/item/I)
-	. = ..()
+	// . = ..()
 	if(!.)
 		var/choice = show_radial_menu(user,src, milkingmachine_designs, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
 		if(choice)
