@@ -932,16 +932,20 @@
 	. = ..()
 
 // Processor of the process of assembling a kit into a machine
-/obj/item/milking_machine/constructionkit/attackby(obj/item/I, mob/living/user, params)
-	. = ..()
-	if(I.tool_behaviour == TOOL_WRENCH)
-		var/M = /obj/structure/chair/milking_machine
-		var/obj/structure/chair/milking_machine/N = new M(src.loc)
-		if(istype(src, /obj/item/milking_machine/constructionkit/pink))
-			N.machine_color = N.machine_color_list[1]
-			N.icon_state = "milking_pink_off"
-		if(istype(src, /obj/item/milking_machine/constructionkit/teal))
-			N.machine_color = N.machine_color_list[2]
-			N.icon_state = "milking_teal_off"
+/obj/item/milking_machine/constructionkit/attackby(obj/item/I, mob/living/carbon/user, params)
 
-		qdel(src)
+	if(I.tool_behaviour == TOOL_WRENCH)
+		if(user.get_held_items_for_side(LEFT_HANDS) == src || user.get_held_items_for_side(RIGHT_HANDS) == src)
+			var/M = /obj/structure/chair/milking_machine
+			if(get_area(user) == get_area(src))
+				return
+			else
+				var/obj/structure/chair/milking_machine/N = new M(src.loc)
+				if(istype(src, /obj/item/milking_machine/constructionkit/pink))
+					N.machine_color = N.machine_color_list[1]
+					N.icon_state = "milking_pink_off"
+				if(istype(src, /obj/item/milking_machine/constructionkit/teal))
+					N.machine_color = N.machine_color_list[2]
+					N.icon_state = "milking_teal_off"
+				qdel(src)
+				return
