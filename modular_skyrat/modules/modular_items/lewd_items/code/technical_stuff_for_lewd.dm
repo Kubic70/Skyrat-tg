@@ -535,7 +535,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 // Extention equipping procedure for ERP slot
 /mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
-	var/not_handled = ..()
+	var/not_handled = FALSE
 	if(!not_handled  && src.client?.prefs.erp_pref == "Yes")
 		switch(slot)
 			if(ITEM_SLOT_VAGINA)
@@ -545,7 +545,8 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 					vagina = I
 					update_inv_vagina()
 					return
-				return to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
+				to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
+				return
 			if(ITEM_SLOT_ANUS)
 				if(src.is_bottomless())
 					if(anus)
@@ -553,7 +554,8 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 					anus = I
 					update_inv_anus()
 					return
-				return to_chat(usr, "[src] is not bottomless, you cannot access to anus")
+				to_chat(usr, "[src] is not bottomless, you cannot access to anus")
+				return
 			if(ITEM_SLOT_NIPPLES)
 				if(src.is_topless())
 					if(nipples)
@@ -561,7 +563,8 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 					nipples = I
 					update_inv_nipples()
 					return
-				return to_chat(usr, "[src] is not topless, you cannot access to nipples")
+				to_chat(usr, "[src] is not topless, you cannot access to nipples")
+				return
 			if(ITEM_SLOT_PENIS)
 				if(src.is_bottomless())
 					if(penis)
@@ -569,9 +572,10 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 					penis = I
 					update_inv_penis()
 					return
-				return to_chat(usr, "[src] is not bottomless, you cannot access to penis")
+				to_chat(usr, "[src] is not bottomless, you cannot access to penis")
+				return
 	else
-		return not_handled
+		..()
 
 // Extention unequipping procedure for ERP slot
 /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
@@ -1142,8 +1146,8 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 ////////////////////////////////////////////////////////////////////
 // EXTENTIONS FOR SPRITE_ACCESSORY IS_HIDDEN CHECKS FOR ERP STUFF //
 ////////////////////////////////////////////////////////////////////
-// For hidding tails
-/datum/sprite_accessory/tails/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+// // For hidding tails
+// /datum/sprite_accessory/tails/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
 	// // Default code
 	// if(H.wear_suit)
 	// 	if(H.try_hide_mutant_parts)
@@ -1166,12 +1170,12 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 	// 	return TRUE
 	// return FALSE
 
-	// // First lets proc default code
-	// . = ..()
-	// if(!.) // If true, ears alreaady hidden
-	// 	if(H.wear_suit && (H.wear_suit.flags_inv & HIDEHAIR) || !HD) // Default check adapted for suit
-	// 		if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag)) // Additional check for our sleepbag item type in suit slot
-	// 			return TRUE
-	// 		return FALSE
-	// 	return FALSE
-	// return TRUE // Return TRUE if superfuncitons already retuns TRUE
+	// First lets proc default code
+	. = ..()
+	if(!.) // If true, ears alreaady hidden
+		if(H.wear_suit && (H.wear_suit.flags_inv & HIDEHAIR) || !HD) // Default check adapted for suit
+			if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag)) // Additional check for our sleepbag item type in suit slot
+				return TRUE
+			return FALSE
+		return FALSE
+	return TRUE // Return TRUE if superfuncitons already retuns TRUE

@@ -13,6 +13,7 @@
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	can_adjust = FALSE
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
+	flags_inv = HIDEJUMPSUIT
 	strip_delay = 80
 	mutant_variants = STYLE_DIGITIGRADE|STYLE_TAUR_ALL
 	var/mutable_appearance/breasts_overlay
@@ -51,19 +52,19 @@
 	. = ..()
 
 	//Breasts overlay for catsuit
-	if(B.genital_size >= 6 || B.genital_type == "pair")
+	if(B?.genital_size >= 6 || B?.genital_type == "pair")
 		breasts_overlay.icon_state = "breasts_double"
 		breasts_icon_overlay.icon_state = "iconbreasts_double"
 		accessory_overlay = breasts_overlay
 		add_overlay(breasts_icon_overlay)
 		update_overlays()
-	if(B.genital_type == "quad")
+	if(B?.genital_type == "quad")
 		breasts_overlay.icon_state = "breasts_quad"
 		breasts_icon_overlay.icon_state = "iconbreasts_quad"
 		accessory_overlay = breasts_overlay
 		add_overlay(breasts_icon_overlay)
 		update_overlays()
-	if(B.genital_type == "sextuple")
+	if(B?.genital_type == "sextuple")
 		breasts_overlay.icon_state = "breasts_sextuple"
 		breasts_icon_overlay.icon_state = "iconbreasts_sextuple"
 		accessory_overlay = breasts_overlay
