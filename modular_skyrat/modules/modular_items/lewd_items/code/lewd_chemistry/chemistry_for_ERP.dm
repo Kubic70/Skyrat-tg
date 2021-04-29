@@ -331,6 +331,16 @@
 	required_temp = 500
 	mix_message = "The mixture thickens and heats up slighty..."
 
+/datum/chemical_reaction/cum
+	results = list(/datum/reagent/consumable/cum = 5)
+	required_reagents = list(/datum/reagent/blood = 2, /datum/reagent/consumable/milk = 2, /datum/reagent/consumable/salt = 1)
+	mix_message = "The mixture turns into a gooey, musky white liquid..."//Blood for the organicness, milk for the whiteness, and salt for the taste
+
+/datum/chemical_reaction/breast_enlarger
+	results = list(/datum/reagent/breast_enlarger = 8)
+	required_reagents = list(/datum/reagent/medicine/salglu_solution = 1, /datum/reagent/consumable/milk = 1, /datum/reagent/medicine/c2/synthflesh = 2, /datum/reagent/silicon = 3, /datum/reagent/drug/crocin = 3)
+	mix_message = "the reaction gives off a mist of milk."
+
 ///////////////////////
 ///BOTTLES AND PILLS///
 ///////////////////////

@@ -32,7 +32,7 @@
 	beauty = -50
 
 ///////////-----Reagents-----///////////
-/datum/reagent/girlcum
+/datum/reagent/consumable/girlcum
 	name = "girlcum"
 	description = "Uhh... Someone had fun."
 	taste_description = "astringent and sweetish"
@@ -40,15 +40,17 @@
 	glass_name = "glass of Girlcum"
 	glass_desc = "Strange white liquid... Eww!"
 	reagent_state = LIQUID
+	shot_glass_icon_state = "shotglasswhite"
 
 /datum/reagent/consumable/cum
 	name = "cum"
-	description = "Eww... Well, someone was having a good time."
-	taste_description = "astringent and salty"
+	description = "A fluid containing sperm that is secretated by the sexual organs of most species."
+	taste_description = "musky and salty"
 	color = "#ffffffff"
 	glass_name = "glass of Cum"
-	glass_desc = "Uhh... Do you really want to consume it?"
+	glass_desc = "O-oh, my...~"
 	reagent_state = LIQUID
+	shot_glass_icon_state = "shotglasswhite"
 
 /datum/reagent/consumable/milk/breast_milk
 	name = "breast milk"
@@ -372,12 +374,12 @@
 		if(balls)
 			if(owner.arousal >= AROUS_SYS_LITTLE)
 				var/regen = (owner.arousal/100) * (balls.internal_fluids.maximum_volume/235) * interval
-				balls.internal_fluids.add_reagent(/datum/reagent/cum, regen)
+				balls.internal_fluids.add_reagent(/datum/reagent/consumable/cum, regen)
 
 		if(breasts)
 			if(breasts.lactates == TRUE)
 				var/regen = ((owner.nutrition / (NUTRITION_LEVEL_WELL_FED/100))/100) * (breasts.internal_fluids.maximum_volume/11000) * interval
-				breasts.internal_fluids.add_reagent(/datum/reagent/consumable/milk, regen)
+				breasts.internal_fluids.add_reagent(/datum/reagent/consumable/milk/breast_milk, regen)
 				if(!breasts.internal_fluids.holder_full())
 					owner.adjust_nutrition(regen / 2)
 				else
@@ -386,7 +388,7 @@
 		if(vagina)
 			if(owner.arousal >= AROUS_SYS_LITTLE)
 				var/regen = (owner.arousal/100) * (vagina.internal_fluids.maximum_volume/250) * interval
-				vagina.internal_fluids.add_reagent(/datum/reagent/girlcum, regen)
+				vagina.internal_fluids.add_reagent(/datum/reagent/consumable/girlcum, regen)
 				if(vagina.internal_fluids.holder_full() && regen >= 0.15)
 					regen = regen // Need to add sprite of girlcum on floor
 			else
@@ -642,8 +644,38 @@
 
 /datum/status_effect/climax_cooldown
 	id = "climax_cooldown"
+	tick_interval = 10
 	duration = 40 SECONDS
 	alert_type = null
+
+/datum/status_effect/climax_cooldown/tick()
+	var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
+	var/obj/item/organ/genital/testicles/penis = owner.getorganslot(ORGAN_SLOT_PENIS)
+
+	if(penis)
+		penis.aroused = AROUSAL_NONE
+	if(vagina)
+		vagina.aroused = AROUSAL_NONE
+	if(balls)
+		balls.aroused = AROUSAL_NONE
+
+/datum/status_effect/masturbation_climax
+	id = "climax"
+	tick_interval =  10
+	duration = 50 //Multiplayer better than singleplayer mode.
+	alert_type = null
+
+/datum/status_effect/masturbation_climax/tick() //this one should not leave decals on the floor. Used in case if character cumming on somebody's face or in beaker.
+	to_chat(world, "masturbation climax tick works")
+	var/temp_arousal = -12
+	var/temp_pleasure = -12
+	var/temp_stamina = 6
+
+	owner.reagents.add_reagent(/datum/reagent/drug/dopamine, 0.3)
+	owner.adjustStaminaLoss(temp_stamina)
+	owner.adjustArousal(temp_arousal)
+	owner.adjustPleasure(temp_pleasure)
 
 /datum/status_effect/climax
 	id = "climax"
@@ -669,7 +701,6 @@
 	var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
 	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
 	var/obj/item/organ/genital/testicles/penis = owner.getorganslot(ORGAN_SLOT_PENIS)
-	// var/mob/living/carbon/human/H = owner
 
 	if(penis && balls && owner.wear_condom())
 		if(prob(40))
@@ -677,6 +708,9 @@
 		balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
 		var/obj/item/condom/C = owner.get_item_by_slot(ITEM_SLOT_PENIS)
 		C.condom_use()
+		if(C.condom_state == "broken")
+			var/turf/T = get_turf(owner)
+			new /obj/effect/decal/cleanable/cum(T)
 
 	if(balls && owner.is_bottomless())
 		var/turf/T = get_turf(owner)
@@ -731,35 +765,314 @@
 		if(!(organ_flags & ORGAN_FAILING))
 			H.dna.species.handle_arousal(H, delta_time, times_fired)
 
-/datum/species/proc/handle_arousal(mob/living/carbon/human/H, atom/movable/screen/alert/aroused)
-	var/atom/movable/screen/alert/aroused/I = aroused
-	switch(H.arousal)
-		if(10 to 25)
-			H.throw_alert("aroused", /atom/movable/screen/alert/aroused)
-			aroused.icon_state = "arousal_small"
-			aroused.update_icon()
-		if(25 to 50)
-			aroused.icon_state = "arousal_medium"
-			aroused.update_icon()
-		if(50 to 75)
-			aroused.icon_state = "aroused_high"
-			aroused.update_icon()
-		if(75 to 150) //to prevent that 101 arousal that can make icon disappear or something.
-			aroused.icon_state = "aroused_max"
-			aroused.update_icon()
-	switch(H.pain)
-		if(10 to 25)
-
-		if(25 to 50)
-
-		if(50 to 75)
-
-		if(75 to 150)
-
 //screen alert
 
-// /atom/movable/screen/alert/aroused_X
-// 	name = "Aroused"
-// 	desc = "It's a little hot in here"
-// 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
-// 	icon_state = "arousal_small"
+/atom/movable/screen/alert/aroused_X
+	name = "Aroused"
+	desc = "It's a little hot in here"
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
+	icon_state = "arousal_small"
+	var/mutable_appearance/pain_overlay
+	var/pain_level = "small"
+
+/atom/movable/screen/alert/aroused_X/Initialize()
+	.=..()
+	pain_overlay = update_pain()
+	return ..()
+
+/atom/movable/screen/alert/aroused_X/proc/update_pain()
+	if(pain_level == "small")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi', "pain_small")
+	if(pain_level == "medium")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi', "pain_medium")
+	if(pain_level == "high")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi', "pain_high")
+	if(pain_level == "max")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi', "pain_max")
+
+/datum/species/proc/handle_arousal(mob/living/carbon/human/H, atom/movable/screen/alert/aroused_X)
+	var/atom/movable/screen/alert/aroused_X/I = H.alerts["aroused"]
+	switch(H.arousal)
+		if(10 to 25)
+			H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
+			I.icon_state = "arousal_small"
+			I.update_icon()
+		if(25 to 50)
+			H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
+			I.icon_state = "arousal_medium"
+			I.update_icon()
+		if(50 to 75)
+			H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
+			I.icon_state = "arousal_high"
+			I.update_icon()
+		if(75 to INFINITY) //to prevent that 101 arousal that can make icon disappear or something.
+			H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
+			I.icon_state = "arousal_max"
+			I.update_icon()
+
+	if(H.arousal > 10) //GEMINEE TODO
+		switch(H.pain)
+			if(-100 to 5) //to prevent same thing with pain
+				I.cut_overlay(I.pain_overlay)
+			if(5 to 25)
+				I.cut_overlay(I.pain_overlay)
+				I.pain_level = "small"
+				I.update_pain()
+				I.add_overlay(I.pain_overlay)
+				I.update_overlays()
+			if(25 to 50)
+				I.cut_overlay(I.pain_overlay)
+				I.pain_level = "medium"
+				I.update_pain()
+				I.add_overlay(I.pain_overlay)
+				I.update_overlays()
+			if(50 to 75)
+				I.cut_overlay(I.pain_overlay)
+				I.pain_level = "high"
+				I.update_pain()
+				I.add_overlay(I.pain_overlay)
+				I.update_overlays()
+			if(75 to INFINITY)
+				I.cut_overlay(I.pain_overlay)
+				I.pain_level = "max"
+				I.update_pain()
+				I.add_overlay(I.pain_overlay)
+				I.update_overlays()
+
+////////////////////////
+///CUM.DM ASSIMILATED///
+////////////////////////
+
+//Cumshot on face thing
+/datum/reagent/consumable/cum/expose_mob(mob/living/exposed_mob, methods=TOUCH, reac_volume)
+	. = ..()
+	if(!(methods & (INGEST|INJECT|PATCH|VAPOR))) //might be for the better
+		if(exposed_mob.client && (exposed_mob.client.prefs.skyrat_toggles & CUMFACE_PREF))
+			var/turf/T = get_turf(exposed_mob)
+			new/obj/effect/decal/cleanable/cum(T)
+			exposed_mob.adjust_blurriness(1)
+			exposed_mob.visible_message("<span class='warning'>[exposed_mob] has been covered in cum!</span>", "<span class='userdanger'>You've been covered in cum!</span>")
+			playsound(exposed_mob, "desecration", 50, TRUE)
+			if(is_type_in_typecache(exposed_mob, GLOB.creamable))
+				if(reac_volume>10)
+					exposed_mob.AddComponent(/datum/component/cumfaced/big, src)
+				else
+					exposed_mob.AddComponent(/datum/component/cumfaced, src)
+		qdel(src)
+
+//you got cum on your face bro *licks it off*
+/datum/component/cumfaced
+	dupe_mode = COMPONENT_DUPE_UNIQUE_PASSARGS
+
+	var/mutable_appearance/cumface
+
+/datum/component/cumfaced/Initialize()
+	if(!is_type_in_typecache(parent, GLOB.creamable))
+		return COMPONENT_INCOMPATIBLE
+
+	SEND_SIGNAL(parent, COMSIG_MOB_CUMFACED)
+
+	cumface = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_decals/lewd_decals.dmi')
+
+	if(ishuman(parent))
+		var/mob/living/carbon/human/H = parent
+		if(H.dna.species.limbs_id == "lizard")
+			cumface.icon_state = "cumface_lizard"
+		else if(H.dna.species.limbs_id == "monkey")
+			cumface.icon_state = "cumface_monkey"
+		else if(H.dna.species.id == "vox")
+			cumface.icon_state = "cumface_vox"
+		else if(H.dna.species.mutant_bodyparts["snout"])
+			cumface.icon_state = "cumface_lizard"
+		else
+			cumface.icon_state = "cumface_human"
+	else if(isAI(parent))
+		cumface.icon_state = "cumface_ai"
+
+	var/atom/A = parent
+	A.add_overlay(cumface)
+
+/datum/component/cumfaced/Destroy(force, silent)
+	var/atom/A = parent
+	A.cut_overlay(cumface)
+	qdel(cumface)
+	return ..()
+
+/datum/component/cumfaced/RegisterWithParent()
+	RegisterSignal(parent, list(
+		COMSIG_COMPONENT_CLEAN_ACT,
+		COMSIG_COMPONENT_CLEAN_FACE_ACT),
+		.proc/clean_up)
+
+/datum/component/cumfaced/UnregisterFromParent()
+	UnregisterSignal(parent, list(
+		COMSIG_COMPONENT_CLEAN_ACT,
+		COMSIG_COMPONENT_CLEAN_FACE_ACT))
+
+///Callback to remove pieface
+/datum/component/cumfaced/proc/clean_up(datum/source, clean_types)
+	SIGNAL_HANDLER
+
+	. = NONE
+	if(!(clean_types & CLEAN_TYPE_BLOOD))
+		qdel(src)
+		return COMPONENT_CLEANED
+
+/datum/component/cumfaced/big
+	dupe_mode = COMPONENT_DUPE_UNIQUE_PASSARGS
+
+	var/mutable_appearance/bigcumface
+
+/datum/component/cumfaced/big/Initialize()
+	if(!is_type_in_typecache(parent, GLOB.creamable))
+		return COMPONENT_INCOMPATIBLE
+
+	SEND_SIGNAL(parent, COMSIG_MOB_CUMFACED)
+
+	bigcumface = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_decals/lewd_decals.dmi')
+
+	if(ishuman(parent))
+		var/mob/living/carbon/human/H = parent
+		if(H.dna.species.limbs_id == "lizard")
+			bigcumface.icon_state = "bigcumface_lizard"
+		else if(H.dna.species.limbs_id == "monkey")
+			bigcumface.icon_state = "bigcumface_monkey"
+		else if(H.dna.species.id == "vox")
+			bigcumface.icon_state = "bigcumface_vox"
+		else if(H.dna.species.mutant_bodyparts["snout"])
+			bigcumface.icon_state = "bigcumface_lizard"
+		else
+			bigcumface.icon_state = "bigcumface_human"
+	else if(isAI(parent))
+		bigcumface.icon_state = "cumface_ai"
+
+	var/atom/A = parent
+	A.add_overlay(bigcumface)
+
+/datum/component/cumfaced/big/Destroy(force, silent)
+	var/atom/A = parent
+	A.cut_overlay(bigcumface)
+	qdel(bigcumface)
+	return ..()
+
+/datum/emote/living/cum
+	key = "cum"
+	key_third_person = "cums"
+	cooldown = 60 SECONDS
+
+/datum/emote/living/cum/run_emote(mob/living/user, params, type_override, intentional)
+	. = ..()
+	if(!.)
+		return
+
+	var/obj/item/coomer = new /obj/item/coom(user)
+	var/mob/living/carbon/human/H = user
+	var/obj/item/held = user.get_active_held_item()
+	var/obj/item/unheld = user.get_inactive_held_item()
+	if(user.put_in_hands(coomer) && H.dna.species.mutant_bodyparts["testicles"] && H.dna.species.mutant_bodyparts["penis"])
+		if(held || unheld)
+			if(!((held.name=="cum" && held.item_flags == DROPDEL | ABSTRACT | HAND_ITEM) || (unheld.name=="cum" && unheld.item_flags == DROPDEL | ABSTRACT | HAND_ITEM)))
+				to_chat(user, "<span class='notice'>You mentally prepare yourself to masturbate.</span>")
+			else
+				qdel(coomer)
+		else
+			to_chat(user, "<span class='notice'>You mentally prepare yourself to masturbate.</span>")
+	else
+		qdel(coomer)
+		to_chat(user, "<span class='warning'>You're incapable of masturbating.</span>")
+
+/obj/item/coom
+	name = "cum"
+	desc = "C-can I watch...?"
+	icon = 'icons/obj/hydroponics/harvest.dmi'
+	icon_state = "eggplant"
+	inhand_icon_state = "nothing"
+	force = 0
+	throwforce = 0
+	item_flags = DROPDEL | ABSTRACT | HAND_ITEM
+
+/obj/item/coom/attack(mob/living/M, mob/user, proximity)
+	if(!proximity)
+		return
+	if(!(M.client && (M.client.prefs.skyrat_toggles & CUMFACE_PREF) && ishuman(M)))
+		to_chat(user, "<span class='warning'>You can't cum onto [M].</span>")
+		return
+	var/mob/living/carbon/human/H = user
+	var/obj/item/organ/genital/testicles/G = H.getorganslot(ORGAN_SLOT_TESTICLES)
+	var/obj/item/organ/genital/testicles/P = H.getorganslot(ORGAN_SLOT_PENIS)
+	var/datum/sprite_accessory/genital/spriteP = GLOB.sprite_accessories["penis"][H.dna.species.mutant_bodyparts["penis"][MUTANT_INDEX_NAME]]
+	if(spriteP.is_hidden(H))
+		to_chat(user, "<span class='notice'>You need to expose your penis out in order to masturbate.</span>")
+		return
+	else if(P.aroused != AROUSAL_FULL)
+		to_chat(user, "<span class='notice'>You need to be aroused in order to masturbate.</span>")
+		return
+	var/cum_volume = G.reagents.total_volume
+	var/datum/reagents/R = new/datum/reagents(50)
+	R.add_reagent(/datum/reagent/consumable/cum, cum_volume)
+	if(M==user)
+		user.visible_message("<span class='warning'>[user] starts masturbating onto themself!</span>", "<span class='danger'>You start masturbating onto yourself!</span>")
+	else
+		user.visible_message("<span class='warning'>[user] starts masturbating onto [M]!</span>", "<span class='danger'>You start masturbating onto [M]!</span>")
+	if(do_after(user,M,60))
+		if(M==user)
+			user.visible_message("<span class='warning'>[user] cums on themself!</span>", "<span class='danger'>You cum on yourself!</span>")
+			H.apply_status_effect(/datum/status_effect/masturbation_climax)
+		else
+			user.visible_message("<span class='warning'>[user] cums on [M]!</span>", "<span class='danger'>You cum on [M]!</span>")
+			H.apply_status_effect(/datum/status_effect/masturbation_climax)
+		R.expose(M, TOUCH)
+		log_combat(user, M, "came on")
+		if(prob(40))
+			user.emote("moan")
+		qdel(src)
+
+//jerk off into bottles
+/obj/item/coom/afterattack(obj/target, mob/user, proximity)
+	. = ..()
+	if(!proximity)
+		return
+	var/mob/living/carbon/human/H = user
+	var/obj/item/organ/genital/testicles/G = H.getorganslot(ORGAN_SLOT_TESTICLES)
+	var/obj/item/organ/genital/testicles/P = H.getorganslot(ORGAN_SLOT_PENIS)
+	var/datum/sprite_accessory/genital/spriteP = GLOB.sprite_accessories["penis"][H.dna.species.mutant_bodyparts["penis"][MUTANT_INDEX_NAME]]
+	if(spriteP.is_hidden(H))
+		to_chat(user, "<span class='notice'>You need to expose your penis out in order to masturbate.</span>")
+		return
+	else if(P.aroused != AROUSAL_FULL)
+		to_chat(user, "<span class='notice'>You need to be aroused in order to masturbate.</span>")
+		return
+	if(target.is_refillable() && target.is_drainable())
+		var/cum_volume = G.reagents.total_volume
+		if(target.reagents.holder_full())
+			to_chat(user, "<span class='warning'>[target] is full.</span>")
+			return
+		var/datum/reagents/R = new/datum/reagents(50)
+		R.add_reagent(/datum/reagent/consumable/cum, cum_volume)
+		user.visible_message("<span class='warning'>[user] starts masturbating into [target]!</span>", "<span class='danger'>You start masturbating into [target]!</span>")
+		if(do_after(user,60))
+			user.visible_message("<span class='warning'>[user] cums into [target]!</span>", "<span class='danger'>You cum into [target]!</span>")
+			playsound(target, "desecration", 50, TRUE)
+			R.trans_to(target, cum_volume)
+			H.apply_status_effect(/datum/status_effect/masturbation_climax)
+			qdel(src)
+	else
+		if(ishuman(target))
+			return
+		user.visible_message("<span class='warning'>[user] starts masturbating onto [target]!</span>", "<span class='danger'>You start masturbating onto [target]!</span>")
+		if(do_after(user,60))
+			visible_message("<span class='warning'>[user] cums on [target]!</span>", "<span class='danger'>You cum on [target]!</span>")
+			playsound(target, "desecration", 50, TRUE)
+			H.apply_status_effect(/datum/status_effect/climax)
+
+			if(target.icon_state=="stickyweb1"|target.icon_state=="stickyweb2")
+				target.icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_decals/lewd_decals.dmi'
+			qdel(src)
+
+/obj/structure/reagent_dispensers/keg/cum
+	name = "keg of cum"
+	desc = "A keg full of \"reproductive agent\"."
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/kegs.dmi'
+	icon_state = "cumkeg"
+	reagent_id = /datum/reagent/consumable/cum
+	tank_volume = 150
