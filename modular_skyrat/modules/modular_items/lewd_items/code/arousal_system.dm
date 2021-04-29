@@ -63,9 +63,9 @@
 	overdose_threshold = 10
 
 /datum/reagent/drug/dopamine/on_mob_add(mob/living/M)
-	//to_chat(world, "dopamine adding")
+	to_chat(world, "dopamine adding")
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_start", /datum/mood_event/orgasm, name)
-	//to_chat(world, "dopamine added")
+	to_chat(world, "dopamine added")
 	..()
 
 /datum/reagent/drug/dopamine/on_mob_life(mob/living/carbon/M)
@@ -519,15 +519,6 @@
 ///CLIMAX///
 ////////////
 
-//This is cool modularised proc that required for determining if character can cum. Yes, it's obvious.
-//actually i need it for hexacamphor (permanent anaphrodisiac)
-//and for cooldown on climax.
-/mob/living/proc/character_can_cum(mob/living/carbon/human/M)
-	if(M.neverboner == TRUE)
-		return FALSE
-	else
-		return TRUE
-
 /datum/mood_event/orgasm
 	description = "<font color=purple>Woah... This pleasant tiredness... I love it.</font>\n"
 	mood_change = 8 //yes, +8. Well fed buff gives same amount. This is Fair (tm).
@@ -546,8 +537,8 @@
 /mob/living/proc/climax(manual = TRUE)
 	var/obj/item/organ/genital/penis = getorganslot(ORGAN_SLOT_PENIS)
 	var/obj/item/organ/genital/vagina = getorganslot(ORGAN_SLOT_VAGINA)
-	if(manual == TRUE && arousal > 90 && !has_status_effect(/datum/status_effect/climax))
-		if(character_can_cum())
+	if(manual == TRUE && arousal > 90 && !has_status_effect(/datum/status_effect/climax_cooldown))
+		if(neverboner == FALSE && !has_status_effect(/datum/status_effect/climax_cooldown))
 			switch(gender)
 				if(MALE)
 					playsound(get_turf(src), pick('modular_skyrat/modules/modular_items/lewd_items/sounds/final_m1.ogg',
@@ -565,9 +556,11 @@
 			if(vagina && penis)
 				if(is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW || penis.visibility_preference == GENITAL_ALWAYS_SHOW)
 					apply_status_effect(/datum/status_effect/climax)
-					visible_message("<font color=purple>[src] cumming!</font>", "<font color=purple>You cumming!</font>")
+					apply_status_effect(/datum/status_effect/climax_cooldown)
+					visible_message("<font color=purple>[src] is cumming!</font>", "<font color=purple>You are cumming!</font>")
 				else
 					apply_status_effect(/datum/status_effect/climax)
+					apply_status_effect(/datum/status_effect/climax_cooldown)
 					visible_message("<font color=purple>[src] cums in their underwear!</font>", \
 								"<font color=purple>You cum in your underwear! Eww.</font>")
 					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "orgasm", /datum/mood_event/climaxself)
@@ -575,9 +568,11 @@
 			if(vagina)
 				if(is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
 					apply_status_effect(/datum/status_effect/climax)
-					visible_message("<font color=purple>[src] cumming!</font>", "<font color=purple>You cumming!</font>")
+					apply_status_effect(/datum/status_effect/climax_cooldown)
+					visible_message("<font color=purple>[src] is cumming!</font>", "<font color=purple>You are cumming!</font>")
 				else
 					apply_status_effect(/datum/status_effect/climax)
+					apply_status_effect(/datum/status_effect/climax_cooldown)
 					visible_message("<font color=purple>[src] cums in their underwear!</font>", \
 								"<font color=purple>You cum in your underwear! Eww.</font>")
 					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "orgasm", /datum/mood_event/climaxself)
@@ -585,15 +580,18 @@
 			if(penis)
 				if(is_bottomless() || penis.visibility_preference == GENITAL_ALWAYS_SHOW)
 					apply_status_effect(/datum/status_effect/climax)
-					visible_message("<font color=purple>[src] cumming!</font>", "<font color=purple>You cumming!</font>")
+					apply_status_effect(/datum/status_effect/climax_cooldown)
+					visible_message("<font color=purple>[src] is cumming!</font>", "<font color=purple>You are cumming!</font>")
 				else
 					apply_status_effect(/datum/status_effect/climax)
+					apply_status_effect(/datum/status_effect/climax_cooldown)
 					visible_message("<font color=purple>[src] cums in their underwear!</font>", \
 								"<font color=purple>You cum in your underwear! Eww.</font>")
 					SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "orgasm", /datum/mood_event/climaxself)
 
 			else
 				apply_status_effect(/datum/status_effect/climax)
+				apply_status_effect(/datum/status_effect/climax_cooldown)
 				visible_message("<font color=purple>[src] twitches in orgasm!</font>", \
 								"<font color=purple>You are cumming! Eww.</font>")
 
@@ -603,7 +601,7 @@
 		return TRUE
 
 	else if(manual == FALSE)
-		if(character_can_cum())
+		if(neverboner == FALSE && !has_status_effect(/datum/status_effect/climax_cooldown))
 			switch(gender)
 				if(MALE)
 					playsound(get_turf(src), pick('modular_skyrat/modules/modular_items/lewd_items/sounds/final_m1.ogg',
@@ -619,9 +617,11 @@
 												'modular_skyrat/modules/modular_items/lewd_items/sounds/final_m3.ogg'), 50, TRUE)
 			if(is_bottomless())
 				apply_status_effect(/datum/status_effect/climax)
-				visible_message("<font color=purple>[src] cumming!</font>", "<font color=purple>You cumming!</font>")
+				apply_status_effect(/datum/status_effect/climax_cooldown)
+				visible_message("<font color=purple>[src] is cumming!</font>", "<font color=purple>You are cumming!</font>")
 			else
 				apply_status_effect(/datum/status_effect/climax)
+				apply_status_effect(/datum/status_effect/climax_cooldown)
 				visible_message("<font color=purple>[src] cums in their underwear!</font>", \
 								"<font color=purple>You cum in your underwear! Eww.</font>")
 				SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "orgasm", /datum/mood_event/climaxself)
@@ -633,6 +633,11 @@
 	else
 		return FALSE
 
+/datum/status_effect/climax_cooldown
+	id = "climax_cooldown"
+	duration = 40 SECONDS
+	alert_type = null
+
 /datum/status_effect/climax
 	id = "climax"
 	tick_interval =  10
@@ -640,34 +645,46 @@
 	alert_type = null
 
 /datum/status_effect/climax/tick()
+	to_chat(world, "climax tick works")
 	var/temp_arousal = -12
 	var/temp_pleasure = -12
-	var/temp_stamina = -12
-	var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
-	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
-
-	if(balls)
-		balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
-		var/obj/effect/decal/cleanable/cum/V = new /obj/effect/decal/cleanable/cum()
-		if (QDELETED(V))
-			V = locate() in src
-		if(!V)
-			return
-
-	if(vagina)
-		vagina.reagents.remove_all()
-		var/obj/effect/decal/cleanable/femcum/V = new /obj/effect/decal/cleanable/femcum()
-		if (QDELETED(V))
-			V = locate() in src
-		if(!V)
-			return
+	var/temp_stamina = 12
+	var/temp_paralyze = 11
 
 	owner.reagents.add_reagent(/datum/reagent/drug/dopamine, 0.5)
 	owner.adjustStaminaLoss(temp_stamina)
 	owner.adjustArousal(temp_arousal)
 	owner.adjustPleasure(temp_pleasure)
-	owner.Paralyze(2)
-	owner.adjustStaminaLoss(8)
+	owner.Paralyze(temp_paralyze)
+
+/datum/status_effect/climax/on_apply(obj/target)
+	to_chat(world, "effect applied")
+	var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
+	var/obj/item/organ/genital/testicles/penis = owner.getorganslot(ORGAN_SLOT_PENIS)
+
+	if(penis && balls && owner.wear_condom())
+		if(prob(40))
+			owner.emote("moan")
+		balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
+		var/obj/item/condom/C = owner.get_item_by_slot(ITEM_SLOT_PENIS)
+		C.condom_use()
+
+	if(balls && owner.is_bottomless())
+		var/turf/T = get_turf(owner)
+		new /obj/effect/decal/cleanable/cum(T)
+		if(prob(40))
+			owner.emote("moan")
+		balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
+
+	if(vagina && owner.is_bottomless())
+		var/turf/T = get_turf(owner)
+		new /obj/effect/decal/cleanable/femcum(T)
+		if(prob(40))
+			owner.emote("moan")
+		vagina.reagents.remove_all()
+
+	return ..()
 
 ////////////////////////
 ///SPANKING PROCEDURE///
@@ -695,97 +712,46 @@
 	mood_change = 3
 	timeout = 5 MINUTES
 
-/*
+///////////////////////
+///AROUSAL INDICATOR///
+///////////////////////
 
-Вот список того что должно быть при оргазме:
-Персонаж делает анимацию дёргания
-Получает кучу стаминаурона
-На полу появляется спрайт соответствующий вышедшим жидкостям персонажа, если персонаж не "сух"
-В чат игрока и в локальный выводится какое-нибудь извращенное сообщение
-Значение arousal и pleasure падает до 0.
-Добавляется бонус к настроению.
-КД на оргазм в 2-3 минуты. Персонажу нужно "Охладиться".
-Если персонаж "сух" - не спавнить ничего и вывести другое сообщение для оргазма.
+/obj/item/organ/brain/on_life(delta_time, times_fired) //All your horny is here *points to the head*
+	. = ..()
+	if(istype(owner, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = owner
+		if(!(organ_flags & ORGAN_FAILING))
+			H.dna.species.handle_arousal(H, delta_time, times_fired)
 
-*/
+/datum/species/proc/handle_arousal(mob/living/carbon/human/H, atom/movable/screen/alert/aroused)
+	atom/movable/screen/alert/aroused/I = aroused
+	switch(H.arousal)
+		if(10 to 25)
+			H.throw_alert("aroused", /atom/movable/screen/alert/aroused)
+			aroused.icon_state = "arousal_small"
+			aroused.update_icon()
+		if(25 to 50)
+			aroused.icon_state = "arousal_medium"
+			aroused.update_icon()
+		if(50 to 75)
+			aroused.icon_state = "aroused_high"
+			aroused.update_icon()
+		if(75 to 150) //to prevent that 101 arousal that can make icon disappear or something.
+			aroused.icon_state = "aroused_max"
+			aroused.update_icon()
+	switch(H.pain)
+		if(10 to 25)
 
-// /mob/living/carbon/human/proc/climax(mob/living/carbon/human/M, distance = 1, cum_type = CUM_MALE)
-//	if(character_can_cum())
-//		M.adjustStaminaLoss(60) //character should get tired. Potentionally abusable, but i hope cooldown will prevent this. Also ERP abuse is bad.
-//		M.Paralyze(40)
-//	//Giving correct mood effect here
-//		if(!is_bottomless())
-//			visible_message("<font color=purple>[src] cums in their underwear!</font>",
-//							"<font color=purple>You cum in your underwear! Eww.</font>")
-//			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "orgasm", /datum/mood_event/climaxself)
-//		else
-//			visible_message("<font color=purple>[src] cumming!</font>", "<font color=purple>You cumming!</font>")
-//			SEND_SIGNAL(src, COMSIG_ADD_MOOD_EVENT, "orgasm", /datum/mood_event/orgasm)
-//
-//	//Determining what kind of sound we getting when cumming
-//		switch(M.gender)
-//			if(MALE)
-//				playsound(get_turf(src), pick('modular_skyrat/modules/modular_items/lewd_items/sounds/final_m1.ogg',
-//											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_m2.ogg',
-//											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_m3.ogg'), 50, TRUE)
-//			if(FEMALE)
-//				playsound(get_turf(src), pick('modular_skyrat/modules/modular_items/lewd_items/sounds/final_f1.ogg',
-//											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_f2.ogg',
-//											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_f3.ogg'), 50, TRUE)
-//			else
-//				playsound(get_turf(src), pick('modular_skyrat/modules/modular_items/lewd_items/sounds/final_m1.ogg',
-//											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_m2.ogg',
-//											'modular_skyrat/modules/modular_items/lewd_items/sounds/final_m3.ogg'), 50, TRUE)
-//
-//We checking if character can cum, or he/she "dry".
-/*		var/turf/T = get_turf(src)
-		for(var/i=0 to distance)
-			if(T)
-				if(M.current_semen.reagents.total_volume > 0 && M.current_girlcum.reagents.total_volume > 0) //Whatever-the-fuck-you-are case. No, i didn't sprited special decal for this. Penis and vagina on same spot are you kidding me? Biological abomination.
-					if(prob(50))
-						cum_type = CUM_MALE
-					else
-						cum_type = CUM_FEMALE
-					T.add_cum_floor(src, cum_type)
-					M.current_semen.reagents.total_volume = 0
-					M.current_girlcum.reagents.total_volume = 0
+		if(25 to 50)
 
-				else if(M.current_semen.reagents.total_volume > 0) //Male case
-					cum_type = CUM_MALE
-					T.add_cum_floor(src, cum_type)
-					M.current_semen.reagents.total_volume = 0
+		if(50 to 75)
 
-				else if(M.current_girlcum.reagents.total_volume > 0) //Female case
-					cum_type = CUM_FEMALE
-					T.add_cum_floor(src, cum_type)
-					M.current_girlcum.reagents.total_volume = 0
+		if(75 to 150)
 
-				else //Dry case
-					return
+//screen alert
 
-			T = get_step(T, dir)
-			if (T?.is_blocked_turf())
-				break
-		return TRUE
-
-//
-//	else
-//		visible_message("<font color=purple>[src] twitches, trying to cum, but with no result.</font>", \
-//						"<font color=purple>You can't have an orgasm!</font>")
-
-//adding cum on floor. What am i doing in my life?
-/turf/proc/add_cum_floor(mob/living/M, cum_type = NONE)
-	if(cum_type == CUM_FEMALE)
-		var/obj/effect/decal/cleanable/femcum/V = new /obj/effect/decal/cleanable/femcum()
-		if (QDELETED(V))
-			V = locate() in src
-		if(!V)
-			return
-
-	else if (cum_type == CUM_MALE)
-		var/obj/effect/decal/cleanable/cum/V = new /obj/effect/decal/cleanable/cum()
-		if (QDELETED(V))
-			V = locate() in src
-		if(!V)
-			return
-*/
+/atom/movable/screen/alert/aroused
+	name = "Aroused"
+	desc = "It's a little hot in here"
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
+	icon_state = "arousal_small"

@@ -133,7 +133,7 @@
 							user.visible_message("<font color=purple>[user] [message].</font>")
 							playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/vibrate.ogg', 10, TRUE)
 						else
-							user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")
+							user.visible_message("<span class='danger'>Looks like [M]'s groin is covered!</span>")
 							return
 					else
 						user.visible_message("<span class='danger'>Looks like [M] don't have suitable organs for that!</span>")

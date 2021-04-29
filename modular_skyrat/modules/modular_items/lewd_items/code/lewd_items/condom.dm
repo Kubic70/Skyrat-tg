@@ -39,7 +39,6 @@
 	w_class = WEIGHT_CLASS_TINY
 	var/current_color = "pink"
 	var/condom_state = "unused"
-	var/equipped = FALSE
 	slot_flags = ITEM_SLOT_PENIS
 
 /obj/item/condom/Initialize()
@@ -49,32 +48,30 @@
 
 /obj/item/condom/update_icon_state()
 	. = ..()
-	icon_state = "[initial(icon_state)]_[current_color]_[equipped? "used" : "unused"]"
+	icon_state = "[initial(icon_state)]_[current_color]_[condom_state]"
+
+//to update model properly after use
+/obj/item/condom/proc/condom_use()
+	switch(condom_state)
+		if("used")
+			if(prob(10)) //chance of condom to break on first time.
+				condom_state = "broken"
+				update_icon_state()
+				update_icon()
+			else
+				condom_state = "dirty"
+				update_icon_state()
+				update_icon()
+
+		if("dirty")
+			condom_state = "broken"
+			update_icon_state()
+			update_icon()
 
 //When condom equipped we doing stuff
-
 /obj/item/condom/equipped(mob/user, slot, initial)
 	. = ..()
 	if(slot == ITEM_SLOT_PENIS)
-		equipped = TRUE
+		condom_state = "used"
 		update_icon_state()
 		update_icon()
-
-//used condom
-/obj/item/condom_used
-	name = "used condom"
-	desc = "Eww! Throw it in trash!"
-	icon_state = "condom_dirty"
-	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
-	w_class = WEIGHT_CLASS_TINY
-	var/current_color = "pink"
-	slot_flags = ITEM_SLOT_PENIS //To keep it on organ after... Use.
-
-/obj/item/condom_used/Initialize()
-	. = ..()
-	update_icon_state()
-	update_icon()
-
-/obj/item/condom_used/update_icon_state()
-	. = ..()
-	icon_state = "[initial(icon_state)]_[current_color]"
