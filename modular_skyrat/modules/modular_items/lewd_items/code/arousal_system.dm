@@ -6,6 +6,13 @@
 
 #define CUM_MALE 1
 #define CUM_FEMALE 2
+#define ITEM_SLOT_PENIS (1<<20)
+
+/atom/movable/screen/alert/aroused
+	name = "Aroused"
+	desc = "It's a little hot in here"
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
+	icon_state = "arousal_small"
 
 ///////////-----Decals-----//////////
 /obj/effect/decal/cleanable/cum
@@ -662,6 +669,7 @@
 	var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
 	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
 	var/obj/item/organ/genital/testicles/penis = owner.getorganslot(ORGAN_SLOT_PENIS)
+	// var/mob/living/carbon/human/H = owner
 
 	if(penis && balls && owner.wear_condom())
 		if(prob(40))
@@ -724,7 +732,7 @@
 			H.dna.species.handle_arousal(H, delta_time, times_fired)
 
 /datum/species/proc/handle_arousal(mob/living/carbon/human/H, atom/movable/screen/alert/aroused)
-	atom/movable/screen/alert/aroused/I = aroused
+	var/atom/movable/screen/alert/aroused/I = aroused
 	switch(H.arousal)
 		if(10 to 25)
 			H.throw_alert("aroused", /atom/movable/screen/alert/aroused)
@@ -750,8 +758,8 @@
 
 //screen alert
 
-/atom/movable/screen/alert/aroused
-	name = "Aroused"
-	desc = "It's a little hot in here"
-	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
-	icon_state = "arousal_small"
+// /atom/movable/screen/alert/aroused_X
+// 	name = "Aroused"
+// 	desc = "It's a little hot in here"
+// 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
+// 	icon_state = "arousal_small"
