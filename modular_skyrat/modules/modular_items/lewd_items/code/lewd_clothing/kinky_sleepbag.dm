@@ -20,7 +20,7 @@
 	var/time = 2
 	var/tt
 	var/static/list/bag_colors
-	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDEHAIR
+	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDEHAIR|HIDEEARS
 	strip_delay = 300
 	breakouttime = 3000 //do not touch. First - It's contraband item, Second - It's damn expensive, Third - it's ERP item, so you can't legally use it on characters without enabled non-con.
 	var/static/list/bag_inf_states
@@ -106,29 +106,17 @@
 		ADD_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
 		if(bag_state == "inflated")
 			to_chat(H,"<font color=purple>You realize that you can't move even an inch. Inflated sleepbag squeezes you from all sides.</font>")
-			// H.cut_overlay(H.overlays_standing[HEAD_LAYER])
+			H.cut_overlay(H.overlays_standing[HEAD_LAYER])
 			H.cut_overlay(H.overlays_standing[HAIR_LAYER])
 		if(bag_state == "deflated")
 			to_chat(H,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
-		var/i
-		// var/list/mutable_appearance/L = H.overlays_standing[BODY_FRONT_LAYER]
-		// if(LAZYLEN(L))
-		// 	for (i=1,i<=L.len,i++)
-		// 		if(findtext(L[i].icon_state,"ears") > 1)
-		// 			H.cut_overlay(H.overlays_standing[BODY_FRONT_LAYER][i])
-		// 		continue
-		// L = H.overlays_standing[BODY_ADJ_LAYER]
-		// if(LAZYLEN(L))
-		// 	for (i=1,i<=L.len,i++)
-		// 		if(findtext(L[i].icon_state,"ears") > 1)
-		// 			H.cut_overlay(H.overlays_standing[BODY_ADJ_LAYER][i])
-		// 		continue
 
 		H.cut_overlay(H.overlays_standing[SHOES_LAYER])
 		H.cut_overlay(H.overlays_standing[BELT_LAYER])
 		H.cut_overlay(H.overlays_standing[NECK_LAYER])
 		H.cut_overlay(H.overlays_standing[BACK_LAYER])
 		H.cut_overlay(H.overlays_standing[BODY_BEHIND_LAYER])
+		var/i
 		if(LAZYLEN(H.bodyparts))
 			for(i=1,i<=H.bodyparts.len,i++)
 				if(istype(H.bodyparts[i],/obj/item/bodypart/l_leg))
