@@ -72,9 +72,7 @@
 	overdose_threshold = 10
 
 /datum/reagent/drug/dopamine/on_mob_add(mob/living/M)
-	to_chat(world, "dopamine adding")
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_start", /datum/mood_event/orgasm, name)
-	to_chat(world, "dopamine added")
 	..()
 
 /datum/reagent/drug/dopamine/on_mob_life(mob/living/carbon/M)
@@ -84,10 +82,8 @@
 	..()
 
 /datum/reagent/drug/dopamine/overdose_start(mob/living/M)
-	//to_chat(world, "overdose start")
 	to_chat(M, "<span class='userdanger'>You start tripping hard!</span>")
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_overdose", /datum/mood_event/overgasm, name)
-	//to_chat(world, "overdose end")
 	return
 
 /datum/reagent/drug/dopamine/overdose_process(mob/living/M)
@@ -96,9 +92,7 @@
 	M.adjustPain(-0.5)
 	if(prob(2))
 		M.emote(pick("moan","twitch_s"))
-	//to_chat(world, "overdose processing...")
 	return
-		//say(message)
 
 ///////////-----Initilaze------///////////
 
@@ -167,14 +161,11 @@
 		set_nymphomania(FALSE)
 		apply_status_effect(/datum/status_effect/aroused)
 		apply_status_effect(/datum/status_effect/body_fluid_regen)
-		//to_chat(world, "name = [src.name]")
-
 
 ///////////-----Verbs------///////////
 /mob/living/carbon/human/verb/arousal_panel()
 	set name = "Arousal panel"
 	set category = "IC"
-//	set src in view(1)
 	show_arousal_panel()
 
 /mob/living/carbon/human/proc/show_arousal_panel()
@@ -195,13 +186,10 @@
 
 		dat += {"<table style="float: left"; margin-left: 50px;>"}
 		if(balls && balls.internal_fluids.holder_full())
-			//dat += "<tr><td><label>Semen:</lable></td><td><lable>[balls.internal_fluids.total_volume]/[balls.internal_fluids.maximum_volume]</label></td></tr>"
 			dat += "<tr><td><lable>You balls is full!</label></td></tr>"
 		if(breasts && (breasts.internal_fluids.total_volume / breasts.internal_fluids.maximum_volume) > 0.9)
-			//dat += "<tr><td><label>Milk:</lable></td><td><lable>[breasts.internal_fluids.total_volume]/[breasts.internal_fluids.maximum_volume]</label></td></tr>"
 			dat += "<tr><td><lable>You breasts full of milk!</label></td></tr>"
 		if(vagina && vagina.internal_fluids.holder_full())
-			//dat += "<tr><td><label>GirlCum:</lable></td><td><lable>[vagina.internal_fluids.total_volume]/[vagina.internal_fluids.maximum_volume]</label></td></tr>"
 			dat += "<tr><td><lable>You so wet!</label></td></tr>"
 		dat += "</table>"
 		dat += "</div>"
@@ -244,41 +232,6 @@
 	popup.title = "[src] Arousal panel"
 	popup.set_content(dat.Join())
 	popup.open()
-
-///mob/living/carbon/human/Topic(href, href_list)
-//	.=..()
-//	var/mob/living/carbon/human/user = src
-//
-//	if(!(usr in view(1)))
-//		to_chat(world, "Not in range")
-//		return
-//
-//	if(href_list["refresh"])
-//		to_chat(world, "usr = [usr] / src = [src]")
-//		user.show_arousal_panel()
-//
-//	if(href_list["climax"])
-//		climax(TRUE)
-//
-//	if(href_list["anus"])
-//		if(!extract_item(user, "anus"))
-//			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in anus.</span>")
-//		user.show_arousal_panel()
-//
-//	if(href_list["vagina"])
-//		if(!extract_item(user, "vagina"))
-//			to_chat(user, "<span class='notice'>You cant put [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] in vagina.</span>")
-//		user.show_arousal_panel()
-//
-//	if(href_list["breasts"])
-//		if(!extract_item(user, "nipples"))
-//			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to nipple.</span>")
-//		user.show_arousal_panel()
-//
-//	if(href_list["penis"])
-//		if(!extract_item(user, "penis"))
-//			to_chat(user, "<span class='notice'>You cant attach [user.get_active_held_item() ? user.get_active_held_item() : "nothing"] to penis.</span>")
-//		user.show_arousal_panel()
 
 ///////////-----Procs------///////////
 /mob/living/proc/extract_item(user, slotName)
@@ -365,12 +318,13 @@
 	alert_type = null
 
 /datum/status_effect/body_fluid_regen/tick()
-	if(owner.stat != DEAD)
+	var/mob/living/carbon/human/H = owner
+	if(owner.stat != DEAD && H.client?.prefs.erp_pref == "Yes")
 		var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
 		var/obj/item/organ/genital/breasts/breasts = owner.getorganslot(ORGAN_SLOT_BREASTS)
 		var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
 
-		var/interval = 5	// = tick_interval / 10
+		var/interval = 5
 		if(balls)
 			if(owner.arousal >= AROUS_SYS_LITTLE)
 				var/regen = (owner.arousal/100) * (balls.internal_fluids.maximum_volume/235) * interval
@@ -383,14 +337,14 @@
 				if(!breasts.internal_fluids.holder_full())
 					owner.adjust_nutrition(regen / 2)
 				else
-					regen = regen // Need to add eximine text for wet clothing
+					regen = regen
 
 		if(vagina)
 			if(owner.arousal >= AROUS_SYS_LITTLE)
 				var/regen = (owner.arousal/100) * (vagina.internal_fluids.maximum_volume/250) * interval
 				vagina.internal_fluids.add_reagent(/datum/reagent/consumable/girlcum, regen)
 				if(vagina.internal_fluids.holder_full() && regen >= 0.15)
-					regen = regen // Need to add sprite of girlcum on floor
+					regen = regen
 			else
 				vagina.internal_fluids.remove_any(0.05)
 
@@ -401,7 +355,7 @@
 	return arousal
 
 /mob/living/proc/adjustArousal(arous = 0)
-	if(stat != DEAD)
+	if(stat != DEAD && client?.prefs.erp_pref == "Yes")
 		arousal += arous
 
 		var/arousal_flag = AROUSAL_NONE
@@ -476,7 +430,7 @@
 	return pain
 
 /mob/living/proc/adjustPain(pn = 0)
-	if(stat != DEAD)
+	if(stat != DEAD && client?.prefs.erp_pref == "Yes")
 		if(pain > pain_limit || pn > pain_limit / 10) // pain system
 			if(masochism == TRUE)
 				var/p = pn - (pain_limit / 10)
@@ -503,7 +457,7 @@
 	return pleasure
 
 /mob/living/proc/adjustPleasure(pleas = 0)
-	if(stat != DEAD)
+	if(stat != DEAD && client?.prefs.erp_pref == "Yes")
 		pleasure += pleas
 		if(pleasure >= 100) // lets cum
 			climax(FALSE)
@@ -546,7 +500,7 @@
 /mob/living/proc/climax(manual = TRUE)
 	var/obj/item/organ/genital/penis = getorganslot(ORGAN_SLOT_PENIS)
 	var/obj/item/organ/genital/vagina = getorganslot(ORGAN_SLOT_VAGINA)
-	if(manual == TRUE && arousal > 90 && !has_status_effect(/datum/status_effect/climax_cooldown))
+	if(manual == TRUE && arousal > 90 && !has_status_effect(/datum/status_effect/climax_cooldown) && client?.prefs.erp_pref == "Yes")
 		if(neverboner == FALSE && !has_status_effect(/datum/status_effect/climax_cooldown))
 			switch(gender)
 				if(MALE)
@@ -609,7 +563,7 @@
 							"<font color=purple>You can't have an orgasm!</font>")
 		return TRUE
 
-	else if(manual == FALSE)
+	else if(manual == FALSE && client?.prefs.erp_pref == "Yes")
 		if(neverboner == FALSE && !has_status_effect(/datum/status_effect/climax_cooldown))
 			switch(gender)
 				if(MALE)
@@ -667,15 +621,16 @@
 	alert_type = null
 
 /datum/status_effect/masturbation_climax/tick() //this one should not leave decals on the floor. Used in case if character cumming on somebody's face or in beaker.
-	to_chat(world, "masturbation climax tick works")
-	var/temp_arousal = -12
-	var/temp_pleasure = -12
-	var/temp_stamina = 6
+	var/mob/living/carbon/human/H = owner
+	if(H.client?.prefs.erp_pref == "Yes")
+		var/temp_arousal = -12
+		var/temp_pleasure = -12
+		var/temp_stamina = 6
 
-	owner.reagents.add_reagent(/datum/reagent/drug/dopamine, 0.3)
-	owner.adjustStaminaLoss(temp_stamina)
-	owner.adjustArousal(temp_arousal)
-	owner.adjustPleasure(temp_pleasure)
+		owner.reagents.add_reagent(/datum/reagent/drug/dopamine, 0.3)
+		owner.adjustStaminaLoss(temp_stamina)
+		owner.adjustArousal(temp_arousal)
+		owner.adjustPleasure(temp_pleasure)
 
 /datum/status_effect/climax
 	id = "climax"
@@ -684,47 +639,49 @@
 	alert_type = null
 
 /datum/status_effect/climax/tick()
-	to_chat(world, "climax tick works")
-	var/temp_arousal = -12
-	var/temp_pleasure = -12
-	var/temp_stamina = 12
-	var/temp_paralyze = 11
+	var/mob/living/carbon/human/H = owner
+	if(H.client?.prefs.erp_pref == "Yes")
+		var/temp_arousal = -12
+		var/temp_pleasure = -12
+		var/temp_stamina = 12
+		var/temp_paralyze = 11
 
-	owner.reagents.add_reagent(/datum/reagent/drug/dopamine, 0.5)
-	owner.adjustStaminaLoss(temp_stamina)
-	owner.adjustArousal(temp_arousal)
-	owner.adjustPleasure(temp_pleasure)
-	owner.Paralyze(temp_paralyze)
+		owner.reagents.add_reagent(/datum/reagent/drug/dopamine, 0.5)
+		owner.adjustStaminaLoss(temp_stamina)
+		owner.adjustArousal(temp_arousal)
+		owner.adjustPleasure(temp_pleasure)
+		owner.Paralyze(temp_paralyze)
 
 /datum/status_effect/climax/on_apply(obj/target)
-	to_chat(world, "effect applied")
+	var/mob/living/carbon/human/H = owner
 	var/obj/item/organ/genital/vagina/vagina = owner.getorganslot(ORGAN_SLOT_VAGINA)
 	var/obj/item/organ/genital/testicles/balls = owner.getorganslot(ORGAN_SLOT_TESTICLES)
 	var/obj/item/organ/genital/testicles/penis = owner.getorganslot(ORGAN_SLOT_PENIS)
 
-	if(penis && balls && owner.wear_condom())
-		if(prob(40))
-			owner.emote("moan")
-		balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
-		var/obj/item/condom/C = owner.get_item_by_slot(ITEM_SLOT_PENIS)
-		C.condom_use()
-		if(C.condom_state == "broken")
+	if(H.client?.prefs.erp_pref == "Yes")
+		if(penis && balls && owner.wear_condom())
+			if(prob(40))
+				owner.emote("moan")
+			balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
+			var/obj/item/condom/C = owner.get_item_by_slot(ITEM_SLOT_PENIS)
+			C.condom_use()
+			if(C.condom_state == "broken")
+				var/turf/T = get_turf(owner)
+				new /obj/effect/decal/cleanable/cum(T)
+
+		if(balls && owner.is_bottomless())
 			var/turf/T = get_turf(owner)
 			new /obj/effect/decal/cleanable/cum(T)
+			if(prob(40))
+				owner.emote("moan")
+			balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
 
-	if(balls && owner.is_bottomless())
-		var/turf/T = get_turf(owner)
-		new /obj/effect/decal/cleanable/cum(T)
-		if(prob(40))
-			owner.emote("moan")
-		balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
-
-	if(vagina && owner.is_bottomless())
-		var/turf/T = get_turf(owner)
-		new /obj/effect/decal/cleanable/femcum(T)
-		if(prob(40))
-			owner.emote("moan")
-		vagina.reagents.remove_all()
+		if(vagina && owner.is_bottomless())
+			var/turf/T = get_turf(owner)
+			new /obj/effect/decal/cleanable/femcum(T)
+			if(prob(40))
+				owner.emote("moan")
+			vagina.reagents.remove_all()
 
 	return ..()
 
@@ -760,8 +717,8 @@
 
 /obj/item/organ/brain/on_life(delta_time, times_fired) //All your horny is here *points to the head*
 	. = ..()
-	if(istype(owner, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = owner
+	var/mob/living/carbon/human/H = owner
+	if(istype(owner, /mob/living/carbon/human) && H.client?.prefs.erp_pref == "Yes")
 		if(!(organ_flags & ORGAN_FAILING))
 			H.dna.species.handle_arousal(H, delta_time, times_fired)
 
@@ -778,7 +735,6 @@
 /atom/movable/screen/alert/aroused_X/Initialize()
 	.=..()
 	pain_overlay = update_pain()
-	// return ..()
 
 /atom/movable/screen/alert/aroused_X/proc/update_pain()
 	if(pain_level == "small")
@@ -792,52 +748,53 @@
 
 /datum/species/proc/handle_arousal(mob/living/carbon/human/H, atom/movable/screen/alert/aroused_X)
 	var/atom/movable/screen/alert/aroused_X/I = H.alerts["aroused"]
-	switch(H.arousal)
-		if(10 to 25)
-			H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
-			I.icon_state = "arousal_small"
-			I.update_icon()
-		if(25 to 50)
-			H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
-			I.icon_state = "arousal_medium"
-			I.update_icon()
-		if(50 to 75)
-			H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
-			I.icon_state = "arousal_high"
-			I.update_icon()
-		if(75 to INFINITY) //to prevent that 101 arousal that can make icon disappear or something.
-			H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
-			I.icon_state = "arousal_max"
-			I.update_icon()
-
-	if(H.arousal > 10)
-		switch(H.pain)
-			if(-100 to 5) //to prevent same thing with pain
-				I.cut_overlay(I.pain_overlay)
-			if(5 to 25)
-				I.cut_overlay(I.pain_overlay)
-				I.pain_level = "small"
-				I.pain_overlay = I.update_pain()
-				I.add_overlay(I.pain_overlay)
-				I.update_overlays()
+	if(H.client?.prefs.erp_pref == "Yes")
+		switch(H.arousal)
+			if(10 to 25)
+				H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
+				I.icon_state = "arousal_small"
+				I.update_icon()
 			if(25 to 50)
-				I.cut_overlay(I.pain_overlay)
-				I.pain_level = "medium"
-				I.pain_overlay = I.update_pain()
-				I.add_overlay(I.pain_overlay)
-				I.update_overlays()
+				H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
+				I.icon_state = "arousal_medium"
+				I.update_icon()
 			if(50 to 75)
-				I.cut_overlay(I.pain_overlay)
-				I.pain_level = "high"
-				I.pain_overlay = I.update_pain()
-				I.add_overlay(I.pain_overlay)
-				I.update_overlays()
-			if(75 to INFINITY)
-				I.cut_overlay(I.pain_overlay)
-				I.pain_level = "max"
-				I.pain_overlay = I.update_pain()
-				I.add_overlay(I.pain_overlay)
-				I.update_overlays()
+				H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
+				I.icon_state = "arousal_high"
+				I.update_icon()
+			if(75 to INFINITY) //to prevent that 101 arousal that can make icon disappear or something.
+				H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
+				I.icon_state = "arousal_max"
+				I.update_icon()
+
+		if(H.arousal > 10)
+			switch(H.pain)
+				if(-100 to 5) //to prevent same thing with pain
+					I.cut_overlay(I.pain_overlay)
+				if(5 to 25)
+					I.cut_overlay(I.pain_overlay)
+					I.pain_level = "small"
+					I.pain_overlay = I.update_pain()
+					I.add_overlay(I.pain_overlay)
+					I.update_overlays()
+				if(25 to 50)
+					I.cut_overlay(I.pain_overlay)
+					I.pain_level = "medium"
+					I.pain_overlay = I.update_pain()
+					I.add_overlay(I.pain_overlay)
+					I.update_overlays()
+				if(50 to 75)
+					I.cut_overlay(I.pain_overlay)
+					I.pain_level = "high"
+					I.pain_overlay = I.update_pain()
+					I.add_overlay(I.pain_overlay)
+					I.update_overlays()
+				if(75 to INFINITY)
+					I.cut_overlay(I.pain_overlay)
+					I.pain_level = "max"
+					I.pain_overlay = I.update_pain()
+					I.add_overlay(I.pain_overlay)
+					I.update_overlays()
 
 ////////////////////////
 ///CUM.DM ASSIMILATED///
