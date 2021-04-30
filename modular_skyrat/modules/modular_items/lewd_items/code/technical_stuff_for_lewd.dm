@@ -1264,7 +1264,7 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 				return TRUE
 			return FALSE
 		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
-			return TRUE
+			return FALSE
 		return FALSE
 	return TRUE // Return TRUE if superfuncitons already retuns TRUE
 
@@ -1283,7 +1283,7 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 				return TRUE
 			return FALSE
 		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
-			return TRUE
+			return FALSE
 		return FALSE
 	return TRUE // Return TRUE if superfuncitons already retuns TRUE
 
@@ -1302,7 +1302,7 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 				return TRUE
 			return FALSE
 		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
-			return TRUE
+			return FALSE
 		return FALSE
 	return TRUE // Return TRUE if superfuncitons already retuns TRUE
 
@@ -1321,7 +1321,7 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 				return TRUE
 			return FALSE
 		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
-			return TRUE
+			return FALSE
 		return FALSE
 	return TRUE // Return TRUE if superfuncitons already retuns TRUE
 
@@ -1340,7 +1340,7 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 				return TRUE
 			return FALSE
 		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
-			return TRUE
+			return FALSE
 		return FALSE
 	return TRUE // Return TRUE if superfuncitons already retuns TRUE
 
@@ -1359,7 +1359,7 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 				return TRUE
 			return FALSE
 		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
-			return TRUE
+			return FALSE
 		return FALSE
 	return TRUE // Return TRUE if superfuncitons already retuns TRUE
 
@@ -1378,7 +1378,7 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 				return TRUE
 			return FALSE
 		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
-			return TRUE
+			return FALSE
 		return FALSE
 	return TRUE // Return TRUE if superfuncitons already retuns TRUE
 

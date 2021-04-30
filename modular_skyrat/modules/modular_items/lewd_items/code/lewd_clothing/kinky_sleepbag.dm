@@ -104,12 +104,6 @@
 	var/mob/living/carbon/human/H = user
 	if(ishuman(user) && slot == ITEM_SLOT_OCLOTHING)
 		ADD_TRAIT(user, TRAIT_FLOORED, CLOTHING_TRAIT)
-		if(bag_state == "inflated")
-			to_chat(H,"<font color=purple>You realize that you can't move even an inch. Inflated sleepbag squeezes you from all sides.</font>")
-			H.cut_overlay(H.overlays_standing[HEAD_LAYER])
-			H.cut_overlay(H.overlays_standing[HAIR_LAYER])
-		if(bag_state == "deflated")
-			to_chat(H,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
 
 		H.cut_overlay(H.overlays_standing[SHOES_LAYER])
 		H.cut_overlay(H.overlays_standing[BELT_LAYER])
@@ -130,6 +124,13 @@
 		H.update_body_parts()
 		START_PROCESSING(SSobj, src)
 		time_to_sound_left = time_to_sound
+
+		if(bag_state == "inflated")
+			to_chat(H,"<font color=purple>You realize that you can't move even an inch. Inflated sleepbag squeezes you from all sides.</font>")
+			H.cut_overlay(H.overlays_standing[HEAD_LAYER])
+			H.cut_overlay(H.overlays_standing[HAIR_LAYER])
+		if(bag_state == "deflated")
+			to_chat(H,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
 
 		// appearance_update(user)
 		//Giving proper overlay
