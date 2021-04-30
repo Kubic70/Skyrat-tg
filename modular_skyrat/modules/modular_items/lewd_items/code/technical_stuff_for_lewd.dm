@@ -505,6 +505,52 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			return FALSE
 	return TRUE
 
+// /mob/living/carbon/human/equip_to_slot_if_possible(obj/item/W, slot, qdel_on_fail = FALSE, disable_warning = FALSE, redraw_mob = TRUE, bypass_equip_delay_self = FALSE, initial = FALSE)
+// 	. = ..()
+// 	if(!.)
+// 		if(slot == ITEM_SLOT_VAGINA || slot == ITEM_SLOT_ANUS || slot == ITEM_SLOT_NIPPLES || slot == ITEM_SLOT_PENIS)
+// 			if(!disable_warning)
+// 				if(istype(src,/mob/living/carbon/human))
+// 					var/mob/living/carbon/human/H = src
+// 					switch(slot)
+// 						if(ITEM_SLOT_VAGINA)
+// 							if(H.is_bottomless())
+// 								if(H.getorganslot(ORGAN_SLOT_VAGINA))
+// 									to_chat(src,"<span class='warning'>For some reason, the object does not fit in the vagina.</span>")
+// 								to_chat(src,"<span class='warning'>You cannot find any vaginas here.</span>")
+// 								return FALSE
+// 							to_chat(src,"<span class='warning'>Clothes prevent you from getting to the vagina.</span>")
+// 							return FALSE
+
+// 						if(ITEM_SLOT_ANUS)
+// 							if(H.is_bottomless())
+// 								to_chat(src,"<span class='warning'>For some reason, the object does not fit in the anus.</span>")
+// 								return FALSE
+// 							to_chat(src,"<span class='warning'>Clothes prevent you from getting to the anus.</span>")
+// 							return FALSE
+
+// 						if(ITEM_SLOT_NIPPLES)
+// 							if(H.is_topless())
+// 								to_chat(src,"<span class='warning'>For some reason, the object does not fit on the nipples.</span>")
+// 								return FALSE
+// 							to_chat(src,"<span class='warning'>Clothes prevent you from getting to the nipples.</span>")
+// 							return FALSE
+
+// 						if(ITEM_SLOT_PENIS)
+// 							if(H.is_bottomless())
+// 								if(H.getorganslot(ORGAN_SLOT_PENIS))
+// 									to_chat(src,"<span class='warning'>For some reason, the object does not fit on the penis.</span>")
+// 									return FALSE
+// 								to_chat(src,"<span class='warning'>You cannot find any penises here.</span>")
+// 								return FALSE
+// 							to_chat(src,"<span class='warning'>Clothes prevent you from getting to the penis.</span>")
+// 							return FALSE
+// 				return FALSE
+// 			return FALSE
+// 		return FALSE
+// 	else
+// 		return TRUE
+
 // Supplement a procedure for getting an item by ERP slot for human class (may be not needed if carbon class has this code to)
 /mob/living/carbon/human/get_item_by_slot(slot_id)
 	var/obj/item/I = ..()
@@ -536,7 +582,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Extention equipping procedure for ERP slot
 /mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
 	var/not_handled = FALSE
-	if(!not_handled  && src.client?.prefs.erp_pref == "Yes")
+	if(/*!not_handled  && */src.client?.prefs.erp_pref == "Yes")
 		switch(slot)
 			if(ITEM_SLOT_VAGINA)
 				if(src.is_bottomless())
@@ -574,6 +620,18 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 					return
 				to_chat(usr, "[src] is not bottomless, you cannot access to penis")
 				return
+			else
+				to_chat(src, "<span class='danger'>You are trying to equip this item to an unsupported inventory slot. Report this to a coder!</span>")
+
+		//Item is handled and in slot, valid to call callback, for this proc should always be true
+		if(!not_handled)
+			I.equipped(src, slot, initial)
+
+			// Send a signal for when we equip an item that used to cover our feet/shoes. Used for bloody feet
+			if((I.body_parts_covered & FEET) || (I.flags_inv | I.transparent_protection) & HIDESHOES)
+				SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_SHOECOVER, I, slot, initial, redraw_mob)
+
+		return not_handled
 	else
 		..()
 
@@ -673,6 +731,49 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 				client.screen += penis
 			update_observer_view(penis)
 			src.hud_used.hidden_inventory_update(src)
+
+// Shoes update extention for supporting correctt removing shoe in sleepbag
+/mob/living/carbon/human/update_inv_shoes()
+
+	if(istype(src.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+		remove_overlay(SHOES_LAYER)
+
+		if(dna.species.mutant_bodyparts["taur"])
+			var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
+			if(S.hide_legs)
+				return
+
+		if(num_legs<2)
+			return
+
+		if(client && hud_used)
+			var/atom/movable/screen/inventory/inv = hud_used.inv_slots[TOBITSHIFT(ITEM_SLOT_FEET) + 1]
+			inv.update_icon()
+
+		if(shoes)
+			shoes.screen_loc = ui_shoes					//move the item to the appropriate screen loc
+			if(client && hud_used && hud_used.hud_shown)
+				if(hud_used.inventory_shown)			//if the inventory is open
+					client.screen += shoes					//add it to client's screen
+			update_observer_view(shoes,1)
+			var/icon_file = shoes.worn_icon
+			var/applied_styles = NONE
+			if((DIGITIGRADE in dna.species.species_traits) && (shoes.mutant_variants & STYLE_DIGITIGRADE))
+				applied_styles |= STYLE_DIGITIGRADE
+				icon_file = shoes.worn_icon_digi || 'modular_skyrat/master_files/icons/mob/clothing/feet_digi.dmi'
+
+			overlays_standing[SHOES_LAYER] = shoes.build_worn_icon(default_layer = SHOES_LAYER, default_icon_file = 'icons/mob/clothing/feet.dmi', override_icon = icon_file, mutant_styles = applied_styles)
+			var/mutable_appearance/shoes_overlay = overlays_standing[SHOES_LAYER]
+			if(OFFSET_SHOES in dna.species.offset_features)
+				shoes_overlay.pixel_x += dna.species.offset_features[OFFSET_SHOES][1]
+				shoes_overlay.pixel_y += dna.species.offset_features[OFFSET_SHOES][2]
+			overlays_standing[SHOES_LAYER] = shoes_overlay
+
+		// apply_overlay(SHOES_LAYER)
+
+		return
+	else
+		..()
 
 // Updating vagina hud slot
 /mob/living/carbon/human/update_hud_vagina(obj/item/I)
@@ -962,7 +1063,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	switch(display_hud_version)
 		if(HUD_STYLE_STANDARD) //Default HUD
 			hud_shown = TRUE //Governs behavior of other procs
-			if(ERP_toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.ERP_inventory_shown && viewmob.client.prefs.erp_pref == "Yes")
+			if(ERP_toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.ERP_inventory_shown && screenmob.client?.prefs.erp_pref == "Yes")
 				screenmob.client.screen += ERP_toggleable_inventory
 
 		if(HUD_STYLE_REDUCED) //Reduced HUD
@@ -1146,9 +1247,144 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 ////////////////////////////////////////////////////////////////////
 // EXTENTIONS FOR SPRITE_ACCESSORY IS_HIDDEN CHECKS FOR ERP STUFF //
 ////////////////////////////////////////////////////////////////////
-// // For hidding tails
-// /datum/sprite_accessory/tails/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
-	// // Default code
+
+// Extends default proc check for hidden ears for supporting our sleepbag and catsuit to
+/datum/sprite_accessory/ears/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default proc code
+	// if(H.head && (H.head.flags_inv & HIDEHAIR) || (H.wear_mask && (H.wear_mask.flags_inv & HIDEHAIR)) || !HD)
+	// 	return TRUE
+	// return FALSE
+
+	// First lets proc default code
+	. = ..()
+	if(!.) // If true, ears already hidden
+		if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+			var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/S = H.wear_suit
+			if(S.state_thing == "inflated")
+				return TRUE
+			return FALSE
+		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+			return TRUE
+		return FALSE
+	return TRUE // Return TRUE if superfuncitons already retuns TRUE
+
+// Extends default proc check for hidden frills for supporting our sleepbag and catsuit to
+/datum/sprite_accessory/frills/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default proc code
+	// if(H.head && (H.try_hide_mutant_parts || (H.head.flags_inv & HIDEEARS) || !HD || HD.status == BODYPART_ROBOTIC))
+	// 	return TRUE
+	// return FALSE
+
+	. = ..()
+	if(!.) // If true, frills already hidden
+		if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+			var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/S = H.wear_suit
+			if(S.state_thing == "inflated")
+				return TRUE
+			return FALSE
+		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+			return TRUE
+		return FALSE
+	return TRUE // Return TRUE if superfuncitons already retuns TRUE
+
+// Extends default proc check for hidden head accessory for supporting our sleepbag and catsuit to
+/datum/sprite_accessory/head_accessory/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default proc code
+	// if(H.head && (H.head.flags_inv & HIDEHAIR) || (H.wear_mask && (H.wear_mask.flags_inv & HIDEHAIR)))
+	// 	return TRUE
+	// return FALSE
+
+	. = ..()
+	if(!.) // If true, head accessory already hidden
+		if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+			var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/S = H.wear_suit
+			if(S.state_thing == "inflated")
+				return TRUE
+			return FALSE
+		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+			return TRUE
+		return FALSE
+	return TRUE // Return TRUE if superfuncitons already retuns TRUE
+
+// Extends default proc check for hidden horns for supporting our sleepbag and catsuit to
+/datum/sprite_accessory/horns/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default proc code
+	// if(H.head && (H.head.flags_inv & HIDEHAIR) || (H.wear_mask && (H.wear_mask.flags_inv & HIDEHAIR)) || !HD)
+	// 	return TRUE
+	// return FALSE
+
+	. = ..()
+	if(!.) // If true, horns already hidden
+		if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+			var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/S = H.wear_suit
+			if(S.state_thing == "inflated")
+				return TRUE
+			return FALSE
+		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+			return TRUE
+		return FALSE
+	return TRUE // Return TRUE if superfuncitons already retuns TRUE
+
+// Extends default proc check for hidden antenna for supporting our sleepbag and catsuit to
+/datum/sprite_accessory/antenna/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default proc code
+	// if(H.head && (H.head.flags_inv & HIDEHAIR) || (H.wear_mask && (H.wear_mask.flags_inv & HIDEHAIR)) || !HD)
+	// 	return TRUE
+	// return FALSE
+
+	. = ..()
+	if(!.) // If true, antenna already hidden
+		if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+			var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/S = H.wear_suit
+			if(S.state_thing == "inflated")
+				return TRUE
+			return FALSE
+		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+			return TRUE
+		return FALSE
+	return TRUE // Return TRUE if superfuncitons already retuns TRUE
+
+// Extends default proc check for hidden moth antenna for supporting our sleepbag and catsuit to
+/datum/sprite_accessory/moth_antennae/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default proc code
+	// if(H.head && (H.head.flags_inv & HIDEHAIR) || (H.wear_mask && (H.wear_mask.flags_inv & HIDEHAIR)) || !HD)
+	// 	return TRUE
+	// return FALSE
+
+	. = ..()
+	if(!.) // If true, moth antenna already hidden
+		if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+			var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/S = H.wear_suit
+			if(S.state_thing == "inflated")
+				return TRUE
+			return FALSE
+		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+			return TRUE
+		return FALSE
+	return TRUE // Return TRUE if superfuncitons already retuns TRUE
+
+// Extends default proc check for hidden skrell hair for supporting our sleepbag and catsuit to
+/datum/sprite_accessory/skrell_hair/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default proc code
+	// if(H.head && (H.head.flags_inv & HIDEHAIR) || (H.wear_mask && (H.wear_mask.flags_inv & HIDEHAIR)))
+	// 	return TRUE
+	// return FALSE
+
+	. = ..()
+	if(!.) // If true, skrell hair already hidden
+		if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+			var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/S = H.wear_suit
+			if(S.state_thing == "inflated")
+				return TRUE
+			return FALSE
+		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+			return TRUE
+		return FALSE
+	return TRUE // Return TRUE if superfuncitons already retuns TRUE
+
+// Extends default proc check for hidden skrell hair for supporting our sleepbag and catsuit to
+/datum/sprite_accessory/tails/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	// // Default proc code
 	// if(H.wear_suit)
 	// 	if(H.try_hide_mutant_parts)
 	// 		return TRUE
@@ -1160,22 +1396,14 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 	// 		return TRUE
 	// return FALSE
 
-// For hidding taurs
-
-
-// Extends default proc check for hidden ears for supporting our sleepbag to
-/datum/sprite_accessory/ears/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
-	// // Default proc code
-	// if(H.head && (H.head.flags_inv & HIDEHAIR) || (H.wear_mask && (H.wear_mask.flags_inv & HIDEHAIR)) || !HD)
-	// 	return TRUE
-	// return FALSE
-
-	// First lets proc default code
 	. = ..()
-	if(!.) // If true, ears alreaady hidden
-		if(H.wear_suit && (H.wear_suit.flags_inv & HIDEHAIR) || !HD) // Default check adapted for suit
-			if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag)) // Additional check for our sleepbag item type in suit slot
-				return TRUE
-			return FALSE
+	if(!.) // If true, tail already hidden
+		if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+			// var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/S = H.wear_suit
+			// if(S.state_thing == "inflated")
+			// 	return TRUE
+			return TRUE /* return FALSE */
+		else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+			return TRUE
 		return FALSE
 	return TRUE // Return TRUE if superfuncitons already retuns TRUE
