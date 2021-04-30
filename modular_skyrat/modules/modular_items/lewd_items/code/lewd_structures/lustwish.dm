@@ -13,6 +13,9 @@
 
 	//STUFF SOLD HERE//
 	products = list(/obj/item/clothing/gloves/ball_mittens = 8,
+					/obj/item/signalvib = 8,
+					/obj/item/eggvib = 8,
+					/obj/item/vibroring = 6,
 					/obj/item/clothing/mask/ballgag = 8,
 					/obj/item/clothing/mask/ballgag_phallic = 8,
 					/obj/item/clothing/suit/corset = 8,
@@ -32,6 +35,7 @@
 					/obj/item/clothing/gloves/evening = 5,
 					/obj/item/clothing/under/stripper_outfit = 5,
 					/obj/item/reagent_containers/pill/crocin = 20,
+					/obj/item/condom_pack = 20,
 					/obj/item/reagent_containers/pill/camphor = 10,
 					/obj/item/dildo = 8,
 					/obj/item/tickle_feather = 8,
@@ -41,9 +45,11 @@
 					/obj/item/magic_wand = 4,
 					/obj/item/clothing/under/misc/gear_harness = 4,
 					/obj/item/bdsm_candle = 4,
+					/obj/item/spanking_pad = 4,
 					/obj/item/vibrator = 4,
 					/obj/item/serviette_pack = 10,
 					/obj/item/restraints/handcuffs/lewd = 8,
+					/obj/item/leash = 4,
 					/obj/item/pillow = 6)
 
 	premium = list(	/obj/item/clothing/suit/straight_jacket/latex_straight_jacket = 5,
@@ -82,13 +88,9 @@
 			if(TRUE)
 				default_price = 0
 				extra_price = 0
-				custom_price = 0
-				custom_premium_price = 0
 			if(FALSE)
 				default_price = PAYCHECK_ASSISTANT * 2
-				extra_price = PAYCHECK_COMMAND * 0.3
-				custom_price = PAYCHECK_ASSISTANT * 4
-				custom_premium_price = PAYCHECK_ASSISTANT * 6
+				extra_price = PAYCHECK_COMMAND * 0.5
 	else
 		return
 

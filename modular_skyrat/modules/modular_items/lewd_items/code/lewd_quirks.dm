@@ -78,7 +78,6 @@
 	if(owner.stat != CONSCIOUS)
 		return
 
-	owner.adjustArousal(2)
 	if(satisfaction <= 0)
 		switch(rand(1,6))
 			if(1)
@@ -118,11 +117,13 @@
 										"<font color=purple>[owner] touches themselves in intimate places...</font>\n",
 										"<font color=purple>[owner] trembling longingly.</font>\n",
 										"<font color=purple>[owner] moans indecently!</font>\n"))
-	if(in_company() && satisfaction >= 0.02)
-		satisfaction -= 0.02
-		if(satisfaction <= 0.02)
-			if(stress >= 100)
-				stress +=1
+
+	if(in_company() && satisfaction >= 0.15)
+		satisfaction -= 0.15
+
+	if(in_company() && satisfaction <= 0.15)
+		if(stress <= 100)
+			stress +=1
 
 	if(in_company() && owner.has_status_effect(/datum/status_effect/climax))
 		stress = 0
@@ -133,10 +134,9 @@
 		return FALSE
 	for(var/mob/living/carbon/human/M in oview(owner, 4))
 		if(!isliving(M)) //ghosts ain't people
-			return FALSE
-		if(istype(M, M.ckey))
+			continue
+		if(istype(M))
 			return TRUE
-			to_chat(world, "IN COMPANY") //REMOVE LATER, TEST MESSAGE.
 	return FALSE
 
 //////////////////////
@@ -258,8 +258,12 @@
 										"<font color=purple>[owner] touches themselves in intimate places...</font>\n",
 										"<font color=purple>[owner] trembling longingly.</font>\n",
 										"<font color=purple>[owner] moans indecently!</font>\n"))
-	if(satisfaction >= 0.02)
-		satisfaction -= 0.02
+	if(satisfaction >= 0.15)
+		satisfaction -= 0.15
+
+	if(satisfaction <= 0.15)
+		if(stress <= 100)
+			stress +=1
 
 	if(get_dist(get_turf(owner), get_turf(obsession)) < 2)
 		if(obsession.pleasure >= 20 && owner.has_status_effect(/datum/status_effect/climax))
@@ -315,11 +319,6 @@
 /////////////////
 ///BIMBO TRAIT///
 /////////////////
-
-//Заменять любую речь на стоны - v
-//Постоянное поддерживание возбуждения на 100. - v
-//Изредка сообщения в чат о развратных микродействиях проклятого персонажа - v
-//Дебаффы от неудовлетворённости.
 
 /datum/brain_trauma/special/bimbo
 	name = "Permanent hormonal disruption"
@@ -480,7 +479,6 @@
 	var/mob/living/carbon/human/H = quirk_holder
 	H?.cure_trauma_type(/datum/brain_trauma/special/sadism, TRAUMA_RESILIENCE_ABSOLUTE)
 
-
 /datum/brain_trauma/special/sadism
 	name = "Sadism"
 	desc = "The subject's cerebral pleasure centers are more active when someone is suffering."
@@ -492,8 +490,9 @@
 	resilience = TRAUMA_RESILIENCE_ABSOLUTE
 
 /datum/brain_trauma/special/sadism/on_life(delta_time, times_fired)
-	if(someone_suffering())
-		owner.adjustArousal(1)
+	var/mob/living/carbon/human/H = owner
+	if(someone_suffering() && H.client?.prefs.erp_pref == "Yes")
+		owner.adjustArousal(2)
 		SEND_SIGNAL(owner, COMSIG_ADD_MOOD_EVENT, "sadistic", /datum/mood_event/sadistic)
 	else
 		SEND_SIGNAL(owner, COMSIG_CLEAR_MOOD_EVENT, "sadistic", /datum/mood_event/sadistic)
@@ -503,8 +502,8 @@
 		return FALSE
 	for(var/mob/living/carbon/human/M in oview(owner, 4))
 		if(!isliving(M)) //ghosts ain't people
-			return FALSE
-		if(istype(M, M.ckey) && M.pain >= 10)
+			continue
+		if(istype(M) && M.pain >= 10)
 			return TRUE
 	return FALSE
 

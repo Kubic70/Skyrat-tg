@@ -88,9 +88,7 @@
 	trippy = TRUE
 
 /datum/reagent/drug/dopamine/on_mob_add(mob/living/M)
-	to_chat(world, "dopamine adding")
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_start", /datum/mood_event/orgasm, name)
-	to_chat(world, "dopamine added")
 	..()
 
 /datum/reagent/drug/dopamine/on_mob_life(mob/living/M)
