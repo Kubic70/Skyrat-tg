@@ -46,7 +46,7 @@
 	//////////////////////////
 	// Vessels and parameters //
 	//////////////////////////
-	var/max_vessel_capacity = 500 // Limits a max capacity of any internal vessel in machine
+	var/max_vessel_capacity = 100 // Limits a max capacity of any internal vessel in machine
 	var/obj/item/reagent_containers/current_milk
 	var/obj/item/reagent_containers/current_girlcum
 	var/obj/item/reagent_containers/current_semen
@@ -160,19 +160,16 @@
 
 // Radial menu handler for color selection by using multitool
 /obj/structure/chair/milking_machine/multitool_act(mob/living/user, obj/item/I)
-	// . = ..()
-// if(!.)
+	. = ..()
+	if(.)
+		return
 	var/choice = show_radial_menu(user,src, milkingmachine_designs, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
-	if(choice)
-		machine_color = choice
-		update_icon()
-		color_changed = TRUE
-		return TRUE
-	else
-		return FALSE
-		// return FALSE
-// else
-// 	return
+	if(!choice)
+		return
+	machine_color = choice
+	update_icon()
+	color_changed = TRUE
+
 
 // Checking if we can use the menu
 /obj/structure/chair/milking_machine/proc/check_menu(mob/living/user)
@@ -612,8 +609,13 @@
 		M.client.movement_keys = lastsaved_keybindings
 		var/mob/living/carbon/N = M
 		N.set_usable_hands(2)
-	replace_beaker()
 	STOP_PROCESSING(SSobj, src)
+
+	if(beaker)
+		beaker.forceMove(drop_location())
+		adjust_item_drop_location(beaker)
+		beaker = null
+		update_all_visuals()
 
 	if(cell)
 		cell.forceMove(drop_location())
@@ -710,24 +712,24 @@
 
 	// Processing changes in the capacity overlay
 	cut_overlay(vessel_overlay)
-	var/T = (current_milk.reagents.total_volume + current_girlcum.reagents.total_volume + current_semen.reagents.total_volume) / 3
-	if(T < 10)
+	var/T = current_milk.reagents.total_volume + current_girlcum.reagents.total_volume + current_semen.reagents.total_volume
+	if(T == 0 && T <1)
 		if(vessel_state != vessel_state_list[1])
 			vessel_overlay.icon_state = vessel_state_list[1]
 			vessel_state = vessel_state_list[1]
-	if((T >= 10) && (T < 150))
+	if((T >= 1) && (T < (max_vessel_capacity / 3))
 		if(vessel_state != vessel_state_list[2])
 			vessel_overlay.icon_state = vessel_state_list[2]
 			vessel_state = vessel_state_list[2]
-	if((T >= 150) && (T < 350))
+	if((T >= (max_vessel_capacity / 3)) && (T < (2 * max_vessel_capacity / 3))
 		if(vessel_state != vessel_state_list[3])
 			vessel_overlay.icon_state = vessel_state_list[3]
 			vessel_state = vessel_state_list[3]
-	if((T >= 350) && (T < 500))
+	if((T >= (2 * max_vessel_capacity / 3)) && (T < max_vessel_capacity))
 		if(vessel_state != vessel_state_list[4])
 			vessel_overlay.icon_state = vessel_state_list[4]
 			vessel_state = vessel_state_list[4]
-	if(T >= 500)
+	if(T == max_vessel_capacity)
 		if(vessel_state != vessel_state_list[5])
 			vessel_overlay.icon_state = vessel_state_list[5]
 			vessel_state = vessel_state_list[5]
