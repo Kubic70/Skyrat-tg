@@ -778,7 +778,7 @@
 /atom/movable/screen/alert/aroused_X/Initialize()
 	.=..()
 	pain_overlay = update_pain()
-	return ..()
+	// return ..()
 
 /atom/movable/screen/alert/aroused_X/proc/update_pain()
 	if(pain_level == "small")
