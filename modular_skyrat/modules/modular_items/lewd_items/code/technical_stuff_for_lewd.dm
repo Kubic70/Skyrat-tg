@@ -461,7 +461,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 /datum/species/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
 	. = ..()
 	if(!.)
-		if(I.slot_flags & slot && H.client?.prefs.erp_pref == "Yes")
+		if(/*I.slot_flags & slot && */H.client?.prefs.erp_pref == "Yes")
 			switch(slot)
 				if(ITEM_SLOT_VAGINA)
 					if(H.is_bottomless())
@@ -621,17 +621,17 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 				to_chat(usr, "[src] is not bottomless, you cannot access to penis")
 				return
 			else
-				to_chat(src, "<span class='danger'>You are trying to equip this item to an unsupported inventory slot. Report this to a coder!</span>")
+				..()
 
 		//Item is handled and in slot, valid to call callback, for this proc should always be true
-		if(!not_handled)
-			I.equipped(src, slot, initial)
+		// if(!not_handled)
+		// 	I.equipped(src, slot, initial)
 
-			// Send a signal for when we equip an item that used to cover our feet/shoes. Used for bloody feet
-			if((I.body_parts_covered & FEET) || (I.flags_inv | I.transparent_protection) & HIDESHOES)
-				SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_SHOECOVER, I, slot, initial, redraw_mob)
+		// 	// Send a signal for when we equip an item that used to cover our feet/shoes. Used for bloody feet
+		// 	if((I.body_parts_covered & FEET) || (I.flags_inv | I.transparent_protection) & HIDESHOES)
+		// 		SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_SHOECOVER, I, slot, initial, redraw_mob)
 
-		return not_handled
+		// return not_handled
 	else
 		..()
 
