@@ -123,7 +123,6 @@
 		if(L == TRUE)
 			to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
 			lock = TRUE
-			ADD_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
 		if(L == FALSE)
 			to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
 			lock = FALSE
@@ -135,19 +134,22 @@
 
 /obj/item/clothing/neck/kink_collar/locked/attackby(obj/item/K, mob/user, params)
 	var/obj/item/clothing/neck/kink_collar/locked/collar = src
-	//to_chat(world,"K=[K]/user=[user]/atakby=[src]")
 	if(istype(K, /obj/item/key/kink_collar))
 		var/obj/item/key/kink_collar/key = K
 		if(key.key_id==collar.key_id)
 			if(lock != FALSE)
-				//to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
 				IsLocked(FALSE,user)
 			else
-				//to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
 				IsLocked(TRUE,user)
 		else
 			to_chat(user,"<span class='warning'>Looks like it's a wrong key!</span>")
 	return
+
+/obj/item/clothing/neck/kink_collar/locked/equipped(mob/living/U, slot)
+	var/mob/living/carbon/human/H = U
+	if(lock == TRUE && src == H.wear_neck)
+		ADD_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)
+		to_chat(H, "<span class='warning'>You heard a suspicious click. Looks like the collar now is locked on your neck!</span>")
 
 //this code prevents wearer from taking collar off if it's locked. Have fun!
 
@@ -205,17 +207,14 @@
 //we checking if we can open collar with THAT KEY with SAME ID as the collar.
 /obj/item/key/kink_collar/attack(mob/living/M, mob/living/user, params)
 	. = ..()
-	//to_chat(world,"target=[M]/user=[user]/atakby=[src]")
 	var/mob/living/carbon/target = M
 	if(istype(target.wear_neck,/obj/item/clothing/neck/kink_collar/locked/))
 		var/obj/item/key/kink_collar/key = src
 		var/obj/item/clothing/neck/kink_collar/locked/collar = target.wear_neck
 		if(collar.key_id == key.key_id)
 			if(collar.lock != FALSE)
-				//to_chat(user, "<span class='warning'>With a click the collar unlocks!</span>")
 				collar.IsLocked(FALSE,user)
 			else
-				//to_chat(user, "<span class='warning'>With a click the collar locks!</span>")
 				collar.IsLocked(TRUE,user)
 		else
 			to_chat(user,"<span class='warning'>Looks like it's a wrong key!</span>")
@@ -223,7 +222,6 @@
 
 /obj/item/circular_saw/attack(mob/living/M, mob/living/user, params)
 	. = ..()
-	//to_chat(world,"target=[M]/user=[user]/atakby=[src]")
 	var/mob/living/carbon/target = M
 	if(istype(target.wear_neck,/obj/item/clothing/neck/kink_collar/locked/))
 		var/obj/item/clothing/neck/kink_collar/locked/collar = target.wear_neck

@@ -24,10 +24,25 @@
 	update_icon_state()
 	update_icon()
 
-
 /obj/item/condom_pack/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]"
+
+/obj/item/condom_pack/attack_self(mob/user)
+	to_chat(user, "<span class='notice'>You start to open the condom...</span>")
+	if(!do_after(user, 15, target = user))
+		return
+	playsound(src.loc, 'sound/items/poster_ripped.ogg', 50, TRUE)
+	var/obj/item/condom/C = new /obj/item/condom
+	user.put_in_hands(C)
+	switch(current_color)
+		if("pink")
+			C.current_color = "pink"
+		if("teal")
+			C.current_color = "teal"
+	C.update_icon_state()
+	C.update_icon()
+	qdel(src)
 
 //Opened condom
 
