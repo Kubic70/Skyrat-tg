@@ -712,16 +712,16 @@
 
 	// Processing changes in the capacity overlay
 	cut_overlay(vessel_overlay)
-	var/T = current_milk.reagents.total_volume + current_girlcum.reagents.total_volume + current_semen.reagents.total_volume
-	if(T == 0 && T <1)
+	var/T = (current_milk.reagents.total_volume + current_girlcum.reagents.total_volume + current_semen.reagents.total_volume)
+	if(T == 0 && T < 1)
 		if(vessel_state != vessel_state_list[1])
 			vessel_overlay.icon_state = vessel_state_list[1]
 			vessel_state = vessel_state_list[1]
-	if((T >= 1) && (T < (max_vessel_capacity / 3))
+	if((T >= 1) && (T < (max_vessel_capacity / 3)))
 		if(vessel_state != vessel_state_list[2])
 			vessel_overlay.icon_state = vessel_state_list[2]
 			vessel_state = vessel_state_list[2]
-	if((T >= (max_vessel_capacity / 3)) && (T < (2 * max_vessel_capacity / 3))
+	if((T >= (max_vessel_capacity / 3)) && (T < (2 * max_vessel_capacity / 3)))
 		if(vessel_state != vessel_state_list[3])
 			vessel_overlay.icon_state = vessel_state_list[3]
 			vessel_state = vessel_state_list[3]
