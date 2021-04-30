@@ -810,32 +810,32 @@
 			I.icon_state = "arousal_max"
 			I.update_icon()
 
-	if(H.arousal > 10) //GEMINEE TODO
+	if(H.arousal > 10)
 		switch(H.pain)
 			if(-100 to 5) //to prevent same thing with pain
 				I.cut_overlay(I.pain_overlay)
 			if(5 to 25)
 				I.cut_overlay(I.pain_overlay)
 				I.pain_level = "small"
-				I.update_pain()
+				I.pain_overlay = I.update_pain()
 				I.add_overlay(I.pain_overlay)
 				I.update_overlays()
 			if(25 to 50)
 				I.cut_overlay(I.pain_overlay)
 				I.pain_level = "medium"
-				I.update_pain()
+				I.pain_overlay = I.update_pain()
 				I.add_overlay(I.pain_overlay)
 				I.update_overlays()
 			if(50 to 75)
 				I.cut_overlay(I.pain_overlay)
 				I.pain_level = "high"
-				I.update_pain()
+				I.pain_overlay = I.update_pain()
 				I.add_overlay(I.pain_overlay)
 				I.update_overlays()
 			if(75 to INFINITY)
 				I.cut_overlay(I.pain_overlay)
 				I.pain_level = "max"
-				I.update_pain()
+				I.pain_overlay = I.update_pain()
 				I.add_overlay(I.pain_overlay)
 				I.update_overlays()
 
