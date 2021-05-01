@@ -235,6 +235,20 @@
 	popup.set_content(dat.Join())
 	popup.open()
 
+//topic
+/mob/living/carbon/human/Topic(href, href_list)
+	.=..()
+	var/mob/living/carbon/human/user = src
+
+	if(!(usr in view(1)))
+		return
+
+	if(href_list["refresh"])
+		user.show_arousal_panel()
+
+	if(href_list["climax"])
+		climax(TRUE)
+
 ///////////-----Procs------///////////
 /mob/living/proc/extract_item(user, slotName)
 	var/mob/living/carbon/human/U = user
