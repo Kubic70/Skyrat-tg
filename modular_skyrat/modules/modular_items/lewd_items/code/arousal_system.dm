@@ -1102,11 +1102,3 @@
 			if(target.icon_state=="stickyweb1"|target.icon_state=="stickyweb2")
 				target.icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_decals/lewd_decals.dmi'
 			qdel(src)
-
-/obj/structure/reagent_dispensers/keg/cum
-	name = "keg of cum"
-	desc = "A keg full of \"reproductive agent\"."
-	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/kegs.dmi'
-	icon_state = "cumkeg"
-	reagent_id = /datum/reagent/consumable/cum
-	tank_volume = 150
