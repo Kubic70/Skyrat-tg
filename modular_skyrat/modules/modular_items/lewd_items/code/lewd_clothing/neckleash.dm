@@ -89,6 +89,15 @@ Icons, maybe?
 	var/color_changed = FALSE
 	var/current_color = "pink"
 	var/static/list/leash_designs
+	var/datum/beam/leashrope = null
+
+//Leash beam
+/obj/effect/ebeam/leashrope
+	name = "leash"
+	mouse_opacity = MOUSE_OPACITY_ICON
+	desc = "A leash, connected to someone else's collar."
+	icon_state = "leashrope"
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_decals/lewd_decals.dmi'
 
 //create radial menu
 /obj/item/leash/proc/populate_leash_designs()
@@ -153,6 +162,10 @@ Icons, maybe?
 			leash_master = user //Save dom reference for later
 			RegisterSignal(leash_pet, COMSIG_MOVABLE_MOVED, .proc/on_pet_move)
 			RegisterSignal(leash_master, COMSIG_MOVABLE_MOVED, .proc/on_master_move)
+
+			leashrope = user.Beam(leash_pet, icon_state="leashrope", time = INFINITE, beam_type = /obj/effect/ebeam/leashrope)
+			RegisterSignal(leashrope, COMSIG_PARENT_QDELETING)//this is a WAY better rangecheck than what was done before (process check)
+
 			leash_used = 1
 			if(!leash_pet.has_status_effect(/datum/status_effect/leash_dom)) //Add slowdown if the pet didn't leash themselves
 				leash_pet.add_movespeed_modifier(/datum/movespeed_modifier/leash_pet/leash_pet_slowdown)
@@ -173,6 +186,9 @@ Icons, maybe?
 					to_chat(leash_pet, "<span class='notice'>You have slipped out of your collar!</span>")
 					to_chat(loc, "<span class='notice'>[leash_pet] has slipped out of their collar!</span>")
 					leash_pet.remove_status_effect(/datum/status_effect/leash_pet)
+
+					qdel(leashrope)
+					leashrope = null
 
 				if(!leash_pet.has_status_effect(/datum/status_effect/leash_pet)) //If there is no pet, there is no dom. Loop breaks.
 					UnregisterSignal(leash_master, COMSIG_MOVABLE_MOVED)

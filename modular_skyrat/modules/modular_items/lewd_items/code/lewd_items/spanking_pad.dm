@@ -71,6 +71,8 @@
 					M.apply_status_effect(/datum/status_effect/spanked)
 					if(HAS_TRAIT(M, TRAIT_MASOCHISM || TRAIT_NYMPHOMANIA || TRAIT_BIMBO))
 						SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "pervert spanked", /datum/mood_event/perv_spanked)
+					if(prob(10))
+						M.apply_status_effect(/datum/status_effect/subspace)
 				user.visible_message("<font color=purple>[user] [message].</font>")
 				playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/slap.ogg', 100, 1, -1)
 			else

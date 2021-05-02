@@ -8,6 +8,8 @@
 #define CUM_FEMALE 2
 #define ITEM_SLOT_PENIS (1<<20)
 
+#define TRAIT_MASOCHISM		"masochism"
+
 /atom/movable/screen/alert/aroused
 	name = "Aroused"
 	desc = "It's a little hot in here"
@@ -232,6 +234,20 @@
 	popup.title = "[src] Arousal panel"
 	popup.set_content(dat.Join())
 	popup.open()
+
+//topic
+/mob/living/carbon/human/Topic(href, href_list)
+	.=..()
+	var/mob/living/carbon/human/user = src
+
+	if(!(usr in view(1)))
+		return
+
+	if(href_list["refresh"])
+		user.show_arousal_panel()
+
+	if(href_list["climax"])
+		climax(TRUE)
 
 ///////////-----Procs------///////////
 /mob/living/proc/extract_item(user, slotName)
@@ -500,7 +516,7 @@
 /mob/living/proc/climax(manual = TRUE)
 	var/obj/item/organ/genital/penis = getorganslot(ORGAN_SLOT_PENIS)
 	var/obj/item/organ/genital/vagina = getorganslot(ORGAN_SLOT_VAGINA)
-	if(manual == TRUE && arousal > 90 && !has_status_effect(/datum/status_effect/climax_cooldown) && client?.prefs.erp_pref == "Yes")
+	if(manual == TRUE && !has_status_effect(/datum/status_effect/climax_cooldown) && client?.prefs.erp_pref == "Yes")
 		if(neverboner == FALSE && !has_status_effect(/datum/status_effect/climax_cooldown))
 			switch(gender)
 				if(MALE)
@@ -711,6 +727,34 @@
 	mood_change = 3
 	timeout = 5 MINUTES
 
+/////////////////////
+///SUBSPACE EFFECT///
+/////////////////////
+
+/datum/status_effect/subspace
+	id = "subspace"
+	tick_interval = 10
+	duration = 5 MINUTES
+	alert_type = null
+
+/datum/status_effect/subspace/on_apply()
+	. = ..()
+	var/mob/living/carbon/human/M = owner
+	if(owner.masochism == FALSE)
+		owner.set_masochism(TRUE)
+	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "subspace", /datum/mood_event/subspace)
+
+/datum/status_effect/subspace/on_remove()
+	. = ..()
+	var/mob/living/carbon/human/M = owner
+	if(owner.masochism == TRUE && !HAS_TRAIT(owner, TRAIT_MASOCHISM))
+		owner.set_masochism(FALSE)
+	SEND_SIGNAL(M, COMSIG_CLEAR_MOOD_EVENT, "subspace", /datum/mood_event/subspace)
+
+/datum/mood_event/subspace
+	description = "<font color=purple>Everything so woozy... Pain feels so... Awesome.</font>\n"
+	mood_change = 4
+
 ///////////////////////
 ///AROUSAL INDICATOR///
 ///////////////////////
@@ -730,11 +774,14 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
 	icon_state = "arousal_small"
 	var/mutable_appearance/pain_overlay
+	var/mutable_appearance/pleasure_overlay
 	var/pain_level = "small"
+	var/pleasure_level = "small"
 
 /atom/movable/screen/alert/aroused_X/Initialize()
 	.=..()
 	pain_overlay = update_pain()
+	pleasure_overlay = update_pleasure()
 
 /atom/movable/screen/alert/aroused_X/proc/update_pain()
 	if(pain_level == "small")
@@ -746,10 +793,22 @@
 	if(pain_level == "max")
 		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi', "pain_max")
 
+/atom/movable/screen/alert/aroused_X/proc/update_pleasure()
+	if(pleasure_level == "small")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi', "pleasure_small")
+	if(pleasure_level == "medium")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi', "pleasure_medium")
+	if(pleasure_level == "high")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi', "pleasure_high")
+	if(pleasure_level == "max")
+		return mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi', "pleasure_max")
+
 /datum/species/proc/handle_arousal(mob/living/carbon/human/H, atom/movable/screen/alert/aroused_X)
 	var/atom/movable/screen/alert/aroused_X/I = H.alerts["aroused"]
 	if(H.client?.prefs.erp_pref == "Yes")
 		switch(H.arousal)
+			if(-100 to 10)
+				H.clear_alert("aroused", /atom/movable/screen/alert/aroused_X)
 			if(10 to 25)
 				H.throw_alert("aroused", /atom/movable/screen/alert/aroused_X)
 				I.icon_state = "arousal_small"
@@ -795,6 +854,38 @@
 					I.pain_overlay = I.update_pain()
 					I.add_overlay(I.pain_overlay)
 					I.update_overlays()
+
+		if(H.arousal > 10)
+			switch(H.pleasure)
+				if(-100 to 5) //to prevent same thing with pleasure
+					I.cut_overlay(I.pleasure_overlay)
+				if(5 to 25)
+					I.cut_overlay(I.pleasure_overlay)
+					I.pleasure_level = "small"
+					I.pleasure_overlay = I.update_pleasure()
+					I.add_overlay(I.pleasure_overlay)
+					I.update_overlays()
+				if(25 to 60)
+					I.cut_overlay(I.pleasure_overlay)
+					I.pleasure_level = "medium"
+					I.pleasure_overlay = I.update_pleasure()
+					I.add_overlay(I.pleasure_overlay)
+					I.update_overlays()
+				if(60 to 85)
+					I.cut_overlay(I.pleasure_overlay)
+					I.pleasure_level = "high"
+					I.pleasure_overlay = I.update_pleasure()
+					I.add_overlay(I.pleasure_overlay)
+					I.update_overlays()
+				if(85 to INFINITY)
+					I.cut_overlay(I.pleasure_overlay)
+					I.pleasure_level = "max"
+					I.pleasure_overlay = I.update_pleasure()
+					I.add_overlay(I.pleasure_overlay)
+					I.update_overlays()
+		else
+			I.cut_overlay(I.pleasure_overlay)
+			I.cut_overlay(I.pain_overlay)
 
 ////////////////////////
 ///CUM.DM ASSIMILATED///
@@ -1025,11 +1116,3 @@
 			if(target.icon_state=="stickyweb1"|target.icon_state=="stickyweb2")
 				target.icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_decals/lewd_decals.dmi'
 			qdel(src)
-
-/obj/structure/reagent_dispensers/keg/cum
-	name = "keg of cum"
-	desc = "A keg full of \"reproductive agent\"."
-	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/kegs.dmi'
-	icon_state = "cumkeg"
-	reagent_id = /datum/reagent/consumable/cum
-	tank_volume = 150

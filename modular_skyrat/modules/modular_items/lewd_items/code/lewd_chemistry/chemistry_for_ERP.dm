@@ -14,7 +14,7 @@
 	color = "#FFADFF"//PINK, rgb(255, 173, 255)
 	//can_synth = FALSE
 
-/datum/reagent/drug/crocin/on_mob_life(mob/living/M)
+/datum/reagent/drug/crocin/on_mob_metabolize(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		if((prob(min(current_cycle/2,5))))
 			M.emote(pick("moan","blush"))
@@ -40,7 +40,7 @@
 	color = "#FF2BFF"//dark pink
 	overdose_threshold = 25 //Heavy consequences. Supposed to be big value.
 
-/datum/reagent/drug/hexacrocin/on_mob_life(mob/living/M)
+/datum/reagent/drug/hexacrocin/on_mob_metabolize(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		if(prob(5))
 			if(prob(current_cycle))
@@ -88,9 +88,7 @@
 	trippy = TRUE
 
 /datum/reagent/drug/dopamine/on_mob_add(mob/living/M)
-	to_chat(world, "dopamine adding")
 	SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "[type]_start", /datum/mood_event/orgasm, name)
-	to_chat(world, "dopamine added")
 	..()
 
 /datum/reagent/drug/dopamine/on_mob_life(mob/living/M)
@@ -129,11 +127,13 @@
 	color = "#D9D9D9"//rgb(157, 157, 157)
 	reagent_state = SOLID
 
-/datum/reagent/drug/camphor/on_mob_life(mob/living/M)
+/datum/reagent/drug/camphor/on_mob_metabolize(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		if(ishuman(M))
-			M.adjustArousal(-3)
-			if(M.arousal <= 0)
+			var/old_arousal = M.arousal
+			M.adjustArousal(-6)
+			M.adjustPleasure(-3)
+			if(M.arousal <= 0 && old_arousal > 0)
 				to_chat(M, "<span class='notice'>You no longer feel aroused.</span>")
 	..()
 
@@ -147,26 +147,29 @@
 	reagent_state = SOLID
 	overdose_threshold = 20
 
-/datum/reagent/drug/pentacamphor/on_mob_life(mob/living/M)
+/datum/reagent/drug/camphor/on_mob_metabolize(mob/living/M)
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
 		if(ishuman(M))
+			var/old_arousal = M.arousal
 			M.adjustArousal(-6)
 			M.adjustPleasure(-3)
-			if(M.arousal <= 0)
+			if(M.arousal <= 0 && old_arousal > 0)
 				to_chat(M, "<span class='notice'>You no longer feel aroused.</span>")
 	..()
 
 /datum/reagent/drug/pentacamphor/overdose_process(mob/living/M)
 	var/mob/living/carbon/human/H = M
 	if(M.client && (M.client.prefs.skyrat_toggles & APHRO_PREF))
-		if(!HAS_TRAIT(M, TRAIT_BIMBO))
-			to_chat(M, "<span class='userlove'>You feel like you'll never feel aroused again...</span>") //Go to horny jail *bonk*
-			ADD_TRAIT(M,TRAIT_NEVERBONER,APHRO_TRAIT)
+		if(!HAS_TRAIT(M, TRAIT_BIMBO) && !HAS_TRAIT(M, TRAIT_NEVERBONER))
+			to_chat(M, "<span class='notice'>You feel like you'll never feel aroused again...</span>") //Go to horny jail *bonk*
+			ADD_TRAIT(M,TRAIT_NEVERBONER, APHRO_TRAIT)
+			M.set_neverboner(TRUE)
 
 		if(HAS_TRAIT(M, TRAIT_BIMBO))
 			if(prob(30))
 				H.cure_trauma_type(/datum/brain_trauma/special/bimbo, TRAUMA_RESILIENCE_LOBOTOMY)
 				to_chat(M, "<span class='notice'>Your mind is free from purple liquid substance. Your thoughts are pure and innocent again.")
+
 		if(HAS_TRAIT(M, TRAIT_NYMPHOMANIA))
 			if(prob(30))
 				H.cure_trauma_type(/datum/brain_trauma/special/nymphomania, TRAUMA_RESILIENCE_LOBOTOMY)
@@ -236,7 +239,7 @@
 
 	var/obj/item/organ/genital/breasts/B = M.getorganslot(ORGAN_SLOT_BREASTS)
 	if(M.breast_enlarger_amount >= 100)
-		if(B.genital_size <= 16)
+		if(B.genital_size < 16)
 			B.genital_size += 1
 		else
 			return
@@ -431,4 +434,12 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/kegs.dmi'
 	icon_state = "hexacrocin"
 	reagent_id = /datum/reagent/drug/hexacrocin
-	tank_volume = 120
+	tank_volume = 150
+
+/obj/structure/reagent_dispensers/keg/cum
+	name = "keg of cum"
+	desc = "A keg full of \"reproductive agent\"."
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_structures/kegs.dmi'
+	icon_state = "cumkeg"
+	reagent_id = /datum/reagent/consumable/cum
+	tank_volume = 150
