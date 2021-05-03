@@ -333,10 +333,11 @@ GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 // Allowed items for nipples slot
 GLOBAL_LIST_INIT(nipples_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
-	/obj/item/signalvib
+	/obj/item/signalvib,
+	/obj/item/nipple_clamps
 	)))
 
-// Allowed items for peins slot
+// Allowed items for penis slot
 GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
 	/obj/item/signalvib,
