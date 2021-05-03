@@ -78,4 +78,5 @@
 		bzz = 0.2
 		U.adjustArousal(bzz * delta_time)
 		U.adjustPleasure(bzz * delta_time)
-		P.aroused = AROUSAL_FULL //Vibroring keep penis erected.
+		if(P.aroused != AROUSAL_CANT)
+			P.aroused = AROUSAL_FULL //Vibroring keep penis erected.
