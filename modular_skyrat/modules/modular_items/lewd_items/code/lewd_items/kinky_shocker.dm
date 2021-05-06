@@ -207,7 +207,7 @@
 
 			if(BODY_ZONE_L_LEG)
 				if(M.has_feet())
-					if(M.is_feets_uncovered())
+					if(M.is_barefoot())
 						message = (user == M) ? pick("leans the shocker against their left leg, letting it shock it.","shocks their leg with [src]") : pick("uses [src] to shock [M]'s left leg", "shocks [M]'s left foot with [src]","leans the shocker against [M]'s left leg, turning shocker on")
 						if(prob(80))
 							M.emote(pick("twitch","twitch_s","shiver","scream"))
@@ -226,7 +226,7 @@
 
 			if(BODY_ZONE_R_LEG)
 				if(M.has_feet())
-					if(M.is_feets_uncovered())
+					if(M.is_barefoot())
 						message = (user == M) ? pick("leans the shocker against their right leg, letting it shock it.","shocks their leg with [src]") : pick("uses [src] to shock [M]'s right leg", "shocks [M]'s right foot with [src]","leans the shocker against [M]'s right leg, turning shocker on")
 						if(prob(80))
 							M.emote(pick("twitch","twitch_s","shiver","scream"))

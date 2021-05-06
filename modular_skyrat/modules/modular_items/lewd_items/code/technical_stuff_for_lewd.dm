@@ -85,8 +85,6 @@
 		return TRUE
 	return FALSE
 
-
-
 //////////////////////////////////////////////////////////////////////////////////
 /////////this shouldn't be put anywhere, get your dirty hands off!////////////////
 /////////////////////////////for dancing pole/////////////////////////////////////
@@ -123,26 +121,32 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
+///Are we wearing something that covers our chest?
 /mob/living/proc/is_topless()
-    if(istype(src, /mob/living/carbon/human))
-        var/mob/living/carbon/human/H = src
-        if((H.wear_suit?.body_parts_covered & CHEST)||(H.w_uniform?.body_parts_covered & CHEST))
-            return FALSE
-    return TRUE
+	if(istype(src, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = src
+		if((!(H.wear_suit) || !(H.wear_suit.body_parts_covered & CHEST)) && (!(H.w_uniform) || !(H.w_uniform.body_parts_covered & CHEST)))
+			return TRUE
+	else
+		return TRUE
 
+///Are we wearing something that covers our groin?
 /mob/living/proc/is_bottomless()
-    if(istype(src, /mob/living/carbon/human))
-        var/mob/living/carbon/human/H = src
-        if((H.wear_suit?.body_parts_covered & GROIN)||(H.w_uniform?.body_parts_covered & GROIN))
-            return FALSE
-    return TRUE
+	if(istype(src, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = src
+		if((!(H.wear_suit) || !(H.wear_suit.body_parts_covered & GROIN)) && (!(H.w_uniform) || !(H.w_uniform.body_parts_covered & GROIN)))
+			return TRUE
+	else
+		return TRUE
 
-/mob/living/proc/is_feets_uncovered()
-    if(istype(src, /mob/living/carbon/human))
-        var/mob/living/carbon/human/H = src
-        if(H.shoes?.body_parts_covered & FEET)
-            return FALSE
-    return TRUE
+///Are we wearing something that covers our shoes?
+/mob/living/proc/is_barefoot()
+	if(istype(src, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = src
+		if((!(H.wear_suit) || !(H.wear_suit.body_parts_covered & GROIN)) && (!(H.shoes) || !(H.shoes.body_parts_covered & FEET)))
+			return TRUE
+	else
+		return TRUE
 
 /mob/living/proc/is_hands_uncovered()
     if(istype(src, /mob/living/carbon/human))
@@ -158,6 +162,161 @@
             return FALSE
     return TRUE
 
+/mob/living/proc/has_penis(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(issilicon(src) && C.has_penis)
+		return TRUE
+	if(istype(C))
+		var/obj/item/organ/genital/peepee = C.getorganslot(ORGAN_SLOT_PENIS)
+		if(peepee)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(peepee.visibility_preference == GENITAL_ALWAYS_SHOW || C.is_bottomless())
+						return TRUE
+					else
+						return FALSE
+				if(REQUIRE_UNEXPOSED)
+					if(peepee.visibility_preference != GENITAL_ALWAYS_SHOW && !C.is_bottomless())
+						return TRUE
+					else
+						return FALSE
+				else
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_balls(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(istype(C))
+		var/obj/item/organ/genital/peepee = C.getorganslot(ORGAN_SLOT_TESTICLES)
+		if(peepee)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(peepee.visibility_preference == GENITAL_ALWAYS_SHOW || C.is_bottomless())
+						return TRUE
+					else
+						return FALSE
+				if(REQUIRE_UNEXPOSED)
+					if(peepee.visibility_preference != GENITAL_ALWAYS_SHOW && !C.is_bottomless())
+						return TRUE
+					else
+						return FALSE
+				else
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_vagina(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(issilicon(src) && C.has_vagina)
+		return TRUE
+	if(istype(C))
+		var/obj/item/organ/genital/peepee = C.getorganslot(ORGAN_SLOT_VAGINA)
+		if(peepee)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(peepee.visibility_preference == GENITAL_ALWAYS_SHOW || C.is_bottomless())
+						return TRUE
+					else
+						return FALSE
+				if(REQUIRE_UNEXPOSED)
+					if(peepee.visibility_preference != GENITAL_ALWAYS_SHOW && !C.is_bottomless())
+						return TRUE
+					else
+						return FALSE
+				else
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_breasts(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(istype(C))
+		var/obj/item/organ/genital/peepee = C.getorganslot(ORGAN_SLOT_BREASTS)
+		if(peepee)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(peepee.visibility_preference == GENITAL_ALWAYS_SHOW || C.is_topless())
+						return TRUE
+					else
+						return FALSE
+				if(REQUIRE_UNEXPOSED)
+					if(peepee.visibility_preference != GENITAL_ALWAYS_SHOW && !C.is_topless())
+						return TRUE
+					else
+						return FALSE
+				else
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_anus(var/nintendo = REQUIRE_ANY)
+	if(issilicon(src))
+		return TRUE
+	switch(nintendo)
+		if(REQUIRE_ANY)
+			return TRUE
+		if(REQUIRE_EXPOSED)
+			switch(anus_exposed)
+				if(-1)
+					return FALSE
+				if(1)
+					return TRUE
+				else
+					if(is_bottomless())
+						return TRUE
+					else
+						return FALSE
+		if(REQUIRE_UNEXPOSED)
+			if(anus_exposed == -1)
+				if(!anus_exposed)
+					if(!is_bottomless())
+						return TRUE
+					else
+						return FALSE
+				else
+					return FALSE
+			else
+				return TRUE
+		else
+			return TRUE
+
+/mob/living/proc/has_arms(var/nintendo = REQUIRE_ANY)
+	if(iscarbon(src))
+		var/mob/living/carbon/C = src
+		var/handcount = 0
+		var/covered = 0
+		var/iscovered = FALSE
+		for(var/obj/item/bodypart/l_arm/L in C.bodyparts)
+			handcount++
+		for(var/obj/item/bodypart/r_arm/R in C.bodyparts)
+			handcount++
+		if(C.get_item_by_slot(ITEM_SLOT_HANDS))
+			var/obj/item/clothing/gloves/G = C.get_item_by_slot(ITEM_SLOT_HANDS)
+			covered = G.body_parts_covered
+		if(covered & HANDS)
+			iscovered = TRUE
+		switch(nintendo)
+			if(REQUIRE_ANY)
+				return handcount
+			if(REQUIRE_EXPOSED)
+				if(iscovered)
+					return FALSE
+				else
+					return handcount
+			if(REQUIRE_UNEXPOSED)
+				if(!iscovered)
+					return FALSE
+				else
+					return handcount
+			else
+				return handcount
+	return FALSE
+
 /mob/living/proc/has_feet(var/nintendo = REQUIRE_ANY)
 	if(iscarbon(src))
 		var/mob/living/carbon/C = src
@@ -168,10 +327,9 @@
 			feetcount++
 		for(var/obj/item/bodypart/r_leg/R in C.bodyparts)
 			feetcount++
-		if(C.get_item_by_slot(ITEM_SLOT_FEET))
-			var/obj/item/clothing/shoes/S = C.get_item_by_slot(ITEM_SLOT_FEET)
-			covered = S.body_parts_covered
-		if(covered & FEET)
+		if(!C.is_barefoot())
+			covered = TRUE
+		if(covered)
 			iscovered = TRUE
 		switch(nintendo)
 			if(REQUIRE_ANY)
@@ -190,36 +348,96 @@
 				return feetcount
 	return FALSE
 
-/mob/living/proc/has_arms(var/nintendo = REQUIRE_ANY)
-	if(iscarbon(src))
-		var/mob/living/carbon/C = src
-		var/armscount = 0
-		var/covered = 0
-		var/iscovered = FALSE
-		for(var/obj/item/bodypart/l_arm/L in C.bodyparts)
-			armscount++
-		for(var/obj/item/bodypart/r_arm/R in C.bodyparts)
-			armscount++
-		if(C.get_item_by_slot(ITEM_SLOT_GLOVES))
-			var/obj/item/clothing/gloves/S = C.get_item_by_slot(ITEM_SLOT_GLOVES)
-			covered = S.body_parts_covered
-		if(covered & ARMS)
-			iscovered = TRUE
-		switch(nintendo)
-			if(REQUIRE_ANY)
-				return armscount
-			if(REQUIRE_EXPOSED)
-				if(iscovered)
-					return FALSE
+/mob/living/proc/get_num_feet()
+	return has_feet(REQUIRE_ANY)
+
+//weird procs go here
+/mob/living/proc/has_ears(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(istype(C))
+		var/obj/item/organ/peepee = C.getorganslot(ORGAN_SLOT_EARS)
+		if(peepee)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(C.get_item_by_slot(ITEM_SLOT_EARS))
+						return FALSE
+					else
+						return TRUE
+				if(REQUIRE_UNEXPOSED)
+					if(!C.get_item_by_slot(ITEM_SLOT_EARS))
+						return FALSE
+					else
+						return TRUE
 				else
-					return armscount
-			if(REQUIRE_UNEXPOSED)
-				if(!iscovered)
-					return FALSE
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_earsockets(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(istype(C))
+		var/obj/item/organ/peepee = C.getorganslot(ORGAN_SLOT_EARS)
+		if(!peepee)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(C.get_item_by_slot(ITEM_SLOT_EARS))
+						return FALSE
+					else
+						return TRUE
+				if(REQUIRE_UNEXPOSED)
+					if(!C.get_item_by_slot(ITEM_SLOT_EARS))
+						return FALSE
+					else
+						return TRUE
 				else
-					return armscount
-			else
-				return armscount
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_eyes(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(istype(C))
+		var/obj/item/organ/peepee = C.getorganslot(ORGAN_SLOT_EYES)
+		if(peepee)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(C.get_item_by_slot(ITEM_SLOT_EYES))
+						return FALSE
+					else
+						return TRUE
+				if(REQUIRE_UNEXPOSED)
+					if(!C.get_item_by_slot(ITEM_SLOT_EYES))
+						return FALSE
+					else
+						return TRUE
+				else
+					return TRUE
+	return FALSE
+
+/mob/living/proc/has_eyesockets(var/nintendo = REQUIRE_ANY)
+	var/mob/living/carbon/C = src
+	if(istype(C))
+		var/obj/item/organ/peepee = C.getorganslot(ORGAN_SLOT_EYES)
+		if(!peepee)
+			switch(nintendo)
+				if(REQUIRE_ANY)
+					return TRUE
+				if(REQUIRE_EXPOSED)
+					if(get_item_by_slot(ITEM_SLOT_EYES))
+						return FALSE
+					else
+						return TRUE
+				if(REQUIRE_UNEXPOSED)
+					if(!get_item_by_slot(ITEM_SLOT_EYES))
+						return FALSE
+					else
+						return TRUE
+				else
+					return TRUE
 	return FALSE
 
 //////////////////////////////////////////////////////////////////////////////////

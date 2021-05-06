@@ -2,14 +2,6 @@
 ///CODE FOR LEWD QUIRKS///
 //////////////////////////
 
-#define TRAIT_NYMPHOMANIA	"nymphomania"
-#define TRAIT_MASOCHISM		"masochism"
-#define TRAIT_SADISM		"sadism"
-#define TRAIT_BIMBO 		"bimbo"
-#define TRAIT_NEVERBONER	"neverboner"
-#define TRAIT_SOBSESSED		"sexual obsession"
-#define APHRO_TRAIT			"aphro"
-
 /////////////////
 ///NYMPHOMANIA///
 /////////////////
@@ -181,11 +173,6 @@
 	. = ..()
 	var/mob/living/carbon/human/H = quirk_holder
 	H?.cure_trauma_type(/datum/brain_trauma/special/sexual_obsession, TRAUMA_RESILIENCE_ABSOLUTE)
-
-/*
-Кубик, здесь надо сделать проверку на нонкон и ЕРП префы при выборе цели одержимости. И желательно создавать новую цель если предыдущая мертва.
-А также выводить игроку кого именно ему нужно отЕРПшить
-*/
 
 /datum/brain_trauma/special/sexual_obsession
 	name = "Sexual obsession"

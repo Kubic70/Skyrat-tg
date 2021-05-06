@@ -53,7 +53,7 @@
 
 		if(BODY_ZONE_L_LEG)
 			if(M.has_feet())
-				if(M.is_feets_uncovered())
+				if(M.is_barefoot())
 					message = (user == M) ? pick("tickles themselves with the [src]","gently teases their feet with [src]") : pick("teases [M]'s feet with [src]", "uses [src] to tickle [M]'s left foot", "uses [src] to tickle [M]'s toes")
 					if(prob(70))
 						M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))
@@ -74,7 +74,7 @@
 
 		if(BODY_ZONE_R_LEG)
 			if(M.has_feet())
-				if(M.is_feets_uncovered())
+				if(M.is_barefoot())
 					message = (user == M) ? pick("tickles themselves with the [src]","gently teases their feet with [src]") : pick("teases [M]'s feet with [src]", "uses [src] to tickle [M]'s right foot", "uses [src] to tickle [M]'s toes")
 					if(prob(70))
 						M.emote(pick("laugh","giggle","twitch","twitch_s","moan",))

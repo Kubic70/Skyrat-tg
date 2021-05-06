@@ -133,7 +133,7 @@
 	switch(user.zone_selected) //to let code know what part of body we gonna whip
 		if(BODY_ZONE_L_LEG || BODY_ZONE_R_LEG)
 			if(M.has_feet())
-				if(M.is_feets_uncovered())
+				if(M.is_barefoot())
 					if(current_whip_type == "hard")
 						message = (user == M) ? pick("Knocks themselves down with [src]", "Uses [src] to knock themselves on the ground") : pick("Hardly drops [M] on the ground with [src]", "Uses [src] to put [M] on the knees")
 						if(prob(60))
