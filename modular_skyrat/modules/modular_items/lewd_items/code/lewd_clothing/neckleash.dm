@@ -1,9 +1,3 @@
-//Jay Sparrow
-//TODO
-/*
-Icons, maybe?
-*/
-
 #define STATUS_EFFECT_LEASH_PET /datum/status_effect/leash_pet
 #define STATUS_EFFECT_LEASH_DOM /datum/status_effect/leash_dom
 #define STATUS_EFFECT_LEASH_FREEPET /datum/status_effect/leash_freepet
@@ -14,34 +8,17 @@ Icons, maybe?
 
 /datum/status_effect/leash_dom
 	status_type = STATUS_EFFECT_UNIQUE
-	alert_type = /obj/screen/alert/status_effect/leash_dom
-
-/obj/screen/alert/status_effect/leash_dom
-	name = "Leash Master"
-	desc = "You've got a leash, and a cute pet on the other end."
-	icon_state = "leash_master" //These call icons that don't exist, so no icon comes up. Which is good.
-		//As a result, the descriptions also don't proc, which is fine.
+	alert_type = null
 
 /datum/status_effect/leash_freepet
 	status_type = STATUS_EFFECT_UNIQUE
-	alert_type = /obj/screen/alert/status_effect/leash_freepet
-
-/obj/screen/alert/status_effect/leash_freepet
-	name = "Escaped Pet"
-	desc = "You're on a leash, but you've no master. If anyone grabs the leash they'll gain control!"
-	icon_state = "leash_freepet"
-
+	alert_type = null
 
 /datum/status_effect/leash_pet
 	id = "leashed"
 	status_type = STATUS_EFFECT_UNIQUE
 	var/datum/weakref/redirect_component
-	alert_type = /obj/screen/alert/status_effect/leash_pet
-
-/obj/screen/alert/status_effect/leash_pet
-	name = "Leashed Pet"
-	desc = "You're on the hook now! Be good for your master."
-	icon_state = "leash_pet"
+	alert_type = null
 
 /datum/movespeed_modifier/leash_pet/leash_pet_slowdown
 	multiplicative_slowdown = 3

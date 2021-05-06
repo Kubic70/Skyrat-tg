@@ -3,11 +3,6 @@
 //I made this file to prevent myself from touching normal files///////////
 //////////////////////////////////////////////////////////////////////////
 
-#define REQUIRE_NONE 0
-#define REQUIRE_EXPOSED 1
-#define REQUIRE_UNEXPOSED 2
-#define REQUIRE_ANY 3
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////This code is supposed to be placed in "code/modules/mob/living/carbon/human/inventory.dm"/////////////
 //If you are nice person you can transfer this part of code to it, but i didn't for modularisation reasons//
