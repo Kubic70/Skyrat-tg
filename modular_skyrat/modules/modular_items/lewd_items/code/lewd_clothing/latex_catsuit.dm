@@ -30,6 +30,7 @@
 
 // //some gender identification magic
 /obj/item/clothing/under/misc/latex_catsuit/equipped(mob/living/U, slot)
+	. = ..()
 	var/mob/living/carbon/human/C = U
 	var/obj/item/organ/genital/breasts/B = C.getorganslot(ORGAN_SLOT_BREASTS)
 	if(src == C.w_uniform)
@@ -40,7 +41,6 @@
 		if(U.gender == MALE)
 			icon_state = "latex_catsuit_male"
 			U.update_inv_w_uniform()
-		. = ..()
 
 	//For giving taurs proper sprites
 	if(C.dna.species.mutant_bodyparts["taur"])
@@ -49,7 +49,6 @@
 	else
 		breasts_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_uniform/lewd_uniform.dmi', "none")
 		update_overlays()
-	. = ..()
 
 	//Breasts overlay for catsuit
 	if(B?.genital_size >= 6 || B?.genital_type == "pair")
@@ -70,11 +69,11 @@
 		accessory_overlay = breasts_overlay
 		add_overlay(breasts_icon_overlay)
 		update_overlays()
-	. = ..()
 
 	if(C.dna.species.mutant_bodyparts["taur"] && src == C.w_uniform)
 		C.remove_overlay(BODY_BEHIND_LAYER)
 		C.remove_overlay(BODY_FRONT_LAYER)
+	C.regenerate_icons()
 
 /obj/item/clothing/under/misc/latex_catsuit/dropped(mob/living/U)
 	. = ..()
