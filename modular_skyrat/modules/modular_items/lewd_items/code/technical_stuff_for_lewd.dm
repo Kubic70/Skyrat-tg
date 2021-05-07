@@ -795,80 +795,100 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 // Extention equipping procedure for ERP slot
 /mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
-	var/not_handled = FALSE
-	if(/*!not_handled  && */src.client?.prefs.erp_pref == "Yes")
-		switch(slot)
-			if(ITEM_SLOT_VAGINA)
-				if(src.is_bottomless())
-					if(vagina)
-						return
-					vagina = I
-					update_inv_vagina()
-					return
-				to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
-				return
-			if(ITEM_SLOT_ANUS)
-				if(src.is_bottomless())
-					if(anus)
-						return
-					anus = I
-					update_inv_anus()
-					return
-				to_chat(usr, "[src] is not bottomless, you cannot access to anus")
-				return
-			if(ITEM_SLOT_NIPPLES)
-				if(src.is_topless())
-					if(nipples)
-						return
-					nipples = I
-					update_inv_nipples()
-					return
-				to_chat(usr, "[src] is not topless, you cannot access to nipples")
-				return
-			if(ITEM_SLOT_PENIS)
-				if(src.is_bottomless())
-					if(penis)
-						return
-					penis = I
-					update_inv_penis()
-					return
-				to_chat(usr, "[src] is not bottomless, you cannot access to penis")
-				return
-			else
-				..()
+	if(src.client?.prefs.erp_pref == "Yes")
 
-		//Item is handled and in slot, valid to call callback, for this proc should always be true
-		// if(!not_handled)
-		// 	I.equipped(src, slot, initial)
+		if(!slot)
+			return
+		if(!istype(I))
+			return
 
-		// 	// Send a signal for when we equip an item that used to cover our feet/shoes. Used for bloody feet
-		// 	if((I.body_parts_covered & FEET) || (I.flags_inv | I.transparent_protection) & HIDESHOES)
-		// 		SEND_SIGNAL(src, COMSIG_CARBON_EQUIP_SHOECOVER, I, slot, initial, redraw_mob)
+		if(slot == ITEM_SLOT_VAGINA || slot == ITEM_SLOT_ANUS || slot == ITEM_SLOT_NIPPLES || slot == ITEM_SLOT_PENIS)
 
-		// return not_handled
+			var/index = get_held_index_of_item(I)
+			if(index)
+				held_items[index] = null
+
+			if(I.pulledby)
+				I.pulledby.stop_pulling()
+
+			I.screen_loc = null
+			if(client)
+				client.screen -= I
+			if(observers?.len)
+				for(var/M in observers)
+					var/mob/dead/observe = M
+					if(observe.client)
+						observe.client.screen -= I
+			I.forceMove(src)
+			I.plane = ABOVE_HUD_PLANE
+			I.appearance_flags |= NO_CLIENT_COLOR
+
+			switch(slot)
+				if(ITEM_SLOT_VAGINA)
+					if(src.is_bottomless())
+						if(vagina)
+							return
+						vagina = I
+						update_inv_vagina()
+						return
+					to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
+					return
+				if(ITEM_SLOT_ANUS)
+					if(src.is_bottomless())
+						if(anus)
+							return
+						anus = I
+						update_inv_anus()
+						return
+					to_chat(usr, "[src] is not bottomless, you cannot access to anus")
+					return
+				if(ITEM_SLOT_NIPPLES)
+					if(src.is_topless())
+						if(nipples)
+							return
+						nipples = I
+						update_inv_nipples()
+						return
+					to_chat(usr, "[src] is not topless, you cannot access to nipples")
+					return
+				if(ITEM_SLOT_PENIS)
+					if(src.is_bottomless())
+						if(penis)
+							return
+						penis = I
+						update_inv_penis()
+						return
+					to_chat(usr, "[src] is not bottomless, you cannot access to penis")
+					return
+				else
+					return FALSE
+		else
+			..()
 	else
 		..()
 
 // Extention unequipping procedure for ERP slot
 /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
 	. = ..()
-	if(I == vagina)
-		vagina = null
-		if(!QDELETED(src))
-			update_inv_vagina()
-	else if(I == anus)
-		anus = null
-		if(!QDELETED(src))
-			update_inv_anus()
-	else if(I == nipples)
-		nipples = null
-		if(!QDELETED(src))
-			update_inv_nipples()
-	else if(I == penis)
-		penis = null
-		if(!QDELETED(src))
-			update_inv_penis()
-	update_equipment_speed_mods()
+	if(I)
+		if(I == vagina)
+			vagina = null
+			if(!QDELETED(src))
+				update_inv_vagina()
+		else if(I == anus)
+			anus = null
+			if(!QDELETED(src))
+				update_inv_anus()
+		else if(I == nipples)
+			nipples = null
+			if(!QDELETED(src))
+				update_inv_nipples()
+		else if(I == penis)
+			penis = null
+			if(!QDELETED(src))
+				update_inv_penis()
+		update_equipment_speed_mods()
+
 
 /////////////////////////////
 // ICON UPDATING EXTENTION //
@@ -888,15 +908,15 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	if(client && H)
 		var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_VAGINA) + 1]
 		inv.update_appearance()
-		if(vagina)
-			if(usr.hud_used.inventory_shown && src.hud_used)
-				vagina.screen_loc = ui_vagina
-			else
-				vagina.screen_loc = ui_vagina_down
-			if(H.hud_shown)
-				client.screen += vagina
-			update_observer_view(vagina)
-			src.hud_used.hidden_inventory_update(src)
+		// if(vagina)
+		if(usr.hud_used.inventory_shown && src.hud_used)
+			vagina.screen_loc = ui_vagina
+		else
+			vagina.screen_loc = ui_vagina_down
+		if(H.hud_shown)
+			client.screen += vagina
+		update_observer_view(vagina)
+		src.hud_used.hidden_inventory_update(src)
 
 // Updating anus slot
 /mob/living/carbon/human/update_inv_anus()
@@ -904,15 +924,15 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	if(client && H)
 		var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_ANUS) + 1]
 		inv.update_appearance()
-		if(anus)
-			if(usr.hud_used.inventory_shown && src.hud_used)
-				anus.screen_loc = ui_anus
-			else
-				anus.screen_loc = ui_anus_down
-			if(H.hud_shown)
-				client.screen += anus
-			update_observer_view(anus)
-			src.hud_used.hidden_inventory_update(src)
+		// if(anus)
+		if(usr.hud_used.inventory_shown && src.hud_used)
+			anus.screen_loc = ui_anus
+		else
+			anus.screen_loc = ui_anus_down
+		if(H.hud_shown)
+			client.screen += anus
+		update_observer_view(anus)
+		src.hud_used.hidden_inventory_update(src)
 
 // Updating nipples slot
 /mob/living/carbon/human/update_inv_nipples()
@@ -920,15 +940,15 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	if(client && H)
 		var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_NIPPLES) + 1]
 		inv.update_appearance()
-		if(nipples)
-			if(usr.hud_used.inventory_shown && src.hud_used)
-				nipples.screen_loc = ui_nipples
-			else
-				nipples.screen_loc = ui_nipples_down
-			if(H.hud_shown)
-				client.screen += nipples
-			update_observer_view(nipples)
-			src.hud_used.hidden_inventory_update(src)
+		// if(nipples)
+		if(usr.hud_used.inventory_shown && src.hud_used)
+			nipples.screen_loc = ui_nipples
+		else
+			nipples.screen_loc = ui_nipples_down
+		if(H.hud_shown)
+			client.screen += nipples
+		update_observer_view(nipples)
+		src.hud_used.hidden_inventory_update(src)
 
 // Updating penis slot
 /mob/living/carbon/human/update_inv_penis()
@@ -936,15 +956,15 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	if(client && H)
 		var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_PENIS) + 1]
 		inv.update_appearance()
-		if(penis)
-			if(usr.hud_used.inventory_shown && src.hud_used)
-				penis.screen_loc = ui_penis
-			else
-				penis.screen_loc = ui_penis_down
-			if(src.hud_used.hud_shown)
-				client.screen += penis
-			update_observer_view(penis)
-			src.hud_used.hidden_inventory_update(src)
+		// if(penis)
+		if(usr.hud_used.inventory_shown && src.hud_used)
+			penis.screen_loc = ui_penis
+		else
+			penis.screen_loc = ui_penis_down
+		if(src.hud_used.hud_shown)
+			client.screen += penis
+		update_observer_view(penis)
+		src.hud_used.hidden_inventory_update(src)
 
 // Shoes update extention for supporting correctt removing shoe in sleepbag
 /mob/living/carbon/human/update_inv_shoes()
@@ -1296,6 +1316,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	reorganize_alerts(screenmob)
 	screenmob.reload_fullscreen()
 	update_parallax_pref(screenmob)
+	hidden_inventory_update(screenmob)
 
 	// ensure observers get an accurate and up-to-date view
 	if (!viewmob)
@@ -1445,18 +1466,9 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 							E.invisibility = 0
 				// Perform standard inventory updates
 				targetmob.hud_used.hidden_inventory_update(usr)
-				user.hud_used.hidden_inventory_update()
-				user.hud_used.persistent_inventory_update()
+				user.hud_used.hidden_inventory_update(src)
+				user.hud_used.persistent_inventory_update(usr)
 				return 1
-				// No need special actions for this case, just some comments for explain
-				// if("noncon_pref")
-				// 	switch(noncon_pref)
-				// 		if("Yes")
-				// 			// User set NonCon to "Ask", mob can't be a sex obsess target
-				// 		if("Ask")
-				// 			// User set NonCon to "No", mob can't be a sex obsess target
-				// 		if("No")
-				// 			// User set NonCon to "Yes", mob can be a sex obsess target
 
 ////////////////////////////////////////////////////////////////////
 // EXTENTIONS FOR SPRITE_ACCESSORY IS_HIDDEN CHECKS FOR ERP STUFF //
