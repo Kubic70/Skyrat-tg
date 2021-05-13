@@ -244,3 +244,4 @@
 	name = "grilling shorts"
 	desc = "For when all you want in life is to grill for god's sake!"
 	icon_state = "cookjorts"
+	can_adjust = FALSE
