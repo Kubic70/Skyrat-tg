@@ -18,6 +18,7 @@ SUBSYSTEM_DEF(mapping)
 	var/list/lava_ruins_templates = list()
 	var/list/ice_ruins_templates = list()
 	var/list/ice_ruins_underground_templates = list()
+	var/list/asteroid_ruins_templates = list() //SKYRAT EDIT - Adds ruins to LZ2
 
 	var/datum/space_level/isolated_ruins_z //Created on demand during ruin loading.
 
@@ -112,6 +113,13 @@ SUBSYSTEM_DEF(mapping)
 		for (var/ice_z in ice_ruins_underground)
 			spawn_rivers(ice_z, 4, level_trait(ice_z, ZTRAIT_BASETURF), /area/icemoon/underground/unexplored/rivers)
 
+//SKYRAT EDIT START//
+	var/list/asteroid_ruins = levels_by_trait(ZTRAIT_ASTEROID_RUINS)
+	if (asteroid_ruins.len)
+		seedRuins(asteroid_ruins, CONFIG_GET(number/asteroid_budget), list(/area/rockplanet/surface/outdoors/unexplored), asteroid_ruins_templates)
+		for (var/asteroid_z in asteroid_ruins)
+			spawn_rivers(asteroid_z)
+//SKYRAT EDIT END//
 	// Generate deep space ruins
 	var/list/space_ruins = levels_by_trait(ZTRAIT_SPACE_RUINS)
 	if (space_ruins.len)
@@ -276,10 +284,23 @@ Used by the AI doomsday and the self-destruct nuke.
 		++space_levels_so_far
 		add_new_zlevel("Empty Area [space_levels_so_far]", ZTRAITS_SPACE)
 
-	if(config.minetype == "lavaland")
-		LoadGroup(FailedZs, "Lavaland", "map_files/Mining", "Lavaland.dmm", default_traits = ZTRAITS_LAVALAND)
-	else if (!isnull(config.minetype) && config.minetype != "none")
-		INIT_ANNOUNCE("WARNING: An unknown minetype '[config.minetype]' was set! This is being ignored! Update the maploader code!")
+	//SKYRAT EDIT CHANGE BEGIN
+	var/mining_map_to_load = SSrandommining.chosen_map
+	var/mining_traits_to_load = GLOB.mining_traits[SSrandommining.traits]
+
+	if(mining_map_to_load)
+		add_startupmessage("MINING MAP: Loading mining level...")
+		if(!mining_traits_to_load)
+			add_startupmessage("MINING MAP ERROR: No z-level traits detected, loading without traits.")
+		LoadGroup(FailedZs, "Mining Level", "map_files/Mining", mining_map_to_load, default_traits = mining_traits_to_load)
+		add_startupmessage("MINING MAP: Loaded successfully.")
+	else
+		add_startupmessage("MINING MAP ERROR: No loadable map z-levels detected, reverting to backup mining system!")
+		if(config.minetype == "lavaland")
+			LoadGroup(FailedZs, "Lavaland", "map_files/Mining", "Lavaland.dmm", default_traits = ZTRAITS_LAVALAND)
+		else if (!isnull(config.minetype) && config.minetype != "none")
+			INIT_ANNOUNCE("WARNING: An unknown minetype '[config.minetype]' was set! This is being ignored! Update the maploader code!")
+	//SKYRAT EDIT END
 #endif
 
 	if(LAZYLEN(FailedZs)) //but seriously, unless the server's filesystem is messed up this will never happen
@@ -439,7 +460,7 @@ GLOBAL_LIST_EMPTY(the_station_areas)
 
 		var/datum/map_template/shuttle/S = new shuttle_type()
 		if(unbuyable.Find(S.mappath))
-			S.can_be_bought = FALSE
+			S.who_can_purchase = null
 
 		shuttle_templates[S.shuttle_id] = S
 		map_templates[S.shuttle_id] = S

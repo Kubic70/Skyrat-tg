@@ -138,7 +138,7 @@
 	var/datum/data/record/foundrecord = find_record("name", name, GLOB.data_core.general)
 	if(foundrecord)
 		foundrecord.fields["rank"] = assignment
-
+/* SKYRAT EDIT MOVAL - OVERWRITTEN IN ALTJOBTITLES
 /datum/datacore/proc/get_manifest()
 	var/list/manifest_out = list(
 		"Command",
@@ -160,6 +160,8 @@
 		"Service" = GLOB.service_positions,
 		"Silicon" = GLOB.nonhuman_positions
 	)
+	var/list/heads = GLOB.command_positions + list("Quartermaster")
+
 	for(var/datum/data/record/t in GLOB.data_core.general)
 		var/name = t.fields["name"]
 		var/rank = t.fields["rank"]
@@ -170,7 +172,7 @@
 				if(!manifest_out[department])
 					manifest_out[department] = list()
 				// Append to beginning of list if captain or department head
-				if (rank == "Captain" || (department != "Command" && (rank in GLOB.command_positions)))
+				if (rank == "Captain" || (department != "Command" && (rank in heads)))
 					manifest_out[department] = list(list(
 						"name" = name,
 						"rank" = rank
@@ -192,6 +194,7 @@
 		if (!manifest_out[department])
 			manifest_out -= department
 	return manifest_out
+*/
 
 /datum/datacore/proc/get_manifest_html(monochrome = FALSE)
 	var/list/manifest = get_manifest()
@@ -233,7 +236,12 @@
 			assignment = H.job
 		else
 			assignment = "Unassigned"
-
+		//SKYRAT EDIT ADD - ALTERNATE JOB TITLES
+		if(H.client && H.client.prefs && H.client.prefs.alt_titles_preferences[assignment]) // latejoin
+			assignment = H.client.prefs.alt_titles_preferences[assignment]
+		else if(C && C.prefs && C.prefs.alt_titles_preferences[assignment]) // roundstart - yes both do separate things i don't fucking know why but they do and if they're not both there then they don't fucking work leave me ALONE
+			assignment = C.prefs.alt_titles_preferences[assignment]
+		//SKYRAT EDIT ADD END
 		var/static/record_id_num = 1001
 		var/id = num2hex(record_id_num++,6)
 		if(!C)
