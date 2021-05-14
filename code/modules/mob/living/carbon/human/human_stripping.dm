@@ -52,8 +52,6 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	return jumpsuit?.can_adjust ? "adjust_jumpsuit" : null
 
 /datum/strippable_item/mob_item_slot/jumpsuit/alternate_action(atom/source, mob/user)
-	if (!..())
-		return
 	var/obj/item/clothing/under/jumpsuit = get_item(source)
 	if (!istype(jumpsuit))
 		return null
@@ -96,8 +94,6 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 			return "unknot"
 
 /datum/strippable_item/mob_item_slot/feet/alternate_action(atom/source, mob/user)
-	if(!..())
-		return
 	var/obj/item/clothing/shoes/shoes = get_item(source)
 	if (!istype(shoes))
 		return
@@ -112,9 +108,7 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	return get_strippable_alternate_action_internals(get_item(source), source)
 
 /datum/strippable_item/mob_item_slot/suit_storage/alternate_action(atom/source, mob/user)
-	if (!..())
-		return
-	strippable_alternate_action_internals(get_item(source), source, user)
+	return strippable_alternate_action_internals(get_item(source), source, user)
 
 /datum/strippable_item/mob_item_slot/id
 	key = STRIPPABLE_ITEM_ID
@@ -128,9 +122,7 @@ GLOBAL_LIST_INIT(strippable_human_items, create_strippable_list(list(
 	return get_strippable_alternate_action_internals(get_item(source), source)
 
 /datum/strippable_item/mob_item_slot/belt/alternate_action(atom/source, mob/user)
-	if (!..())
-		return
-	strippable_alternate_action_internals(get_item(source), source, user)
+	return strippable_alternate_action_internals(get_item(source), source, user)
 
 /datum/strippable_item/mob_item_slot/pocket
 	/// Which pocket we're referencing. Used for visible text.

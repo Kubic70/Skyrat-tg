@@ -152,7 +152,7 @@ DEFINE_BITFIELD(turret_flags, list(
 		icon_state = "[base_icon_state]_broken"
 		return ..()
 	if(!powered())
-		icon_state = "[base_icon_state]_off"
+		icon_state = "[base_icon_state]_unpowered"
 		return ..()
 	if(!on || !raised)
 		icon_state = "[base_icon_state]_off"

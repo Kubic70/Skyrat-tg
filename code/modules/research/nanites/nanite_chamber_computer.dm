@@ -41,10 +41,8 @@
 		return data
 
 	var/mob/living/L = chamber.occupant
-//SKYRAT ADDITION START - ALLOWS MOB_HUMANOID ENTITIES TO USE NANITES
-//ORIGINAL: (MOB_ORGANIC | MOB_UNDEAD) -> NEW: (MOB_ORGANIC | MOB_UNDEAD | MOB_HUMANOID)
-	if(!(L.mob_biotypes & (MOB_ORGANIC | MOB_UNDEAD | MOB_HUMANOID)))
-//SKYRAT ADDITION END
+
+	if(!(L.mob_biotypes & (MOB_ORGANIC|MOB_UNDEAD)))
 		data["status_msg"] = "Occupant not compatible with nanites."
 		return data
 

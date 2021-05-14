@@ -1,6 +1,6 @@
 https://github.com/Skyrat-SS13/Skyrat-tg/pull/248
 
-## Title: Modular Items
+## Title: Modular Weapons & Weaponcrafting
 
 MODULE ID: MODULAR_ITEMS
 
@@ -27,4 +27,3 @@ A modular folder for various single-item additions that don't deserve their own 
 
 ### Credits:
 Ranged66 - Material pouch ported
-KathrinBailey - Pretty much a whole bunch of clothes.

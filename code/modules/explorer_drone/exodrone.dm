@@ -179,11 +179,9 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 /// Crashes the drone somewhere random if there's no launchpad to be found.
 /obj/item/exodrone/proc/drop_somewhere_on_station()
 	var/turf/random_spot = get_safe_random_station_turf()
-
-	var/obj/structure/closet/supplypod/pod = podspawn(list(
-		"target" = random_spot,
-	))
-	forceMove(pod)
+	var/obj/structure/closet/supplypod/pod = new
+	pod.bluespace = TRUE
+	new /obj/effect/pod_landingzone(random_spot, pod, src)
 	return random_spot
 
 /// Tries to find landing pad, starting with the one we launched from.
@@ -437,12 +435,10 @@ GLOBAL_LIST_EMPTY(exodrone_launchers)
 		qdel(src)
 
 /obj/item/fuel_pellet/advanced
-	name = "advanced fuel pellet"
 	fuel_type = FUEL_ADVANCED
 	icon_state = "fuel_advanced"
 
 /obj/item/fuel_pellet/exotic
-	name = "exotic fuel pellet"
 	fuel_type = FUEL_EXOTIC
 	icon_state = "fuel_exotic"
 

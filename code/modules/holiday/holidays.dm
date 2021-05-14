@@ -1,32 +1,17 @@
 /datum/holiday
-	///Name of the holiday itself. Visible to players.
 	var/name = "If you see this the holiday calendar code is broken"
 
-	///What day of begin_month does the holiday begin on?
 	var/begin_day = 1
-	///What month does the holiday begin on?
 	var/begin_month = 0
-	/// What day of end_month does the holiday end? Default of 0 means the holiday lasts a single.
-	var/end_day = 0
-	/// What month does the holiday end on?
+	var/end_day = 0 // Default of 0 means the holiday lasts a single day
 	var/end_month = 0
-	/// for christmas neverending, or testing. Forces a holiday to be celebrated.
-	var/always_celebrate = FALSE
-	/// Held variable to better calculate when certain holidays may fall on, like easter.
+	var/always_celebrate = FALSE // for christmas neverending, or testing.
 	var/current_year = 0
-	/// How many years are you offsetting your calculations for begin_day and end_day on. Used for holidays like easter.
 	var/year_offset = 0
-	///Timezones this holiday is celebrated in (defaults to three timezones spanning a 50 hour window covering all timezones)
-	var/list/timezones = list(TIMEZONE_LINT, TIMEZONE_UTC, TIMEZONE_ANYWHERE_ON_EARTH)
-	///If this is defined, drones without a default hat will spawn with this one during the holiday; check drones_as_items.dm to see this used
-	var/obj/item/drone_hat
-	///When this holiday is active, does this prevent mail from arriving to cargo? Try not to use this for longer holidays.
-	var/mail_holiday = FALSE
+	var/obj/item/drone_hat //If this is defined, drones without a default hat will spawn with this one during the holiday; check drones_as_items.dm to see this used
 
 // This proc gets run before the game starts when the holiday is activated. Do festive shit here.
 /datum/holiday/proc/celebrate()
-	if(mail_holiday)
-		SSeconomy.mail_blocked = TRUE
 	return
 
 // When the round starts, this proc is ran to get a text message to display to everyone to wish them a happy holiday
@@ -76,12 +61,11 @@
 
 /datum/holiday/new_year
 	name = NEW_YEAR
-	begin_day = 31
+	begin_day = 30
 	begin_month = DECEMBER
 	end_day = 2
 	end_month = JANUARY
 	drone_hat = /obj/item/clothing/head/festive
-	mail_holiday = TRUE
 
 /datum/holiday/new_year/getStationPrefix()
 	return pick("Party","New","Hangover","Resolution", "Auld")
@@ -97,7 +81,7 @@
 
 /datum/holiday/valentines
 	name = VALENTINES
-	begin_day = 14
+	begin_day = 13
 	end_day = 15
 	begin_month = FEBRUARY
 
@@ -182,12 +166,11 @@
 
 /datum/holiday/april_fools
 	name = APRIL_FOOLS
-	begin_month = APRIL
 	begin_day = 1
-	end_day = 2
+	end_day = 2 // SKYRAT EDIT -- ORIGINALLY 5
+	begin_month = APRIL
 
 /datum/holiday/april_fools/celebrate()
-	. = ..()
 	SSjob.set_overflow_role("Clown")
 	SSticker.login_music = 'sound/ambience/clown.ogg'
 	for(var/i in GLOB.new_player_list)
@@ -230,7 +213,6 @@
 	begin_day = 1
 	begin_month = MAY
 	drone_hat = /obj/item/clothing/head/hardhat
-	mail_holiday = TRUE
 
 /datum/holiday/firefighter
 	name = "Firefighter's Day"
@@ -272,17 +254,14 @@
 
 /datum/holiday/usa
 	name = "US Independence Day"
-	timezones = list(TIMEZONE_EDT, TIMEZONE_CDT, TIMEZONE_MDT, TIMEZONE_MST, TIMEZONE_PDT, TIMEZONE_AKDT, TIMEZONE_HDT, TIMEZONE_HST)
 	begin_day = 4
 	begin_month = JULY
-	mail_holiday = TRUE
 
 /datum/holiday/usa/getStationPrefix()
 	return pick("Independent","American","Burger","Bald Eagle","Star-Spangled", "Fireworks")
 
 /datum/holiday/nz
 	name = "Waitangi Day"
-	timezones = list(TIMEZONE_NZDT, TIMEZONE_CHADT)
 	begin_day = 6
 	begin_month = FEBRUARY
 
@@ -290,12 +269,11 @@
 	return pick("Aotearoa","Kiwi","Fish 'n' Chips","Kākāpō","Southern Cross")
 
 /datum/holiday/nz/greet()
-	var/nz_age = text2num(time2text(world.timeofday, "YYYY")) - 1840
-	return "On this day [nz_age] years ago, New Zealand's Treaty of Waitangi, the founding document of the nation, was signed!"
+	var/nz_age = text2num(time2text(world.timeofday, "YYYY")) - 1840 //is this work
+	return "On this day [nz_age] years ago, New Zealand's Treaty of Waitangi, the founding document of the nation, was signed!" //thus creating much controversy
 
 /datum/holiday/anz
 	name = "ANZAC Day"
-	timezones = list(TIMEZONE_TKT, TIMEZONE_TOT, TIMEZONE_NZST, TIMEZONE_NFT, TIMEZONE_LHST, TIMEZONE_AEST, TIMEZONE_ACST, TIMEZONE_ACWST, TIMEZONE_AWST, TIMEZONE_CXT, TIMEZONE_CCT, TIMEZONE_CKT, TIMEZONE_NUT)
 	begin_day = 25
 	begin_month = APRIL
 	drone_hat = /obj/item/food/grown/poppy
@@ -310,11 +288,9 @@
 
 /datum/holiday/france
 	name = "Bastille Day"
-	timezones = list(TIMEZONE_CEST)
 	begin_day = 14
 	begin_month = JULY
 	drone_hat = /obj/item/clothing/head/beret
-	mail_holiday = TRUE
 
 /datum/holiday/france/getStationPrefix()
 	return pick("Francais","Fromage", "Zut", "Merde")
@@ -388,7 +364,7 @@
 
 /datum/holiday/halloween
 	name = HALLOWEEN
-	begin_day = 29
+	begin_day = 28
 	begin_month = OCTOBER
 	end_day = 2
 	end_month = NOVEMBER
@@ -484,17 +460,15 @@
 
 /datum/holiday/xmas
 	name = CHRISTMAS
-	begin_day = 23
+	begin_day = 22
 	begin_month = DECEMBER
 	end_day = 27
 	drone_hat = /obj/item/clothing/head/santa
-	mail_holiday = TRUE
 
 /datum/holiday/xmas/greet()
 	return "Have a merry Christmas!"
 
 /datum/holiday/xmas/celebrate()
-	. = ..()
 	SSticker.OnRoundstart(CALLBACK(src, .proc/roundstart_celebrate))
 	GLOB.maintenance_loot += list(
 		list(
@@ -570,7 +544,6 @@
 	return ..()
 
 /datum/holiday/easter/celebrate()
-	. = ..()
 	GLOB.maintenance_loot += list(
 		list(
 			/obj/item/food/egg/loaded = 15,

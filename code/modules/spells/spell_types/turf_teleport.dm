@@ -3,8 +3,6 @@
 	desc = "This spell teleports the target to the turf in range."
 	nonabstract_req = TRUE
 
-	school = SCHOOL_TRANSLOCATION
-
 	var/inner_tele_radius = 1
 	var/outer_tele_radius = 2
 

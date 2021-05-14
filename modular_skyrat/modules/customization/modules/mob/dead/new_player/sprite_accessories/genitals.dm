@@ -1,9 +1,7 @@
 /datum/sprite_accessory/genital
 	special_render_case = TRUE
-	var/associated_organ_slot
+	var/associated_organ_slot 
 	var/uses_skintones
-	///Where the genital is on the body. If clothing doesn't cover it, it shows up!
-	var/genital_location = GROIN
 
 /datum/sprite_accessory/genital/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
 	var/obj/item/organ/genital/badonkers = H.getorganslot(associated_organ_slot)
@@ -13,7 +11,7 @@
 		if(GENITAL_ALWAYS_SHOW)
 			return FALSE
 		if(GENITAL_HIDDEN_BY_CLOTHES)
-			if((H.w_uniform && H.w_uniform.body_parts_covered & genital_location) || (H.wear_suit && H.wear_suit.body_parts_covered & genital_location))
+			if(H.w_uniform || H.wear_suit)
 				return TRUE
 			else
 				return FALSE
@@ -75,10 +73,6 @@
 	default_color = DEFAULT_SKIN_OR_PRIMARY
 	uses_skintones = TRUE
 	can_have_sheath = FALSE
-
-/datum/sprite_accessory/genital/penis/nondescript
-	icon_state = "nondescript"
-	name = "Nondescript"
 
 /datum/sprite_accessory/genital/penis/knotted
 	icon_state = "knotted"
@@ -247,7 +241,6 @@
 	default_color = DEFAULT_SKIN_OR_PRIMARY
 	relevent_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_LAYER)
 	uses_skintones = TRUE
-	genital_location = CHEST
 
 /datum/sprite_accessory/genital/breasts/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
 	if(H.undershirt != "Nude" && !(H.underwear_visibility & UNDERWEAR_HIDE_SHIRT))

@@ -200,6 +200,11 @@
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
+"il" = (
+/obj/structure/lattice,
+/obj/structure/lattice/catwalk,
+/turf/template_noop,
+/area/template_noop)
 "iu" = (
 /obj/machinery/computer{
 	desc = "A computer long since rendered non-functional due to lack of maintenance. Spitting out error messages.";
@@ -292,7 +297,7 @@
 	name = "Abandoned Station"
 	})
 "mO" = (
-/obj/item/gun/ballistic/shotgun/hook,
+/obj/item/gun/ballistic/shotgun/doublebarrel/hook,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -811,7 +816,7 @@
 	})
 "Gv" = (
 /obj/machinery/power/solar/fake,
-/turf/open/floor/iron/solarpanel/airless,
+/turf/open/floor/iron/airless/solarpanel,
 /area/template_noop)
 "Gz" = (
 /obj/structure/sign/poster/contraband/busty_backdoor_xeno_babes_6{
@@ -1852,7 +1857,7 @@ Qd
 Qd
 Qd
 Qd
-Qd
+TY
 eP
 hl
 rX
@@ -1905,7 +1910,7 @@ eP
 rH
 eP
 eP
-tH
+Vz
 eP
 eP
 tH
@@ -1967,7 +1972,7 @@ eP
 eP
 eP
 eP
-Qd
+il
 Nv
 rH
 tH
@@ -2029,7 +2034,7 @@ eP
 eP
 Nv
 eP
-Qd
+il
 eP
 eP
 tH

@@ -27,6 +27,7 @@
 	maxbodytemp = INFINITY
 	healable = 0
 	faction = list("cult")
+	is_flying_animal = TRUE
 	pressure_resistance = 100
 	unique_name = 1
 	AIStatus = AI_OFF //normal constructs don't have AI
@@ -46,7 +47,6 @@
 
 /mob/living/simple_animal/hostile/construct/Initialize()
 	. = ..()
-	AddElement(/datum/element/simple_flying)
 	ADD_TRAIT(src, TRAIT_SPACEWALK, INNATE_TRAIT)
 	var/spellnum = 1
 	for(var/spell in construct_spells)
@@ -215,10 +215,9 @@
 
 /mob/living/simple_animal/hostile/construct/wraith/AttackingTarget() //refund jaunt cooldown when attacking living targets
 	var/prev_stat
-	var/mob/living/living_target = target
-
-	if(isliving(living_target) && !IS_CULTIST(living_target))
-		prev_stat = living_target.stat
+	if(isliving(target) && !iscultist(target))
+		var/mob/living/L = target
+		prev_stat = L.stat
 
 	. = ..()
 

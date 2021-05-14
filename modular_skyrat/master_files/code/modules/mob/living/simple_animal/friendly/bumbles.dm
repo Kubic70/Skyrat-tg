@@ -16,6 +16,7 @@
 	friendly_verb_continuous = "bzzs"
 	friendly_verb_simple = "bzz"
 	density = FALSE
+	is_flying_animal = TRUE
 	mobility_flags = MOBILITY_FLAGS_REST_CAPABLE_DEFAULT
 	pass_flags = PASSTABLE | PASSGRILLE | PASSMOB
 	mob_size = MOB_SIZE_TINY
@@ -31,7 +32,6 @@
 
 /mob/living/simple_animal/pet/bumbles/Initialize()
 	. = ..()
-	AddElement(/datum/element/simple_flying)
 	add_verb(src, /mob/living/proc/toggle_resting)
 	ADD_TRAIT(src, TRAIT_VENTCRAWLER_ALWAYS, INNATE_TRAIT)
 

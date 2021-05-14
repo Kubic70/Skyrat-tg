@@ -65,11 +65,7 @@
 	if(mode == RESONATOR_MODE_MATRIX)
 		icon_state = "shield2"
 		name = "resonance matrix"
-		RegisterSignal(src, COMSIG_ATOM_ENTERED, .proc/burst)
-		var/static/list/loc_connections = list(
-			COMSIG_ATOM_ENTERED = .proc/burst,
-		)
-		AddElement(/datum/element/connect_loc, src, loc_connections)
+		RegisterSignal(src, list(COMSIG_MOVABLE_CROSSED, COMSIG_ATOM_ENTERED), .proc/burst)
 	. = ..()
 	creator = set_creator
 	res = set_resonator

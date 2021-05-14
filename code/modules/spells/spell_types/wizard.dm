@@ -2,7 +2,7 @@
 	name = "Magic Missile"
 	desc = "This spell fires several, slow moving, magic projectiles at nearby targets."
 
-	school = SCHOOL_EVOCATION
+	school = "evocation"
 	charge_max = 200
 	clothes_req = TRUE
 	invocation = "FORTI GY AMA"
@@ -41,7 +41,7 @@
 	name = "Mutate"
 	desc = "This spell causes you to turn into a hulk and gain laser vision for a short while."
 
-	school = SCHOOL_TRANSMUTATION
+	school = "transmutation"
 	charge_max = 400
 	clothes_req = TRUE
 	invocation = "BIRUZ BENNAR"
@@ -61,7 +61,7 @@
 	name = "Smoke"
 	desc = "This spell spawns a cloud of choking smoke at your location."
 
-	school = SCHOOL_CONJURATION
+	school = "conjuration"
 	charge_max = 120
 	clothes_req = FALSE
 	invocation = "none"
@@ -80,7 +80,7 @@
 	name = "Smoke"
 	desc = "This spell spawns a small cloud of choking smoke at your location."
 
-	school = SCHOOL_HOLY
+	school = "conjuration"
 	charge_max = 360
 	clothes_req = FALSE
 	invocation = "none"
@@ -112,7 +112,7 @@
 	name = "Blink"
 	desc = "This spell randomly teleports you a short distance."
 
-	school = SCHOOL_FORBIDDEN
+	school = "abjuration"
 	charge_max = 20
 	clothes_req = TRUE
 	invocation = "none"
@@ -142,7 +142,7 @@
 	name = "Teleport"
 	desc = "This spell teleports you to an area of your selection."
 
-	school = SCHOOL_FORBIDDEN
+	school = "abjuration"
 	charge_max = 600
 	clothes_req = TRUE
 	invocation = "SCYAR NILA"
@@ -171,7 +171,6 @@
 	clothes_req = TRUE
 	invocation = "TOKI YO TOMARE"
 	invocation_type = INVOCATION_SHOUT
-	school = SCHOOL_FORBIDDEN //fucking with time is not appreciated by anyone
 	range = 0
 	cooldown_min = 100
 	action_icon_state = "time"
@@ -185,7 +184,7 @@
 	name = "Summon Carp"
 	desc = "This spell conjures a simple carp."
 
-	school = SCHOOL_CONJURATION
+	school = "conjuration"
 	charge_max = 1200
 	clothes_req = TRUE
 	invocation = "NOUK FHUNMM SACP RISSKA"
@@ -198,7 +197,7 @@
 /obj/effect/proc_holder/spell/aoe_turf/conjure/construct
 	name = "Artificer"
 	desc = "This spell conjures a construct which may be controlled by Shades."
-	school = SCHOOL_CONJURATION
+	school = "conjuration"
 	charge_max = 600
 	clothes_req = FALSE
 	invocation = "none"
@@ -213,7 +212,7 @@
 	name = "Summon Creature Swarm"
 	desc = "This spell tears the fabric of reality, allowing horrific daemons to spill forth."
 
-	school = SCHOOL_CONJURATION
+	school = "conjuration"
 	charge_max = 1200
 	clothes_req = FALSE
 	invocation = "IA IA"
@@ -240,7 +239,7 @@
 	action_icon_state = "bee"
 	cooldown_min = 20 SECONDS
 
-	summon_type = /mob/living/simple_animal/hostile/bee/toxin
+	summon_type = /mob/living/simple_animal/hostile/poison/bees/toxin
 	cast_sound = 'sound/voice/moth/scream_moth.ogg'
 
 /obj/effect/proc_holder/spell/aoe_turf/repulse
@@ -250,7 +249,6 @@
 	clothes_req = TRUE
 	invocation = "GITTAH WEIGH"
 	invocation_type = INVOCATION_SHOUT
-	school = SCHOOL_EVOCATION
 	range = 5
 	cooldown_min = 150
 	selection_type = "view"
@@ -327,7 +325,6 @@
 	clothes_req = FALSE
 	invocation = "FI'RAN DADISKO"
 	invocation_type = INVOCATION_SHOUT
-	school = SCHOOL_EVOCATION
 	max_targets = 0
 	range = 6
 	include_user = TRUE

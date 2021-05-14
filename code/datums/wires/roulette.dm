@@ -13,8 +13,6 @@
 	..()
 
 /datum/wires/roulette/interactable(mob/user)
-	if(!..())
-		return FALSE
 	. = FALSE
 	var/obj/machinery/roulette/R = holder
 	if(R.machine_stat & MAINT)

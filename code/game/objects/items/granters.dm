@@ -125,7 +125,7 @@
 	for(var/obj/effect/proc_holder/spell/knownspell in user.mind.spell_list)
 		if(knownspell.type == spell)
 			if(user.mind)
-				if(IS_WIZARD(user))
+				if(iswizard(user))
 					to_chat(user,"<span class='warning'>You're already far more versed in this spell than this flimsy how-to book can provide!</span>")
 				else
 					to_chat(user,"<span class='warning'>You've already read this one!</span>")
@@ -159,7 +159,7 @@
 
 /obj/item/book/granter/spell/fireball/recoil(mob/user)
 	..()
-	explosion(user, devastation_range = 1, light_impact_range = 2, flame_range = 2, flash_range = 3, adminlog = FALSE)
+	explosion(user.loc, 1, 0, 2, 3, FALSE, FALSE, 2)
 	qdel(src)
 
 /obj/item/book/granter/spell/sacredflame

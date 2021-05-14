@@ -63,6 +63,7 @@
 	stank.gases[/datum/gas/miasma][MOLES] = (yield + 6)*3.5*MIASMA_CORPSE_MOLES*delta_time // this process is only being called about 2/7 as much as corpses so this is 12-32 times a corpses
 	stank.temperature = T20C // without this the room would eventually freeze and miasma mining would be easier
 	T.assume_air(stank)
+	T.air_update_turf(FALSE, FALSE)
 
 //Galaxy Thistle
 /obj/item/seeds/galaxythistle
@@ -96,7 +97,7 @@
 	name = "galaxythistle flower head"
 	desc = "This spiny cluster of florets reminds you of the highlands."
 	icon_state = "galaxythistle"
-	bite_consumption_mod = 2
+	bite_consumption_mod = 3
 	foodtypes = VEGETABLES
 	wine_power = 35
 	tastes = list("thistle" = 2, "artichoke" = 1)
@@ -127,6 +128,7 @@
 	name = "cabbage"
 	desc = "Ewwwwwwwwww. Cabbage."
 	icon_state = "cabbage"
+	bite_consumption_mod = 2
 	foodtypes = VEGETABLES
 	wine_power = 20
 
@@ -205,7 +207,7 @@
 	desc = "You think you can hear the hissing of a tiny fuse."
 	icon_state = "cherry_bomb"
 	seed = /obj/item/seeds/cherry/bomb
-	bite_consumption_mod = 3
+	bite_consumption_mod = 2
 	max_volume = 125 //Gives enough room for the gunpowder at max potency
 	max_integrity = 40
 	wine_power = 80
@@ -252,7 +254,7 @@
 	name = "aloe"
 	desc = "Cut leaves from the aloe plant."
 	icon_state = "aloe"
-	bite_consumption_mod = 3
+	bite_consumption_mod = 5
 	foodtypes = VEGETABLES
 	juice_results = list(/datum/reagent/consumable/aloejuice = 0)
 	distill_reagent = /datum/reagent/consumable/ethanol/tequila
@@ -288,7 +290,7 @@
 	if(player_turf?.is_blocked_turf(TRUE))
 		return FALSE
 	user.visible_message("<span class='danger'>[user] begins to plant \the [src]...</span>")
-	if(do_after(user, 4 SECONDS, target = user.drop_location(), progress = TRUE)) //SKYRAT EDIT - ORIGINAL 8 SECONDS
+	if(do_after(user, 8 SECONDS, target = user.drop_location(), progress = TRUE))
 		new /obj/structure/fluff/hedge/opaque(user.drop_location())
 		to_chat(user, "<span class='notice'>You plant \the [src].</span>")
 		qdel(src)

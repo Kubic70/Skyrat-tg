@@ -168,13 +168,13 @@
 			excited = TRUE
 			SSair.active_turfs += src
 
-/turf/open/GetHeatCapacity()
+/turf/open/proc/GetHeatCapacity()
 	. = air.heat_capacity()
 
-/turf/open/GetTemperature()
+/turf/open/proc/GetTemperature()
 	. = air.temperature
 
-/turf/open/TakeTemperature(temp)
+/turf/open/proc/TakeTemperature(temp)
 	air.temperature += temp
 	air_update_turf(FALSE, FALSE)
 
@@ -264,7 +264,7 @@
 	. = ..()
 	var/gas_change = FALSE
 	var/list/cached_gases = air.gases
-	if(cached_gases[/datum/gas/oxygen] && cached_gases[/datum/gas/carbon_dioxide] && air.temperature <= PLUOXIUM_TEMP_CAP)
+	if(cached_gases[/datum/gas/oxygen] && cached_gases[/datum/gas/carbon_dioxide])
 		gas_change = TRUE
 		var/pulse_strength = min(strength, cached_gases[/datum/gas/oxygen][MOLES] * 1000, cached_gases[/datum/gas/carbon_dioxide][MOLES] * 2000)
 		cached_gases[/datum/gas/carbon_dioxide][MOLES] -= pulse_strength / 2000

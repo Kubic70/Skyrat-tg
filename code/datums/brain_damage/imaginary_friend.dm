@@ -47,7 +47,7 @@
 
 /datum/brain_trauma/special/imaginary_friend/proc/get_ghost()
 	set waitfor = FALSE
-	var/list/mob/dead/observer/candidates = pollCandidatesForMob("Do you want to play as [owner.real_name]'s imaginary friend?", ROLE_PAI, null, 75, friend, POLL_IGNORE_IMAGINARYFRIEND)
+	var/list/mob/dead/observer/candidates = pollCandidatesForMob("Do you want to play as [owner.real_name]'s imaginary friend?", ROLE_PAI, null, null, 75, friend, POLL_IGNORE_IMAGINARYFRIEND)
 	if(LAZYLEN(candidates))
 		var/mob/dead/observer/C = pick(candidates)
 		friend.key = C.key
@@ -186,17 +186,18 @@
 		recall()
 		move_delay = world.time + 10
 		return FALSE
-	abstract_move(NewLoc)
+	forceMove(NewLoc)
 	move_delay = world.time + 1
 
-/mob/camera/imaginary_friend/abstract_move(atom/destination)
-	. = ..()
+/mob/camera/imaginary_friend/forceMove(atom/destination)
+	dir = get_dir(get_turf(src), destination)
+	loc = destination
 	Show()
 
 /mob/camera/imaginary_friend/proc/recall()
 	if(!owner || loc == owner)
 		return FALSE
-	abstract_move(owner)
+	forceMove(owner)
 
 /datum/action/innate/imaginary_join
 	name = "Join"

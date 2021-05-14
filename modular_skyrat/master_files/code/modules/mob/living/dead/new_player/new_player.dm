@@ -156,7 +156,7 @@
 				to_chat_immediate(src, "So long, spaceman.")
 				client << link(server_ip)
 			return
-		var/server_name = tgui_input_list(usr, "Please select the server you wish to swap to:", "Swap servers!", GLOB.swappable_ips)
+		var/server_name = input(usr, "Please select the server you wish to swap to:", "Swap servers!") as null|anything in GLOB.swappable_ips
 		if(!server_name)
 			return
 		var/server_ip = GLOB.swappable_ips[server_name]
@@ -381,6 +381,12 @@
 	character.client.init_verbs() // init verbs for the late join
 	var/mob/living/carbon/human/humanc
 
+	if(SSticker.mode.name == "assaultops")
+		if(is_assaultops_target(character.mind))
+			remove_assaultops_target(character.mind, original=TRUE)
+		if(check_assaultops_target(character))
+			add_assaultops_target(character, notify_target = TRUE)
+
 	if(ishuman(character))
 		humanc = character //Let's retypecast the var to be human,
 
@@ -452,15 +458,10 @@
 				var/command_bold = ""
 				if(job in GLOB.command_positions)
 					command_bold = " command"
-				var/jobline = "[job_datum.title] ([job_datum.current_positions])"
 				if(job_datum in SSjob.prioritized_jobs)
-					jobline = "<span class='priority'>[jobline]</span>"
-				if(client && client.prefs && client.prefs.alt_titles_preferences[job_datum.title])
-					jobline = "[jobline]<br><span style='color:#BBBBBB; font-style: italic;'>(as [client.prefs.alt_titles_preferences[job_datum.title]])</span>"
-
-				jobline = "<a class='job[command_bold]' style='display:block;width:170px' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[jobline]</a>"
-				dept_dat += jobline
-
+					dept_dat += "<a class='job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'><span class='priority'>[job_datum.title] ([job_datum.current_positions])</span></a>"
+				else
+					dept_dat += "<a class='job[command_bold]' href='byond://?src=[REF(src)];SelectedJob=[job_datum.title]'>[job_datum.title] ([job_datum.current_positions])</a>"
 		if(!dept_dat.len)
 			dept_dat += "<span class='nopositions'>No positions open.</span>"
 		dat += jointext(dept_dat, "")

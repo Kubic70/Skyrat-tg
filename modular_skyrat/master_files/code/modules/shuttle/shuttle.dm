@@ -71,8 +71,6 @@
 				var/dist = get_dist(M.loc, distant_source.loc)
 				var/vol = clamp(50-((dist-7)*5), 10, 50) //Every tile decreases sound volume by 5
 				if(takeoff)
-					if(M.client.prefs.toggles & SOUND_SHIP_AMBIENCE)
-						M.playsound_local(distant_source, takeoff_sound, vol)
+					M.playsound_local(distant_source, takeoff_sound, vol)
 				else
-					if(M.client.prefs.toggles & SOUND_SHIP_AMBIENCE)
-						M.playsound_local(distant_source, landing_sound, vol)
+					M.playsound_local(distant_source, landing_sound, vol)

@@ -18,7 +18,7 @@
 	if(!charging)
 		return
 
-	//. += image(charging.icon, charging.icon_state) SKYRAT EDIT REMOVAL
+	. += image(charging.icon, charging.icon_state)
 	. += "ccharger-on"
 	if(!(machine_stat & (BROKEN|NOPOWER)))
 		var/newlevel = round(charging.percent() * 4 / 100)

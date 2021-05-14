@@ -11,7 +11,7 @@
 	damage = 36
 	stamina = 12
 	wound_bonus = 35
-	weak_against_armour = TRUE
+	armour_penetration = -75
 	speed = 2.25
 
 /obj/item/gun/ballistic/automatic/pistol/blueshield

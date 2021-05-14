@@ -111,15 +111,13 @@
 				return
 			say("Thank you for your purchase! Please note: The charge of this purchase and machine cooldown has been doubled!")
 			COOLDOWN_START(src, order_cooldown, 120 SECONDS)
-			var/list/ordered_paths = list()
+			var/obj/structure/closet/supplypod/bluespacepod/pod = new()
+			pod.explosionSize = list(0,0,0,0)
 			for(var/datum/orderable_item/item as anything in grocery_list)//every order
 				for(var/amt in 1 to grocery_list[item])//every order amount
-					ordered_paths += item.item_instance.type
-			podspawn(list(
-				"target" = get_turf(chef),
-				"style" = STYLE_BLUESPACE,
-				"spawn" = ordered_paths
-			))
+					new item.item_instance.type(pod)
+			var/turf/landing_location = get_turf(chef)
+			new /obj/effect/pod_landingzone(landing_location, pod)
 			grocery_list.Cut()
 			update_static_data(chef)
 	. = TRUE

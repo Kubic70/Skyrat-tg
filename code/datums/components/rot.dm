@@ -8,8 +8,6 @@
 	var/start_time = 0
 	///The delay in ticks between the start of rot and effects kicking in
 	var/start_delay = 0
-	///The time in ticks before a rot component reaches its full effectiveness
-	var/scaling_delay = 0
 	///How strong is the rot? used for scaling different aspects of the component. Between 0 and 1
 	var/strength = 0
 	///Is the component active right now?
@@ -17,11 +15,7 @@
 	///Bitfield of sources preventing the component from rotting
 	var/blockers = NONE
 
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/rot_react,
-	)
-
-/datum/component/rot/Initialize(delay, scaling, severity)
+/datum/component/rot/Initialize(delay, severity)
 	if(!isatom(parent))
 		return COMPONENT_INCOMPATIBLE
 	if(isliving(parent))
@@ -31,14 +25,12 @@
 			return COMPONENT_INCOMPATIBLE
 
 	start_delay = delay
-	scaling_delay = scaling
 	strength = severity
 
 	RegisterSignal(parent, list(COMSIG_ATOM_HULK_ATTACK, COMSIG_ATOM_ATTACK_ANIMAL, COMSIG_ATOM_ATTACK_HAND), .proc/rot_react_touch)
 	RegisterSignal(parent, COMSIG_PARENT_ATTACKBY, .proc/rot_hit_react)
 	if(ismovable(parent))
-		AddElement(/datum/element/connect_loc, parent, loc_connections)
-		RegisterSignal(parent, COMSIG_MOVABLE_BUMP, .proc/rot_react)
+		RegisterSignal(parent, list(COMSIG_MOVABLE_CROSSED, COMSIG_MOVABLE_BUMP), .proc/rot_react)
 	if(isliving(parent))
 		RegisterSignal(parent, COMSIG_LIVING_REVIVE, .proc/react_to_revive) //mobs stop this when they come to life
 		RegisterSignal(parent, COMSIG_LIVING_GET_PULLED, .proc/rot_react_touch)
@@ -56,11 +48,6 @@
 		check_for_temperature(null, 0, human_parent.coretemperature)
 
 	start_up(NONE) //If nothing's blocking it, start
-
-/datum/component/rot/UnregisterFromParent()
-	. = ..()
-	if(ismovable(parent))
-		RemoveElement(/datum/element/connect_loc, parent, loc_connections)
 
 ///One of two procs that modifies blockers, this one handles removing a blocker and potentially restarting the rot
 /datum/component/rot/proc/start_up(blocker_type)
@@ -111,7 +98,7 @@
 
 /datum/component/rot/proc/rot_react_touch(datum/source, mob/living/react_to)
 	SIGNAL_HANDLER
-	rot_react(source, react_to, pick(BODY_ZONE_L_ARM, BODY_ZONE_R_ARM))
+	rot_react(source, react_to, react_to.zone_selected)
 
 ///The main bit of logic for the rot component, does a temperature check and has a chance to infect react_to
 /datum/component/rot/proc/rot_react(source, mob/living/react_to, target_zone = null)
@@ -128,18 +115,15 @@
 	if(!active)
 		return
 
-	var/time_delta = world.time - start_time
 	// Wait a bit before decaying
-	if(time_delta < start_delay)
+	if(world.time - start_time < start_delay)
 		return
 
-	var/time_scaling = min((time_delta - start_delay) / scaling_delay, 1)
-
-	if(!prob(strength * 1 * time_scaling))
+	if(!prob(strength * 3))
 		return
 
 	//We're running just under the "worst disease", since we don't want these to be too strong
-	var/datum/disease/advance/random/rand_disease = new(rand(4 * strength * time_scaling), rand(strength * 5 * time_scaling))
+	var/datum/disease/advance/random/rand_disease = new(rand(5 * strength), rand(strength * 7))
 	rand_disease.name = "Unknown"
 	react_to.ContactContractDisease(rand_disease, target_zone)
 

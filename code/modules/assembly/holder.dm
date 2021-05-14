@@ -43,7 +43,6 @@
 	else
 		a_right = A
 	A.holder_movement()
-	A.on_attach()
 
 /obj/item/assembly_holder/update_appearance(updates=ALL)
 	. = ..()
@@ -70,6 +69,13 @@
 	for(var/right_overlay in a_right.attached_overlays)
 		right.add_overlay("[right_overlay]_l")
 	. += right
+
+/obj/item/assembly_holder/Crossed(atom/movable/AM as mob|obj)
+	. = ..()
+	if(a_left)
+		a_left.Crossed(AM)
+	if(a_right)
+		a_right.Crossed(AM)
 
 /obj/item/assembly_holder/on_found(mob/finder)
 	if(a_left)

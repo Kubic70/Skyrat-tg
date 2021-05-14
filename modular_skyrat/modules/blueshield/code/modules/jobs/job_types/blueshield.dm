@@ -11,9 +11,6 @@
 	exp_requirements = 2400
 	exp_type = EXP_TYPE_SECURITY
 
-	paycheck = PAYCHECK_HARD
-	paycheck_department = ACCOUNT_SEC
-
 	outfit = /datum/outfit/job/blueshield
 
 	display_order = JOB_DISPLAY_ORDER_BLUESHIELD

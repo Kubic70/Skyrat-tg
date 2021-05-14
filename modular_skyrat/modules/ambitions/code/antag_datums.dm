@@ -14,7 +14,8 @@
 	uses_ambitions = TRUE
 
 /datum/antagonist/traitor/ambitions_add()
-	equip()
+	if(traitor_kind == TRAITOR_HUMAN && should_equip)
+		equip()
 
 /datum/antagonist/changeling
 	uses_ambitions = TRUE
@@ -31,10 +32,11 @@
 	uses_ambitions = TRUE
 
 /datum/antagonist/wizard/ambitions_add()
+	register()
 	equip_wizard() //This apparently give the book if you didn't comment it in the antag one, you could use it and if you did get spells and then submit your ambitions, You actually could get twice as much spells. :pain:
 
 /datum/antagonist/wizard/ambitions_removal()
-	owner.RemoveAllSpells()
+	unregister()
 
 /datum/objective/ambitions
 	name = "ambitions"

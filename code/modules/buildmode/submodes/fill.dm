@@ -4,7 +4,7 @@
 	key = "fill"
 
 	use_corner_selection = TRUE
-	var/atom/objholder = null
+	var/objholder = null
 
 /datum/buildmode_mode/fill/show_help(client/c)
 	to_chat(c, "<span class='notice'>***********************************************************</span>")
@@ -64,8 +64,6 @@
 				if(ispath(objholder,/turf))
 					T = T.ChangeTurf(objholder)
 					T.setDir(BM.build_dir)
-				else if(ispath(objholder, /obj/effect/turf_decal))
-					T.AddElement(/datum/element/decal, initial(objholder.icon), initial(objholder.icon_state), BM.build_dir, FALSE, initial(objholder.color), null, null, initial(objholder.alpha))
 				else
 					var/obj/A = new objholder(T)
 					A.setDir(BM.build_dir)

@@ -158,10 +158,6 @@
 	name = "Otusian"
 	icon_state = "otie"
 
-/datum/sprite_accessory/ears/mutant/protogen
-	name = "Protogen"
-	icon_state = "protogen"
-
 /datum/sprite_accessory/ears/mutant/rabbit
 	name = "Rabbit"
 	icon_state = "rabbit"

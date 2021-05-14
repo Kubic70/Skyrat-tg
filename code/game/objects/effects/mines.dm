@@ -18,10 +18,6 @@
 		armed = FALSE
 		icon_state = "uglymine-inactive"
 		addtimer(CALLBACK(src, .proc/now_armed), arm_delay)
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, src, loc_connections)
 
 /obj/effect/mine/examine(mob/user)
 	. = ..()
@@ -39,8 +35,8 @@
 	playsound(src, 'sound/machines/nuke/angry_beep.ogg', 40, FALSE, -2)
 	visible_message("<span class='danger'>\The [src] beeps softly, indicating it is now active.<span>", vision_distance = COMBAT_MESSAGE_RANGE)
 
-/obj/effect/mine/proc/on_entered(datum/source, atom/movable/AM)
-	SIGNAL_HANDLER
+/obj/effect/mine/Crossed(atom/movable/AM)
+	. = ..()
 
 	if(triggered || !isturf(loc) || !armed)
 		return
@@ -76,19 +72,13 @@
 
 /obj/effect/mine/explosive
 	name = "explosive mine"
-	/// The devastation range of the resulting explosion.
 	var/range_devastation = 0
-	/// The heavy impact range of the resulting explosion.
 	var/range_heavy = 1
-	/// The light impact range of the resulting explosion.
 	var/range_light = 2
-	/// The flame range of the resulting explosion.
-	var/range_flame = 0
-	/// The flash range of the resulting explosion.
 	var/range_flash = 3
 
 /obj/effect/mine/explosive/mineEffect(mob/victim)
-	explosion(src, range_devastation, range_heavy, range_light, range_flame, range_flash)
+	explosion(loc, range_devastation, range_heavy, range_light, range_flash)
 
 /obj/effect/mine/stun
 	name = "stun mine"

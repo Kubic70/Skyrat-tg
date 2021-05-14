@@ -8,7 +8,6 @@
 	active_power_usage = 60
 	power_channel = AREA_USAGE_EQUIP
 	density = TRUE
-	obj_flags = NO_BUILD // Becomes undense when the unit is open
 	max_integrity = 250
 
 	var/obj/item/clothing/suit/space/suit = null

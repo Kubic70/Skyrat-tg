@@ -47,7 +47,6 @@
 				return
 			Remove(owner)
 		owner = M
-		RegisterSignal(owner, COMSIG_PARENT_QDELETING, .proc/owner_deleted)
 
 		//button id generation
 		var/counter = 0
@@ -73,19 +72,13 @@
 	else
 		Remove(owner)
 
-/datum/action/proc/owner_deleted(datum/source)
-	SIGNAL_HANDLER
-	Remove(owner)
-
 /datum/action/proc/Remove(mob/M)
 	if(M)
 		if(M.client)
 			M.client.screen -= button
 		LAZYREMOVE(M.actions, src)
 		M.update_action_buttons()
-	if(owner)
-		UnregisterSignal(owner, COMSIG_PARENT_QDELETING)
-		owner = null
+	owner = null
 	button.moved = FALSE //so the button appears in its normal position when given to another owner.
 	button.locked = FALSE
 	button.id = null
@@ -488,7 +481,7 @@
 	background_icon_state = "bg_demon"
 
 /datum/action/item_action/cult_dagger/Grant(mob/M)
-	if(IS_CULTIST(M))
+	if(iscultist(M))
 		..()
 		button.screen_loc = "6:157,4:-2"
 		button.moved = "6:157,4:-2"

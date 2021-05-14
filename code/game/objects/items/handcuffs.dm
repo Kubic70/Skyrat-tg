@@ -1,14 +1,5 @@
-/**
- * # Generic restraints
- *
- * Parent class for handcuffs and handcuff accessories
- *
- * Functionality:
- * 1. A special suicide
- * 2. If a restraint is handcuffing/legcuffing a carbon while being deleted, it will remove the handcuff/legcuff status.
-*/
 /obj/item/restraints
-	breakouttime = 1 MINUTES
+	breakouttime = 600
 	dye_color = DYE_PRISONER
 
 /obj/item/restraints/suicide_act(mob/living/carbon/user)
@@ -28,13 +19,8 @@
 			M.update_inv_legcuffed()
 	return ..()
 
-/**
- * # Handcuffs
- *
- * Stuff that makes humans unable to use hands
- *
- * Clicking people with those will cause an attempt at handcuffing them to occur
-*/
+//Handcuffs
+
 /obj/item/restraints/handcuffs
 	name = "handcuffs"
 	desc = "Use this to keep prisoners in line."
@@ -54,10 +40,8 @@
 	breakouttime = 1 MINUTES
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 50, ACID = 50)
 	custom_price = PAYCHECK_HARD * 0.35
-	///Sound that plays when starting to put handcuffs on someone
 	var/cuffsound = 'sound/weapons/handcuffs.ogg'
-	///If set, handcuffs will be destroyed on application and leave behind whatever this is set to.
-	var/trashtype = null
+	var/trashtype = null //for disposable cuffs
 
 /obj/item/restraints/handcuffs/attack(mob/living/carbon/C, mob/living/user)
 	if(!istype(C))
@@ -65,7 +49,7 @@
 
 	SEND_SIGNAL(C, COMSIG_CARBON_CUFF_ATTEMPTED, user)
 
-	if(iscarbon(user) && (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50))) //Clumsy people have a 50% chance to handcuff themselves instead of their target.
+	if(iscarbon(user) && (HAS_TRAIT(user, TRAIT_CLUMSY) && prob(50)))
 		to_chat(user, "<span class='warning'>Uh... how do those things work?!</span>")
 		apply_cuffs(user,user)
 		return
@@ -93,16 +77,7 @@
 		else
 			to_chat(user, "<span class='warning'>[C] doesn't have two hands...</span>")
 
-/**
- * This handles handcuffing people
- *
- * When called, this instantly puts handcuffs on someone (if possible)
- * Arguments:
- * * mob/living/carbon/target - Who is being handcuffed
- * * mob/user - Who or what is doing the handcuffing
- * * dispense - True if the cuffing should create a new item instead of using putting src on the mob, false otherwise. False by default.
-*/
-/obj/item/restraints/handcuffs/proc/apply_cuffs(mob/living/carbon/target, mob/user, dispense = FALSE)
+/obj/item/restraints/handcuffs/proc/apply_cuffs(mob/living/carbon/target, mob/user, dispense = 0)
 	if(target.handcuffed)
 		return
 
@@ -123,30 +98,15 @@
 		qdel(src)
 	return
 
-/**
- * # Alien handcuffs
- *
- * Abductor reskin of the handcuffs.
-*/
-/obj/item/restraints/handcuffs/alien
-	icon_state = "handcuffAlien"
+/obj/item/restraints/handcuffs/cable/sinew
+	name = "sinew restraints"
+	desc = "A pair of restraints fashioned from long strands of flesh."
+	icon = 'icons/obj/mining.dmi'
+	icon_state = "sinewcuff"
+	inhand_icon_state = "sinewcuff"
+	custom_materials = null
+	color = null
 
-/**
- *
- * # Fake handcuffs
- *
- * Fake handcuffs that can be removed near-instantly.
-*/
-/obj/item/restraints/handcuffs/fake
-	name = "fake handcuffs"
-	desc = "Fake handcuffs meant for gag purposes."
-	breakouttime = 1 SECONDS
-
-/**
- * # Cable restraints
- *
- * Ghetto handcuffs. Removing those is faster.
-*/
 /obj/item/restraints/handcuffs/cable
 	name = "cable restraints"
 	desc = "Looks like some cables tied together. Could be used to tie something up."
@@ -159,71 +119,39 @@
 	breakouttime = 30 SECONDS
 	cuffsound = 'sound/weapons/cablecuff.ogg'
 
-/**
- * # Sinew restraints
- *
- * Primal ghetto handcuffs
- *
- * Just cable restraints that look differently and can't be recycled.
-*/
-/obj/item/restraints/handcuffs/cable/sinew
-	name = "sinew restraints"
-	desc = "A pair of restraints fashioned from long strands of flesh."
-	icon = 'icons/obj/mining.dmi'
-	icon_state = "sinewcuff"
-	inhand_icon_state = "sinewcuff"
-	custom_materials = null
-	color = null
-
-/**
- * Red cable restraints
-*/
 /obj/item/restraints/handcuffs/cable/red
 	color = "#ff0000"
 
-/**
- * Yellow cable restraints
-*/
 /obj/item/restraints/handcuffs/cable/yellow
 	color = "#ffff00"
 
-/**
- * Blue cable restraints
-*/
 /obj/item/restraints/handcuffs/cable/blue
 	color = "#1919c8"
 
-/**
- * Green cable restraints
-*/
 /obj/item/restraints/handcuffs/cable/green
 	color = "#00aa00"
 
-/**
- * Pink cable restraints
-*/
 /obj/item/restraints/handcuffs/cable/pink
 	color = "#ff3ccd"
 
-/**
- * Orange (the color) cable restraints
-*/
 /obj/item/restraints/handcuffs/cable/orange
 	color = "#ff8000"
 
-/**
- * Cyan cable restraints
-*/
 /obj/item/restraints/handcuffs/cable/cyan
 	color = "#00ffff"
 
-/**
- * White cable restraints
-*/
 /obj/item/restraints/handcuffs/cable/white
 	color = null
 
-/obj/item/restraints/handcuffs/cable/attackby(obj/item/I, mob/user, params) //Slapcrafting
+/obj/item/restraints/handcuffs/alien
+	icon_state = "handcuffAlien"
+
+/obj/item/restraints/handcuffs/fake
+	name = "fake handcuffs"
+	desc = "Fake handcuffs meant for gag purposes."
+	breakouttime = 1 SECONDS
+
+/obj/item/restraints/handcuffs/cable/attackby(obj/item/I, mob/user, params)
 	if(istype(I, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = I
 		if (R.use(1))
@@ -253,11 +181,6 @@
 	else
 		return ..()
 
-/**
- * # Zipties
- *
- * One-use handcuffs that take 45 seconds to resist out of instead of one minute. This turns into the used version when applied.
-*/
 /obj/item/restraints/handcuffs/cable/zipties
 	name = "zipties"
 	desc = "Plastic, disposable zipties that can be used to restrain temporarily but are destroyed after use."
@@ -269,11 +192,6 @@
 	trashtype = /obj/item/restraints/handcuffs/cable/zipties/used
 	color = null
 
-/**
- * # Used zipties
- *
- * What zipties turn into when applied. These can't be used to cuff people.
-*/
 /obj/item/restraints/handcuffs/cable/zipties/used
 	desc = "A pair of broken zipties."
 	icon_state = "cuff_used"
@@ -282,11 +200,8 @@
 /obj/item/restraints/handcuffs/cable/zipties/used/attack()
 	return
 
-/**
- * # Generic leg cuffs
- *
- * Parent class for everything that can legcuff carbons. Can't legcuff anything itself.
-*/
+//Legcuffs
+
 /obj/item/restraints/legcuffs
 	name = "leg cuffs"
 	desc = "Use this to keep prisoners in line."
@@ -301,29 +216,18 @@
 	slowdown = 7
 	breakouttime = 30 SECONDS
 
-/**
- * # Bear trap
- *
- * This opens, closes, and bites people's legs.
- */
 /obj/item/restraints/legcuffs/beartrap
 	name = "bear trap"
 	throw_speed = 1
 	throw_range = 1
 	icon_state = "beartrap"
 	desc = "A trap used to catch bears and other legged creatures."
-	///If true, the trap is "open" and can trigger.
-	var/armed = FALSE
-	///How much damage the trap deals when triggered.
+	var/armed = 0
 	var/trap_damage = 20
 
 /obj/item/restraints/legcuffs/beartrap/Initialize()
 	. = ..()
 	update_appearance()
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/spring_trap,
-	)
-	AddElement(/datum/element/connect_loc, src, loc_connections)
 
 /obj/item/restraints/legcuffs/beartrap/update_icon_state()
 	icon_state = "[initial(icon_state)][armed]"
@@ -342,19 +246,12 @@
 	update_appearance()
 	to_chat(user, "<span class='notice'>[src] is now [armed ? "armed" : "disarmed"]</span>")
 
-/**
- * Closes a bear trap
- *
- * Closes a bear trap.
- * Arguments:
- */
 /obj/item/restraints/legcuffs/beartrap/proc/close_trap()
 	armed = FALSE
 	update_appearance()
 	playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 
-/obj/item/restraints/legcuffs/beartrap/proc/spring_trap(datum/source, AM as mob|obj)
-	SIGNAL_HANDLER
+/obj/item/restraints/legcuffs/beartrap/Crossed(AM as mob|obj)
 	if(armed && isturf(loc))
 		if(isliving(AM))
 			var/mob/living/L = AM
@@ -364,6 +261,7 @@
 				if(!ridden_vehicle.are_legs_exposed) //close the trap without injuring/trapping the rider if their legs are inside the vehicle at all times.
 					close_trap()
 					ridden_vehicle.visible_message("<span class='danger'>[ridden_vehicle] triggers \the [src].</span>")
+					return ..()
 
 			if(L.movement_type & (FLYING|FLOATING)) //don't close the trap if they're flying/floating over it.
 				snap = FALSE
@@ -388,20 +286,14 @@
 				L.visible_message("<span class='danger'>[L] triggers \the [src].</span>", \
 						"<span class='userdanger'>You trigger \the [src]!</span>")
 				L.apply_damage(trap_damage, BRUTE, def_zone)
+	..()
 
-/**
- * # Energy snare
- *
- * This closes on people's legs.
- *
- * A weaker version of the bear trap that can be resisted out of faster and disappears
- */
 /obj/item/restraints/legcuffs/beartrap/energy
 	name = "energy snare"
 	armed = 1
 	icon_state = "e_snare"
 	trap_damage = 0
-	breakouttime = 3 SECONDS
+	breakouttime = 30
 	item_flags = DROPDEL
 	flags_1 = NONE
 
@@ -409,23 +301,17 @@
 	. = ..()
 	addtimer(CALLBACK(src, .proc/dissipate), 100)
 
-/**
- * Handles energy snares disappearing
- *
- * If the snare isn't closed on anyone, it will disappear in a shower of sparks.
- * Arguments:
- */
 /obj/item/restraints/legcuffs/beartrap/energy/proc/dissipate()
 	if(!ismob(loc))
 		do_sparks(1, TRUE, src)
 		qdel(src)
 
 /obj/item/restraints/legcuffs/beartrap/energy/attack_hand(mob/user, list/modifiers)
-	spring_trap(null, user)
+	Crossed(user) //honk
 	return ..()
 
 /obj/item/restraints/legcuffs/beartrap/energy/cyborg
-	breakouttime = 2 SECONDS // Cyborgs shouldn't have a strong restraint
+	breakouttime = 20 // Cyborgs shouldn't have a strong restraint
 
 /obj/item/restraints/legcuffs/bola
 	name = "bola"
@@ -434,9 +320,8 @@
 	inhand_icon_state = "bola"
 	lefthand_file = 'icons/mob/inhands/weapons/thrown_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/weapons/thrown_righthand.dmi'
-	breakouttime = 3.5 SECONDS//easy to apply, easy to break out of
+	breakouttime = 35//easy to apply, easy to break out of
 	gender = NEUTER
-	///Amount of time to knock the target down for once it's hit in deciseconds.
 	var/knockdown = 0
 
 /obj/item/restraints/legcuffs/bola/throw_at(atom/target, range, speed, mob/thrower, spin=1, diagonals_first = 0, datum/callback/callback, gentle = FALSE, quickstart = TRUE)
@@ -467,52 +352,37 @@
 		C.Knockdown(knockdown)
 		playsound(src, 'sound/effects/snap.ogg', 50, TRUE)
 
-/**
- * A traitor variant of the bola.
- *
- * It knocks people down and is harder to remove.
- */
-/obj/item/restraints/legcuffs/bola/tactical
+/obj/item/restraints/legcuffs/bola/tactical//traitor variant
 	name = "reinforced bola"
 	desc = "A strong bola, made with a long steel chain. It looks heavy, enough so that it could trip somebody."
 	icon_state = "bola_r"
 	inhand_icon_state = "bola_r"
-	breakouttime = 7 SECONDS
-	knockdown = 3.5 SECONDS
+	breakouttime = 70
+	knockdown = 35
 
-/**
- * A security variant of the bola.
- *
- * It's harder to remove, smaller and has a defined price.
- */
-/obj/item/restraints/legcuffs/bola/energy
+/obj/item/restraints/legcuffs/bola/energy //For Security
 	name = "energy bola"
 	desc = "A specialized hard-light bola designed to ensnare fleeing criminals and aid in arrests."
 	icon_state = "ebola"
 	inhand_icon_state = "ebola"
 	hitsound = 'sound/weapons/taserhit.ogg'
 	w_class = WEIGHT_CLASS_SMALL
-	breakouttime = 6 SECONDS
+	breakouttime = 60
 	custom_price = PAYCHECK_HARD * 0.35
 
 /obj/item/restraints/legcuffs/bola/energy/throw_impact(atom/hit_atom, datum/thrownthing/throwingdatum)
 	if(iscarbon(hit_atom))
 		var/obj/item/restraints/legcuffs/beartrap/B = new /obj/item/restraints/legcuffs/beartrap/energy/cyborg(get_turf(hit_atom))
-		B.spring_trap(null, hit_atom)
+		B.Crossed(hit_atom)
 		qdel(src)
-	. = ..()
+	..()
 
-/**
- * A pacifying variant of the bola.
- *
- * It's much harder to remove, doesn't cause a slowdown and gives people STATUS_EFFECT_GONBOLAPACIFY.
- */
 /obj/item/restraints/legcuffs/bola/gonbola
 	name = "gonbola"
 	desc = "Hey, if you have to be hugged in the legs by anything, it might as well be this little guy."
 	icon_state = "gonbola"
 	inhand_icon_state = "bola_r"
-	breakouttime = 30 SECONDS
+	breakouttime = 300
 	slowdown = 0
 	var/datum/status_effect/gonbola_pacify/effectReference
 

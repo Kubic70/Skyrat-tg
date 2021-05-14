@@ -15,7 +15,7 @@ Armageddon is truly going to fuck the station, use it sparingly.
 /datum/round_event_control/cme
 	name = "Coronal Mass Ejection: Minimal"
 	typepath = /datum/round_event/cme
-	weight = 10
+	weight = 0
 	min_players = 30
 	max_occurrences = 3
 	earliest_start = 25 MINUTES
@@ -180,8 +180,7 @@ Armageddon is truly going to fuck the station, use it sparingly.
 	anchored = TRUE
 	opacity = FALSE
 	density = FALSE
-	plane = MASSIVE_OBJ_PLANE
-	plane = ABOVE_LIGHTING_PLANE
+	plane = LIGHTING_PLANE
 	CanAtmosPass = ATMOS_PASS_DENSITY
 	var/timeleft = CME_MINIMAL_BUBBLE_BURST_TIME
 	var/cme_light_range_lower = CME_MINIMAL_LIGHT_RANGE_LOWER

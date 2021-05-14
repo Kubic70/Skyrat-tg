@@ -22,7 +22,7 @@
 	wound_bonus = -45
 	wound_falloff_tile = 0
 
-/obj/projectile/bullet/a762/enchanted
+/obj/projectile/bullet/a762_enchanted
 	name = "enchanted 7.62 bullet"
 	damage = 20
 	stamina = 80
