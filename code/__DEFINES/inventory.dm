@@ -61,6 +61,16 @@
 /// Legcuff slot (bolas, beartraps)
 #define ITEM_SLOT_LEGCUFFED (1<<19)
 
+//SKYRAT EDIT ADDITION BEGIN - ERP_SLOT_SYSTEM
+/// Vagina slot
+#define ITEM_SLOT_VAGINA (1<<21)
+/// Anus slot
+#define ITEM_SLOT_ANUS (1<<22)
+/// Nipples slot
+#define ITEM_SLOT_NIPPLES (1<<23)
+/// Penis slot
+#define ITEM_SLOT_PENIS (1<<20)
+//SKYRATE EDIT ADDITION END
 /// Total amount of slots
 //SKYRAT EDIT CHANGE BEGIN
 // #define SLOTS_AMT 20 // Keep this up to date! - SKYRAT EDIT - ORIGINAL

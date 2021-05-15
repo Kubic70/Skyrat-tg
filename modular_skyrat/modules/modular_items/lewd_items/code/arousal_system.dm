@@ -6,7 +6,7 @@
 
 #define CUM_MALE 1
 #define CUM_FEMALE 2
-#define ITEM_SLOT_PENIS (1<<20)
+// #define ITEM_SLOT_PENIS (1<<20)
 
 #define TRAIT_NYMPHOMANIA	"nymphomania"
 #define TRAIT_MASOCHISM		"masochism"

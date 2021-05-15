@@ -511,14 +511,14 @@
 // ERP INVENTORY ITEM SLOTS //
 //////////////////////////////
 
-/// Vagina slot
-#define ITEM_SLOT_VAGINA (1<<21)
-/// Anus slot
-#define ITEM_SLOT_ANUS (1<<22)
-/// Nipples slot
-#define ITEM_SLOT_NIPPLES (1<<23)
-/// Penis slot
-#define ITEM_SLOT_PENIS (1<<20)
+// /// Vagina slot
+// #define ITEM_SLOT_VAGINA (1<<21)
+// /// Anus slot
+// #define ITEM_SLOT_ANUS (1<<22)
+// /// Nipples slot
+// #define ITEM_SLOT_NIPPLES (1<<23)
+// /// Penis slot
+// #define ITEM_SLOT_PENIS (1<<20)
 
 //SLOT GROUP HELPERS
 #define ITEM_SLOT_ERP_INSERTABLE (ITEM_SLOT_VAGINA|ITEM_SLOT_ANUS)
@@ -557,27 +557,27 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	/obj/item/condom
 	)))
 
-// From type2type.dm
-/slot2body_zone(slot)
-	switch(slot)
-		if(ITEM_SLOT_PENIS, ITEM_SLOT_VAGINA, ITEM_SLOT_ANUS)
-			return BODY_ZONE_PRECISE_GROIN
+// // From type2type.dm
+// /slot2body_zone(slot)
+// 	switch(slot)
+// 		if(ITEM_SLOT_PENIS, ITEM_SLOT_VAGINA, ITEM_SLOT_ANUS)
+// 			return BODY_ZONE_PRECISE_GROIN
 
-		if(ITEM_SLOT_NIPPLES)
-			return BODY_ZONE_CHEST
-	..()
+// 		if(ITEM_SLOT_NIPPLES)
+// 			return BODY_ZONE_CHEST
+// 	..()
 
-// Defines of UI offsets. Need to be refactored
-#define ui_vagina "WEST+1:8,SOUTH+4:14"
-#define ui_vagina_down "WEST+1:8,SOUTH+1:8"
-#define ui_anus "WEST+2:10,SOUTH+4:14"
-#define ui_anus_down "WEST+2:10,SOUTH+1:8"
-#define ui_nipples "WEST:6,SOUTH+5:17"
-#define ui_nipples_down "WEST:6,SOUTH+2:11"
-#define ui_penis "WEST+1:8,SOUTH+5:17"
-#define ui_penis_down "WEST+1:8,SOUTH+2:11"
-#define ui_erp_inventory "WEST:6,SOUTH+1:8"
-#define ui_erp_inventory_up "WEST:6,SOUTH+4:14"
+// // Defines of UI offsets. Need to be refactored
+// #define ui_vagina "WEST+1:8,SOUTH+4:14"
+// #define ui_vagina_down "WEST+1:8,SOUTH+1:8"
+// #define ui_anus "WEST+2:10,SOUTH+4:14"
+// #define ui_anus_down "WEST+2:10,SOUTH+1:8"
+// #define ui_nipples "WEST:6,SOUTH+5:17"
+// #define ui_nipples_down "WEST:6,SOUTH+2:11"
+// #define ui_penis "WEST+1:8,SOUTH+5:17"
+// #define ui_penis_down "WEST+1:8,SOUTH+2:11"
+// #define ui_erp_inventory "WEST:6,SOUTH+1:8"
+// #define ui_erp_inventory_up "WEST:6,SOUTH+4:14"
 
 // Strippable Defines
 #define ERP_SLOT_EQUIP_DELAY (5 SECONDS) // Lamella TODO: delay need to be balanced
@@ -671,53 +671,53 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/obj/item/nipples = null
 	var/obj/item/penis = null
 
-// Extention can_equip checks for ERP slots
-/datum/species/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
-	. = ..()
-	if(!.)
-		if(/*I.slot_flags & slot && */H.client?.prefs.erp_pref == "Yes")
-			switch(slot)
-				if(ITEM_SLOT_VAGINA)
-					if(H.is_bottomless())
-						if(H.getorganslot(ORGAN_SLOT_VAGINA))
-							for(var/L in GLOB.vagina_items_allowed)
-								if(istype(I,L))
-									return equip_delay_self_check(I, H, bypass_equip_delay_self)
-								continue
-							return FALSE
-						return FALSE
-					return FALSE
-				if(ITEM_SLOT_ANUS)
-					if(H.is_bottomless())
-						for(var/L in GLOB.anus_items_allowed)
-							if(istype(I,L))
-								return equip_delay_self_check(I, H, bypass_equip_delay_self)
-							continue
-						return FALSE
-					return FALSE
-				if(ITEM_SLOT_NIPPLES)
-					if(H.is_topless())
-						for(var/L in GLOB.nipples_items_allowed)
-							if(istype(I,L))
-								return equip_delay_self_check(I, H, bypass_equip_delay_self)
-							continue
-						return FALSE
-					return FALSE
-				if(ITEM_SLOT_PENIS)
-					if(H.is_bottomless())
-						if(H.getorganslot(ORGAN_SLOT_PENIS))
-							for(var/L in GLOB.peins_items_allowed)
-								if(istype(I,L))
-									return equip_delay_self_check(I, H, bypass_equip_delay_self)
-								continue
-							return FALSE
-						return FALSE
-					return FALSE
-				else
-					return FALSE
-		else
-			return FALSE
-	return TRUE
+// // Extention can_equip checks for ERP slots
+// /datum/species/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
+// 	. = ..()
+// 	if(!.)
+// 		if(/*I.slot_flags & slot && */H.client?.prefs.erp_pref == "Yes")
+// 			switch(slot)
+// 				if(ITEM_SLOT_VAGINA)
+// 					if(H.is_bottomless())
+// 						if(H.getorganslot(ORGAN_SLOT_VAGINA))
+// 							for(var/L in GLOB.vagina_items_allowed)
+// 								if(istype(I,L))
+// 									return equip_delay_self_check(I, H, bypass_equip_delay_self)
+// 								continue
+// 							return FALSE
+// 						return FALSE
+// 					return FALSE
+// 				if(ITEM_SLOT_ANUS)
+// 					if(H.is_bottomless())
+// 						for(var/L in GLOB.anus_items_allowed)
+// 							if(istype(I,L))
+// 								return equip_delay_self_check(I, H, bypass_equip_delay_self)
+// 							continue
+// 						return FALSE
+// 					return FALSE
+// 				if(ITEM_SLOT_NIPPLES)
+// 					if(H.is_topless())
+// 						for(var/L in GLOB.nipples_items_allowed)
+// 							if(istype(I,L))
+// 								return equip_delay_self_check(I, H, bypass_equip_delay_self)
+// 							continue
+// 						return FALSE
+// 					return FALSE
+// 				if(ITEM_SLOT_PENIS)
+// 					if(H.is_bottomless())
+// 						if(H.getorganslot(ORGAN_SLOT_PENIS))
+// 							for(var/L in GLOB.peins_items_allowed)
+// 								if(istype(I,L))
+// 									return equip_delay_self_check(I, H, bypass_equip_delay_self)
+// 								continue
+// 							return FALSE
+// 						return FALSE
+// 					return FALSE
+// 				else
+// 					return FALSE
+// 		else
+// 			return FALSE
+// 	return TRUE
 
 // /mob/living/carbon/human/equip_to_slot_if_possible(obj/item/W, slot, qdel_on_fail = FALSE, disable_warning = FALSE, redraw_mob = TRUE, bypass_equip_delay_self = FALSE, initial = FALSE)
 // 	. = ..()
@@ -765,129 +765,129 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // 	else
 // 		return TRUE
 
-// Supplement a procedure for getting an item by ERP slot for human class (may be not needed if carbon class has this code to)
-/mob/living/carbon/human/get_item_by_slot(slot_id)
-	var/obj/item/I = ..()
-	if(!I)
-		switch(slot_id)
-			if(ITEM_SLOT_VAGINA)
-				return vagina
-			if(ITEM_SLOT_ANUS)
-				return anus
-			if(ITEM_SLOT_NIPPLES)
-				return nipples
-			if(ITEM_SLOT_PENIS)
-				return penis
-			else
-				return null
-	else
-		return I
+// // Supplement a procedure for getting an item by ERP slot for human class (may be not needed if carbon class has this code to)
+// /mob/living/carbon/human/get_item_by_slot(slot_id)
+// 	var/obj/item/I = ..()
+// 	if(!I)
+// 		switch(slot_id)
+// 			if(ITEM_SLOT_VAGINA)
+// 				return vagina
+// 			if(ITEM_SLOT_ANUS)
+// 				return anus
+// 			if(ITEM_SLOT_NIPPLES)
+// 				return nipples
+// 			if(ITEM_SLOT_PENIS)
+// 				return penis
+// 			else
+// 				return null
+// 	else
+// 		return I
 
-// Supplement a procedure for getting a ERP body slots
-/mob/living/carbon/human/get_body_slots()
-	var/list/L = ..()
+// // Supplement a procedure for getting a ERP body slots
+// /mob/living/carbon/human/get_body_slots()
+// 	var/list/L = ..()
 
-	L.Add(vagina)
-	L.Add(anus)
-	L.Add(nipples)
-	L.Add(penis)
-	return L
+// 	L.Add(vagina)
+// 	L.Add(anus)
+// 	L.Add(nipples)
+// 	L.Add(penis)
+// 	return L
 
-// Extention equipping procedure for ERP slot
-/mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
-	if(src.client?.prefs.erp_pref == "Yes")
+// // Extention equipping procedure for ERP slot
+// /mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
+// 	if(src.client?.prefs.erp_pref == "Yes")
 
-		if(!slot)
-			return
-		if(!istype(I))
-			return
+// 		if(!slot)
+// 			return
+// 		if(!istype(I))
+// 			return
 
-		if(slot == ITEM_SLOT_VAGINA || slot == ITEM_SLOT_ANUS || slot == ITEM_SLOT_NIPPLES || slot == ITEM_SLOT_PENIS)
+// 		if(slot == ITEM_SLOT_VAGINA || slot == ITEM_SLOT_ANUS || slot == ITEM_SLOT_NIPPLES || slot == ITEM_SLOT_PENIS)
 
-			var/index = get_held_index_of_item(I)
-			if(index)
-				held_items[index] = null
+// 			var/index = get_held_index_of_item(I)
+// 			if(index)
+// 				held_items[index] = null
 
-			if(I.pulledby)
-				I.pulledby.stop_pulling()
+// 			if(I.pulledby)
+// 				I.pulledby.stop_pulling()
 
-			I.screen_loc = null
-			if(client)
-				client.screen -= I
-			if(observers?.len)
-				for(var/M in observers)
-					var/mob/dead/observe = M
-					if(observe.client)
-						observe.client.screen -= I
-			I.forceMove(src)
-			I.plane = ABOVE_HUD_PLANE
-			I.appearance_flags |= NO_CLIENT_COLOR
+// 			I.screen_loc = null
+// 			if(client)
+// 				client.screen -= I
+// 			if(observers?.len)
+// 				for(var/M in observers)
+// 					var/mob/dead/observe = M
+// 					if(observe.client)
+// 						observe.client.screen -= I
+// 			I.forceMove(src)
+// 			I.plane = ABOVE_HUD_PLANE
+// 			I.appearance_flags |= NO_CLIENT_COLOR
 
-			switch(slot)
-				if(ITEM_SLOT_VAGINA)
-					if(src.is_bottomless())
-						if(vagina)
-							return
-						vagina = I
-						update_inv_vagina()
-						return
-					to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
-					return
-				if(ITEM_SLOT_ANUS)
-					if(src.is_bottomless())
-						if(anus)
-							return
-						anus = I
-						update_inv_anus()
-						return
-					to_chat(usr, "[src] is not bottomless, you cannot access to anus")
-					return
-				if(ITEM_SLOT_NIPPLES)
-					if(src.is_topless())
-						if(nipples)
-							return
-						nipples = I
-						update_inv_nipples()
-						return
-					to_chat(usr, "[src] is not topless, you cannot access to nipples")
-					return
-				if(ITEM_SLOT_PENIS)
-					if(src.is_bottomless())
-						if(penis)
-							return
-						penis = I
-						update_inv_penis()
-						return
-					to_chat(usr, "[src] is not bottomless, you cannot access to penis")
-					return
-				else
-					return FALSE
-		else
-			..()
-	else
-		..()
+// 			switch(slot)
+// 				if(ITEM_SLOT_VAGINA)
+// 					if(src.is_bottomless())
+// 						if(vagina)
+// 							return
+// 						vagina = I
+// 						update_inv_vagina()
+// 						return
+// 					to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
+// 					return
+// 				if(ITEM_SLOT_ANUS)
+// 					if(src.is_bottomless())
+// 						if(anus)
+// 							return
+// 						anus = I
+// 						update_inv_anus()
+// 						return
+// 					to_chat(usr, "[src] is not bottomless, you cannot access to anus")
+// 					return
+// 				if(ITEM_SLOT_NIPPLES)
+// 					if(src.is_topless())
+// 						if(nipples)
+// 							return
+// 						nipples = I
+// 						update_inv_nipples()
+// 						return
+// 					to_chat(usr, "[src] is not topless, you cannot access to nipples")
+// 					return
+// 				if(ITEM_SLOT_PENIS)
+// 					if(src.is_bottomless())
+// 						if(penis)
+// 							return
+// 						penis = I
+// 						update_inv_penis()
+// 						return
+// 					to_chat(usr, "[src] is not bottomless, you cannot access to penis")
+// 					return
+// 				else
+// 					return FALSE
+// 		else
+// 			..()
+// 	else
+// 		..()
 
-// Extention unequipping procedure for ERP slot
-/mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
-	. = ..()
-	if(I)
-		if(I == vagina)
-			vagina = null
-			if(!QDELETED(src))
-				update_inv_vagina()
-		else if(I == anus)
-			anus = null
-			if(!QDELETED(src))
-				update_inv_anus()
-		else if(I == nipples)
-			nipples = null
-			if(!QDELETED(src))
-				update_inv_nipples()
-		else if(I == penis)
-			penis = null
-			if(!QDELETED(src))
-				update_inv_penis()
-		update_equipment_speed_mods()
+// // Extention unequipping procedure for ERP slot
+// /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
+// 	. = ..()
+// 	if(I)
+// 		if(I == vagina)
+// 			vagina = null
+// 			if(!QDELETED(src))
+// 				update_inv_vagina()
+// 		else if(I == anus)
+// 			anus = null
+// 			if(!QDELETED(src))
+// 				update_inv_anus()
+// 		else if(I == nipples)
+// 			nipples = null
+// 			if(!QDELETED(src))
+// 				update_inv_nipples()
+// 		else if(I == penis)
+// 			penis = null
+// 			if(!QDELETED(src))
+// 				update_inv_penis()
+// 		update_equipment_speed_mods()
 
 
 /////////////////////////////
@@ -1057,21 +1057,21 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 /mob/living/carbon/proc/update_hud_penis(obj/item/I)
 	return
 
-// Updating ERP slot icons to
-/obj/item/update_slot_icon()
-	. = ..()
+// // Updating ERP slot icons to
+// /obj/item/update_slot_icon()
+// 	. = ..()
 
-	var/mob/owner = loc
-	var/flags = slot_flags
+// 	var/mob/owner = loc
+// 	var/flags = slot_flags
 
-	if(flags & ITEM_SLOT_VAGINA)
-		owner.update_inv_vagina()
-	if(flags & ITEM_SLOT_ANUS)
-		owner.update_inv_anus()
-	if(flags & ITEM_SLOT_NIPPLES)
-		owner.update_inv_nipples()
-	if(flags & ITEM_SLOT_PENIS)
-		owner.update_inv_penis()
+// 	if(flags & ITEM_SLOT_VAGINA)
+// 		owner.update_inv_vagina()
+// 	if(flags & ITEM_SLOT_ANUS)
+// 		owner.update_inv_anus()
+// 	if(flags & ITEM_SLOT_NIPPLES)
+// 		owner.update_inv_nipples()
+// 	if(flags & ITEM_SLOT_PENIS)
+// 		owner.update_inv_penis()
 
 //////////////////////////////////
 // UI CONSTRUCTION AND HANDLING //
@@ -1106,247 +1106,247 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	targetmob.hud_used.hidden_inventory_update(usr)
 
-// Extends default inventory button for chahge positions of ERP slots hud icons when expand/collapse default inventory
-/atom/movable/screen/human/toggle/Click()
-	. = ..()
-	var/mob/targetmob = usr
+// // Extends default inventory button for chahge positions of ERP slots hud icons when expand/collapse default inventory
+// /atom/movable/screen/human/toggle/Click()
+// 	. = ..()
+// 	var/mob/targetmob = usr
 
-	if(usr.hud_used.inventory_shown && targetmob.hud_used)
-		for (var/atom/movable/screen/human/using in targetmob.hud_used.static_inventory)
-			if(using.screen_loc == ui_erp_inventory)
-				using.screen_loc = ui_erp_inventory_up // Move up ERP inventory button
-		for (var/atom/movable/screen/inventory/inv in targetmob.hud_used.ERP_toggleable_inventory)
-			// Move up ERP hud slots
-			if(inv.screen_loc == ui_vagina_down)
-				inv.screen_loc = ui_vagina
-			if(inv.screen_loc == ui_anus_down)
-				inv.screen_loc = ui_anus
-			if(inv.screen_loc == ui_nipples_down)
-				inv.screen_loc = ui_nipples
-			if(inv.screen_loc == ui_penis_down)
-				inv.screen_loc = ui_penis
-	else
-		for (var/atom/movable/screen/human/using in targetmob.hud_used.static_inventory)
-			if(using.screen_loc == ui_erp_inventory_up)
-				using.screen_loc = ui_erp_inventory // Move down ERP inventory button
-		for (var/atom/movable/screen/inventory/inv in targetmob.hud_used.ERP_toggleable_inventory)
-			// Move up ERP hud slots
-			if(inv.screen_loc == ui_vagina)
-				inv.screen_loc = ui_vagina_down
-			if(inv.screen_loc == ui_anus)
-				inv.screen_loc = ui_anus_down
-			if(inv.screen_loc == ui_nipples)
-				inv.screen_loc = ui_nipples_down
-			if(inv.screen_loc == ui_penis)
-				inv.screen_loc = ui_penis_down
+// 	if(usr.hud_used.inventory_shown && targetmob.hud_used)
+// 		for (var/atom/movable/screen/human/using in targetmob.hud_used.static_inventory)
+// 			if(using.screen_loc == ui_erp_inventory)
+// 				using.screen_loc = ui_erp_inventory_up // Move up ERP inventory button
+// 		for (var/atom/movable/screen/inventory/inv in targetmob.hud_used.ERP_toggleable_inventory)
+// 			// Move up ERP hud slots
+// 			if(inv.screen_loc == ui_vagina_down)
+// 				inv.screen_loc = ui_vagina
+// 			if(inv.screen_loc == ui_anus_down)
+// 				inv.screen_loc = ui_anus
+// 			if(inv.screen_loc == ui_nipples_down)
+// 				inv.screen_loc = ui_nipples
+// 			if(inv.screen_loc == ui_penis_down)
+// 				inv.screen_loc = ui_penis
+// 	else
+// 		for (var/atom/movable/screen/human/using in targetmob.hud_used.static_inventory)
+// 			if(using.screen_loc == ui_erp_inventory_up)
+// 				using.screen_loc = ui_erp_inventory // Move down ERP inventory button
+// 		for (var/atom/movable/screen/inventory/inv in targetmob.hud_used.ERP_toggleable_inventory)
+// 			// Move up ERP hud slots
+// 			if(inv.screen_loc == ui_vagina)
+// 				inv.screen_loc = ui_vagina_down
+// 			if(inv.screen_loc == ui_anus)
+// 				inv.screen_loc = ui_anus_down
+// 			if(inv.screen_loc == ui_nipples)
+// 				inv.screen_loc = ui_nipples_down
+// 			if(inv.screen_loc == ui_penis)
+// 				inv.screen_loc = ui_penis_down
 
-// Extend human hud creation with ERP hud elements
-/datum/hud/human/New(mob/living/carbon/human/owner)
-	..()
-	var/atom/movable/screen/inventory/inv_box
+// // Extend human hud creation with ERP hud elements
+// /datum/hud/human/New(mob/living/carbon/human/owner)
+// 	..()
+// 	var/atom/movable/screen/inventory/inv_box
 
-	inv_box = new /atom/movable/screen/inventory()
-	inv_box.name = "vagina"
-	inv_box.icon = ui_style
-	inv_box.icon_state = "template"
-	inv_box.screen_loc = ui_vagina_down
-	inv_box.slot_id = ITEM_SLOT_VAGINA
-	inv_box.hud = src
-	ERP_toggleable_inventory += inv_box
+// 	inv_box = new /atom/movable/screen/inventory()
+// 	inv_box.name = "vagina"
+// 	inv_box.icon = ui_style
+// 	inv_box.icon_state = "template"
+// 	inv_box.screen_loc = ui_vagina_down
+// 	inv_box.slot_id = ITEM_SLOT_VAGINA
+// 	inv_box.hud = src
+// 	ERP_toggleable_inventory += inv_box
 
-	inv_box = new /atom/movable/screen/inventory()
-	inv_box.name = "anus"
-	inv_box.icon = ui_style
-	inv_box.icon_state = "template"
-	inv_box.screen_loc = ui_anus_down
-	inv_box.slot_id = ITEM_SLOT_ANUS
-	inv_box.hud = src
-	ERP_toggleable_inventory += inv_box
+// 	inv_box = new /atom/movable/screen/inventory()
+// 	inv_box.name = "anus"
+// 	inv_box.icon = ui_style
+// 	inv_box.icon_state = "template"
+// 	inv_box.screen_loc = ui_anus_down
+// 	inv_box.slot_id = ITEM_SLOT_ANUS
+// 	inv_box.hud = src
+// 	ERP_toggleable_inventory += inv_box
 
-	inv_box = new /atom/movable/screen/inventory()
-	inv_box.name = "nipples"
-	inv_box.icon = ui_style
-	inv_box.icon_state = "template"
-	inv_box.screen_loc = ui_nipples_down
-	inv_box.slot_id = ITEM_SLOT_NIPPLES
-	inv_box.hud = src
-	ERP_toggleable_inventory += inv_box
+// 	inv_box = new /atom/movable/screen/inventory()
+// 	inv_box.name = "nipples"
+// 	inv_box.icon = ui_style
+// 	inv_box.icon_state = "template"
+// 	inv_box.screen_loc = ui_nipples_down
+// 	inv_box.slot_id = ITEM_SLOT_NIPPLES
+// 	inv_box.hud = src
+// 	ERP_toggleable_inventory += inv_box
 
-	inv_box = new /atom/movable/screen/inventory()
-	inv_box.name = "penis"
-	inv_box.icon = ui_style
-	inv_box.icon_state = "template"
-	inv_box.screen_loc = ui_penis_down
-	inv_box.slot_id = ITEM_SLOT_PENIS
-	inv_box.hud = src
-	ERP_toggleable_inventory += inv_box
+// 	inv_box = new /atom/movable/screen/inventory()
+// 	inv_box.name = "penis"
+// 	inv_box.icon = ui_style
+// 	inv_box.icon_state = "template"
+// 	inv_box.screen_loc = ui_penis_down
+// 	inv_box.slot_id = ITEM_SLOT_PENIS
+// 	inv_box.hud = src
+// 	ERP_toggleable_inventory += inv_box
 
-	var/atom/movable/screen/using
-	using = new /atom/movable/screen/human/ERP_toggle()
-	using.icon = ui_style
-	using.screen_loc = ui_erp_inventory
-	using.hud = src
-	// When creating a character, we will check if the ERP is enabled on the client, if not, then the ERP button is immediately invisible
-	if(owner.client?.prefs.erp_pref != "Yes")
-		using.invisibility = 100
-	static_inventory += using
+// 	var/atom/movable/screen/using
+// 	using = new /atom/movable/screen/human/ERP_toggle()
+// 	using.icon = ui_style
+// 	using.screen_loc = ui_erp_inventory
+// 	using.hud = src
+// 	// When creating a character, we will check if the ERP is enabled on the client, if not, then the ERP button is immediately invisible
+// 	if(owner.client?.prefs.erp_pref != "Yes")
+// 		using.invisibility = 100
+// 	static_inventory += using
 
-	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory + ERP_toggleable_inventory))
-		if(inv.slot_id)
-			inv.hud = src
-			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
-			inv.update_appearance()
+// 	for(var/atom/movable/screen/inventory/inv in (static_inventory + toggleable_inventory + ERP_toggleable_inventory))
+// 		if(inv.slot_id)
+// 			inv.hud = src
+// 			inv_slots[TOBITSHIFT(inv.slot_id) + 1] = inv
+// 			inv.update_appearance()
 
-	update_locked_slots() // Not sure this is realy need here
+// 	update_locked_slots() // Not sure this is realy need here
 
-// Just extend default proc with ERP stuff
-/datum/hud/human/update_locked_slots()
-	. = ..()
+// // Just extend default proc with ERP stuff
+// /datum/hud/human/update_locked_slots()
+// 	. = ..()
 
-	var/mob/living/carbon/human/H = mymob
-	var/datum/species/S = H.dna.species
+// 	var/mob/living/carbon/human/H = mymob
+// 	var/datum/species/S = H.dna.species
 
-	for(var/atom/movable/screen/inventory/inv in ERP_toggleable_inventory)
-		if(inv.slot_id)
-			if(inv.slot_id in S.no_equip)
-				inv.alpha = 128
-			else
-				inv.alpha = initial(inv.alpha)
+// 	for(var/atom/movable/screen/inventory/inv in ERP_toggleable_inventory)
+// 		if(inv.slot_id)
+// 			if(inv.slot_id in S.no_equip)
+// 				inv.alpha = 128
+// 			else
+// 				inv.alpha = initial(inv.alpha)
 
-// Just extend default proc with ERP stuff
-/datum/hud/human/hidden_inventory_update(mob/viewer)
-	.=..()
+// // Just extend default proc with ERP stuff
+// /datum/hud/human/hidden_inventory_update(mob/viewer)
+// 	.=..()
 
-	var/mob/living/carbon/human/H = mymob
+// 	var/mob/living/carbon/human/H = mymob
 
-	var/mob/screenmob = viewer || H
+// 	var/mob/screenmob = viewer || H
 
-	if(screenmob.hud_used.ERP_inventory_shown && screenmob.hud_used.hud_shown && H.client.prefs?.erp_pref == "Yes")
-		if(H.vagina)
-			// This shity code need for hanlde an moving UI stuff when default inventory expand/collapse
-			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
-				H.vagina.screen_loc = ui_vagina
-			else
-				H.vagina.screen_loc = ui_vagina_down
-			screenmob.client.screen += H.vagina
-		if(H.anus)
-			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
-				H.anus.screen_loc = ui_anus
-			else
-				H.anus.screen_loc = ui_anus_down
-			screenmob.client.screen += H.anus
-		if(H.nipples)
-			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
-				H.nipples.screen_loc = ui_nipples
-			else
-				H.nipples.screen_loc = ui_nipples_down
-			screenmob.client.screen += H.nipples
-		if(H.penis)
-			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
-				H.penis.screen_loc = ui_penis
-			else
-				H.penis.screen_loc = ui_penis_down
-			screenmob.client.screen += H.penis
-	else
-		if(H.vagina) screenmob.client.screen -= H.vagina
-		if(H.anus) screenmob.client.screen -= H.anus
-		if(H.nipples) screenmob.client.screen -= H.nipples
-		if(H.penis) screenmob.client.screen -= H.penis
+// 	if(screenmob.hud_used.ERP_inventory_shown && screenmob.hud_used.hud_shown && H.client.prefs?.erp_pref == "Yes")
+// 		if(H.vagina)
+// 			// This shity code need for hanlde an moving UI stuff when default inventory expand/collapse
+// 			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
+// 				H.vagina.screen_loc = ui_vagina
+// 			else
+// 				H.vagina.screen_loc = ui_vagina_down
+// 			screenmob.client.screen += H.vagina
+// 		if(H.anus)
+// 			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
+// 				H.anus.screen_loc = ui_anus
+// 			else
+// 				H.anus.screen_loc = ui_anus_down
+// 			screenmob.client.screen += H.anus
+// 		if(H.nipples)
+// 			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
+// 				H.nipples.screen_loc = ui_nipples
+// 			else
+// 				H.nipples.screen_loc = ui_nipples_down
+// 			screenmob.client.screen += H.nipples
+// 		if(H.penis)
+// 			if(screenmob.hud_used.inventory_shown && screenmob.hud_used)
+// 				H.penis.screen_loc = ui_penis
+// 			else
+// 				H.penis.screen_loc = ui_penis_down
+// 			screenmob.client.screen += H.penis
+// 	else
+// 		if(H.vagina) screenmob.client.screen -= H.vagina
+// 		if(H.anus) screenmob.client.screen -= H.anus
+// 		if(H.nipples) screenmob.client.screen -= H.nipples
+// 		if(H.penis) screenmob.client.screen -= H.penis
 
-// Just extend default proc with ERP stuff
-/datum/hud/human/persistent_inventory_update(mob/viewer)
-	.=..()
+// // Just extend default proc with ERP stuff
+// /datum/hud/human/persistent_inventory_update(mob/viewer)
+// 	.=..()
 
-	var/mob/living/carbon/human/H = mymob
+// 	var/mob/living/carbon/human/H = mymob
 
-	var/mob/screenmob = viewer || H
+// 	var/mob/screenmob = viewer || H
 
-	if(screenmob.hud_used)
-		if(screenmob.hud_used.hud_shown && H.client.prefs?.erp_pref == "Yes")
-			if(H.vagina)
-				H.vagina.screen_loc = ui_vagina
-				screenmob.client.screen += H.vagina
-			if(H.anus)
-				H.anus.screen_loc = ui_anus
-				screenmob.client.screen += H.anus
-			if(H.nipples)
-				H.nipples.screen_loc = ui_nipples
-				screenmob.client.screen += H.nipples
-			if(H.penis)
-				H.penis.screen_loc = ui_penis
-				screenmob.client.screen += H.penis
-		else
-			if(H.vagina)
-				screenmob.client.screen -= H.vagina
-			if(H.anus)
-				screenmob.client.screen -= H.anus
-			if(H.nipples)
-				screenmob.client.screen -= H.nipples
-			if(H.penis)
-				screenmob.client.screen -= H.penis
+// 	if(screenmob.hud_used)
+// 		if(screenmob.hud_used.hud_shown && H.client.prefs?.erp_pref == "Yes")
+// 			if(H.vagina)
+// 				H.vagina.screen_loc = ui_vagina
+// 				screenmob.client.screen += H.vagina
+// 			if(H.anus)
+// 				H.anus.screen_loc = ui_anus
+// 				screenmob.client.screen += H.anus
+// 			if(H.nipples)
+// 				H.nipples.screen_loc = ui_nipples
+// 				screenmob.client.screen += H.nipples
+// 			if(H.penis)
+// 				H.penis.screen_loc = ui_penis
+// 				screenmob.client.screen += H.penis
+// 		else
+// 			if(H.vagina)
+// 				screenmob.client.screen -= H.vagina
+// 			if(H.anus)
+// 				screenmob.client.screen -= H.anus
+// 			if(H.nipples)
+// 				screenmob.client.screen -= H.nipples
+// 			if(H.penis)
+// 				screenmob.client.screen -= H.penis
 
-// Extend proc with supporting ERP stuff. ERP hud behaves like default inventory
-/datum/hud/show_hud(version = 0, mob/viewmob)
-	. = ..()
-	var/display_hud_version = version
-	if(!display_hud_version) //If 0 or blank, display the next hud version
-		display_hud_version = hud_version + 1
-	if(display_hud_version > HUD_VERSIONS) //If the requested version number is greater than the available versions, reset back to the first version
-		display_hud_version = 1
-	var/mob/screenmob = viewmob || mymob
-	switch(display_hud_version)
-		if(HUD_STYLE_STANDARD) //Default HUD
-			hud_shown = TRUE //Governs behavior of other procs
-			if(ERP_toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.ERP_inventory_shown && screenmob.client?.prefs.erp_pref == "Yes")
-				screenmob.client.screen += ERP_toggleable_inventory
+// // Extend proc with supporting ERP stuff. ERP hud behaves like default inventory
+// /datum/hud/show_hud(version = 0, mob/viewmob)
+// 	. = ..()
+// 	var/display_hud_version = version
+// 	if(!display_hud_version) //If 0 or blank, display the next hud version
+// 		display_hud_version = hud_version + 1
+// 	if(display_hud_version > HUD_VERSIONS) //If the requested version number is greater than the available versions, reset back to the first version
+// 		display_hud_version = 1
+// 	var/mob/screenmob = viewmob || mymob
+// 	switch(display_hud_version)
+// 		if(HUD_STYLE_STANDARD) //Default HUD
+// 			hud_shown = TRUE //Governs behavior of other procs
+// 			if(ERP_toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.ERP_inventory_shown && screenmob.client?.prefs.erp_pref == "Yes")
+// 				screenmob.client.screen += ERP_toggleable_inventory
 
-		if(HUD_STYLE_REDUCED) //Reduced HUD
-			hud_shown = FALSE //Governs behavior of other procs
-			if(ERP_toggleable_inventory.len)
-				screenmob.client.screen -= ERP_toggleable_inventory
+// 		if(HUD_STYLE_REDUCED) //Reduced HUD
+// 			hud_shown = FALSE //Governs behavior of other procs
+// 			if(ERP_toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.ERP_inventory_shown && screenmob.client?.prefs.erp_pref == "Yes")
+// 				screenmob.client.screen -= ERP_toggleable_inventory
 
-		if(HUD_STYLE_NOHUD) //No HUD
-			hud_shown = FALSE //Governs behavior of other procs
-			if(toggleable_inventory.len)
-				screenmob.client.screen -= ERP_toggleable_inventory
-	// Not sure all below code is realy needed here
-	hud_version = display_hud_version
-	persistent_inventory_update(screenmob)
-	screenmob.update_action_buttons(1)
-	reorganize_alerts(screenmob)
-	screenmob.reload_fullscreen()
-	update_parallax_pref(screenmob)
-	hidden_inventory_update(screenmob)
+// 		if(HUD_STYLE_NOHUD) //No HUD
+// 			hud_shown = FALSE //Governs behavior of other procs
+// 			if(toggleable_inventory.len && screenmob.hud_used && screenmob.hud_used.ERP_inventory_shown && screenmob.client?.prefs.erp_pref == "Yes")
+// 				screenmob.client.screen -= ERP_toggleable_inventory
+// 	// Not sure all below code is realy needed here
+// 	hud_version = display_hud_version
+// 	persistent_inventory_update(screenmob)
+// 	screenmob.update_action_buttons(1)
+// 	reorganize_alerts(screenmob)
+// 	screenmob.reload_fullscreen()
+// 	update_parallax_pref(screenmob)
+// 	hidden_inventory_update(screenmob)
 
-	// ensure observers get an accurate and up-to-date view
-	if (!viewmob)
-		plane_masters_update()
-		for(var/M in mymob.observers)
-			show_hud(hud_version, M)
-	else if (viewmob.hud_used)
-		viewmob.hud_used.plane_masters_update()
+// 	// ensure observers get an accurate and up-to-date view
+// 	if (!viewmob)
+// 		plane_masters_update()
+// 		for(var/M in mymob.observers)
+// 			show_hud(hud_version, M)
+// 	else if (viewmob.hud_used)
+// 		viewmob.hud_used.plane_masters_update()
 
-	return TRUE
+// 	return TRUE
 
-// Destroy must support ERP stuff to
-/datum/hud/Destroy()
-	if(mymob.hud_used == src)
-		mymob.hud_used = null
+// // Destroy must support ERP stuff to
+// /datum/hud/Destroy()
+// 	if(mymob.hud_used == src)
+// 		mymob.hud_used = null
 
-	QDEL_LIST(ERP_toggleable_inventory) // Destroy ERP stuff
+// 	QDEL_LIST(ERP_toggleable_inventory) // Destroy ERP stuff
 
-	return ..()
+// 	return ..()
 
-// Extend default proc with ERP stuff
-/datum/hud/update_ui_style(new_ui_style)
-	if (initial(ui_style) || ui_style == new_ui_style)
-		return
+// // Extend default proc with ERP stuff
+// /datum/hud/update_ui_style(new_ui_style)
+// 	if (initial(ui_style) || ui_style == new_ui_style)
+// 		return
 
-	for(var/atom/item in  ERP_toggleable_inventory)
-		if (item.icon == ui_style)
-			item.icon = new_ui_style
+// 	for(var/atom/item in  ERP_toggleable_inventory)
+// 		if (item.icon == ui_style)
+// 			item.icon = new_ui_style
 
-	..()
+// 	..()
 
 ////////////////////////////////////
 // STRIPPING ERP SYSTEM EXTENTION //
@@ -1424,51 +1424,51 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 	GLOB.strippable_human_items += strippable_items
 	return strippable_items
 
-// Handle ERP & noncon prefs changing
-/datum/preferences/process_link(mob/user, list/href_list)
-	. = ..()
-	if(.)
-		if(href_list["task"] == "input")
-			if(href_list["preference"] == "erp_pref")
-				// User changed state of ERP pref
-				var/mob/living/carbon/human/M = user
-				var/mob/targetmob = usr
-				// Some default checks
-				if(isobserver(usr))
-					if(ishuman(usr.client.eye) && (usr.client.eye != usr))
-						var/mob/U = usr.client.eye
-						targetmob = U
+// // Handle ERP & noncon prefs changing
+// /datum/preferences/process_link(mob/user, list/href_list)
+// 	. = ..()
+// 	if(.)
+// 		if(href_list["task"] == "input")
+// 			if(href_list["preference"] == "erp_pref")
+// 				// User changed state of ERP pref
+// 				var/mob/living/carbon/human/M = user
+// 				var/mob/targetmob = usr
+// 				// Some default checks
+// 				if(isobserver(usr))
+// 					if(ishuman(usr.client.eye) && (usr.client.eye != usr))
+// 						var/mob/U = usr.client.eye
+// 						targetmob = U
 
-				if(M != null && erp_pref != "Yes")
-					// The user has set the ERP pref to a value other than "Yes", now we drop all items from ERP slots and can't use them
-					if(M.vagina != null)
-						M.dropItemToGround(M.vagina, TRUE, M.loc, TRUE, FALSE, TRUE)
-					if(M.anus != null)
-						M.dropItemToGround(M.anus, TRUE, M.loc, TRUE, FALSE, TRUE)
-					if(M.nipples != null)
-						M.dropItemToGround(M.nipples, TRUE, M.loc, TRUE, FALSE, TRUE)
-					if(M.penis != null)
-						M.dropItemToGround(M.penis, TRUE, M.loc, TRUE, FALSE, TRUE)
+// 				if(M != null && erp_pref != "Yes")
+// 					// The user has set the ERP pref to a value other than "Yes", now we drop all items from ERP slots and can't use them
+// 					if(M.vagina != null)
+// 						M.dropItemToGround(M.vagina, TRUE, M.loc, TRUE, FALSE, TRUE)
+// 					if(M.anus != null)
+// 						M.dropItemToGround(M.anus, TRUE, M.loc, TRUE, FALSE, TRUE)
+// 					if(M.nipples != null)
+// 						M.dropItemToGround(M.nipples, TRUE, M.loc, TRUE, FALSE, TRUE)
+// 					if(M.penis != null)
+// 						M.dropItemToGround(M.penis, TRUE, M.loc, TRUE, FALSE, TRUE)
 
-					// If the user has an inventory of the ERP open, then we will hide it
-					if(usr.hud_used.ERP_inventory_shown && targetmob.hud_used)
-						usr.hud_used.ERP_inventory_shown = FALSE
-						usr.client.screen -= targetmob.hud_used.ERP_toggleable_inventory
+// 					// If the user has an inventory of the ERP open, then we will hide it
+// 					if(usr.hud_used.ERP_inventory_shown && targetmob.hud_used)
+// 						usr.hud_used.ERP_inventory_shown = FALSE
+// 						usr.client.screen -= targetmob.hud_used.ERP_toggleable_inventory
 
-					// Find the ERP button of the inventory and make it invisible so that the user cannot interact with it
-					for(var/atom/movable/screen/human/ERP_toggle/E in targetmob.hud_used.static_inventory)
-						if(istype(E, /atom/movable/screen/human/ERP_toggle))
-							E.invisibility = 100
-				else
-					// User set ERP pref to "Yes", make the ERP button of the inventory visible and interactive again
-					for(var/atom/movable/screen/human/ERP_toggle/E in targetmob.hud_used.static_inventory)
-						if(istype(E, /atom/movable/screen/human/ERP_toggle))
-							E.invisibility = 0
-				// Perform standard inventory updates
-				targetmob.hud_used.hidden_inventory_update(usr)
-				user.hud_used.hidden_inventory_update(src)
-				user.hud_used.persistent_inventory_update(usr)
-				return 1
+// 					// Find the ERP button of the inventory and make it invisible so that the user cannot interact with it
+// 					for(var/atom/movable/screen/human/ERP_toggle/E in targetmob.hud_used.static_inventory)
+// 						if(istype(E, /atom/movable/screen/human/ERP_toggle))
+// 							E.invisibility = 100
+// 				else
+// 					// User set ERP pref to "Yes", make the ERP button of the inventory visible and interactive again
+// 					for(var/atom/movable/screen/human/ERP_toggle/E in targetmob.hud_used.static_inventory)
+// 						if(istype(E, /atom/movable/screen/human/ERP_toggle))
+// 							E.invisibility = 0
+// 				// Perform standard inventory updates
+// 				targetmob.hud_used.hidden_inventory_update(usr)
+// 				user.hud_used.hidden_inventory_update(src)
+// 				user.hud_used.persistent_inventory_update(usr)
+// 				return 1
 
 ////////////////////////////////////////////////////////////////////
 // EXTENTIONS FOR SPRITE_ACCESSORY IS_HIDDEN CHECKS FOR ERP STUFF //

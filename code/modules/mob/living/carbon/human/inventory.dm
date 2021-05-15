@@ -38,6 +38,16 @@
 			return r_store
 		if(ITEM_SLOT_SUITSTORE)
 			return s_store
+		//SKYRAT EDIT ADDITION BEGIN - ERP_SLOT_SYSTEM
+		if(ITEM_SLOT_VAGINA)
+			return vagina
+		if(ITEM_SLOT_ANUS)
+			return anus
+		if(ITEM_SLOT_NIPPLES)
+			return nipples
+		if(ITEM_SLOT_PENIS)
+			return penis
+		//SKYRAT EDIT ADDITION END
 	return null
 
 /mob/living/carbon/human/proc/get_all_slots()
@@ -56,7 +66,13 @@
 		wear_id,
 		l_store,
 		r_store,
-		w_uniform
+		w_uniform,
+		//SKYRAT EDIT ADDITION BEGIN - ERP_SLOT_SYSTEM
+		vagina,
+		anus,
+		nipples,
+		penis
+		//SKYRAT EDIT ADDITION END
 		)
 
 /mob/living/carbon/human/proc/get_head_slots()
@@ -155,6 +171,44 @@
 				return
 			s_store = I
 			update_inv_s_store()
+		//SKYRAT EDIT ADDITION BEGIN - ERP_SLOT_SYSTEM
+		if(ITEM_SLOT_VAGINA)
+			if(src.is_bottomless())
+				if(vagina)
+					return
+				vagina = I
+				update_inv_vagina()
+			else
+				to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
+			return
+		if(ITEM_SLOT_ANUS)
+			if(src.is_bottomless())
+				if(anus)
+					return
+				anus = I
+				update_inv_anus()
+			else
+				to_chat(usr, "[src] is not bottomless, you cannot access to anus")
+			return
+		if(ITEM_SLOT_NIPPLES)
+			if(src.is_topless())
+				if(nipples)
+					return
+				nipples = I
+				update_inv_nipples()
+			else
+				to_chat(usr, "[src] is not topless, you cannot access to nipples")
+			return
+		if(ITEM_SLOT_PENIS)
+			if(src.is_bottomless())
+				if(penis)
+					return
+				penis = I
+				update_inv_penis()
+			else
+				to_chat(usr, "[src] is not bottomless, you cannot access to penis")
+			return
+		//SKYRAT EDIT ADDITION END
 		else
 			to_chat(src, "<span class='danger'>You are trying to equip this item to an unsupported inventory slot. Report this to a coder!</span>")
 
@@ -254,6 +308,24 @@
 		s_store = null
 		if(!QDELETED(src))
 			update_inv_s_store()
+	//SKYRAT EDIT ADDITION BEGIN - ERP_SLOT_SYSTEM
+	else if(I == vagina)
+		vagina = null
+		if(!QDELETED(src))
+			update_inv_vagina()
+	else if(I == anus)
+		anus = null
+		if(!QDELETED(src))
+			update_inv_anus()
+	else if(I == nipples)
+		nipples = null
+		if(!QDELETED(src))
+			update_inv_nipples()
+	else if(I == penis)
+		penis = null
+		if(!QDELETED(src))
+			update_inv_penis()
+	//SKYRAT EDIT ADDITION END
 	update_equipment_speed_mods()
 
 	// Send a signal for when we unequip an item that used to cover our feet/shoes. Used for bloody feet

@@ -719,6 +719,16 @@ GLOBAL_VAR_INIT(embedpocalypse, FALSE) // if true, all items will be able to emb
 		owner.update_inv_back()
 	if(flags & ITEM_SLOT_NECK)
 		owner.update_inv_neck()
+	//SKYRAT EDIT ADDITION BEGIN - ERP_SLOT_SYSTEM
+	if(flags & ITEM_SLOT_VAGINA)
+		owner.update_inv_vagina()
+	if(flags & ITEM_SLOT_ANUS)
+		owner.update_inv_anus()
+	if(flags & ITEM_SLOT_NIPPLES)
+		owner.update_inv_nipples()
+	if(flags & ITEM_SLOT_PENIS)
+		owner.update_inv_penis()
+	//SKYRAT EDIT ADDITION END
 
 ///Returns the temperature of src. If you want to know if an item is hot use this proc.
 /obj/item/proc/get_temperature()
