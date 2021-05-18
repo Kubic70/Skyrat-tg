@@ -39,8 +39,8 @@ const MilkingMachineContent = (props, context) => {
     semenTankMaxVolume,
     semenTankCurrentVolume,
     current_vessel,
-    current_organ,
-    current_organ_name,
+    current_selected_organ,
+    current_selected_organ_name,
     current_breasts,
     current_testicles,
     current_vagina,
@@ -146,7 +146,7 @@ const MilkingMachineContent = (props, context) => {
                   <Stack.Item grow={1}>
                     <Stack vertical>
                       <Stack.Item>
-                        {current_organ !== null && (
+                        {current_selected_organ !== null && (
                           <Box as="div" m={1}>
                             <Button
                               content="Unplug"
@@ -158,7 +158,7 @@ const MilkingMachineContent = (props, context) => {
                               onClick={() => act('unplug')} />
                             </Box>
                         )}
-                        {current_organ === null && (
+                        {current_selected_organ === null && (
                           <Box as="div" m={1}>
                             <Button
                               content="Unplug"
@@ -178,21 +178,21 @@ const MilkingMachineContent = (props, context) => {
                   <Stack.Item grow={2}>
                     <Stack vertical>
                       <Stack.Item>
-                        {current_organ === null && (
+                        {current_selected_organ === null && (
                         <Section backgroundColor={palette.SectionBackgroundColor} textAlign="center">
                           Organ: none
                         </Section>
                         )}
-                        {current_organ !== null && (
+                        {current_selected_organ !== null && (
                           <Section backgroundColor={palette.SectionBackgroundColor} textAlign="center">
-                            Organ: {current_organ}
+                            Organ: {current_selected_organ}
                           </Section>
                         )}
                       </Stack.Item>
                       <Stack.Item>
                         <Stack>
                           <Stack.Item grow>
-                            {current_organ !== "the vagina" && current_vagina !== null && (
+                            {current_selected_organ !== "the vagina" && current_vagina !== null && (
                               <Box as="div" m={1}>
                                 <Button
                                   content="Vagina"
@@ -204,7 +204,7 @@ const MilkingMachineContent = (props, context) => {
                                   onClick={() => act('setVagina')} />
                               </Box>
                             )}
-                            {current_organ === "the vagina" && (
+                            {current_selected_organ === "the vagina" && (
                               <Box as="div" m={1}>
                                 <Button
                                 content="Vagina"
@@ -229,7 +229,7 @@ const MilkingMachineContent = (props, context) => {
                             )}
                           </Stack.Item>
                           <Stack.Item grow>
-                            {current_organ !== "the testicles" && current_testicles !== null && (
+                            {current_selected_organ !== "the testicles" && current_testicles !== null && (
                               <Box as="div" m={1}>
                                 <Button
                                   content="Testicles"
@@ -241,7 +241,7 @@ const MilkingMachineContent = (props, context) => {
                                   onClick={() => act('setTesticles')} />
                               </Box>
                             )}
-                            {current_organ === "the testicles" && (
+                            {current_selected_organ === "the testicles" && (
                               <Box as="div" m={1}>
                                 <Button
                                   content="Testicles"
@@ -480,7 +480,7 @@ const modeButtonStates = (Name, data, palette, context) => {
   let ModeNameCapital = capitalize(data.mode);
   let action = 'set' + Name + 'Mode';
 
-  if(data.mobName !== null && ModeNameCapital !== Name && data.cellName !== null && data.current_organ !== null){
+  if(data.mobName !== null && ModeNameCapital !== Name && data.cellName !== null && data.current_selected_organ !== null){
     return(
       <Box as="div" m={1}>
         <Button
@@ -496,7 +496,7 @@ const modeButtonStates = (Name, data, palette, context) => {
     );
   }
 
-  else if(data.mobName !== null && ModeNameCapital === Name && (data.cellName !== null || data.current_organ !== null)) {
+  else if(data.mobName !== null && ModeNameCapital === Name && (data.cellName !== null || data.current_selected_organ !== null)) {
     return(
       <Box as="div" m={1}>
         <Button
@@ -510,7 +510,7 @@ const modeButtonStates = (Name, data, palette, context) => {
     );
   }
 
-  else if(ModeNameCapital !== Name && (data.current_organ === null || data.cellName === null) === true) {
+  else if(ModeNameCapital !== Name && (data.current_selected_organ === null || data.cellName === null) === true) {
     return(
       <Box as="div" m={1}>
         <Button
@@ -525,7 +525,7 @@ const modeButtonStates = (Name, data, palette, context) => {
     );
   }
 
-  else if(ModeNameCapital === Name && (data.cellName === null || data.current_organ === null)) {
+  else if(ModeNameCapital === Name && (data.cellName === null || data.current_selected_organ === null)) {
     return(
       <Box as="div" m={1}>
         <Button
@@ -543,8 +543,8 @@ const modeButtonStates = (Name, data, palette, context) => {
 const organButtonStates = (Name, data, palette, context) => {
   const { act } = useBackend(context);
   let OrganNameCapital
-  if(data.current_organ_name !== null){
-    OrganNameCapital = capitalize(data.current_organ_name);
+  if(data.current_selected_organ_name !== null){
+    OrganNameCapital = capitalize(data.current_selected_organ_name);
   }
   else{OrganNameCapital =''}
   let action = 'set' + Name;
@@ -578,7 +578,7 @@ const organButtonStates = (Name, data, palette, context) => {
     );
   }
 
-  else if (data.current_organ_name === null || (OrganNameCapital !== Name && data.mobCanLactate == false)){
+  else if (data.current_selected_organ_name === null || (OrganNameCapital !== Name && data.mobCanLactate == false)){
     return(
       <Box as="div" m={1}>
         <Button
