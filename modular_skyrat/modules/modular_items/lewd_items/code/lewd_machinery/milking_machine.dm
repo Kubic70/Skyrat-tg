@@ -162,14 +162,14 @@
 /obj/structure/chair/milking_machine/multitool_act(mob/living/user, obj/item/I)
 	. = ..()
 	if(.)
-		return
+		return FALSE
 	var/choice = show_radial_menu(user,src, milkingmachine_designs, custom_check = CALLBACK(src, .proc/check_menu, user, I), radius = 36, require_near = TRUE)
 	if(!choice)
-		return
+		return TRUE
 	machine_color = choice
 	update_icon()
 	color_changed = TRUE
-
+	return TRUE
 
 // Checking if we can use the menu
 /obj/structure/chair/milking_machine/proc/check_menu(mob/living/user)
