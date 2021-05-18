@@ -50,7 +50,7 @@
 	var/obj/item/reagent_containers/current_milk
 	var/obj/item/reagent_containers/current_girlcum
 	var/obj/item/reagent_containers/current_semen
-	var/obj/item/reagent_containers/current_vessel = null // Vessel selected in UI
+	var/obj/item/reagent_containers/current_vessel // Vessel selected in UI
 
 	////////////////////////////////////////////
 	// Work object link cache for the machine //
@@ -342,8 +342,8 @@
 		if(!user.transferItemToLoc(B, src))
 			return
 		replace_beaker(user, B)
-		to_chat(user, "<span class='notice'>You add [B] to [src].</span>")
 		updateUsrDialog()
+		return
 	// Cell attack check
 	if(istype(W, /obj/item/stock_parts/cell))
 		if(panel_open)
@@ -369,6 +369,7 @@
 				add_overlay(cell_overlay)
 				user.visible_message("<span class='notice'>[user] inserts a cell into [src].</span>", "<span class='notice'>You insert a cell into [src].</span>")
 				update_all_visuals()
+				return
 		else
 			to_chat(user, "<span class='warning'>Maintenance panel [src] isn't opened!</span>")
 			return
@@ -599,7 +600,10 @@
 		return
 
 /obj/structure/chair/milking_machine/wrench_act(mob/living/user, obj/item/I)
-	deconstruct()
+	. = !(flags_1 & NODECONSTRUCT_1) && I.tool_behaviour == TOOL_WRENCH
+	if(.)
+		I.play_tool_sound(src, 50)
+		deconstruct(TRUE)
 	return TRUE
 
 // Machine deconstruction process handler
@@ -927,9 +931,9 @@
 
 		var/amount = text2num(params["amount"])
 		current_vessel.reagents.trans_to(beaker, amount)
-		current_milk.reagents.reagent_list[1].name
+		current_vessel.reagents.reagent_list[1].name
 		update_all_visuals()
-		to_chat(usr,"You transfer [amount] of [current_milk.reagents.reagent_list[1].name] to [beaker.name]")
+		to_chat(usr,"You transfer [amount] of [current_vessel.reagents.reagent_list[1].name] to [beaker.name]")
 		return TRUE
 
 // Pink construction kit

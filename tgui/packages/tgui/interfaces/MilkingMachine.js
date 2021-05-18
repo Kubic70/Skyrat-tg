@@ -38,7 +38,7 @@ const MilkingMachineContent = (props, context) => {
     girlcumTankCurrentVolume,
     semenTankMaxVolume,
     semenTankCurrentVolume,
-    current_tank,
+    current_vessel,
     current_organ,
     current_organ_name,
     current_breasts,
@@ -345,7 +345,7 @@ const MilkingMachineContent = (props, context) => {
                   <Stack.Item>
                     <Stack>
                       <Stack.Item grow basis="1rem">
-                      {current_tank === "MilkContainer" && (
+                      {current_vessel === "MilkContainer" && (
                           <Box as="div" m={1}>
                             <Button
                               content="Milk"
@@ -356,7 +356,7 @@ const MilkingMachineContent = (props, context) => {
                               bold/>
                           </Box>
                         )}
-                      {current_tank !== "MilkContainer" && (
+                      {current_vessel !== "MilkContainer" && (
                           <Box as="div" m={1}>
                             <Button
                               content="Milk"
@@ -386,7 +386,7 @@ const MilkingMachineContent = (props, context) => {
                   <Stack.Item>
                     <Stack>
                       <Stack.Item grow basis="1rem">
-                      {current_tank === "GirlcumContainer" && (
+                      {current_vessel === "GirlcumContainer" && (
                           <Box as="div" m={1}>
                             <Button
                               content="Girlcum"
@@ -397,7 +397,7 @@ const MilkingMachineContent = (props, context) => {
                               bold/>
                           </Box>
                         )}
-                      {current_tank !== "GirlcumContainer" && (
+                      {current_vessel !== "GirlcumContainer" && (
                           <Box as="div" m={1}>
                             <Button
                               content="Girlcum"
@@ -427,7 +427,7 @@ const MilkingMachineContent = (props, context) => {
                     <Stack.Item >
                       <Stack>
                         <Stack.Item grow basis="1rem">
-                        {current_tank === "SemenContainer" && (
+                        {current_vessel === "SemenContainer" && (
                           <Box as="div" m={1}>
                             <Button
                               content="Semen"
@@ -438,7 +438,7 @@ const MilkingMachineContent = (props, context) => {
                               bold/>
                           </Box>
                         )}
-                      {current_tank !== "SemenContainer" && (
+                      {current_vessel !== "SemenContainer" && (
                           <Box as="div" m={1}>
                             <Button
                               content="Semen"
