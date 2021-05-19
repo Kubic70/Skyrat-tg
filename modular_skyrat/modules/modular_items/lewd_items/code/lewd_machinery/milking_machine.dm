@@ -470,7 +470,8 @@
 		pump_state = pump_state_list[1]
 		update_all_visuals()
 		return
-	cell.give(charge_rate * delta_time)
+	if(current_mode == mode_list[1] && pump_state == pump_state_list[1])
+		cell.give(charge_rate * delta_time)
 
 	// Check if the machine should work
 	if(!current_mob)
