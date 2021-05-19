@@ -220,6 +220,10 @@
 	update_overlays()
 	M.layer = BELOW_MOB_LAYER
 	update_all_visuals()
+
+	if(SStgui.try_update_ui(M, src))
+		var/datum/tgui/ui = SStgui.try_update_ui(M, src)
+		ui.close()
 	return
 
 // Clear the cache of the organs of the mob and update the state of the machine
@@ -667,10 +671,35 @@
 				current_selected_organ_size = current_selected_organ.genital_size
 			if(current_selected_organ.genital_type == "quad")
 				current_selected_organ_type = "quad_breast"
-				current_selected_organ_size = current_selected_organ.genital_size
+				// Optimization needed
+				switch(current_selected_organ.genital_size)
+					if(0 to 2)
+						current_selected_organ_size = "0"
+					if(3 to 4)
+						current_selected_organ_size = "1"
+					if(5 to 7)
+						current_selected_organ_size = "2"
+					if(8 to 10)
+						current_selected_organ_size = "3"
+					if(11 to 13)
+						current_selected_organ_size = "4"
+					else
+						current_selected_organ_size = "5"
 			if(current_selected_organ.genital_type == "sextuple")
 				current_selected_organ_type = "six_breast"
-				current_selected_organ_size = current_selected_organ.genital_size
+				switch(current_selected_organ.genital_size)
+					if(0 to 2)
+						current_selected_organ_size = "0"
+					if(3 to 4)
+						current_selected_organ_size = "1"
+					if(5 to 7)
+						current_selected_organ_size = "2"
+					if(8 to 10)
+						current_selected_organ_size = "3"
+					if(11 to 13)
+						current_selected_organ_size = "4"
+					else
+						current_selected_organ_size = "5"
 			if (current_mode == mode_list[1])
 				pump_state = pump_state_list[1]
 				organ_overlay_new_icon_state = "[current_selected_organ_type]_[pump_state]_[current_selected_organ_size]"
