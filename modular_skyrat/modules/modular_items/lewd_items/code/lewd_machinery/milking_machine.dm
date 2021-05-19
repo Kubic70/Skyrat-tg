@@ -214,8 +214,8 @@
 
 	lastsaved_keybindings = M.client.movement_keys
 	M.client.movement_keys = null
-	// var/mob/living/carbon/N = M
-	// N.set_usable_hands(0)
+	var/mob/living/carbon/N = M
+	N.set_usable_hands(0)
 
 	update_overlays()
 	M.layer = BELOW_MOB_LAYER
@@ -318,11 +318,11 @@
 		removecell()
 		update_all_visuals()
 		return
-	// // Block the ability to open the interface of the machine if we are attached to it
-	// if(LAZYLEN(buckled_mobs))
-	// 	if(user == buckled_mobs[1])
-	// 		user_unbuckle_mob(user,user)
-	// 		return
+	// Block the ability to open the interface of the machine if we are attached to it
+	if(LAZYLEN(buckled_mobs))
+		if(user == buckled_mobs[1])
+			user_unbuckle_mob(user,user)
+			return
 	// Standard processing, open the machine interface
 	. = ..()
 	if(.)
@@ -776,27 +776,27 @@
 /obj/structure/chair/milking_machine/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 
-	// Standard behavior. Uncomment for UI debugging
-	if(!ui)
-		ui = new(user, src, "MilkingMachine", name)
-		ui.open()
-	///////////////////////////////////////////////////////////
-
-	// //Block the interface if we are in the machine. Use in production
-	// if(LAZYLEN(buckled_mobs))
-	// 	if(user != src.buckled_mobs[1])
-	// 		if(!ui)
-	// 			ui = new(user, src, "MilkingMachine", name)
-	// 			ui.open()
-	// 			return
-	// 	else if(ui)
-	// 		ui.close()
-	// 		return
-	// else if(!ui)
+	// // Standard behavior. Uncomment for UI debugging
+	// if(!ui)
 	// 	ui = new(user, src, "MilkingMachine", name)
 	// 	ui.open()
-	// 	return
-	// ///////////////////////////////////////
+	// ///////////////////////////////////////////////////////////
+
+	//Block the interface if we are in the machine. Use in production
+	if(LAZYLEN(buckled_mobs))
+		if(user != src.buckled_mobs[1])
+			if(!ui)
+				ui = new(user, src, "MilkingMachine", name)
+				ui.open()
+				return
+		else if(ui)
+			ui.close()
+			return
+	else if(!ui)
+		ui = new(user, src, "MilkingMachine", name)
+		ui.open()
+		return
+	///////////////////////////////////////
 
 // Interface data filling handler
 /obj/structure/chair/milking_machine/ui_data(mob/user)
