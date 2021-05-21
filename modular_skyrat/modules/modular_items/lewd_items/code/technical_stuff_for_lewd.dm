@@ -910,9 +910,9 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		inv.update_appearance()
 		// if(vagina)
 		if(usr.hud_used.inventory_shown && src.hud_used)
-			vagina.screen_loc = ui_vagina
+			vagina?.screen_loc = ui_vagina
 		else
-			vagina.screen_loc = ui_vagina_down
+			vagina?.screen_loc = ui_vagina_down
 		if(H.hud_shown)
 			client.screen += vagina
 		update_observer_view(vagina)
@@ -926,9 +926,9 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		inv.update_appearance()
 		// if(anus)
 		if(usr.hud_used.inventory_shown && src.hud_used)
-			anus.screen_loc = ui_anus
+			anus?.screen_loc = ui_anus
 		else
-			anus.screen_loc = ui_anus_down
+			anus?.screen_loc = ui_anus_down
 		if(H.hud_shown)
 			client.screen += anus
 		update_observer_view(anus)
@@ -942,9 +942,9 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		inv.update_appearance()
 		// if(nipples)
 		if(usr.hud_used.inventory_shown && src.hud_used)
-			nipples.screen_loc = ui_nipples
+			nipples?.screen_loc = ui_nipples
 		else
-			nipples.screen_loc = ui_nipples_down
+			nipples?.screen_loc = ui_nipples_down
 		if(H.hud_shown)
 			client.screen += nipples
 		update_observer_view(nipples)
@@ -958,9 +958,9 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		inv.update_appearance()
 		// if(penis)
 		if(usr.hud_used.inventory_shown && src.hud_used)
-			penis.screen_loc = ui_penis
+			penis?.screen_loc = ui_penis
 		else
-			penis.screen_loc = ui_penis_down
+			penis?.screen_loc = ui_penis_down
 		if(src.hud_used.hud_shown)
 			client.screen += penis
 		update_observer_view(penis)

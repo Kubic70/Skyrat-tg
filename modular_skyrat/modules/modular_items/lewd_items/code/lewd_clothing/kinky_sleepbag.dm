@@ -20,7 +20,7 @@
 	var/time = 2
 	var/tt
 	var/static/list/bag_colors
-	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDEHAIR|HIDEEARS
+	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDEHAIR //|HIDEEARS
 	strip_delay = 300
 	breakouttime = 3000 //do not touch. First - It's contraband item, Second - It's damn expensive, Third - it's ERP item, so you can't legally use it on characters without enabled non-con.
 	var/static/list/bag_inf_states
@@ -110,17 +110,17 @@
 		H.cut_overlay(H.overlays_standing[NECK_LAYER])
 		H.cut_overlay(H.overlays_standing[BACK_LAYER])
 		H.cut_overlay(H.overlays_standing[BODY_BEHIND_LAYER])
+
 		var/i
 		if(LAZYLEN(H.bodyparts))
 			for(i=1,i<=H.bodyparts.len,i++)
 				if(istype(H.bodyparts[i],/obj/item/bodypart/l_leg))
 					legl = H.bodyparts[i]
-					H.bodyparts[i] = null
 				if(istype(H.bodyparts[i],/obj/item/bodypart/r_leg))
 					legr = H.bodyparts[i]
-					H.bodyparts[i] = null
-				continue
 
+				continue
+		H.bodyparts.Remove(legl,legr)
 		H.update_body_parts()
 		START_PROCESSING(SSobj, src)
 		time_to_sound_left = time_to_sound
@@ -131,14 +131,6 @@
 			H.cut_overlay(H.overlays_standing[HAIR_LAYER])
 		if(bag_state == "deflated")
 			to_chat(H,"<font color=purple>You realize that moving now is much harder. You are fully restrainted, all struggles are useless.</font>")
-
-		// appearance_update(user)
-		//Giving proper overlay
-		// bag_overlay.icon_state = icon_state
-		// update_overlays()
-		// H.update_mutant_bodyparts()
-		// H.cut_overlay(H.overlays_standing[SHOES_LAYER])
-		// H.update_inv_shoes()
 
 //to inflate/deflate that thing
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/attack_self(mob/user, obj/item/I)
@@ -195,16 +187,10 @@
 			H.add_overlay(H.overlays_standing[BODY_FRONT_LAYER])
 			H.add_overlay(H.overlays_standing[HEAD_LAYER])
 			H.add_overlay(H.overlays_standing[HAIR_LAYER])
-			var/i
-			if(LAZYLEN(H.bodyparts))
-				for(i=1,i<=H.bodyparts.len,i++)
-					if(H.bodyparts[i] == null)
-						H.bodyparts[i] = legl
-						legl = null
-					if(H.bodyparts[i] == null)
-						H.bodyparts[i] = legr
-						legr = null
-					continue
+
+			H.bodyparts.Add(legl)
+			H.bodyparts.Add(legr)
+
 			H.add_overlay(H.overlays_standing[SHOES_LAYER])
 			H.update_inv_shoes()
 			H.regenerate_icons()
@@ -220,19 +206,3 @@
 	else
 		time_to_sound_left -= delta_time
 
-// /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/proc/appearance_update(mob/user)
-// 	var/mob/living/carbon/human/H = user
-// 	if(H.dna.species.mutant_bodyparts["taur"])
-// 		cut_overlay(bag_overlay)
-// 		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_special.dmi', "none", ABOVE_MOB_LAYER)
-// 		add_overlay(bag_overlay)
-// 		update_overlays()
-// 	else
-// 		cut_overlay(bag_overlay)
-// 		bag_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_suit/sleepbag_normal.dmi', "none", )
-// 		add_overlay(bag_overlay)
-// 		update_overlays()
-
-// 	if(state_thing == "inflated" && src == H.wear_suit)
-// 		H.cut_overlay(H.overlays_standing[HAIR_LAYER])
-// 		H.cut_overlay(H.overlays_standing[HEAD_LAYER])
