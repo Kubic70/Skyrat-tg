@@ -123,6 +123,7 @@
 
 //Called when someone is clicked with the leash
 /obj/item/leash/attack(mob/living/carbon/C, mob/living/user) //C is the target, user is the one with the leash
+	.=..()
 	if(C.has_status_effect(/datum/status_effect/leash_pet)) //If the pet is already leashed, do not leash them. For the love of god.
 		to_chat(user, "<span class='notice'>[C] has already been leashed.</span>")
 		return
@@ -187,6 +188,7 @@
 //Called when the leash is used in hand
 //Tugs the pet closer
 /obj/item/leash/attack_self(mob/living/user)
+	.=..()
 	if(!leash_pet == "null") //No pet, no tug.
 		return
 	//Yank the pet. Yank em in close.
@@ -216,6 +218,7 @@
 			step(leash_pet, EAST, 1)
 
 /obj/item/leash/proc/on_master_move()
+	.=..()
 	SIGNAL_HANDLER
 
 	//Make sure the dom still has a pet
@@ -302,6 +305,7 @@
 		leash_used = 0
 
 /obj/item/leash/proc/on_pet_move()
+	.=..()
 	SIGNAL_HANDLER
 
 	if(leash_pet.has_status_effect(/datum/status_effect/leash_freepet))

@@ -130,8 +130,6 @@
 				M.emote(pick("laugh","giggle"))
 			user.visible_message("<font>[user] [message].</font>")
 			playsound(loc,'modular_skyrat/modules/modular_items/lewd_items/sounds/hug.ogg', 50, 1, -1)
-		else
-			return
 
 //spawning pillow on the ground when clicking on pillow	by LBM
 

@@ -146,6 +146,7 @@
 	return
 
 /obj/item/clothing/neck/kink_collar/locked/equipped(mob/living/U, slot)
+	.=..()
 	var/mob/living/carbon/human/H = U
 	if(lock == TRUE && src == H.wear_neck)
 		ADD_TRAIT(src, TRAIT_NODROP, TRAIT_NODROP)

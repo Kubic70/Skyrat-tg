@@ -140,6 +140,7 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 
 // Handler for clicking on a slot in a mask by hand whith a filter
 /datum/component/storage/concrete/pockets/small/bdsm_mask/attackby(datum/source, obj/item/I, mob/M, params)
+	.=..()
 	var/obj/item/clothing/mask/gas/bdsm_mask/B = M.get_item_by_slot(ITEM_SLOT_MASK)
 	if(istype(I, /obj/item/reagent_containers/glass/lewd_filter))
 		if(B) // Null check
@@ -216,9 +217,9 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	update_icon_state()
 	update_action_buttons_icons()
 	update_icon()
-	var/mob/living/carbon/C = usr
+	var/mob/living/carbon/human/C = usr
 	if(mask_on)
-		if(src == C.wear_mask)
+		if(src == C.wear_mask && C.client?.prefs.erp_pref == "Yes")
 			START_PROCESSING(SSobj, src)
 			time_to_choke_left = time_to_choke
 	else
@@ -259,7 +260,7 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 	custom_materials = list(/datum/material/glass=1500, /datum/material/plastic=2000)
 	volume = 50
 	possible_transfer_amounts = list(1,2,3,4,5)
-	list_reagents = list(/datum/reagent/drug/space_drugs = 50)
+	list_reagents = list(/datum/reagent/drug/crocin = 50) //You can make it strating empty, but i'm pretty sure 90% of players will use just aphrodisiacs, so why just don't make their life easier?
 
 // Standard initialize code for filter
 /obj/item/reagent_containers/glass/lewd_filter/Initialize()

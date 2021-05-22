@@ -107,6 +107,7 @@
 		populate_ballgag_designs()
 
 /obj/item/clothing/mask/ballgag/update_icon_state()
+	. = ..()
 	icon_state = icon_state = "[initial(icon_state)]_[current_ballgag_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_ballgag_color]"
 
@@ -204,7 +205,7 @@
 /obj/item/clothing/mask/ballgag_phallic/equipped(mob/user, slot)
 	..()
 	var/mob/living/carbon/U = usr
-	if(src == U.wear_mask)
+	if(src == U.wear_mask && U.client?.prefs.erp_pref == "Yes") //To prevent abusing this thing on non-erp players. We care about them, yes.
 		START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/mask/ballgag_phallic/dropped(mob/user, slot)
