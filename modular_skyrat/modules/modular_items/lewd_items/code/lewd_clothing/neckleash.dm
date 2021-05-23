@@ -218,7 +218,6 @@
 			step(leash_pet, EAST, 1)
 
 /obj/item/leash/proc/on_master_move()
-	.=..()
 	SIGNAL_HANDLER
 
 	//Make sure the dom still has a pet
@@ -305,7 +304,6 @@
 		leash_used = 0
 
 /obj/item/leash/proc/on_pet_move()
-	.=..()
 	SIGNAL_HANDLER
 
 	if(leash_pet.has_status_effect(/datum/status_effect/leash_freepet))
@@ -346,7 +344,6 @@
 		step(leash_pet, NORTH, 1)
 
 /obj/item/leash/proc/on_freepet_move()
-	// . = ..()
 	//Pet is on the run. Let's drag the leash behind them.
 	if(!leash_master == "null") //If there is a master, don't do this
 		return

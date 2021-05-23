@@ -8,7 +8,7 @@
 	var/card_used = FALSE
 	var/current_color = "pink"
 	var/static/list/vend_designs
-	product_ads = "Try me!;Kinky!;Don't by shy, we all do that;Lewd, but fun!;Hey you, yeah you... wanna take a look at my collection?;Come on, take a look!;Remember, always adhere to Nanotrasen corporate policy!"
+	product_ads = "Try me!;Kinky!;Lewd, but fun!;Hey you, yeah you... wanna take a look at my collection?;Come on, take a look!;Remember, always adhere to Nanotrasen corporate policy!"
 	vend_reply = "Enjoy!;We glad to satisfly your desires!"
 
 	//STUFF SOLD HERE//
