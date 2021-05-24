@@ -27,7 +27,7 @@
 		/obj/item/leash,
 		/obj/item/electropack/shockcollar,
 		/obj/item/eggvib,
-		/obj/item/signalvib,
+		/obj/item/electropack/signalvib,
 		/obj/item/buttplug,
 		/obj/item/tickle_feather,
 		/obj/item/kinky_shocker,

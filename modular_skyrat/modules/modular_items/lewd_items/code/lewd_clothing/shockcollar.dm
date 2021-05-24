@@ -71,28 +71,13 @@
 	else
 		return ..()
 
-/obj/item/electropack/shockcollar/ui_interact(mob/user) //on_click calls this
-	var/dat = {"
-<TT>
-<B>Frequency/Code</B> for shock collar:<BR>
-Frequency:
-[format_frequency(src.frequency)]
-<A href='byond://?src=[REF(src)];set=freq'>Set</A><BR>
-Code:
-[src.code]
-<A href='byond://?src=[REF(src)];set=code'>Set</A><BR>
-</TT>"}
-	user << browse(dat, "window=radio")
-	onclose(user, "radio")
-	return
-
 /obj/item/electropack/shockcollar/Initialize()
-	if (random)
+	if(random)
 		code = rand(1,100)
 		frequency = rand(MIN_FREE_FREQ, MAX_FREE_FREQ)
 		if(ISMULTIPLE(frequency, 2))//signaller frequencies are always uneven!
 			frequency++
-	if (freq_in_name)
+	if(freq_in_name)
 		name = initial(name) + " - freq: [frequency/10] code: [code]"
 	. = ..()
 

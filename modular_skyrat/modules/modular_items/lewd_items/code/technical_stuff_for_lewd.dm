@@ -531,7 +531,7 @@
 // Allowed items for vagina slot
 GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
-	/obj/item/signalvib,
+	/obj/item/electropack/signalvib,
 	/obj/item/vibrator,
 	/obj/item/dildo,
 	/obj/item/custom_dildo,
@@ -541,7 +541,7 @@ GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
 // Allowed items for anus slot
 GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
-	/obj/item/signalvib,
+	/obj/item/electropack/signalvib,
 	/obj/item/vibrator,
 	/obj/item/buttplug,
 	/obj/item/dildo,
@@ -552,14 +552,14 @@ GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 // Allowed items for nipples slot
 GLOBAL_LIST_INIT(nipples_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
-	/obj/item/signalvib,
+	/obj/item/electropack/signalvib,
 	/obj/item/nipple_clamps
 	)))
 
 // Allowed items for penis slot
 GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
-	/obj/item/signalvib,
+	/obj/item/electropack/signalvib,
 	/obj/item/condom
 	)))
 

@@ -13,7 +13,7 @@
 
 	//STUFF SOLD HERE//
 	products = list(/obj/item/clothing/gloves/ball_mittens = 8,
-					/obj/item/signalvib = 8,
+					/obj/item/electropack/signalvib = 8,
 					/obj/item/eggvib = 8,
 					/obj/item/vibroring = 6,
 					/obj/item/clothing/mask/ballgag = 8,
