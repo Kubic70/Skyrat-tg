@@ -1,3 +1,5 @@
+//WARNING - Lot's of shitcode here. I'm not the best coder but this stuff works and i'm happy. Improve it if you want, but don't break anything.
+
 //////////////////////////
 ///CODE FOR PILLOW ITEM///
 //////////////////////////
@@ -12,8 +14,8 @@
 	inhand_icon_state = "pillow"
 	var/datum/effect_system/feathers/pillow_feathers
 	var/current_color = "pink"
-	var/color_changed = FALSE
 	var/current_form = "round"
+	var/color_changed = FALSE
 	var/form_changed = FALSE
 	var/static/list/pillow_colors
 	var/static/list/pillow_forms
@@ -130,8 +132,6 @@
 				M.emote(pick("laugh","giggle"))
 			user.visible_message("<font>[user] [message].</font>")
 			playsound(loc,'modular_skyrat/modules/modular_items/lewd_items/sounds/hug.ogg', 50, 1, -1)
-		else
-			return
 
 //spawning pillow on the ground when clicking on pillow	by LBM
 
@@ -139,16 +139,10 @@
 	if(IN_INVENTORY)
 		to_chat(user, "<span class='notice'>You put pillow on the floor.</span>")
 		var/obj/structure/bed/pillow_tiny/C = new(get_turf(src))
-		switch(current_form)
-			if("square")
-				C.current_form = "square"
-			if("round")
-				C.current_form = "round"
-		switch(current_color)
-			if("teal")
-				C.current_color = "teal"
-			if("pink")
-				C.current_color = "pink"
+		C.current_color = current_color
+		C.current_form = current_form
+		C.color_changed = color_changed
+		C.form_changed = form_changed
 		C.update_icon_state()
 		C.update_icon()
 		del(src)
@@ -166,6 +160,9 @@
 	var/current_color = "pink"
 	var/current_form = "round"
 
+	var/color_changed = FALSE
+	var/form_changed = FALSE
+
 /obj/structure/bed/pillow_tiny/Initialize()
 	.=..()
 	update_icon_state()
@@ -175,23 +172,18 @@
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[current_form]"
 
-//"picking up" the pillow
+//picking up the pillow
 
 /obj/structure/bed/pillow_tiny/AltClick(mob/user)
-
 	to_chat(user, "<span class='notice'>You lifted pillow off the floor.</span>")
 	var/obj/item/pillow/W = new()
 	user.put_in_hands(W)
-	switch(current_form)
-		if("square")
-			W.current_form = "square"
-		if("round")
-			W.current_form = "round"
-	switch(current_color)
-		if("teal")
-			W.current_color = "teal"
-		if("pink")
-			W.current_color = "pink"
+
+	W.current_form = current_form
+	W.current_color = current_color
+	W.color_changed = color_changed
+	W.form_changed = form_changed
+
 	W.update_icon_state()
 	W.update_icon()
 	del(src)
@@ -210,6 +202,36 @@
 	//Set them back down to the normal lying position
 	M.pixel_y = M.base_pixel_y
 
+//"Upgrading" pillow
+/obj/structure/bed/pillow_tiny/attackby(obj/item/I, mob/living/user, params)
+	.=..()
+	if(istype(I, /obj/item/pillow))
+		var/obj/item/pillow/P = I
+		var/obj/structure/chair/pillow_small/C
+		if(P.current_color == current_color)
+			to_chat(user, "<span class='notice'>You added a pillow to a pile.</span>")
+			C = new(get_turf(src))
+			C.current_color = current_color
+			C.pillow2_color = P.current_color
+			C.pillow1_color = current_color
+			C.pillow1_form = current_form
+			C.pillow2_form = P.current_form
+
+			C.pillow1_color_changed = color_changed
+			C.pillow1_form_changed = color_changed
+			C.pillow2_color_changed = P.color_changed
+			C.pillow2_form_changed = P.color_changed
+
+			C.update_icon_state()
+			C.update_icon()
+			qdel(src)
+			qdel(P)
+		else
+			to_chat(user, "<span class='notice'>You feel like you don't want to combine pillows of different colors.</span>") //Too lazy to add multicolor pillow pile sprites.
+			return
+	else
+		return
+
 /////////////////////////////////////
 ///CODE FOR SMALL PILLOW FURNITURE///
 /////////////////////////////////////
@@ -221,7 +243,19 @@
 	icon_state = "pillowpile_small"
 	var/current_color = "pink"
 	var/mutable_appearance/armrest
-	buckle_lying = 90
+
+	//Containing pillows that we have here.
+	var/pillow1_color = "pink"
+	var/pillow2_color = "pink"
+
+	var/pillow1_color_changed = FALSE
+	var/pillow2_color_changed = FALSE
+
+	var/pillow1_form = "round"
+	var/pillow2_form = "round"
+
+	var/pillow1_form_changed = FALSE
+	var/pillow2_form_changed = FALSE
 
 /obj/structure/chair/pillow_small/Initialize()
 	update_icon_state()
@@ -264,6 +298,64 @@
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]"
 
+//Removing pillow from a pile
+/obj/structure/chair/pillow_small/AltClick(mob/user)
+	to_chat(user, "<span class='notice'>You took pillow from a pile.</span>")
+	var/obj/item/pillow/W = new()
+	var/obj/structure/bed/pillow_tiny/C = new(get_turf(src))
+	user.put_in_hands(W)
+	//magic
+	W.current_color = pillow2_color
+	W.current_form = pillow2_form
+	C.current_color = pillow1_color
+	C.current_form = pillow1_form
+
+	C.color_changed = pillow1_color_changed
+	C.form_changed = pillow1_form_changed
+	W.color_changed = pillow2_color_changed
+	W.form_changed = pillow2_form_changed
+
+	//magic
+	W.update_icon_state()
+	W.update_icon()
+	C.update_icon_state()
+	C.update_icon()
+	del(src)
+
+//Upgrading pillow pile to a PILLOW PILE!
+/obj/structure/chair/pillow_small/attackby(obj/item/I, mob/living/user, params)
+	.=..()
+	if(istype(I, /obj/item/pillow))
+		var/obj/item/pillow/P = I
+		var/obj/structure/bed/pillow_large/C
+		if(P.current_color == current_color)
+			to_chat(user, "<span class='notice'>You added a pillow to a pile.</span>")
+			C = new(get_turf(src))
+			C.current_color = current_color
+			C.pillow3_color = P.current_color
+			C.pillow2_color = pillow2_color
+			C.pillow1_color = pillow1_color
+			C.pillow3_form = P.current_form
+			C.pillow1_form = pillow1_form
+			C.pillow2_form = pillow2_form
+
+			C.pillow1_color_changed = pillow1_color_changed
+			C.pillow1_form_changed = pillow1_form_changed
+			C.pillow2_color_changed = pillow2_color_changed
+			C.pillow2_form_changed = pillow2_form_changed
+			C.pillow3_color_changed = P.color_changed
+			C.pillow3_form_changed = P.form_changed
+
+			C.update_icon_state()
+			C.update_icon()
+			qdel(src)
+			qdel(P)
+		else
+			to_chat(user, "<span class='notice'>You feel like you don't want to combine pillows of different colors.</span>") //Too lazy to add multicolor pillow pile sprites.
+			return
+	else
+		return
+
 /////////////////////////
 ///CODE FOR PILLOW BED///
 /////////////////////////
@@ -275,6 +367,22 @@
 	icon_state = "pillowpile_large"
 	var/current_color = "pink"
 	var/mutable_appearance/armrest
+	//Containing pillows that we have here
+	var/pillow1_color = "pink"
+	var/pillow2_color = "pink"
+	var/pillow3_color = "pink"
+
+	var/pillow1_color_changed = FALSE
+	var/pillow2_color_changed = FALSE
+	var/pillow3_color_changed = FALSE
+
+	var/pillow1_form = "round"
+	var/pillow2_form = "round"
+	var/pillow3_form = "round"
+
+	var/pillow1_form_changed = FALSE
+	var/pillow2_form_changed = FALSE
+	var/pillow3_form_changed = FALSE
 
 /obj/structure/bed/pillow_large/Initialize()
 	update_icon_state()
@@ -316,3 +424,32 @@
 /obj/structure/bed/pillow_large/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]"
+
+//Removing pillow from a pile
+/obj/structure/bed/pillow_large/AltClick(mob/user)
+	to_chat(user, "<span class='notice'>You took pillow from a pile.</span>")
+	var/obj/item/pillow/W = new()
+	var/obj/structure/chair/pillow_small/C = new(get_turf(src))
+	user.put_in_hands(W)
+	//magic
+	C.current_color = current_color
+	W.current_color = pillow3_color
+	W.current_form = pillow3_form
+	C.pillow2_form = pillow2_form
+	C.pillow2_color = pillow2_color
+	C.pillow1_form = pillow1_form
+	C.pillow1_color = pillow1_color
+
+	C.pillow1_color_changed = pillow1_color_changed
+	C.pillow2_color_changed = pillow2_color_changed
+	C.pillow1_form_changed = pillow1_form_changed
+	C.pillow2_form_changed = pillow2_form_changed
+	W.color_changed = pillow3_color_changed
+	W.form_changed = pillow3_form_changed
+
+	//magic
+	W.update_icon_state()
+	W.update_icon()
+	C.update_icon_state()
+	C.update_icon()
+	qdel(src)

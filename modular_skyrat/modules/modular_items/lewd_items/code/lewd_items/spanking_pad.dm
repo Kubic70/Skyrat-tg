@@ -58,25 +58,28 @@
 		return
 
 	var/message = ""
-
-	switch(user.zone_selected) //to let code know what part of body we gonna spank.
-		if(BODY_ZONE_PRECISE_GROIN)
-			if(M.is_bottomless())
-				message = (user == M) ? pick("spanks themselves with [src]","uses [src] to slap their hips") : pick("Slaps [M]'s hips with [src]", "Uses [src] to slap [M]'s butt","Spanks [M] with [src], making a savory slap","slaps [M]'s thighs")
-				if(M.client?.prefs.erp_pref == "Yes")
-					if(prob(40))
-						M.emote(pick("twitch_s","moan","blush","gasp"))
-					M.adjustArousal(2)
-					M.adjustPain(4)
-					M.apply_status_effect(/datum/status_effect/spanked)
-					if(HAS_TRAIT(M, TRAIT_MASOCHISM || TRAIT_NYMPHOMANIA || TRAIT_BIMBO))
-						SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "pervert spanked", /datum/mood_event/perv_spanked)
-					if(prob(10))
-						M.apply_status_effect(/datum/status_effect/subspace)
-				user.visible_message("<font color=purple>[user] [message].</font>")
-				playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/slap.ogg', 100, 1, -1)
+	if(M.client?.prefs.erp_pref == "Yes")
+		switch(user.zone_selected) //to let code know what part of body we gonna spank.
+			if(BODY_ZONE_PRECISE_GROIN)
+				if(M.is_bottomless())
+					message = (user == M) ? pick("spanks themselves with [src]","uses [src] to slap their hips") : pick("Slaps [M]'s hips with [src]", "Uses [src] to slap [M]'s butt","Spanks [M] with [src], making a savory slap","slaps [M]'s thighs")
+					if(M.client?.prefs.erp_pref == "Yes")
+						if(prob(40))
+							M.emote(pick("twitch_s","moan","blush","gasp"))
+						M.adjustArousal(2)
+						M.adjustPain(4)
+						M.apply_status_effect(/datum/status_effect/spanked)
+						if(HAS_TRAIT(M, TRAIT_MASOCHISM || TRAIT_NYMPHOMANIA || TRAIT_BIMBO))
+							SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "pervert spanked", /datum/mood_event/perv_spanked)
+						if(prob(10))
+							M.apply_status_effect(/datum/status_effect/subspace)
+					user.visible_message("<font color=purple>[user] [message].</font>")
+					playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/slap.ogg', 100, 1, -1)
+				else
+					to_chat(user, "<span class='danger'>Looks like [M]'s butt is covered!</span>")
+					return
 			else
-				to_chat(user, "<span class='danger'>Looks like [M]'s butt is covered!</span>")
 				return
-		else
-			return
+	else
+		to_chat(user, "<span class='danger'>Looks like [M] don't want you to do that.</span>")
+		return

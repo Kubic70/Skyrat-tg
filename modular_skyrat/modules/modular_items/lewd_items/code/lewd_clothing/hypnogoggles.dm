@@ -19,7 +19,7 @@
 	victim = user
 	if(slot != ITEM_SLOT_EYES)
 		return
-	if(iscarbon(victim))
+	if(iscarbon(victim) && victim.client?.prefs.erp_pref == "Yes")
 		victim.gain_trauma(new /datum/brain_trauma/hypnosis(codephrase), TRAUMA_RESILIENCE_BASIC)
 
 /obj/item/clothing/glasses/hypno/dropped(mob/user)//Removing hypnosis on unequip

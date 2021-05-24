@@ -130,104 +130,108 @@
 
 	var/message = ""
 //and there is code for successful check, so we are whipping someone
-	switch(user.zone_selected) //to let code know what part of body we gonna whip
-		if(BODY_ZONE_L_LEG || BODY_ZONE_R_LEG)
-			if(M.has_feet())
-				if(M.is_barefoot())
-					if(current_whip_type == "hard")
-						message = (user == M) ? pick("Knocks themselves down with [src]", "Uses [src] to knock themselves on the ground") : pick("Hardly drops [M] on the ground with [src]", "Uses [src] to put [M] on the knees")
-						if(prob(60))
-							M.emote(pick("gasp","shiver"))
-						if(prob(10))
-							M.apply_status_effect(/datum/status_effect/subspace)
-						M.Paralyze(1)//don't touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
-						M.adjustPain(5)
-						user.visible_message("<font color=purple>[user] [message].</font>")
-						playsound(loc, 'sound/weapons/whip.ogg', 100)
+	if(M.client?.prefs.erp_pref == "Yes")
+		switch(user.zone_selected) //to let code know what part of body we gonna whip
+			if(BODY_ZONE_L_LEG || BODY_ZONE_R_LEG)
+				if(M.has_feet())
+					if(M.is_barefoot())
+						if(current_whip_type == "hard")
+							message = (user == M) ? pick("Knocks themselves down with [src]", "Uses [src] to knock themselves on the ground") : pick("Hardly drops [M] on the ground with [src]", "Uses [src] to put [M] on the knees")
+							if(prob(60))
+								M.emote(pick("gasp","shiver"))
+							if(prob(10))
+								M.apply_status_effect(/datum/status_effect/subspace)
+							M.Paralyze(1)//don't touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
+							M.adjustPain(5)
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'sound/weapons/whip.ogg', 100)
 
+						if(current_whip_type == "weak")
+							message = (user == M) ? pick("Knocks themselves down with [src]", "Gently uses [src] to knock themselves on the ground") : pick("Gently drops [M] on the ground with [src]", "Uses [src] to slowly put [M] on the knees")
+							if(prob(30))
+								M.emote(pick("gasp","shiver"))
+							if(prob(10))
+								M.apply_status_effect(/datum/status_effect/subspace)
+							M.Paralyze(1)//don't touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
+							M.adjustPain(3)
+							user.visible_message("<font color=purple>[user] [message].</font>")
+							playsound(loc, 'sound/weapons/whip.ogg', 60)
+					else
+						to_chat(user, "<span class='danger'>Looks like [M]'s legs is covered!</span>")
+						return
+
+			if(BODY_ZONE_HEAD)
+				message = (user == M) ? pick("Chokes themselves with [src]", "Uses [src] to choke themselves") : pick("Chokes [M] with [src]", "Twines a [src] around [M]'s neck!")
+				if(prob(70))
+					M.emote(pick("gasp","choke", "moan"))
+				M.adjustArousal(3)
+				M.adjustPain(5)
+				M.adjustOxyLoss(2)//DON'T TOUCH THIS TOO, IT DEALS REALLY LOW DAMAGE. I DARE YOU!
+				user.visible_message("<font color=purple>[user] [message].</font>")
+				playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 80)
+
+			if(BODY_ZONE_PRECISE_GROIN)
+				if(M.is_bottomless())
 					if(current_whip_type == "weak")
-						message = (user == M) ? pick("Knocks themselves down with [src]", "Gently uses [src] to knock themselves on the ground") : pick("Gently drops [M] on the ground with [src]", "Uses [src] to slowly put [M] on the knees")
-						if(prob(30))
-							M.emote(pick("gasp","shiver"))
+						message = (user == M) ? pick("Flogs themselves with a [src]", "Uses [src] to flog themselves") : pick("Playfully flogs [M]'s thigs with [src]","Uses [src] to flog [M]", "Gently flogs [M] with [src]")
+						if(prob(70))
+							M.emote(pick("moan","twitch"))
 						if(prob(10))
 							M.apply_status_effect(/datum/status_effect/subspace)
-						M.Paralyze(1)//don't touch it. It's domination tool, it should have ability to put someone on kneels. I already inserted check for boots YOU CAN'T ABUSE THIS ITEM
-						M.adjustPain(3)
+						M.adjustArousal(5)
+						M.adjustPain(5)
+						M.apply_status_effect(/datum/status_effect/spanked)
+						if(HAS_TRAIT(M, TRAIT_MASOCHISM || TRAIT_NYMPHOMANIA || TRAIT_BIMBO))
+							SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "pervert spanked", /datum/mood_event/perv_spanked)
 						user.visible_message("<font color=purple>[user] [message].</font>")
 						playsound(loc, 'sound/weapons/whip.ogg', 60)
+
+					if(current_whip_type == "hard")
+						message = (user == M) ? pick("Roughly flogs themselves with a [src]", "Uses [src] to flog themselves") : pick("Roughly flogs [M]'s thigs with [src]","Uses [src] to flog [M]", "Merciless flogs [M] with [src]")
+						if(prob(70))
+							M.emote(pick("moan","twitch","twitch_s","scream"))
+						if(prob(10))
+							M.apply_status_effect(/datum/status_effect/subspace)
+						M.adjustArousal(4)
+						M.adjustPain(8)
+						M.apply_status_effect(/datum/status_effect/spanked)
+						if(HAS_TRAIT(M, TRAIT_MASOCHISM || TRAIT_NYMPHOMANIA || TRAIT_BIMBO))
+							SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "pervert spanked", /datum/mood_event/perv_spanked)
+						user.visible_message("<font color=purple>[user] [message].</font>")
+						playsound(loc, 'sound/weapons/whip.ogg', 100)
+					else
+						return
 				else
-					to_chat(user, "<span class='danger'>Looks like [M]'s legs is covered!</span>")
+					to_chat(user, "<span class='danger'>Looks like [M]'s butt is covered!</span>")
 					return
 
-		if(BODY_ZONE_HEAD)
-			message = (user == M) ? pick("Chokes themselves with [src]", "Uses [src] to choke themselves") : pick("Chokes [M] with [src]", "Twines a [src] around [M]'s neck!")
-			if(prob(70))
-				M.emote(pick("gasp","choke", "moan"))
-			M.adjustArousal(3)
-			M.adjustPain(5)
-			M.adjustOxyLoss(2)//DON'T TOUCH THIS TOO, IT DEALS REALLY LOW DAMAGE. I DARE YOU!
-			user.visible_message("<font color=purple>[user] [message].</font>")
-			playsound(loc, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 80)
-
-		if(BODY_ZONE_PRECISE_GROIN)
-			if(M.is_bottomless())
-				if(current_whip_type == "weak")
-					message = (user == M) ? pick("Flogs themselves with a [src]", "Uses [src] to flog themselves") : pick("Playfully flogs [M]'s thigs with [src]","Uses [src] to flog [M]", "Gently flogs [M] with [src]")
-					if(prob(70))
-						M.emote(pick("moan","twitch"))
-					if(prob(10))
-						M.apply_status_effect(/datum/status_effect/subspace)
-					M.adjustArousal(5)
-					M.adjustPain(5)
-					M.apply_status_effect(/datum/status_effect/spanked)
-					if(HAS_TRAIT(M, TRAIT_MASOCHISM || TRAIT_NYMPHOMANIA || TRAIT_BIMBO))
-						SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "pervert spanked", /datum/mood_event/perv_spanked)
-					user.visible_message("<font color=purple>[user] [message].</font>")
-					playsound(loc, 'sound/weapons/whip.ogg', 60)
-
+			else
 				if(current_whip_type == "hard")
-					message = (user == M) ? pick("Roughly flogs themselves with a [src]", "Uses [src] to flog themselves") : pick("Roughly flogs [M]'s thigs with [src]","Uses [src] to flog [M]", "Merciless flogs [M] with [src]")
-					if(prob(70))
+					message = (user == M) ? pick("Disciplines themselves with [src]","Uses [src] to lash themselves") : pick("Lashes [M]'s body with [src]","Uses [src] to discipline [M]", "Disciplines with [M] with [src]")
+					if(prob(50))
 						M.emote(pick("moan","twitch","twitch_s","scream"))
 					if(prob(10))
 						M.apply_status_effect(/datum/status_effect/subspace)
-					M.adjustArousal(4)
-					M.adjustPain(8)
-					M.apply_status_effect(/datum/status_effect/spanked)
-					if(HAS_TRAIT(M, TRAIT_MASOCHISM || TRAIT_NYMPHOMANIA || TRAIT_BIMBO))
-						SEND_SIGNAL(M, COMSIG_ADD_MOOD_EVENT, "pervert spanked", /datum/mood_event/perv_spanked)
+					M.do_jitter_animation()
+					M.adjustPain(7)
 					user.visible_message("<font color=purple>[user] [message].</font>")
 					playsound(loc, 'sound/weapons/whip.ogg', 100)
+
+				if(current_whip_type == "weak")
+					message = (user == M) ? pick("Whips themselves with [src]","Uses [src] to lash themselves") : pick("Playfully lashes [M]'s body with [src]","Uses [src] to discipline [M]", "Gently lashes [M] with [src]")
+					if(prob(30))
+						M.emote(pick("moan","twitch"))
+					if(prob(10))
+						M.apply_status_effect(/datum/status_effect/subspace)
+					M.do_jitter_animation()
+					M.adjustPain(7)
+					user.visible_message("<font color=purple>[user] [message].</font>")
+					playsound(loc, 'sound/weapons/whip.ogg', 60)
 				else
 					return
-			else
-				to_chat(user, "<span class='danger'>Looks like [M]'s butt is covered!</span>")
-				return
-
-		else
-			if(current_whip_type == "hard")
-				message = (user == M) ? pick("Disciplines themselves with [src]","Uses [src] to lash themselves") : pick("Lashes [M]'s body with [src]","Uses [src] to discipline [M]", "Disciplines with [M] with [src]")
-				if(prob(50))
-					M.emote(pick("moan","twitch","twitch_s","scream"))
-				if(prob(10))
-					M.apply_status_effect(/datum/status_effect/subspace)
-				M.do_jitter_animation()
-				M.adjustPain(7)
-				user.visible_message("<font color=purple>[user] [message].</font>")
-				playsound(loc, 'sound/weapons/whip.ogg', 100)
-
-			if(current_whip_type == "weak")
-				message = (user == M) ? pick("Whips themselves with [src]","Uses [src] to lash themselves") : pick("Playfully lashes [M]'s body with [src]","Uses [src] to discipline [M]", "Gently lashes [M] with [src]")
-				if(prob(30))
-					M.emote(pick("moan","twitch"))
-				if(prob(10))
-					M.apply_status_effect(/datum/status_effect/subspace)
-				M.do_jitter_animation()
-				M.adjustPain(7)
-				user.visible_message("<font color=purple>[user] [message].</font>")
-				playsound(loc, 'sound/weapons/whip.ogg', 60)
-			else
-				return
+	else
+		to_chat(user, "<span class='danger'>Looks like [M] don't want you to do that.</span>")
+		return
 
 //toggle low pain mode. Because sometimes screaming isn't good
 /obj/item/clothing/mask/leatherwhip/attack_self(mob/user, obj/item/I)

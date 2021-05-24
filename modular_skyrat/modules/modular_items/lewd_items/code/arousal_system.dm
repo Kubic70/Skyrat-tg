@@ -16,6 +16,8 @@
 #define TRAIT_SOBSESSED		"sexual obsession"
 #define APHRO_TRAIT			"aphro"
 
+#define STRAPON_TRAIT 		"strapon"
+
 ///////////-----Decals-----//////////
 /obj/effect/decal/cleanable/cum
 	name = "cum"
