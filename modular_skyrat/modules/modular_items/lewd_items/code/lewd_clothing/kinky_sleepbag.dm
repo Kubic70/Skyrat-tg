@@ -36,6 +36,7 @@
 	worn_y_dimension = 64
 	clothing_flags = LARGE_WORN_ICON
 	slot_flags = NONE
+	species_exception = list(/datum/species/plasmaman)
 
 //create radial menu
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/proc/populate_bag_colors()
@@ -56,6 +57,10 @@
 
 //to change model
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/AltClick(mob/user, obj/item/I)
+	var/mob/living/carbon/human/H = user
+	if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+		to_chat(user, "Your hands are locked, you cannot do this.")
+		return FALSE
 	switch(color_changed)
 		if(FALSE)
 			. = ..()
@@ -206,3 +211,9 @@
 	else
 		time_to_sound_left -= delta_time
 
+/datum/species/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
+	if(HAS_TRAIT_FROM(usr,TRAIT_FREE_GHOST,GHOSTROLE_TRAIT))
+		return FALSE
+	if(HAS_TRAIT(src, /datum/quirk/apathetic))
+		return FALSE
+	..()

@@ -905,7 +905,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Updating vagina slot
 /mob/living/carbon/human/update_inv_vagina()
 	var/datum/hud/human/H = src.hud_used
-	if(client && H)
+	if(client && H && client.prefs.erp_pref == "Yes")
 		var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_VAGINA) + 1]
 		inv.update_appearance()
 		// if(vagina)
@@ -921,7 +921,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Updating anus slot
 /mob/living/carbon/human/update_inv_anus()
 	var/datum/hud/human/H = src.hud_used
-	if(client && H)
+	if(client && H && client.prefs.erp_pref == "Yes")
 		var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_ANUS) + 1]
 		inv.update_appearance()
 		// if(anus)
@@ -937,7 +937,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Updating nipples slot
 /mob/living/carbon/human/update_inv_nipples()
 	var/datum/hud/human/H = src.hud_used
-	if(client && H)
+	if(client && H && client.prefs.erp_pref == "Yes")
 		var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_NIPPLES) + 1]
 		inv.update_appearance()
 		// if(nipples)
@@ -953,7 +953,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Updating penis slot
 /mob/living/carbon/human/update_inv_penis()
 	var/datum/hud/human/H = src.hud_used
-	if(client && H)
+	if(client && H && client.prefs.erp_pref == "Yes")
 		var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_PENIS) + 1]
 		inv.update_appearance()
 		// if(penis)
@@ -1633,3 +1633,17 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 			return TRUE
 		return FALSE
 	return TRUE // Return TRUE if superfuncitons already retuns TRUE
+
+// Extends default proc check for hidden wings for supporting our sleepbag and catsuit to
+/datum/sprite_accessory/wings/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	if(.)
+		return TRUE
+	if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+		return TRUE
+	return FALSE
+
+/mob/living/carbon/set_handcuffed(new_value)
+	var/mob/living/carbon/human/H = src
+	if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+		return FALSE
+	..()
