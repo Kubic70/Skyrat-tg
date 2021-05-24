@@ -36,6 +36,7 @@
 	worn_y_dimension = 64
 	clothing_flags = LARGE_WORN_ICON
 	slot_flags = NONE
+	species_exception = list(/datum/species/plasmaman)
 
 //create radial menu
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/proc/populate_bag_colors()
@@ -56,6 +57,10 @@
 
 //to change model
 /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/AltClick(mob/user, obj/item/I)
+	var/mob/living/carbon/human/H = user
+	if(istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+		to_chat(user, "Your hands are locked, you cannot do this.")
+		return FALSE
 	switch(color_changed)
 		if(FALSE)
 			. = ..()
@@ -111,17 +116,17 @@
 		H.cut_overlay(H.overlays_standing[BACK_LAYER])
 		H.cut_overlay(H.overlays_standing[BODY_BEHIND_LAYER])
 
-		var/i
-		if(LAZYLEN(H.bodyparts))
-			for(i=1,i<=H.bodyparts.len,i++)
-				if(istype(H.bodyparts[i],/obj/item/bodypart/l_leg))
-					legl = H.bodyparts[i]
-				if(istype(H.bodyparts[i],/obj/item/bodypart/r_leg))
-					legr = H.bodyparts[i]
+		// var/i
+		// if(LAZYLEN(H.bodyparts))
+		// 	for(i=1,i<=H.bodyparts.len,i++)
+		// 		if(istype(H.bodyparts[i],/obj/item/bodypart/l_leg))
+		// 			legl = H.bodyparts[i]
+		// 		if(istype(H.bodyparts[i],/obj/item/bodypart/r_leg))
+		// 			legr = H.bodyparts[i]
 
-				continue
-		H.bodyparts.Remove(legl,legr)
-		H.update_body_parts()
+		// 		continue
+		// H.bodyparts.Remove(legl,legr)
+		// H.update_body_parts()
 		START_PROCESSING(SSobj, src)
 		time_to_sound_left = time_to_sound
 
@@ -188,8 +193,8 @@
 			H.add_overlay(H.overlays_standing[HEAD_LAYER])
 			H.add_overlay(H.overlays_standing[HAIR_LAYER])
 
-			H.bodyparts.Add(legl)
-			H.bodyparts.Add(legr)
+			// H.bodyparts.Add(legl)
+			// H.bodyparts.Add(legr)
 
 			H.add_overlay(H.overlays_standing[SHOES_LAYER])
 			H.update_inv_shoes()
@@ -206,3 +211,9 @@
 	else
 		time_to_sound_left -= delta_time
 
+/datum/species/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
+	if(HAS_TRAIT_FROM(usr,TRAIT_FREE_GHOST,GHOSTROLE_TRAIT))
+		return FALSE
+	if(HAS_TRAIT(src, /datum/quirk/apathetic))
+		return FALSE
+	..()
