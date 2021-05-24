@@ -211,9 +211,3 @@
 	else
 		time_to_sound_left -= delta_time
 
-/datum/species/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
-	if(HAS_TRAIT_FROM(usr,TRAIT_FREE_GHOST,GHOSTROLE_TRAIT))
-		return FALSE
-	if(HAS_TRAIT(src, /datum/quirk/apathetic))
-		return FALSE
-	..()
