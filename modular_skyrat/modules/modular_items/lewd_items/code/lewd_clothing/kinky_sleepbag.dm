@@ -116,17 +116,17 @@
 		H.cut_overlay(H.overlays_standing[BACK_LAYER])
 		H.cut_overlay(H.overlays_standing[BODY_BEHIND_LAYER])
 
-		var/i
-		if(LAZYLEN(H.bodyparts))
-			for(i=1,i<=H.bodyparts.len,i++)
-				if(istype(H.bodyparts[i],/obj/item/bodypart/l_leg))
-					legl = H.bodyparts[i]
-				if(istype(H.bodyparts[i],/obj/item/bodypart/r_leg))
-					legr = H.bodyparts[i]
+		// var/i
+		// if(LAZYLEN(H.bodyparts))
+		// 	for(i=1,i<=H.bodyparts.len,i++)
+		// 		if(istype(H.bodyparts[i],/obj/item/bodypart/l_leg))
+		// 			legl = H.bodyparts[i]
+		// 		if(istype(H.bodyparts[i],/obj/item/bodypart/r_leg))
+		// 			legr = H.bodyparts[i]
 
-				continue
-		H.bodyparts.Remove(legl,legr)
-		H.update_body_parts()
+		// 		continue
+		// H.bodyparts.Remove(legl,legr)
+		// H.update_body_parts()
 		START_PROCESSING(SSobj, src)
 		time_to_sound_left = time_to_sound
 
@@ -193,8 +193,8 @@
 			H.add_overlay(H.overlays_standing[HEAD_LAYER])
 			H.add_overlay(H.overlays_standing[HAIR_LAYER])
 
-			H.bodyparts.Add(legl)
-			H.bodyparts.Add(legr)
+			// H.bodyparts.Add(legl)
+			// H.bodyparts.Add(legr)
 
 			H.add_overlay(H.overlays_standing[SHOES_LAYER])
 			H.update_inv_shoes()
