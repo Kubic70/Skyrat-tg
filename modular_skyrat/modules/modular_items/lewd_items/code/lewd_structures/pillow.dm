@@ -21,6 +21,11 @@
 	var/static/list/pillow_forms
 	w_class = WEIGHT_CLASS_SMALL
 
+//to update model
+/obj/item/pillow/ComponentInitialize()
+	. = ..()
+	AddElement(/datum/element/update_icon_updates_onmob)
+
 //create radial menu
 /obj/item/pillow/proc/populate_pillow_colors()
 	pillow_colors = list(

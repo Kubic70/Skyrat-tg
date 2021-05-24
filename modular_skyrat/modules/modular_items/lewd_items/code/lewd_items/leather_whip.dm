@@ -234,7 +234,7 @@
 		return
 
 //toggle low pain mode. Because sometimes screaming isn't good
-/obj/item/clothing/mask/leatherwhip/attack_self(mob/user, obj/item/I)
+/obj/item/clothing/mask/leatherwhip/attack_self(mob/user)
 	toggle_mode()
 	switch(mode)
 		if("hard")

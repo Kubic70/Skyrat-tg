@@ -257,14 +257,26 @@
 
 //Ok, first - it's not mind control. Just forcing someone to do emotes that user added to remote thingy. Just a funny illegal ERP toy.
 
-
+//Controller stuff
 /obj/item/connect/mind_controller
 	name = "mind controller"
 	desc = "Small remote for sending basic emotion patterns to collar."
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
+	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
+	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	icon_state = "mindcontroller"
-	var/remote_id = null //Adding same unique id to key
+	var/obj/item/clothing/neck/mind_collar/collar = null
 
+/obj/item/connect/mind_controller/Initialize(mapload, collar)
+    //Store the collar on creation.
+	src.collar = collar
+	. = ..() //very important to call parent in Intialize
+
+/obj/item/connect/mind_controller/attack_self(mob/user)
+	collar.emoting = stripped_input(user, "Change the emotion pattern")
+	collar.emoting_proc()
+
+//Collar stuff
 /obj/item/clothing/neck/mind_collar
 	name = "mind collar"
 	desc = "Tight collar. Looks like it has some strange high-tech emitters on its sides."
@@ -272,23 +284,18 @@
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_neck.dmi'
 	icon_state = "mindcollar"
 	inhand_icon_state = "mindcollar"
-	pocket_storage_component_path = /datum/component/storage/concrete/pockets/small/mind_collar
-	var/treat_path = /obj/item/key/kink_collar
-	var/remote_id = null //Adding unique id to collar
+	var/obj/item/connect/mind_controller/remote = null
+	var/emoting = "Shivers"
 
 /obj/item/clothing/neck/mind_collar/Initialize()
 	. = ..()
-	var/remote
-	if(treat_path)
-		remote = new treat_path(src)
-		if(istype(remote,/obj/item/connect/mind_controller))
-			var/id = rand(111111,999999)
-			var/obj/item/connect/mind_controller/L = src
-			var/obj/item/clothing/neck/mind_collar/K = remote
-			L.remote_id = id
-			K.remote_id = id
+	remote = new /obj/item/connect/mind_controller(src, src)
+	var/turf = get_turf(src)
+	remote.forceMove(turf)
 
-//Окей, Джемини. Тут все подготовлено, у них в теории должен быть одинаковый ИД но ты на всякий проверь.
-//Осталось сделать так что при нажатии пульта с альтом выводится штука принимающая текстовую инфу (в гипноочках есть такая)
-//И затем при нажатии на пульт сигнал посылался носителю ошейника. Обязательно сделай дефолтную эмоцию вроде "Дрожит"
-//Естественно на английском. И тут нельзя использовать emote, нужно тоже самое что используется для /me
+/obj/item/clothing/neck/mind_collar/proc/emoting_proc()
+	var/mob/living/carbon/human/U = src.loc
+	if(src == U.wear_neck)
+		U.emote("me", 1,"[emoting]", TRUE)
+	else
+		return
