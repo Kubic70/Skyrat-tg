@@ -1646,6 +1646,7 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 
 // Extends default proc check for hidden wings for supporting our sleepbag and catsuit to
 /datum/sprite_accessory/wings/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	. = ..()
 	if(.)
 		return TRUE
 	if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
@@ -1657,3 +1658,22 @@ GLOBAL_LIST_INIT(strippable_human_erp_items, create_erp_strippable_list(list(
 	if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
 		return FALSE
 	..()
+
+//asdasda
+/datum/sprite_accessory/xenodorsal/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+		return TRUE
+	else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+		return TRUE
+	return FALSE
+
+//asdfasdfdasf
+/datum/sprite_accessory/xenohead/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/straight_jacket/kinky_sleepbag))
+		var/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/S = H.wear_suit
+		if(S.state_thing == "inflated")
+			return TRUE
+		return FALSE
+	else if(H.w_uniform && istype(H.w_uniform, /obj/item/clothing/under/misc/latex_catsuit/))
+		return FALSE
+	return FALSE
