@@ -149,7 +149,6 @@ obj/item/clothing/mask/gas/bdsm_mask/AltClick(mob/user, obj/item/I)
 					// Place for text about the impossibility to attach a filter
 					to_chat(usr,"<span class='warning'>You can't attach filter while mask is locked!</span>")
 					return
-	.=..()
 
 // Breathing valve control button
 /datum/action/item_action/toggle_breathcontrol

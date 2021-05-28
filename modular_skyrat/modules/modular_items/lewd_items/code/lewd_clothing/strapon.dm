@@ -61,9 +61,10 @@
 	.=..()
 	icon_state = "[initial(icon_state)]_[strapon_type]"
 
-/obj/item/clothing/strapon/dropped()
+/obj/item/clothing/strapon/dropped(mob/living/user)
 	.=..()
-	if(W && !ismob(loc) && in_hands == TRUE)
+	var/mob/living/carbon/human/M = user
+	if(W && !ismob(loc) && in_hands == TRUE && src != M.belt)
 		qdel(W)
 		in_hands = FALSE
 
