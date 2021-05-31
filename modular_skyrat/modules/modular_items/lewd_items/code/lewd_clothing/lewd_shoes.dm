@@ -7,6 +7,10 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_shoes.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_shoes.dmi'
 	worn_icon_digi = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_shoes_digi.dmi'
+	worn_icon_taur_hoof = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_shoes.dmi'
+	worn_icon_taur_paw = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_shoes.dmi'
+	worn_icon_taur_snake = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_clothing/lewd_shoes.dmi'
+	mutant_variants = STYLE_DIGITIGRADE|STYLE_TAUR_ALL
 	var/discomfort = 0
 	var/message_sent = FALSE
 	strip_delay = 120
@@ -27,6 +31,8 @@
 	var/mob/living/carbon/human/C = user
 	if(src == C.shoes)
 		START_PROCESSING(SSobj, src)
+	C.update_inv_shoes()
+	C.hud_used.hidden_inventory_update()
 
 //stop processing
 /obj/item/clothing/shoes/latexheels/dropped(mob/user)
