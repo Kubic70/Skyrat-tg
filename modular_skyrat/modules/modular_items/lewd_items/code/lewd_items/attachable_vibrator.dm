@@ -204,7 +204,6 @@
 	return TRUE
 
 /obj/item/electropack/signalvib/Initialize()
-	. = ..()
 	update_icon_state()
 	update_icon()
 	if(!length(signalvib_designs))
