@@ -1073,7 +1073,10 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 			return equip_delay_self_check(I, H, bypass_equip_delay_self)
 		if(ITEM_SLOT_BELT)
 			var/obj/item/bodypart/O = H.get_bodypart(BODY_ZONE_CHEST)
-
+			//SKYRAT EDIT ADDITION BEGIN - ERP_SLOT_SYSTEM
+			if (istype(I, /obj/item/clothing/strapon))
+				return equip_delay_self_check(I, H, bypass_equip_delay_self)
+			//SKYRAT EDIT ADDITION END
 			if(!H.w_uniform && !nojumpsuit && (!O || O.status != BODYPART_ROBOTIC))
 				if(!disable_warning)
 					to_chat(H, "<span class='warning'>You need a jumpsuit before you can attach this [I.name]!</span>")
