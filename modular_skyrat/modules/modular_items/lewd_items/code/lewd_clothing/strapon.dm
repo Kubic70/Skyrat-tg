@@ -149,6 +149,8 @@
 	icon_state = "[initial(icon_state)]_[strapon_type]"
 
 /obj/item/strapon_dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+	if(M == user)
+		return
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return
@@ -160,7 +162,7 @@
 			if(BODY_ZONE_PRECISE_GROIN)
 				if(vagina)
 					if(M.is_bottomless() || vagina.visibility_preference == GENITAL_ALWAYS_SHOW)
-						message = (user == M) ? pick("rubs their vagina with the [src]","gently jams their pussy with [src]","fucks their vagina with a [src]") : pick("delicately rubs [M]'s vagina with [src]", "uses [src] to fuck [M]'s vagina","jams [M]'s pussy with a [src]", "teasing [M]'s pussy with a [src]")
+						message = pick("delicately rubs [M]'s vagina with [src]", "uses [src] to fuck [M]'s vagina","jams [M]'s pussy with a [src]", "teasing [M]'s pussy with a [src]")
 						M.adjustArousal(6)
 						M.adjustPleasure(8)
 						if(prob(40))
@@ -181,7 +183,7 @@
 
 			if(BODY_ZONE_HEAD, BODY_ZONE_PRECISE_MOUTH, BODY_ZONE_PRECISE_EYES) //Mouth only. Sorry, perverts. No eye/ear penetration for you today.
 				if(!M.is_mouth_covered())
-					message = (user == M) ? pick("sucks [src] with their mouth","licks [src], then slowly inserting it into their throat") : pick("fucks [M]'s mouth with [src]", "choking [M] by inserting [src] into [M]'s throat", "forcing [M] to suck a [src]", "inserts [src] into [M]'s throat")
+					message = pick("fucks [M]'s mouth with [src]", "choking [M] by inserting [src] into [M]'s throat", "forcing [M] to suck a [src]", "inserts [src] into [M]'s throat")
 					M.adjustArousal(4)
 					M.adjustPleasure(1)
 					M.adjustOxyLoss(1.5)
@@ -201,7 +203,7 @@
 
 			else
 				if(M.is_bottomless())
-					message = (user == M) ? pick("puts [src] into their anus","slowly inserts [src] into their ass") : pick("fucks [M]'s ass with a [src]", "uses [src] to fuck [M]'s anus", "jams [M]'s ass with a [src]", "roughly fucks [M]'s ass with a [src], making [M] roll eyes up")
+					message = pick("fucks [M]'s ass with a [src]", "uses [src] to fuck [M]'s anus", "jams [M]'s ass with a [src]", "roughly fucks [M]'s ass with a [src], making [M] roll eyes up")
 					M.adjustArousal(5)
 					M.adjustPleasure(5)
 					if(prob(60))
