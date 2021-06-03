@@ -96,6 +96,7 @@
 
 ///What happens to the heretic once he dies, used to remove any custom perks
 /datum/antagonist/heretic/proc/on_death()
+	SIGNAL_HANDLER
 
 	for(var/X in researched_knowledge)
 		var/datum/eldritch_knowledge/EK = researched_knowledge[X]

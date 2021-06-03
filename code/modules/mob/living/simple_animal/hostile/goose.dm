@@ -44,6 +44,7 @@
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, .proc/goosement)
 
 /mob/living/simple_animal/hostile/retaliate/goose/proc/goosement(atom/movable/AM, OldLoc, Dir, Forced)
+	SIGNAL_HANDLER
 	if(stat == DEAD)
 		return
 	nummies.Cut()
@@ -226,7 +227,7 @@
 /mob/living/simple_animal/hostile/retaliate/goose/vomit/goosement(atom/movable/AM, OldLoc, Dir, Forced)
 	. = ..()
 	if(vomiting)
-		vomit() // its supposed to keep vomiting if you move
+		INVOKE_ASYNC(src, .proc/vomit) // its supposed to keep vomiting if you move
 		return
 	if(prob(vomitCoefficient * 0.2))
 		vomit_prestart(vomitTimeBonus + 25)

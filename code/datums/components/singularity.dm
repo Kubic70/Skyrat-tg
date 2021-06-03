@@ -127,6 +127,10 @@
 	return COMPONENT_CANCEL_BLOB_ACT
 
 /datum/component/singularity/proc/consume(datum/source, atom/thing)
+	if (thing == parent)
+		stack_trace("Singularity tried to consume itself.")
+		return
+
 	consume_callback?.Invoke(thing, src)
 
 /datum/component/singularity/proc/consume_attack(datum/source, mob/user)
@@ -283,6 +287,7 @@
 
 /// Fired when the singularity is fired at with the BSA and deletes it
 /datum/component/singularity/proc/bluespace_reaction()
+	SIGNAL_HANDLER
 	if (!bsa_targetable)
 		return
 

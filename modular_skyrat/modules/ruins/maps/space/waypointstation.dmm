@@ -1,14 +1,7 @@
 //MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
-"ax" = (
-/obj/structure/table,
-/obj/item/clothing/head/spacepolice{
-	pixel_x = 2;
-	pixel_y = 1
-	},
-/obj/item/clothing/head/spacepolice{
-	pixel_x = -1;
-	pixel_y = -1
-	},
+"ai" = (
+/obj/effect/decal/cleanable/blood/drip,
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -48,6 +41,7 @@
 	})
 "bF" = (
 /mob/living/simple_animal/hostile/alien/queen/large,
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -125,6 +119,12 @@
 "eP" = (
 /turf/template_noop,
 /area/template_noop)
+"eZ" = (
+/obj/item/stack/sheet/plasteel/twenty,
+/turf/open/floor/iron/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
 "fr" = (
 /obj/item/stack/cable_coil/cut{
 	pixel_x = -8;
@@ -145,7 +145,9 @@
 	})
 "fu" = (
 /obj/effect/decal/cleanable/xenoblood/xgibs/down,
-/obj/effect/spawner/randomsnackvend,
+/obj/structure/chair/sofa/bench/right{
+	dir = 1
+	},
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -259,6 +261,15 @@
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
+"lr" = (
+/obj/machinery/computer{
+	desc = "A computer long since rendered non-functional due to lack of maintenance. Spitting out error messages.";
+	name = "Broken Computer"
+	},
+/turf/open/floor/iron/dark,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
 "lx" = (
 /obj/structure/alien/weeds/node,
 /turf/open/floor/iron/airless,
@@ -275,6 +286,19 @@
 	pixel_y = 10
 	},
 /turf/open/floor/carpet/royalblue/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
+"lU" = (
+/obj/structure/alien/weeds,
+/turf/open/floor/plating/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
+"mb" = (
+/obj/effect/decal/cleanable/blood,
+/obj/structure/alien/weeds,
+/turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
@@ -327,6 +351,13 @@
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
+"nO" = (
+/mob/living/simple_animal/hostile/alien,
+/obj/structure/alien/weeds,
+/turf/open/floor/iron/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
 "oa" = (
 /obj/structure/table,
 /obj/effect/spawner/lootdrop/space/fancytech,
@@ -337,6 +368,7 @@
 "og" = (
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/item/chair,
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -370,6 +402,7 @@
 /obj/structure/chair/office{
 	dir = 8
 	},
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -398,9 +431,20 @@
 /area/ruin/space/has_grav{
 	name = "Abandoned Shuttle"
 	})
+"qh" = (
+/obj/structure/alien/weeds,
+/turf/open/floor/iron/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
 "qC" = (
 /obj/structure/barricade/security,
 /turf/open/floor/iron/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
+"qT" = (
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
@@ -412,6 +456,7 @@
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 9
 	},
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -432,6 +477,7 @@
 	})
 "rp" = (
 /obj/effect/decal/cleanable/blood/gibs/down,
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -450,7 +496,7 @@
 /area/template_noop)
 "rX" = (
 /obj/effect/decal/cleanable/blood/gibs/up,
-/turf/open/floor/iron/airless,
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
@@ -470,12 +516,19 @@
 	pixel_y = 10
 	},
 /mob/living/simple_animal/hostile/alien/sentinel,
-/turf/open/floor/iron/airless,
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
 "sw" = (
 /obj/structure/closet/secure_closet/armory1,
+/turf/open/floor/iron/dark,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
+"sx" = (
+/obj/effect/decal/cleanable/blood/footprints,
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -491,6 +544,7 @@
 /obj/structure/chair/office{
 	dir = 1
 	},
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -522,14 +576,16 @@
 	})
 "ue" = (
 /obj/machinery/light/broken,
-/obj/effect/spawner/randomsnackvend,
+/obj/structure/chair/sofa/bench/left{
+	dir = 1
+	},
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
 "uA" = (
-/obj/structure/table/reinforced,
 /obj/machinery/door/window/brigdoor/westleft,
+/obj/machinery/door/firedoor/closed,
 /turf/open/floor/plating/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -582,11 +638,24 @@
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
+"xw" = (
+/obj/machinery/portable_atmospherics/canister/toxins,
+/turf/open/floor/plating/airless{
+	icon_state = "platingdmg2"
+	},
+/area/ruin/space/has_grav)
 "xO" = (
 /obj/structure/frame/computer{
 	dir = 4
 	},
 /turf/open/floor/carpet/royalblue/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
+"yn" = (
+/obj/effect/decal/cleanable/xenoblood/xgibs,
+/obj/structure/alien/weeds,
+/turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
@@ -639,6 +708,7 @@
 	dir = 1;
 	name = "Broken Computer"
 	},
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -681,6 +751,13 @@
 /mob/living/simple_animal/hostile/alien/drone,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav)
+"AP" = (
+/obj/effect/mob_spawn/human/corpse/assistant,
+/obj/structure/alien/weeds,
+/turf/open/floor/iron/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
 "Bi" = (
 /obj/structure/closet,
 /obj/item/ammo_casing/shotgun/pulverizer,
@@ -786,6 +863,13 @@
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
+"Ek" = (
+/obj/item/spear,
+/obj/structure/alien/weeds,
+/turf/open/floor/iron/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
 "EZ" = (
 /obj/effect/decal/cleanable/blood/splatter,
 /obj/structure/alien/weeds/node,
@@ -822,7 +906,6 @@
 /obj/structure/sign/poster/contraband/busty_backdoor_xeno_babes_6{
 	pixel_x = 33
 	},
-/obj/machinery/portable_atmospherics/canister/toxins,
 /turf/open/floor/iron/dark,
 /area/ruin/space/has_grav{
 	name = "Abandoned Shuttle"
@@ -895,13 +978,14 @@
 	})
 "IQ" = (
 /obj/structure/chair/office,
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
 "IW" = (
 /obj/structure/closet/secure_closet/security,
-/turf/open/floor/iron/airless,
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
@@ -928,6 +1012,14 @@
 /obj/effect/decal/cleanable/blood/footprints{
 	dir = 4
 	},
+/obj/structure/alien/weeds,
+/turf/open/floor/iron/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
+"JU" = (
+/obj/effect/decal/cleanable/xenoblood/xsplatter,
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -949,6 +1041,7 @@
 /obj/effect/decal/cleanable/blood/footprints{
 	dir = 8
 	},
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -991,7 +1084,7 @@
 /obj/machinery/light/broken{
 	dir = 1
 	},
-/obj/effect/spawner/randomcolavend,
+/obj/effect/spawner/randomsnackvend,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -1131,13 +1224,6 @@
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
-"QS" = (
-/obj/structure/table,
-/obj/item/clothing/mask/gas/sechailer/swat/spacepol,
-/turf/open/floor/iron/airless,
-/area/ruin/space/has_grav{
-	name = "Abandoned Station"
-	})
 "QT" = (
 /obj/machinery/computer,
 /turf/open/floor/iron/dark,
@@ -1196,6 +1282,13 @@
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
+"Tq" = (
+/obj/effect/decal/cleanable/blood/tracks,
+/obj/structure/alien/weeds,
+/turf/open/floor/iron/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
 "TE" = (
 /turf/open/floor/plating,
 /area/ruin/space/has_grav{
@@ -1206,7 +1299,7 @@
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 4
 	},
-/turf/open/floor/iron/airless,
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
@@ -1215,6 +1308,12 @@
 /obj/effect/mob_spawn/human/corpse/nanotrasensoldier,
 /obj/effect/decal/cleanable/blood/tracks,
 /turf/open/floor/carpet/royalblue/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
+"TQ" = (
+/obj/item/stack/rods/ten,
+/turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
@@ -1246,7 +1345,7 @@
 /obj/effect/decal/cleanable/blood/tracks{
 	dir = 10
 	},
-/turf/open/floor/iron/airless,
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
@@ -1332,7 +1431,17 @@
 	name = "Abandoned Station"
 	})
 "XG" = (
-/obj/effect/spawner/randomsnackvend,
+/obj/structure/reagent_dispensers/water_cooler,
+/turf/open/floor/iron/airless,
+/area/ruin/space/has_grav{
+	name = "Abandoned Station"
+	})
+"XI" = (
+/obj/machinery/computer{
+	desc = "A computer long since rendered non-functional due to lack of maintenance. Spitting out error messages.";
+	name = "Broken Computer"
+	},
+/obj/structure/alien/weeds,
 /turf/open/floor/iron/airless,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
@@ -1370,15 +1479,7 @@
 	})
 "Zt" = (
 /obj/structure/table,
-/obj/item/clothing/under/rank/security/officer/spacepol{
-	pixel_x = 2;
-	pixel_y = 5
-	},
-/obj/item/clothing/under/rank/security/officer/spacepol{
-	pixel_x = -1;
-	pixel_y = 3
-	},
-/turf/open/floor/iron/airless,
+/turf/open/floor/iron/dark,
 /area/ruin/space/has_grav{
 	name = "Abandoned Station"
 	})
@@ -1613,7 +1714,7 @@ Qd
 eP
 hl
 IW
-Pj
+qT
 Zt
 hl
 eP
@@ -1675,8 +1776,8 @@ Qd
 eP
 hl
 sw
-Pj
-ax
+qT
+Zt
 hl
 eP
 eP
@@ -1736,9 +1837,9 @@ Gv
 Qd
 eP
 hl
-Ha
-Pj
-QS
+lr
+qT
+Zt
 hl
 eP
 eP
@@ -1798,9 +1899,9 @@ Gv
 Qd
 eP
 hl
-Ha
-Pj
-Pj
+lr
+qT
+qT
 hl
 eP
 eP
@@ -1831,8 +1932,8 @@ Xv
 Pj
 nC
 Pj
-cV
-Pj
+ai
+qh
 ka
 ka
 Pj
@@ -1892,10 +1993,10 @@ Pj
 Pj
 Ym
 Pj
-Pj
-Pj
-Pj
-Pj
+qh
+qh
+qh
+qh
 bD
 bG
 ka
@@ -1953,13 +2054,13 @@ hl
 Oy
 Pj
 Pj
-Pj
-cV
-Pj
-Pj
-ka
-Pj
-pJ
+qh
+ai
+qh
+qh
+lU
+qh
+yn
 zu
 RC
 ju
@@ -2014,7 +2115,7 @@ eP
 hl
 Pj
 cV
-Pj
+qh
 hl
 hl
 fQ
@@ -2022,7 +2123,7 @@ fQ
 fQ
 hl
 hl
-Pj
+qh
 Pj
 ZA
 ju
@@ -2075,16 +2176,16 @@ eP
 eP
 OC
 vj
-Pj
-Pj
+qh
+qh
 hl
-Ha
+XI
 tc
-Pj
+qh
 IQ
 zE
 hl
-Pj
+qh
 bG
 bG
 Um
@@ -2105,7 +2206,7 @@ OC
 OC
 wB
 wB
-Gh
+XG
 nw
 Pj
 Pj
@@ -2137,17 +2238,17 @@ eP
 eP
 OC
 na
-Pj
-Pj
+qh
+qh
 fQ
-Pj
-Pj
-Pj
+qh
+qh
+qh
 Af
-Pj
+qh
 fQ
-Pj
-Pj
+qh
+qh
 CC
 Pj
 OQ
@@ -2173,7 +2274,7 @@ Pj
 Pj
 Kh
 Pj
-Pj
+TQ
 Pj
 Pj
 Pj
@@ -2199,16 +2300,16 @@ eP
 eP
 OC
 na
-Pj
+qh
 Ku
-Cn
+sx
 EZ
 rp
 bF
-Pj
-Pj
+qh
+qh
 fQ
-Pj
+qh
 ka
 qC
 ka
@@ -2232,7 +2333,7 @@ Pj
 Pj
 Pj
 Pj
-Pj
+eZ
 pt
 Pj
 Pj
@@ -2261,17 +2362,17 @@ eP
 eP
 OC
 na
-Pj
+qh
 JC
 fQ
-Pj
+qh
 pC
-Pj
-Pj
-Pj
+qh
+qh
+qh
 fQ
-Pj
-Pj
+qh
+qh
 Pj
 qC
 fJ
@@ -2323,17 +2424,17 @@ eP
 eP
 OC
 zx
-Pj
-Pj
+qh
+qh
 hl
 Ha
-Pj
+qh
 lx
 IQ
 zE
 hl
-Pj
-Pj
+qh
+qh
 cV
 qC
 hl
@@ -2385,8 +2486,8 @@ eP
 eP
 hl
 zp
-Pj
-Pj
+qh
+qh
 hl
 hl
 fQ
@@ -2394,8 +2495,8 @@ fQ
 fQ
 hl
 hl
-Kh
-Pj
+mb
+qh
 Cx
 Pj
 hl
@@ -2448,15 +2549,15 @@ hl
 hl
 Oy
 Pj
-Pj
-Pj
-Pj
-Pj
-Pj
-Pj
-nw
-Xl
-Pj
+qh
+qh
+qh
+qh
+qh
+qh
+AP
+Ek
+qh
 bn
 wB
 Pj
@@ -2511,13 +2612,13 @@ pG
 Pj
 cV
 Pj
-Pj
-Al
-Pj
-dz
-Pj
+qh
+JU
+qh
+nO
+qh
 og
-Pj
+qh
 Pj
 Ma
 wB
@@ -2574,11 +2675,11 @@ Pj
 Pj
 Pj
 Pj
-Pj
-cV
+qh
+ai
 rc
-tE
-tE
+Tq
+Tq
 rA
 wB
 wB
@@ -3148,7 +3249,7 @@ eP
 eP
 eP
 OL
-vq
+xw
 sh
 CL
 OL

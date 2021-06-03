@@ -37,7 +37,6 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 /mob/dead/get_status_tab_items()
 	. = ..()
 	. += ""
-	. += "Game Mode: [SSticker.hide_mode ? "Secret" : "[GLOB.master_mode]"]"
 
 	if(SSticker.HasRoundStarted())
 		return
@@ -77,7 +76,7 @@ INITIALIZE_IMMEDIATE(/mob/dead)
 
 	var/addr = csa[pick]
 
-	if(alert(src, "Jump to server [pick] ([addr])?", "Server Hop", "Yes", "No") != "Yes")
+	if(tgui_alert(usr, "Jump to server [pick] ([addr])?", "Server Hop", list("Yes", "No")) != "Yes")
 		return
 
 	var/client/C = client
