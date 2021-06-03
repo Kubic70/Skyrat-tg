@@ -1654,9 +1654,10 @@
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/cruiser)
 "gr" = (
-/obj/machinery/button/door/directional/east{
+/obj/machinery/button/door{
 	id = "spacebattlestorage";
-	name = "Secure Storage"
+	name = "Secure Storage";
+	pixel_x = 24
 	},
 /turf/open/floor/plating,
 /area/awaymission/spacebattle/cruiser)

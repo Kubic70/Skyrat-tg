@@ -59,11 +59,6 @@
 		"ntosradarpointerS.png" = 'icons/UI_Icons/tgui/ntosradar_pointer_S.png'
 	)
 
-/datum/asset/simple/circuit_assets
-	assets = list(
-		"grid_background.png" = 'icons/ui_icons/tgui/grid_background.png'
-	)
-
 /datum/asset/spritesheet/simple/pda
 	name = "pda"
 	assets = list(
@@ -182,7 +177,7 @@
 	name = "chat"
 
 /datum/asset/spritesheet/chat/register()
-	InsertAll("emoji", EMOJI_SET)
+	InsertAll("emoji", 'icons/emoji.dmi')
 	// pre-loading all lanugage icons also helps to avoid meta
 	InsertAll("language", 'icons/misc/language.dmi')
 	// catch languages which are pulling icons from another file

@@ -419,9 +419,6 @@
 			if (!(mind.assigned_role in GLOB.command_positions + GLOB.security_positions))
 				continue
 
-			if (mind in ex_revs + ex_headrevs)
-				continue
-
 			var/mob/living/carbon/target_body = mind.current
 
 			mind.add_antag_datum(/datum/antagonist/enemy_of_the_revolution)
@@ -548,6 +545,9 @@
 			heads_report += "<td><A href='?priv_msg=[N.key]'>PM</A></td></tr>"
 	heads_report += "</table>"
 	return common_part + heads_report
+
+/datum/team/revolution/is_gamemode_hero()
+	return SSticker.mode.name == "revolution"
 
 #undef DECONVERTER_STATION_WIN
 #undef DECONVERTER_REVS_WIN

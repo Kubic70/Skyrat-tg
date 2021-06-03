@@ -19,11 +19,11 @@
 	if(!ispath(objholder))
 		objholder = pick_closest_path(target_path)
 		if(!objholder)
-			tgui_alert(usr,"No path has been selected.")
+			alert("No path has been selected.")
 			return
 		else if(ispath(objholder, /area))
 			objholder = null
-			tgui_alert(usr,"Area paths are not supported for this mode, use the area edit mode instead.")
+			alert("Area paths are not supported for this mode, use the area edit mode instead.")
 			return
 	deselect_region()
 
@@ -56,7 +56,7 @@
 			var/selection_size = abs(cornerA.x - cornerB.x) * abs(cornerA.y - cornerB.y)
 
 			if(selection_size > FILL_WARNING_MIN) // Confirm fill if the number of tiles in the selection is greater than FILL_WARNING_MIN
-				var/choice = tgui_alert(usr,"Your selected area is [selection_size] tiles! Continue?", "Large Fill Confirmation", list("Yes", "No"))
+				var/choice = alert("Your selected area is [selection_size] tiles! Continue?", "Large Fill Confirmation", "Yes", "No")
 				if(choice != "Yes")
 					return
 

@@ -1,2 +1,2 @@
-@call "%~dp0\tools\build\build"
+@call tools\build\build
 @pause

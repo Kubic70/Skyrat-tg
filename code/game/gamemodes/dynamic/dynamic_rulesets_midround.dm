@@ -1,8 +1,3 @@
-/// Probability the AI going malf will be accompanied by an ion storm announcement and some ion laws.
-#define MALF_ION_PROB 33
-/// The probability to replace an existing law with an ion law instead of adding a new ion law.
-#define REPLACE_LAW_WITH_ION_PROB 10
-
 //////////////////////////////////////////////
 //                                          //
 //            MIDROUND RULESETS             //
@@ -27,10 +22,10 @@
 	var/makeBody = TRUE
 
 /datum/dynamic_ruleset/midround/trim_candidates()
-	living_players = trim_list(GLOB.alive_player_list)
-	living_antags = trim_list(GLOB.current_living_antags)
-	dead_players = trim_list(GLOB.dead_player_list)
-	list_observers = trim_list(GLOB.current_observers_list)
+	living_players = trim_list(mode.current_players[CURRENT_LIVING_PLAYERS])
+	living_antags = trim_list(mode.current_players[CURRENT_LIVING_ANTAGS])
+	dead_players = trim_list(mode.current_players[CURRENT_DEAD_PLAYERS])
+	list_observers = trim_list(mode.current_players[CURRENT_OBSERVERS])
 
 /datum/dynamic_ruleset/midround/proc/trim_list(list/L = list())
 	var/list/trimmed_list = L.Copy()
@@ -41,7 +36,7 @@
 		if (!M.client) // Are they connected?
 			trimmed_list.Remove(M)
 			continue
-		if(M.client.get_remaining_days(minimum_required_age) > 0)
+		if(!mode.check_age(M.client, minimum_required_age))
 			trimmed_list.Remove(M)
 			continue
 		if(antag_flag_override)
@@ -73,7 +68,7 @@
 	if (!forced)
 		var/job_check = 0
 		if (enemy_roles.len > 0)
-			for (var/mob/M in GLOB.alive_player_list)
+			for (var/mob/M in mode.current_players[CURRENT_LIVING_PLAYERS])
 				if (M.stat == DEAD || !M.client)
 					continue // Dead/disconnected players cannot count as opponents
 				if (M.mind && M.mind.assigned_role && (M.mind.assigned_role in enemy_roles) && (!(M in candidates) || (M.mind.assigned_role in restricted_roles)))
@@ -102,7 +97,7 @@
 	message_admins("Polling [possible_volunteers.len] players to apply for the [name] ruleset.")
 	log_game("DYNAMIC: Polling [possible_volunteers.len] players to apply for the [name] ruleset.")
 
-	candidates = pollGhostCandidates("The mode is looking for volunteers to become [antag_flag] for [name]", antag_flag, antag_flag_override ? antag_flag_override : antag_flag, poll_time = 300)
+	candidates = pollGhostCandidates("The mode is looking for volunteers to become [antag_flag] for [name]", antag_flag, SSticker.mode, antag_flag_override ? antag_flag_override : antag_flag, poll_time = 300)
 
 	if(!candidates || candidates.len <= 0)
 		message_admins("The ruleset [name] received no applications.")
@@ -169,7 +164,7 @@
 	name = "Syndicate Sleeper Agent"
 	antag_datum = /datum/antagonist/traitor
 	antag_flag = ROLE_TRAITOR
-	protected_roles = list("Prisoner", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Corrections Officer")
+	protected_roles = list("Prisoner", "Security Officer", "Warden", "Detective", "Head of Security", "Captain")
 	restricted_roles = list("Cyborg", "AI", "Positronic Brain")
 	required_candidates = 1
 	weight = 7
@@ -178,8 +173,8 @@
 	repeatable = TRUE
 
 /datum/dynamic_ruleset/midround/autotraitor/acceptable(population = 0, threat = 0)
-	var/player_count = GLOB.alive_player_list.len
-	var/antag_count = GLOB.current_living_antags.len
+	var/player_count = mode.current_players[CURRENT_LIVING_PLAYERS].len
+	var/antag_count = mode.current_players[CURRENT_LIVING_ANTAGS].len
 	var/max_traitors = round(player_count / 10) + 1
 
 	// adding traitors if the antag population is getting low
@@ -201,7 +196,7 @@
 			living_players -= player
 		else if(is_centcom_level(player.z))
 			living_players -= player // We don't autotator people in CentCom
-		else if(player.mind && (player.mind.special_role || ( player.mind.antag_datums && player.mind.antag_datums.len ) > 0))
+		else if(player.mind && (player.mind.special_role || player.mind.antag_datums?.len > 0))
 			living_players -= player // We don't autotator people with roles already
 
 /datum/dynamic_ruleset/midround/autotraitor/ready(forced = FALSE)
@@ -230,7 +225,7 @@
 	persistent = TRUE
 	antag_flag = ROLE_FAMILIES
 	protected_roles = list("Prisoner", "Head of Personnel")
-	restricted_roles = list("Cyborg", "AI", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Corrections Officer")
+	restricted_roles = list("Cyborg", "AI", "Security Officer", "Warden", "Detective", "Head of Security", "Captain")
 	required_candidates = 6 // gotta have 'em ALL
 	weight = 1
 	cost = 25
@@ -250,7 +245,7 @@
 			candidates -= player
 		else if(is_centcom_level(player.z))
 			candidates -= player
-		else if(player.mind && (player.mind.special_role || ( player.mind.antag_datums && player.mind.antag_datums.len ) > 0))
+		else if(player.mind && (player.mind.special_role || player.mind.antag_datums?.len > 0))
 			candidates -= player
 		else if(HAS_TRAIT(player, TRAIT_MINDSHIELD))
 			candidates -= player
@@ -291,12 +286,12 @@
 //////////////////////////////////////////////
 //                                          //
 //         Malfunctioning AI                //
-//                                         //
+//     //
 //////////////////////////////////////////////
 
 /datum/dynamic_ruleset/midround/malf
 	name = "Malfunctioning AI"
-	antag_datum = /datum/antagonist/malf_ai
+	antag_datum = /datum/antagonist/traitor
 	antag_flag = ROLE_MALF
 	enemy_roles = list("Security Officer", "Warden","Detective","Head of Security", "Captain", "Scientist", "Chemist", "Research Director", "Chief Engineer")
 	exclusive_roles = list("AI")
@@ -306,6 +301,8 @@
 	cost = 35
 	requirements = list(101,101,80,70,60,60,50,50,40,40)
 	required_type = /mob/living/silicon/ai
+	var/ion_announce = 33
+	var/removeDontImproveChance = 10
 
 /datum/dynamic_ruleset/midround/malf/trim_candidates()
 	..()
@@ -313,29 +310,25 @@
 	for(var/mob/living/player in candidates)
 		if(!isAI(player))
 			candidates -= player
-			continue
-
-		if(is_centcom_level(player.z))
+		else if(is_centcom_level(player.z))
 			candidates -= player
-			continue
-
-		if(player.mind && (player.mind.special_role || ( player.mind.antag_datums && player.mind.antag_datums.len ) > 0))
+		else if(player.mind && (player.mind.special_role || player.mind.antag_datums?.len > 0))
 			candidates -= player
 
 /datum/dynamic_ruleset/midround/malf/execute()
 	if(!candidates || !candidates.len)
 		return FALSE
-	var/mob/living/silicon/ai/new_malf_ai = pick_n_take(candidates)
-	assigned += new_malf_ai.mind
-	var/datum/antagonist/malf_ai/malf_antag_datum = new
-	new_malf_ai.mind.special_role = antag_flag
-	new_malf_ai.mind.add_antag_datum(malf_antag_datum)
-	if(prob(MALF_ION_PROB))
+	var/mob/living/silicon/ai/M = pick_n_take(candidates)
+	assigned += M.mind
+	var/datum/antagonist/traitor/AI = new
+	M.mind.special_role = antag_flag
+	M.mind.add_antag_datum(AI)
+	if(prob(ion_announce))
 		priority_announce("Ion storm detected near the station. Please check all AI-controlled equipment for errors.", "Anomaly Alert", ANNOUNCER_IONSTORM)
-		if(prob(REPLACE_LAW_WITH_ION_PROB))
-			new_malf_ai.replace_random_law(generate_ion_law(), list(LAW_INHERENT, LAW_SUPPLIED, LAW_ION))
+		if(prob(removeDontImproveChance))
+			M.replace_random_law(generate_ion_law(), list(LAW_INHERENT, LAW_SUPPLIED, LAW_ION))
 		else
-			new_malf_ai.add_ion_law(generate_ion_law())
+			M.add_ion_law(generate_ion_law())
 	return TRUE
 
 //////////////////////////////////////////////
@@ -705,8 +698,3 @@
 /datum/dynamic_ruleset/midround/spiders/execute()
 	create_midwife_eggs(spawncount)
 	return ..()
-
-/// Probability the AI going malf will be accompanied by an ion storm announcement and some ion laws.
-#undef MALF_ION_PROB
-/// The probability to replace an existing law with an ion law instead of adding a new ion law.
-#undef REPLACE_LAW_WITH_ION_PROB

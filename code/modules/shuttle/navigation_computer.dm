@@ -297,7 +297,7 @@
 
 /mob/camera/ai_eye/remote/shuttle_docker
 	visible_icon = FALSE
-	use_static = FALSE
+	use_static = USE_STATIC_NONE
 	var/list/placement_images = list()
 	var/list/placed_images = list()
 
@@ -305,8 +305,8 @@
 	src.origin = origin
 	return ..()
 
-/mob/camera/ai_eye/remote/shuttle_docker/setLoc(destination)
-	. = ..()
+/mob/camera/ai_eye/remote/shuttle_docker/setLoc(T)
+	..()
 	var/obj/machinery/computer/camera_advanced/shuttle_docker/console = origin
 	console.checkLandingSpot()
 

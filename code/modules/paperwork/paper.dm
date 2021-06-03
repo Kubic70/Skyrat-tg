@@ -288,10 +288,6 @@
 		data["is_crayon"] = FALSE
 		data["stamp_icon_state"] = "FAKE"
 		data["stamp_class"] = "FAKE"
-	if(istype(loc, /obj/structure/noticeboard))
-		var/obj/structure/noticeboard/noticeboard = loc
-		if(!noticeboard.allowed(user))
-			data["edit_mode"] = MODE_READING
 	data["field_counter"] = field_counter
 	data["form_fields"] = form_fields
 
@@ -354,11 +350,6 @@
 
 			update_appearance()
 			. = TRUE
-
-/obj/item/paper/ui_host(mob/user)
-	if(istype(loc, /obj/structure/noticeboard))
-		return loc
-	return ..()
 
 /**
  * Construction paper

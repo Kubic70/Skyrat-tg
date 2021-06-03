@@ -259,12 +259,6 @@
 	},
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/hotel/guestroom/room_2)
-"bz" = (
-/obj/machinery/power/apc/auto_name/south{
-	cell_type = /obj/item/stock_parts/cell/upgraded/plus
-	},
-/turf/closed/wall,
-/area/ruin/space/has_grav/hotel/workroom)
 "bE" = (
 /obj/structure/cable,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
@@ -5472,6 +5466,10 @@
 /area/ruin/space/has_grav/hotel)
 "JZ" = (
 /obj/structure/table,
+/obj/machinery/power/apc/highcap/five_k{
+	name = "Laundry APC";
+	pixel_y = 23
+	},
 /obj/structure/cable,
 /turf/open/floor/iron/white,
 /area/ruin/space/has_grav/hotel/workroom)
@@ -9568,7 +9566,7 @@ aC
 nf
 Py
 bW
-bz
+di
 JZ
 bZ
 GI

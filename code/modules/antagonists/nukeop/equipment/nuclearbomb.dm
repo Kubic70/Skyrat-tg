@@ -1,6 +1,3 @@
-GLOBAL_VAR_INIT(station_was_nuked, FALSE)
-GLOBAL_VAR(station_nuke_source)
-
 /obj/machinery/nuclearbomb
 	name = "nuclear fission explosive"
 	desc = "You probably shouldn't stick around to see if this is armed."
@@ -492,15 +489,14 @@ GLOBAL_VAR(station_nuke_source)
 	else
 		off_station = NUKE_MISS_STATION
 
-	if(off_station < NUKE_MISS_STATION)
+	if(off_station < 2)
 		SSshuttle.registerHostileEnvironment(src)
 		SSshuttle.lockdown = TRUE
 
 	KillEveryoneOnZLevel(z) //SKYRAT EDIT ADDITION
 
 	//Cinematic
-	GLOB.station_was_nuked = TRUE
-	GLOB.station_nuke_source = off_station
+	SSticker.mode.OnNukeExplosion(off_station)
 	really_actually_explode(off_station)
 	SSticker.roundend_check_paused = FALSE
 

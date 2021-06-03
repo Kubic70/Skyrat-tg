@@ -43,12 +43,19 @@
 /turf/open/floor/plating/airless,
 /area/tcommsat/oldaisat)
 "ak" = (
-/obj/machinery/power/apc/auto_name/north,
+/obj/machinery/power/apc{
+	dir = 1;
+	name = "Worn-out APC";
+	pixel_x = 1;
+	pixel_y = 23
+	},
 /obj/structure/cable,
 /turf/open/floor/plating/airless,
 /area/tcommsat/oldaisat)
 "al" = (
-/obj/machinery/light/small/directional/north,
+/obj/machinery/light/small{
+	dir = 1
+	},
 /obj/structure/cable,
 /turf/open/floor/plating/airless,
 /area/tcommsat/oldaisat)
@@ -69,7 +76,9 @@
 /turf/open/floor/iron/airless,
 /area/tcommsat/oldaisat)
 "aq" = (
-/obj/machinery/light/small/directional/north,
+/obj/machinery/light/small{
+	dir = 1
+	},
 /turf/open/floor/iron/airless,
 /area/tcommsat/oldaisat)
 "ar" = (
@@ -127,7 +136,9 @@
 /obj/structure/table,
 /obj/item/paper_bin,
 /obj/item/pen/blue,
-/obj/machinery/light/small/directional/north,
+/obj/machinery/light/small{
+	dir = 1
+	},
 /turf/open/floor/iron/airless,
 /area/tcommsat/oldaisat)
 "aC" = (
@@ -241,7 +252,9 @@
 /turf/closed/wall/r_wall,
 /area/tcommsat/oldaisat)
 "aV" = (
-/obj/machinery/light/small/directional/west,
+/obj/machinery/light/small{
+	dir = 8
+	},
 /turf/open/floor/iron/airless,
 /area/tcommsat/oldaisat)
 "aW" = (
@@ -575,7 +588,9 @@
 /turf/open/floor/iron/airless/dark,
 /area/tcommsat/oldaisat)
 "bY" = (
-/obj/machinery/light/small/directional/east,
+/obj/machinery/light/small{
+	dir = 4
+	},
 /turf/open/floor/iron/airless,
 /area/tcommsat/oldaisat)
 "bZ" = (
@@ -717,7 +732,7 @@
 /turf/open/floor/iron/airless,
 /area/tcommsat/oldaisat)
 "cw" = (
-/obj/machinery/light/small/directional/south,
+/obj/machinery/light/small,
 /obj/item/paper,
 /obj/effect/turf_decal/stripes/corner{
 	dir = 8
@@ -790,7 +805,9 @@
 /turf/open/floor/iron,
 /area/tcommsat/oldaisat)
 "cK" = (
-/obj/machinery/light/small/directional/west,
+/obj/machinery/light/small{
+	dir = 8
+	},
 /turf/open/floor/iron,
 /area/tcommsat/oldaisat)
 "cL" = (
@@ -859,7 +876,9 @@
 /turf/open/floor/iron,
 /area/tcommsat/oldaisat)
 "cX" = (
-/obj/machinery/light/small/directional/east,
+/obj/machinery/light/small{
+	dir = 4
+	},
 /obj/effect/turf_decal/stripes/line{
 	dir = 6
 	},

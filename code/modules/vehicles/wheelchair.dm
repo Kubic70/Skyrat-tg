@@ -17,7 +17,6 @@
 /obj/vehicle/ridden/wheelchair/Initialize()
 	. = ..()
 	make_ridable()
-	ADD_TRAIT(src, TRAIT_NO_IMMOBILIZE, INNATE_TRAIT)
 
 /obj/vehicle/ridden/wheelchair/ComponentInitialize() //Since it's technically a chair I want it to have chair properties
 	. = ..()

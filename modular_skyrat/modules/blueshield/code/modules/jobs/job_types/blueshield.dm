@@ -12,21 +12,11 @@
 	exp_type = EXP_TYPE_SECURITY
 
 	outfit = /datum/outfit/job/blueshield
-	plasmaman_outfit = /datum/outfit/plasmaman/blueshield
+
 	display_order = JOB_DISPLAY_ORDER_BLUESHIELD
-	bounty_types = CIV_JOB_SEC
-	departments = DEPARTMENT_COMMAND
-	liver_traits = list(TRAIT_PRETENDER_ROYAL_METABOLISM)
+	outfit = /datum/outfit/job/blueshield
 
-	family_heirlooms = list(/obj/item/bedsheet/captain, /obj/item/clothing/head/beret/blueshield)
-
-	mail_goodies = list(
-		/obj/item/storage/fancy/cigarettes/cigars/havana = 10,
-		/obj/item/stack/spacecash/c500 = 3,
-		/obj/item/disk/nuclear/fake/obvious = 2,
-		/obj/item/clothing/head/collectable/captain = 4,
-		/obj/projectile/bullet/advanced/b10mm/b460 = 1
-	)
+	family_heirlooms = list(/obj/item/book/manual/wiki/security_space_law, /obj/item/clothing/head/beret/sec)
 
 /datum/outfit/job/blueshield
 	name = "Blueshield"

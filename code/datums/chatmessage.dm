@@ -16,6 +16,8 @@
 #define CHAT_MESSAGE_MAX_LENGTH 110
 /// The dimensions of the chat message icons
 #define CHAT_MESSAGE_ICON_SIZE 9
+/// Macro from Lummox used to get height from a MeasureText proc
+#define WXH_TO_HEIGHT(x) text2num(copytext(x, findtextEx(x, "x") + 1))
 
 ///Base layer of chat elements
 #define CHAT_LAYER 1
@@ -159,8 +161,7 @@
 			LAZYSET(language_icons, language, language_icon)
 		LAZYADD(prefixes, "\icon[language_icon]")
 
-	if(prefixes)
-		text = "[prefixes.Join("&nbsp;")][text]"
+	text = "[prefixes?.Join("&nbsp;")][text]"
 
 	// We dim italicized text to make it more distinguishable from regular text
 	var/tgt_color = extra_classes.Find("italics") ? target.chat_color_darkened : target.chat_color
@@ -319,3 +320,4 @@
 #undef CHAT_LAYER_Z_STEP
 #undef CHAT_LAYER_MAX_Z
 #undef CHAT_MESSAGE_ICON_SIZE
+#undef WXH_TO_HEIGHT

@@ -299,7 +299,6 @@ Difficulty: Extremely Hard
 
 /// Resurrects the target when they die by moving them and dusting a clone in their place, one life for another
 /obj/item/resurrection_crystal/proc/resurrect(mob/living/carbon/user, gibbed)
-	SIGNAL_HANDLER
 	if(gibbed)
 		to_chat(user, "<span class='notice'>This power cannot be used if your entire mortal body is disintegrated...</span>")
 		return
@@ -307,12 +306,12 @@ Difficulty: Extremely Hard
 	var/typepath = user.type
 	var/mob/living/carbon/clone = new typepath(user.loc)
 	clone.real_name = user.real_name
-	INVOKE_ASYNC(user.dna, /datum/dna.proc/transfer_identity, clone)
+	user.dna.transfer_identity(clone)
 	clone.updateappearance(mutcolor_update=1)
 	var/turf/T = find_safe_turf()
 	user.forceMove(T)
 	user.revive(full_heal = TRUE, admin_revive = TRUE)
-	INVOKE_ASYNC(user, /mob/living/carbon.proc/set_species, /datum/species/shadow)
+	user.set_species(/datum/species/shadow)
 	to_chat(user, "<span class='notice'>You blink and find yourself in [get_area_name(T)]... feeling a bit darker.</span>")
 	clone.dust()
 	qdel(src)
@@ -332,12 +331,12 @@ Difficulty: Extremely Hard
 /obj/item/clothing/shoes/winterboots/ice_boots/ice_trail/equipped(mob/user, slot)
 	. = ..()
 	if(slot == ITEM_SLOT_FEET)
-		ADD_TRAIT(src, TRAIT_NODROP, CURSED_ITEM_TRAIT(type))
+		ADD_TRAIT(src, TRAIT_NODROP, CURSED_ITEM_TRAIT)
 
 /obj/item/clothing/shoes/winterboots/ice_boots/ice_trail/dropped(mob/user)
 	. = ..()
 	// Could have been blown off in an explosion from the previous owner
-	REMOVE_TRAIT(src, TRAIT_NODROP, CURSED_ITEM_TRAIT(type))
+	REMOVE_TRAIT(src, TRAIT_NODROP, CURSED_ITEM_TRAIT)
 
 /obj/item/clothing/shoes/winterboots/ice_boots/ice_trail/ui_action_click(mob/user)
 	on = !on
@@ -414,7 +413,6 @@ Difficulty: Extremely Hard
 
 /// Blocks movement from the status effect owner
 /datum/status_effect/ice_block_talisman/proc/owner_moved()
-	SIGNAL_HANDLER
 	return COMPONENT_MOVABLE_BLOCK_PRE_MOVE
 
 /datum/status_effect/ice_block_talisman/on_remove()

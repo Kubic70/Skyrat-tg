@@ -42,10 +42,6 @@
 	usesound = 'sound/items/pshoom.ogg'
 	toolspeed = 0.2
 	random_color = FALSE
-	greyscale_colors = null
-	greyscale_config = null
-	greyscale_config_inhand_left = null
-	greyscale_config_inhand_right = null
 
 //CROWBAR//
 /obj/item/crowbar/advanced

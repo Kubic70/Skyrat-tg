@@ -32,7 +32,7 @@
 	host = null
 	last_host_loc = null
 	hasprox_receiver = null
-	QDEL_LAZYLIST(checkers)
+	QDEL_LIST(checkers)
 	return ..()
 
 /datum/proximity_monitor/proc/HandleMove()
@@ -69,7 +69,7 @@
 			if(old_checkers_len)
 				pc = checkers_local[old_checkers_len]
 				--checkers_local.len
-				QDEL_LAZYLIST(checkers_local)
+				QDEL_LIST(checkers_local)
 			else
 				pc = new(loc_to_use, src)
 

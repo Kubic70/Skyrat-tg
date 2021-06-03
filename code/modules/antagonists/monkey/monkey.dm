@@ -79,7 +79,7 @@
 /datum/antagonist/monkey/admin_remove(mob/admin)
 	var/mob/living/carbon/human/M = owner.current
 	if(ismonkey(M))
-		switch(tgui_alert(admin, "Humanize?", "Humanize", list("Yes", "No")))
+		switch(alert(admin, "Humanize?", "Humanize", "Yes", "No"))
 			if("Yes")
 				if(admin == M)
 					admin = M.humanize()
@@ -98,7 +98,7 @@
 /datum/antagonist/monkey/leader/admin_add(datum/mind/new_owner,mob/admin)
 	var/mob/living/carbon/human/H = new_owner.current
 	if(istype(H))
-		switch(tgui_alert(admin, "Monkeyize?", "Monkeyize", list("Yes", "No")))
+		switch(alert(admin, "Monkeyize?", "Monkeyize", "Yes", "No"))
 			if("Yes")
 				if(admin == H)
 					admin = H.monkeyize()

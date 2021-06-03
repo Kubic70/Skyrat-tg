@@ -263,7 +263,6 @@
 	F.default_ignite(location,release_amount)
 
 /obj/item/flamethrower/proc/instant_refill()
-	SIGNAL_HANDLER
 	if(ptank)
 		ptank.air_contents.assert_gas(/datum/gas/plasma)
 		ptank.air_contents.gases[/datum/gas/plasma][MOLES] = (10*ONE_ATMOSPHERE)*ptank.volume/(R_IDEAL_GAS_EQUATION*T20C)

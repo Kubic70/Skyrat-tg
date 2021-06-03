@@ -685,6 +685,7 @@
 	req_one_access_txt = "150";
 	secure = 1
 	},
+/obj/item/coin/antagtoken,
 /obj/item/encryptionkey/headset_cybersun,
 /obj/item/encryptionkey/headset_cybersun,
 /obj/item/encryptionkey/headset_cybersun,
@@ -752,7 +753,7 @@
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/syndicate_forgotten_ship)
 "ci" = (
-/obj/machinery/vending/cigarette/syndicate,
+/obj/machinery/vending/clothing,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/syndicate_forgotten_ship)
 "cj" = (
@@ -1147,7 +1148,8 @@
 /turf/open/floor/wood,
 /area/ruin/space/has_grav/syndicate_forgotten_ship)
 "db" = (
-/obj/machinery/vending/clothing,
+/obj/effect/spawner/lootdrop/costume,
+/obj/structure/rack,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/syndicate_forgotten_ship)
 "dc" = (
@@ -1169,7 +1171,7 @@
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/syndicate_forgotten_cargopod)
 "df" = (
-/obj/machinery/vending/dorms,
+/obj/machinery/vending/cigarette/syndicate,
 /turf/open/floor/mineral/plastitanium,
 /area/ruin/space/has_grav/syndicate_forgotten_ship)
 "dg" = (

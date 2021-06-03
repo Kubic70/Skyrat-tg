@@ -104,7 +104,6 @@
 	. = ..()
 	I.play_tool_sound(src)
 	deconstruct()
-	return TRUE
 
 /obj/structure/chair/attack_tk(mob/user)
 	if(!anchored || has_buckled_mobs() || !isturf(user.loc))

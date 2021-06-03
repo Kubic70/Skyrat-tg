@@ -1151,8 +1151,6 @@
 
 		pack.contains = list(GLOB.gas_id_to_canister[initial(gas.id)])
 
-		pack.crate_type = crate_type
-
 		canister_packs += pack
 
 	return canister_packs
@@ -1566,7 +1564,7 @@
 
 /datum/supply_pack/service/carpet
 	name = "Premium Carpet Crate"
-	desc = "Iron floor tiles getting on your nerves? These stacks of extra soft carpet will tie any room together."
+	desc = "Plasteel floor tiles getting on your nerves? These stacks of extra soft carpet will tie any room together."
 	cost = CARGO_CRATE_VALUE * 2
 	contains = list(/obj/item/stack/tile/carpet/fifty,
 					/obj/item/stack/tile/carpet/fifty,
@@ -2426,7 +2424,7 @@
 /datum/supply_pack/misc/aquarium_kit
 	name = "Aquarium Kit"
 	desc = "Everything you need to start your own aquarium. Contains aquarium construction kit, fish catalog, feed can and three freshwater fish from our collection."
-	cost = CARGO_CRATE_VALUE * 5
+	cost = CARGO_CRATE_VALUE * 10
 	contains = list(/obj/item/book/fish_catalog,
 					/obj/item/storage/fish_case/random/freshwater,
 					/obj/item/storage/fish_case/random/freshwater,
@@ -2441,8 +2439,7 @@
 	name = "Aquarium Fish Case"
 	desc = "An aquarium fish handpicked by monkeys from our collection."
 	cost = CARGO_CRATE_VALUE * 2
-	contains = list(/obj/item/storage/fish_case/random,
-					/obj/item/storage/fish_case/random)
+	contains = list(/obj/item/storage/fish_case/random)
 	crate_name = "aquarium fish crate"
 
 /datum/supply_pack/misc/bicycle
@@ -2750,12 +2747,12 @@
 	crate_name = "soft drinks supply crate"
 
 /datum/supply_pack/vending/vendomat
-	name = "Part-Mart & YouTool Supply Crate"
+	name = "Vendomat & YouTool Supply Crate"
 	desc = "More tools for your IED testing facility."
 	cost = CARGO_CRATE_VALUE * 2
 	contains = list(/obj/item/vending_refill/assist,
 					/obj/item/vending_refill/youtool)
-	crate_name = "Part-Mart & YouTool supply crate"
+	crate_name = "Vendomat & YouTool supply crate"
 
 /datum/supply_pack/vending/clothesmate
 	name = "ClothesMate Supply Crate"

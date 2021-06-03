@@ -31,7 +31,7 @@ export const Interview = (props, context) => {
     <Window
       width={500}
       height={600}
-      canClose={is_admin}>
+      noClose={!is_admin}>
       <Window.Content scrollable>
         {(!read_only && (
           <Section title="Welcome!">

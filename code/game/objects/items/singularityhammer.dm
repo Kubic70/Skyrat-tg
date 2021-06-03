@@ -24,7 +24,6 @@
 	. = ..()
 	RegisterSignal(src, COMSIG_TWOHANDED_WIELD, .proc/on_wield)
 	RegisterSignal(src, COMSIG_TWOHANDED_UNWIELD, .proc/on_unwield)
-	AddElement(/datum/element/kneejerk)
 
 /obj/item/singularityhammer/ComponentInitialize()
 	. = ..()

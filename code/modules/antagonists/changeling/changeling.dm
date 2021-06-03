@@ -141,13 +141,13 @@
 
 ///Handles stinging without verbs.
 /datum/antagonist/changeling/proc/stingAtom(mob/living/carbon/ling, atom/A)
-	SIGNAL_HANDLER
+	SIGNAL_HANDLER_DOES_SLEEP
 
 	if(!chosen_sting || A == ling || !istype(ling) || ling.stat)
 		return
-
-	INVOKE_ASYNC(chosen_sting, /datum/action/changeling/sting.proc/try_to_sting, ling, A)
-
+	if(!chosen_sting.try_to_sting(ling, A))
+		return
+	ling.changeNext_move(CLICK_CD_MELEE)
 	return COMSIG_MOB_CANCEL_CLICKON
 
 /datum/antagonist/changeling/proc/has_sting(datum/action/changeling/power)

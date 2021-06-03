@@ -4,7 +4,7 @@
  * Used for broken glass, cactuses and four sided dice.
  */
 /datum/element/caltrop
-	element_flags = ELEMENT_BESPOKE | ELEMENT_DETACH
+	element_flags = ELEMENT_BESPOKE
 	id_arg_index = 2
 
 	///Minimum damage done when crossed

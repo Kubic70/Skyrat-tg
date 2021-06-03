@@ -169,7 +169,7 @@
 
 /datum/loadout_item/backpack/plushies/plushliz
 	name = "Lizard plushie"
-	path = /obj/item/toy/plush/lizard_plushie/green
+	path = /obj/item/toy/plush/lizardplushie
 
 /datum/loadout_item/backpack/plushies/plushsnek
 	name = "Snake plushie"

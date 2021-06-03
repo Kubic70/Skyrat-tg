@@ -91,12 +91,7 @@
 /mob/living/simple_animal/hostile/regalrat/AttackingTarget()
 	if (DOING_INTERACTION(src, "regalrat"))
 		return
-
 	. = ..()
-
-	if (QDELETED(target))
-		return
-
 	if (target.reagents && target.is_injectable(src, allowmobs = TRUE))
 		src.visible_message("<span class='warning'>[src] starts licking [target] passionately!</span>","<span class='notice'>You start licking [target]...</span>")
 		if (do_mob(src, target, 2 SECONDS, interaction_key = "regalrat"))

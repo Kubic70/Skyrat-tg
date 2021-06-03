@@ -16,13 +16,7 @@
 	var/mob/living/silicon/owner
 	var/id = DEFAULT_AI_LAWID
 
-/datum/ai_laws/Destroy(force=FALSE, ...)
-	if(!QDELETED(owner)) //Stopgap to help with laws randomly being lost. This stack_trace will hopefully help find the real issues.
-		if(force) //Unless we're forced...
-			stack_trace("AI law datum for [owner] has been forcefully destroyed incorrectly; the owner variable should be cleared first!")
-			return ..()
-		stack_trace("AI law datum for [owner] has ignored Destroy() call; the owner variable must be cleared first!")
-		return QDEL_HINT_LETMELIVE
+/datum/ai_laws/Destroy()
 	owner = null
 	return ..()
 

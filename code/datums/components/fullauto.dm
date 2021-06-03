@@ -105,7 +105,6 @@
 		autofire_on(source.client)
 
 /datum/component/automatic_fire/proc/on_mouse_down(client/source, atom/_target, turf/location, control, params)
-	SIGNAL_HANDLER
 	var/list/modifiers = params2list(params) //If they're shift+clicking, for example, let's not have them accidentally shoot.
 
 	if(LAZYACCESS(modifiers, SHIFT_CLICK))
@@ -145,7 +144,7 @@
 	target = _target
 	target_loc = get_turf(target)
 	mouse_parameters = params
-	INVOKE_ASYNC(src, .proc/start_autofiring)
+	start_autofiring()
 
 
 //Dakka-dakka
