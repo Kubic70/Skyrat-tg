@@ -98,34 +98,71 @@
 	playsound(C, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 40, TRUE)
 	var/obj/item/held = C.get_active_held_item()
 	var/obj/item/unheld = C.get_inactive_held_item()
-	if(in_hands == FALSE)
-		if(src == C.belt)
-			//CODE FOR PUTTING STRAPON IN HANDS
-			if(held || unheld)
-				if(!((held.name =="strapon" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="strapon" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
+
+	if(in_hands == TRUE)
+		if(held.name =="strapon" && held.item_flags == ABSTRACT | HAND_ITEM)
+			qdel(held)
+			C.visible_message("<span class='notice'>[user] put strapon back</span>")
+			in_hands = FALSE
+			return
+		if(held == null)
+			if(unheld.name =="strapon" && unheld.item_flags == ABSTRACT | HAND_ITEM)
+				if(src == C.belt)
+					qdel(unheld)
+					//CODE FOR PUTTING STRAPON IN HANDS
 					W = new()
 					C.put_in_hands(W)
 					W.strapon_type = strapon_type
 					W.update_icon_state()
 					W.update_icon()
 					C.visible_message("<span class='notice'>[user] takes a strapon in their hand. Looks menacingly</span>")
-				else
-					qdel(W)
-			else
-				W = new()
-				C.put_in_hands(W)
-				W.strapon_type = strapon_type
-				W.update_icon_state()
-				W.update_icon()
-				C.visible_message("<span class='notice'>[user] takes a strapon in their hand. Looks menacingly</span>")
-			//END
+					in_hands = TRUE
+					return
+		else
+			C.visible_message("<span class='notice'>[user]'s hand not empty. Can't take strapon in hand</span>")
+			return
 	else
-		//CODE FOR PUTTING STRAPON BACK
-		if(((held.name =="strapon" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="strapon" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
-			qdel(W)
-			C.visible_message("<span class='notice'>[user] put strapon back</span>")
-	in_hands = !in_hands
-		//END
+		W = new()
+		C.put_in_hands(W)
+		W.strapon_type = strapon_type
+		W.update_icon_state()
+		W.update_icon()
+		C.visible_message("<span class='notice'>[user] takes a strapon in their hand. Looks menacingly</span>")
+		in_hands = TRUE
+		return
+
+
+	// if(in_hands == FALSE)
+	// 	if(src == C.belt)
+	// 		//CODE FOR PUTTING STRAPON IN HANDS
+	// 		if(held || unheld)
+	// 			if(!((held.name =="strapon" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="strapon" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
+	// 				W = new()
+	// 				C.put_in_hands(W)
+	// 				W.strapon_type = strapon_type
+	// 				W.update_icon_state()
+	// 				W.update_icon()
+	// 				C.visible_message("<span class='notice'>[user] takes a strapon in their hand. Looks menacingly</span>")
+	// 			else
+	// 				qdel(W)
+	// 		else
+	// 			W = new()
+	// 			C.put_in_hands(W)
+	// 			W.strapon_type = strapon_type
+	// 			W.update_icon_state()
+	// 			W.update_icon()
+	// 			C.visible_message("<span class='notice'>[user] takes a strapon in their hand. Looks menacingly</span>")
+	// 		//END
+	// else
+	// 	//CODE FOR PUTTING STRAPON BACK
+	// 	if(((held.name =="strapon" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="strapon" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
+	// 		qdel(W)
+	// 		C.visible_message("<span class='notice'>[user] put strapon back</span>")
+	// in_hands = !in_hands
+	// 	//END
+
+
+
 
 /obj/item/strapon_dildo
 	name = "strapon"
