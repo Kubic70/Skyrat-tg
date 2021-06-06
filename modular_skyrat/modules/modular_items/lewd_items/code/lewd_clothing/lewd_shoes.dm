@@ -91,6 +91,13 @@
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_shoes.dmi'
 	worn_icon_digi = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_shoes_digi.dmi'
 
+//start processing
+/obj/item/clothing/shoes/latex_socks/equipped(mob/user, slot)
+	. = ..()
+	var/mob/living/carbon/human/C = user
+	C.update_inv_shoes()
+	C.hud_used.hidden_inventory_update()
+
 //////////////////
 ///Domina heels///
 //////////////////
