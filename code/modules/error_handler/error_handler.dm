@@ -59,17 +59,23 @@ GLOBAL_VAR_INIT(total_runtimes_skipped, 0)
 	var/configured_error_cooldown
 	var/configured_error_limit
 	var/configured_error_silence_time
-	if(config?.entries)
-		configured_error_cooldown = CONFIG_GET(number/error_cooldown)
-		configured_error_limit = CONFIG_GET(number/error_limit)
-		configured_error_silence_time = CONFIG_GET(number/error_silence_time)
-	else
-		var/datum/config_entry/CE = /datum/config_entry/number/error_cooldown
-		configured_error_cooldown = initial(CE.config_entry_value)
-		CE = /datum/config_entry/number/error_limit
-		configured_error_limit = initial(CE.config_entry_value)
-		CE = /datum/config_entry/number/error_silence_time
-		configured_error_silence_time = initial(CE.config_entry_value)
+	try
+		if(config?.entries)
+			configured_error_cooldown = CONFIG_GET(number/error_cooldown)
+			configured_error_limit = CONFIG_GET(number/error_limit)
+			configured_error_silence_time = CONFIG_GET(number/error_silence_time)
+		else
+			var/datum/config_entry/CE = /datum/config_entry/number/error_cooldown
+			configured_error_cooldown = initial(CE.config_entry_value)
+			CE = /datum/config_entry/number/error_limit
+			configured_error_limit = initial(CE.config_entry_value)
+			CE = /datum/config_entry/number/error_silence_time
+			configured_error_silence_time = initial(CE.config_entry_value)
+	catch(var/exception/e)
+		log_world("DBG error_handler: usr = [usr] | src = [src] | exception/E = [E] , datum/e_src = [e_src]")
+		stack_trace("[e] on [e.file]:[e.line]")
+
+
 
 
 	//Each occurence of a unique error adds to its cooldown time...

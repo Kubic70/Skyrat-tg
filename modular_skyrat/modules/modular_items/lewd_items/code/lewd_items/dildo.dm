@@ -393,20 +393,27 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 				if(!((held.name =="dildo side" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="dildo side" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
 					W = new()
 					C.put_in_hands(W)
+					W.update_icon_state()
+					W.update_icon()
 					C.visible_message("<span class='notice'>[user] takes a dildo side in their hand. So hot!</span>")
 				else
 					qdel(W)
 			else
 				W = new()
 				C.put_in_hands(W)
+				W.update_icon_state()
+				W.update_icon()
 				C.visible_message("<span class='notice'>[user] takes a dildo side in their hand. So hot!</span>")
 			//END
 	else
 		//CODE FOR PUTTING STRAPON BACK
 		if(((held.name =="dildo side" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="dildo side" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
 			qdel(W)
+			W.update_icon_state()
+			W.update_icon()
 			C.visible_message("<span class='notice'>[user] put dildo back</span>")
-	in_hands = !in_hands
+		in_hands = !in_hands
+
 
 /obj/item/double_dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()

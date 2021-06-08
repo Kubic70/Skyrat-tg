@@ -36,6 +36,9 @@
 /obj/item/nipple_clamps/dropped(mob/user, silent)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
+	var/mob/living/carbon/human/C = user
+	C.update_inv_nipples()
+	C.hud_used.hidden_inventory_update()
 
 /obj/item/nipple_clamps/process(delta_time)
 	. = ..()
