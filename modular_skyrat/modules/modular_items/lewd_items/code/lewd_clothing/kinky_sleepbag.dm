@@ -116,17 +116,6 @@
 		H.cut_overlay(H.overlays_standing[BACK_LAYER])
 		H.cut_overlay(H.overlays_standing[BODY_BEHIND_LAYER])
 
-		// var/i
-		// if(LAZYLEN(H.bodyparts))
-		// 	for(i=1,i<=H.bodyparts.len,i++)
-		// 		if(istype(H.bodyparts[i],/obj/item/bodypart/l_leg))
-		// 			legl = H.bodyparts[i]
-		// 		if(istype(H.bodyparts[i],/obj/item/bodypart/r_leg))
-		// 			legr = H.bodyparts[i]
-
-		// 		continue
-		// H.bodyparts.Remove(legl,legr)
-		// H.update_body_parts()
 		START_PROCESSING(SSobj, src)
 		time_to_sound_left = time_to_sound
 

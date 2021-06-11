@@ -131,39 +131,6 @@
 		in_hands = TRUE
 		return
 
-
-	// if(in_hands == FALSE)
-	// 	if(src == C.belt)
-	// 		//CODE FOR PUTTING STRAPON IN HANDS
-	// 		if(held || unheld)
-	// 			if(!((held.name =="strapon" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="strapon" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
-	// 				W = new()
-	// 				C.put_in_hands(W)
-	// 				W.strapon_type = strapon_type
-	// 				W.update_icon_state()
-	// 				W.update_icon()
-	// 				C.visible_message("<span class='notice'>[user] takes a strapon in their hand. Looks menacingly</span>")
-	// 			else
-	// 				qdel(W)
-	// 		else
-	// 			W = new()
-	// 			C.put_in_hands(W)
-	// 			W.strapon_type = strapon_type
-	// 			W.update_icon_state()
-	// 			W.update_icon()
-	// 			C.visible_message("<span class='notice'>[user] takes a strapon in their hand. Looks menacingly</span>")
-	// 		//END
-	// else
-	// 	//CODE FOR PUTTING STRAPON BACK
-	// 	if(((held.name =="strapon" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="strapon" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
-	// 		qdel(W)
-	// 		C.visible_message("<span class='notice'>[user] put strapon back</span>")
-	// in_hands = !in_hands
-	// 	//END
-
-
-
-
 /obj/item/strapon_dildo
 	name = "strapon"
 	desc = "You looking menacingly and merciless"
