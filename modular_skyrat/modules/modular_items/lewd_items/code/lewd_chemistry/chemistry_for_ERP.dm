@@ -460,6 +460,11 @@ Haha! Kill me please.
 	required_reagents = list(/datum/reagent/medicine/salglu_solution = 1, /datum/reagent/consumable/milk = 1, /datum/reagent/medicine/c2/synthflesh = 2, /datum/reagent/silicon = 3, /datum/reagent/drug/crocin = 3)
 	mix_message = "the reaction gives off a mist of milk."
 
+/datum/chemical_reaction/penis_enlarger
+	results = list(/datum/reagent/breast_enlarger = 8)
+	required_reagents = list(/datum/reagent/blood = 5, /datum/reagent/medicine/c2/synthflesh = 2, /datum/reagent/carbon = 2, /datum/reagent/drug/crocin = 2, /datum/reagent/medicine/salglu_solution = 1)
+	mix_message = "the reaction gives off a mist of milk."
+
 ///////////////////////
 ///BOTTLES AND PILLS///
 ///////////////////////
@@ -494,7 +499,12 @@ Haha! Kill me please.
 /obj/item/reagent_containers/glass/bottle/breast_enlarger
 	name = "Succubus milk bottle"
 	desc = "A bottle of strong breast enlargement reagent."
-	list_reagents = list(/datum/reagent/breast_enlarger/ = 30)
+	list_reagents = list(/datum/reagent/breast_enlarger = 30)
+
+/obj/item/reagent_containers/glass/bottle/penis_enlarger
+	name = "Incubus draft bottle"
+	desc = "A bottle of strong penis enlargement reagent."
+	list_reagents = list(/datum/reagent/penis_enlarger = 30)
 
 //pills
 

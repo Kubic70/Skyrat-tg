@@ -546,7 +546,7 @@ GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 GLOBAL_LIST_INIT(nipples_items_allowed, typecacheof(list(
 	/obj/item/eggvib,
 	/obj/item/electropack/signalvib,
-	/obj/item/nipple_clamps
+	/obj/item/clothing/nipple_clamps
 	)))
 
 // Allowed items for penis slot
