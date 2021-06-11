@@ -49,7 +49,6 @@
 					/obj/item/vibrator = 4,
 					/obj/item/serviette_pack = 10,
 					/obj/item/restraints/handcuffs/lewd = 8,
-					/obj/item/leash = 4,
 					/obj/item/pillow = 6)
 
 	premium = list(	/obj/item/clothing/suit/straight_jacket/latex_straight_jacket = 5,

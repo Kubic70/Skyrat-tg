@@ -134,7 +134,7 @@
 //////////////////////
 ///SEXUAL OBSESSION///
 //////////////////////
-
+/*
 /datum/quirk/sexual_obsession
 	name = "Sexual obsession"
 	desc = "You have an overwhelming urge to have sex with random people. Constantly."
@@ -173,6 +173,13 @@
 	. = ..()
 	var/mob/living/carbon/human/H = quirk_holder
 	H?.cure_trauma_type(/datum/brain_trauma/special/sexual_obsession, TRAUMA_RESILIENCE_ABSOLUTE)
+
+Removed it as quirk because it can cause huge disaster and furry massacre.
+I already saw enough in "Long digger" video
+
+But i keeped it as unobtainable breain trauma, so admins can add it through VV *IN VERY SPECIFIC SITUATIONS*. If you're not lazy you can add it as smite, but i wouldn't recommend it.
+*/
+
 
 /datum/brain_trauma/special/sexual_obsession
 	name = "Sexual obsession"
@@ -370,7 +377,6 @@
 										"<font color=purple>[owner] moans indecently!</font>\n"))
 
 /datum/brain_trauma/special/bimbo/handle_speech(datum/source, list/speech_args)
-	SIGNAL_HANDLER
 	if(HAS_TRAIT(owner, TRAIT_BIMBO))
 		var/message = speech_args[SPEECH_MESSAGE]
 		var/list/split_message = splittext(message, " ") //List each word in the message

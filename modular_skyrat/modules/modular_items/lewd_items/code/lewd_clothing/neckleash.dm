@@ -1,3 +1,4 @@
+/*
 #define STATUS_EFFECT_LEASH_PET /datum/status_effect/leash_pet
 #define STATUS_EFFECT_LEASH_DOM /datum/status_effect/leash_dom
 #define STATUS_EFFECT_LEASH_FREEPET /datum/status_effect/leash_freepet
@@ -854,4 +855,5 @@
 	leash_pet.remove_status_effect(/datum/status_effect/leash_freepet)
 	leash_pet.add_movespeed_modifier(/datum/movespeed_modifier/leash_pet/leash_pet_slowdown)
 
+*/
 */

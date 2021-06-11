@@ -1,6 +1,3 @@
-
-#define SKINTONE2HEX(skin_tone) GLOB.skin_tones[skin_tone] || skin_tone //we creating new genitals when changing gender, need to color them.
-
 //////////////////
 ///APHRODISIACS///
 //////////////////
@@ -180,13 +177,16 @@
 ///GENITAL ENLARGEMENT CHEMICALS///
 ///////////////////////////////////
 
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//										BREAST ENLARGE
-///////////////////////////////////////////////////////////////////////////////////////////////////
-//Other files that are relivant:
-//modular_citadel/code/datums/status_effects/chems.dm
-//modular_citadel/code/modules/arousal/organs/breasts.dm
+//Some global vars, you can make this stuff work more smart than i did.
+/mob/living/carbon/human
+	var/breast_enlarger_amount = 0
 
+/mob/living/carbon/human
+	var/penis_enlarger_amount = 0
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//										BREAST ENLARGE											  //
+////////////////////////////////////////////////////////////////////////////////////////////////////
 //breast englargement
 //Honestly the most requested chems
 //I'm not a very kinky person, sorry if it's not great
@@ -200,11 +200,7 @@
 //Overdosing on (what is essentially space estrogen) makes you female, removes balls and shrinks your dick.
 //OD is low for a reason. I'd like fermichems to have low ODs, and dangerous ODs, and since this is a meme chem that everyone will rush to make, it'll be a lesson learnt early.
 
-//КУБИКПРОЧТИКУБИКПРОЧТИКУБИКПРОЧТИКУБИКПРОЧТИКУБИКПРОЧТИКУБИКПРОЧТИКУБИКПРОЧТИКУБИКПРОЧТИКУБИКПРОЧТИ//
-//Кубик, надо сделать добавление груди т.к сейчас она не отображается и не наследует цвет от тела.
-//А также проверить уменьшение гениталий от этой штуки и сделать тоже самое для таблеток, увеличивающих пенис
-//Которых пока нет, сделай их по аналогичному принципу. Оставить маленькую грудь, убрать все что ниже пояса и приделать пару шаров с палкой.
-
+//Thank you, person from Citadel for creating this code. I borrowed it and changed for skyrat, i hope you don't mind!
 
 /datum/reagent/breast_enlarger
 	name = "Succubus milk"
@@ -229,9 +225,6 @@
 			B.throw_at(T2, 8, 1)
 		M.reagents.del_reagent(type)
 		return
-/*	var/mob/living/carbon/human/H = M
-	if(!H.getorganslot(ORGAN_SLOT_BREASTS) && H.emergent_genital_call())
-		H.genital_override = TRUE */
 
 /datum/reagent/breast_enlarger/on_mob_life(mob/living/carbon/human/M) //Increases breast size
 	if(!ishuman(M))//Just in case
@@ -239,7 +232,7 @@
 
 	var/obj/item/organ/genital/breasts/B = M.getorganslot(ORGAN_SLOT_BREASTS)
 	if(M.breast_enlarger_amount >= 100)
-		if(B.genital_size < 16)
+		if(B?.genital_size < 10) //i changed it's maximum to 10 because bigger stuff looking REALLY terrible. Please remove my eyes.
 			B.genital_size += 1
 		else
 			return
@@ -260,7 +253,7 @@
 
 	//otherwise proceed as normal
 
-	if (ISINRANGE_EX(B.genital_size, 8.5, 9) && (H.w_uniform || H.wear_suit))
+	if(ISINRANGE_EX(B?.genital_size, 8.5, 9) && (H.w_uniform || H.wear_suit))
 		var/target = H.get_bodypart(BODY_ZONE_CHEST)
 		if(!message_spam)
 			to_chat(H, "<span class='danger'>Your breasts begin to strain against your clothes tightly!</b></span>")
@@ -268,6 +261,34 @@
 		H.adjustOxyLoss(5, 0)
 		H.apply_damage(1, BRUTE, target)
 	return ..()
+
+/datum/reagent/breast_enlarger/overdose_process(mob/living/carbon/human/M) //Turns you into a female if character is male. Also supposed to add breasts but i'm too dumb to figure out how to make it work
+	var/obj/item/organ/genital/penis/P = M.getorganslot(ORGAN_SLOT_PENIS)
+	var/obj/item/organ/genital/testicles/T = M.getorganslot(ORGAN_SLOT_TESTICLES)
+	if(!(M.client?.prefs.skyrat_toggles & FORCED_FEM))
+		var/obj/item/organ/liver/L = M.getorganslot(ORGAN_SLOT_LIVER)
+		if(L)
+			L.applyOrganDamage(0.25)
+		return ..()
+
+	if(M.gender == MALE)
+		M.set_gender(FEMALE)
+		M.body_type = M.gender
+		M.update_body()
+		M.update_mutations_overlay()
+
+//some trap/futa stuff or something, idk. Useroth asked me to keep these organs
+	if(P)
+		if(P.genital_size >=3)
+			return
+		else
+			(P.genital_size -=2)
+	if(T)
+		(T.genital_size = 1)
+/*
+Dear skyrat! I want someone to suffer, because for some reason genitals can't be added same as other organs. We tested on autosurgeon - it broken, we tired of trying making this thing work and if you finish it for us we will appreciate it. Thank you!
+Otherway you can just cut it. Cutting is fun!
+Haha! Kill me please.
 
 /datum/reagent/breast_enlarger/overdose_process(mob/living/carbon/human/M) //Turns you into a female if character is male, doesn't touch nonbinary and object genders.
 	var/obj/item/organ/genital/penis/P = M.getorganslot(ORGAN_SLOT_PENIS)
@@ -280,8 +301,9 @@
 		return ..()
 
 	if(!B)
-		B = new
-		M.dna.species.mutant_bodyparts["breasts"] = B
+		var/obj/item/organ/genital/breasts/given_breasts = new /obj/item/organ/genital/breasts(get_turf(M))
+		B = given_breasts
+		B.Insert(M)
 		if(M.dna.species.use_skintones)
 			B.color = SKINTONE2HEX(M.skin_tone)
 		else if(M.dna.features["breasts_color"])
@@ -289,8 +311,8 @@
 		else
 			B.color = SKINTONE2HEX(M.skin_tone)
 		to_chat(M, "<span class='warning'>Your chest feels warm, tingling with newfound sensitivity.</b></span>")
-		B.Insert(M)
 		M.update_body()
+		B.update_genital_icon_state()
 		B.update_sprite_suffix()
 
 	if(M.gender == MALE)
@@ -304,6 +326,100 @@
 	if(T)
 		qdel(T)
 
+	return ..()
+*/
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//										PENIS ENLARGE											  //
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//See breast explanation, it's the same but with taliwhackers
+//instead of slower movement and attacks, it slows you and increases the total blood you need in your system.
+//Since someone else made this in the time it took me to PR it, I merged them.
+
+/datum/reagent/penis_enlarger // Due to popular demand...!
+	name = "Incubus draft"
+	description = "A volatile collodial mixture derived from various masculine solutions that encourages a larger gentleman's package via a potent testosterone mix, formula derived from a collaboration from Fermichem  and Doctor Ronald Hyatt, who is well known for his phallus palace." //The toxic masculinity thing is a joke because I thought it would be funny to include it in the reagents, but I don't think many would find it funny? dumb
+	color = "#888888" // This is greyish..?
+	taste_description = "chinese dragon powder"
+	overdose_threshold = 17 //ODing makes you male and removes female genitals
+	metabolization_rate = 0.5
+	var/message_spam
+
+/datum/reagent/penis_enlarger/on_mob_metabolize(mob/living/M)
+	. = ..()
+	if(!ishuman(M)) //Just monkeying around.
+		if(volume >= 15) //to prevent monkey penis farms
+			var/turf/T = get_turf(M)
+			var/obj/item/organ/genital/penis/P = new /obj/item/organ/genital/penis(T)
+			M.visible_message("<span class='warning'>A penis suddenly flies out of the [M]!</b></span>")
+			var/T2 = get_random_station_turf()
+			M.adjustBruteLoss(25)
+			M.Paralyze(50)
+			M.Stun(50)
+			P.throw_at(T2, 8, 1)
+		M.reagents.del_reagent(type)
+		return
+
+/datum/reagent/penis_enlarger/on_mob_life(mob/living/carbon/human/M) //Increases penis size, 5u = +1 inch.
+	if(!ishuman(M))
+		return ..()
+
+	var/mob/living/carbon/human/H = M
+	if(!(H.client?.prefs.skyrat_toggles && PENIS_ENLARGEMENT))
+		return ..()
+	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
+	if(M.penis_enlarger_amount >= 100)
+		if(P?.genital_size < 10) //i changed it's maximum to 10 because bigger stuff looking REALLY terrible. Please remove my eyes.
+			P.genital_size += 1
+		else
+			return
+		P.update_sprite_suffix()
+		M.update_body()
+		M.penis_enlarger_amount = 0
+	M.penis_enlarger_amount += 5
+
+	//If they've opted out, then route processing though liver.
+	if(!(H.client?.prefs.skyrat_toggles && PENIS_ENLARGEMENT))
+		var/obj/item/organ/liver/L = H.getorganslot(ORGAN_SLOT_LIVER)
+		if(L)
+			L.applyOrganDamage(0.25)
+		else
+			H.adjustToxLoss(1)
+		return..()
+
+/datum/reagent/penis_enlarger/overdose_process(mob/living/carbon/human/M) //Turns you into a male if female and ODing, doesn't touch nonbinary and object genders.
+	if(!istype(M))
+		return ..()
+	// let's not kill them if they didn't consent.
+	if(!(M.client?.prefs.skyrat_toggles & FORCED_MALE))
+		return..()
+
+	var/obj/item/organ/genital/breasts/B = M.getorganslot(ORGAN_SLOT_BREASTS)
+	var/obj/item/organ/genital/vagina/V = M.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/womb/W = M.getorganslot(ORGAN_SLOT_WOMB)
+
+	if(M.gender == FEMALE)
+		M.set_gender(MALE)
+		M.body_type = M.gender
+		M.update_body()
+		M.update_mutations_overlay()
+
+	if(B)
+		if(B.genital_size >= 3)
+			B.genital_size -=2
+		else
+			return
+	if(V)
+		if(V.genital_size >= 3)
+			V.genital_size -=2
+		else
+			return
+	if(W)
+		if(W.genital_size >= 3)
+			V.genital_size -=2
+		else
+			return
 	return ..()
 
 ////////////////////////
@@ -328,7 +444,7 @@
 	required_temp = 400
 	mix_message = "The mixture boils off a yellow, smelly vapor..."//Sulfur burns off, leaving the camphor
 
-/datum/chemical_reaction/pentacamphor //liquid horny jail
+/datum/chemical_reaction/pentacamphor //liquid equivalent of horny jail
 	results = list(/datum/reagent/drug/pentacamphor = 1)
 	required_reagents = list(/datum/reagent/drug/pentacamphor = 5, /datum/reagent/acetone = 1)
 	required_temp = 500

@@ -24,7 +24,6 @@
 		/obj/item/clothing/neck/kink_collar/locked,
 		/obj/item/clothing/glasses/blindfold/kinky,
 		/obj/item/clothing/ears/kinky_headphones,
-		/obj/item/leash,
 		/obj/item/electropack/shockcollar,
 		/obj/item/eggvib,
 		/obj/item/electropack/signalvib,
