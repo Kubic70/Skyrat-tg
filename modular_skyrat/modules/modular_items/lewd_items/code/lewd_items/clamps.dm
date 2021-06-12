@@ -29,6 +29,9 @@
 	if(B?.genital_type == "sextuple")
 		breast_type = "sextuple"
 		breast_size = B?.genital_size
+	else //character don't have tits, but male character should suffer too!
+		breast_type = "pair"
+		breast_size = 0
 
 	if(slot == "nipples")
 		START_PROCESSING(SSobj, src)

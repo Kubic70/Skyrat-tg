@@ -57,6 +57,42 @@
 	if(!length(strapon_types))
 		populate_strapon_types()
 
+//shitcode here, please improve if you can. Genitals overlapping with strapon, doesn't cool!
+
+/obj/item/clothing/strapon/equipped(mob/user, slot)
+	. = ..()
+	var/mob/living/carbon/human/H = user
+	var/obj/item/organ/genital/vagina/V = H.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/womb/W = H.getorganslot(ORGAN_SLOT_WOMB)
+	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
+	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
+
+	if(src == H.belt)
+		V?.visibility_preference = GENITAL_NEVER_SHOW
+		W?.visibility_preference = GENITAL_NEVER_SHOW
+		P?.visibility_preference = GENITAL_NEVER_SHOW
+		T?.visibility_preference = GENITAL_NEVER_SHOW
+		H.update_body()
+	else
+		return
+
+/obj/item/clothing/strapon/dropped(mob/living/user)
+	. = ..()
+	var/mob/living/carbon/human/H = user
+	var/obj/item/organ/genital/vagina/V = H.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/womb/W = H.getorganslot(ORGAN_SLOT_WOMB)
+	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
+	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
+
+	if(src == H.belt)
+		V?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		W?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		P?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		T?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		H.update_body()
+	else
+		return
+
 /obj/item/clothing/strapon/update_icon_state()
 	.=..()
 	icon_state = "[initial(icon_state)]_[strapon_type]"
