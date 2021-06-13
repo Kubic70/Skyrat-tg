@@ -22,7 +22,7 @@
 						/obj/item/buttplug,
 						/obj/item/clothing/nipple_clamps,
 						/obj/item/eggvib,
-						/obj/item/double_dildo,
+						/obj/item/clothing/sextoy/double_dildo,
 						/obj/item/vibroring,
 						/obj/item/condom_pack,
 						/obj/item/dildo,

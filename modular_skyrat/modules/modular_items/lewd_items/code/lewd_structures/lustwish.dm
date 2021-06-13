@@ -17,7 +17,7 @@
 					/obj/item/buttplug = 6,
 					/obj/item/clothing/nipple_clamps = 4,
 					/obj/item/eggvib = 8,
-					/obj/item/double_dildo = 3,
+					/obj/item/clothing/sextoy/double_dildo = 3,
 					/obj/item/vibroring = 6,
 					/obj/item/condom_pack = 20,
 					/obj/item/dildo = 8,

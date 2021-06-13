@@ -306,7 +306,7 @@
 	inv_box = new /atom/movable/screen/inventory()
 	inv_box.name = "vagina"
 	inv_box.icon = ui_style
-	inv_box.icon_state = "template"
+	inv_box.icon_state = "vagina"
 	inv_box.screen_loc = ui_vagina_down
 	inv_box.slot_id = ITEM_SLOT_VAGINA
 	inv_box.hud = src
@@ -315,7 +315,7 @@
 	inv_box = new /atom/movable/screen/inventory()
 	inv_box.name = "anus"
 	inv_box.icon = ui_style
-	inv_box.icon_state = "template"
+	inv_box.icon_state = "anus"
 	inv_box.screen_loc = ui_anus_down
 	inv_box.slot_id = ITEM_SLOT_ANUS
 	inv_box.hud = src

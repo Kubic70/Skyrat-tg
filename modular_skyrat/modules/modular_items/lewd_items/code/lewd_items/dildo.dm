@@ -331,11 +331,12 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 ///DOUBLE DILDO///
 //////////////////
 
-/obj/item/double_dildo
+/obj/item/clothing/sextoy/double_dildo
 	name = "double dildo"
 	desc = "Uhh... What a jiggly thing."
 	icon_state = "dildo_double"
 	inhand_icon_state = "dildo_double"
+	worn_icon_state = "dildo_side"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
 	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_items/lewd_items.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
@@ -346,18 +347,18 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	var/in_hands = FALSE
 	var/obj/item/dildo_side/W
 
-/obj/item/double_dildo/Initialize()
+/obj/item/clothing/sextoy/double_dildo/Initialize()
 	. = ..()
 	update_action_buttons_icons()
 
-/obj/item/double_dildo/dropped()
+/obj/item/clothing/sextoy/double_dildo/dropped()
 	.=..()
 	if(W && !ismob(loc) && in_hands == TRUE)
 		qdel(W)
 		in_hands = FALSE
 
 //Functionality stuff
-/obj/item/double_dildo/proc/update_action_buttons_icons()
+/obj/item/clothing/sextoy/double_dildo/proc/update_action_buttons_icons()
 	var/datum/action/item_action/M
 	if(istype(M, /datum/action/item_action/take_dildo))
 		M.button_icon_state = "dildo_side"
@@ -370,18 +371,18 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
     desc = "You can feel one side inside you, time to share this feeling with someone..."
 
 /datum/action/item_action/take_dildo/Trigger()
-	var/obj/item/double_dildo/H = target
+	var/obj/item/clothing/sextoy/double_dildo/H = target
 	if(istype(H))
 		H.check()
 
-/obj/item/double_dildo/proc/check()
+/obj/item/clothing/sextoy/double_dildo/proc/check()
 	var/mob/living/carbon/human/C = usr
 	if(src == C.vagina)
 		toggle(C)
 	else
 		to_chat(C, "<span class='warning'>You need to equip dildo before using!</span>")
 
-/obj/item/double_dildo/proc/toggle(user)
+/obj/item/clothing/sextoy/double_dildo/proc/toggle(user)
 	var/mob/living/carbon/human/C = usr
 	playsound(C, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 40, TRUE)
 	var/obj/item/held = C.get_active_held_item()
@@ -415,7 +416,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		in_hands = !in_hands
 
 
-/obj/item/double_dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/clothing/sextoy/double_dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return
@@ -573,4 +574,40 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 					return
 	else
 		to_chat(user, "<span class='danger'>Looks like [M] don't want you to do that.</span>")
+		return
+
+/obj/item/clothing/sextoy/double_dildo/equipped(mob/user, slot)
+	. = ..()
+	var/mob/living/carbon/human/H = user
+	if(src == H.vagina)
+		to_chat(world, "STUFF WORKS")
+	var/obj/item/organ/genital/vagina/V = H.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/womb/W = H.getorganslot(ORGAN_SLOT_WOMB)
+	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
+	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
+
+	if(src == H.belt)
+		V?.visibility_preference = GENITAL_NEVER_SHOW
+		W?.visibility_preference = GENITAL_NEVER_SHOW
+		P?.visibility_preference = GENITAL_NEVER_SHOW
+		T?.visibility_preference = GENITAL_NEVER_SHOW
+		H.update_body()
+	else
+		return
+
+/obj/item/clothing/sextoy/double_dildo/dropped(mob/living/user)
+	. = ..()
+	var/mob/living/carbon/human/H = user
+	var/obj/item/organ/genital/vagina/V = H.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/womb/W = H.getorganslot(ORGAN_SLOT_WOMB)
+	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
+	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
+
+	if(src == H.belt)
+		V?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		W?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		P?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		T?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		H.update_body()
+	else
 		return

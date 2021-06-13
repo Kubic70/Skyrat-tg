@@ -528,7 +528,7 @@ GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
 	/obj/item/vibrator,
 	/obj/item/dildo,
 	/obj/item/custom_dildo,
-	/obj/item/double_dildo
+	/obj/item/clothing/sextoy/double_dildo
 	)))
 
 // Allowed items for anus slot
@@ -539,7 +539,7 @@ GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 	/obj/item/buttplug,
 	/obj/item/dildo,
 	/obj/item/custom_dildo,
-	/obj/item/double_dildo
+	/obj/item/clothing/sextoy/double_dildo
 	)))
 
 // Allowed items for nipples slot
@@ -555,28 +555,6 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	/obj/item/electropack/signalvib,
 	/obj/item/condom
 	)))
-
-// // From type2type.dm
-// /slot2body_zone(slot)
-// 	switch(slot)
-// 		if(ITEM_SLOT_PENIS, ITEM_SLOT_VAGINA, ITEM_SLOT_ANUS)
-// 			return BODY_ZONE_PRECISE_GROIN
-
-// 		if(ITEM_SLOT_NIPPLES)
-// 			return BODY_ZONE_CHEST
-// 	..()
-
-// // Defines of UI offsets. Need to be refactored
-// #define ui_vagina "WEST+1:8,SOUTH+4:14"
-// #define ui_vagina_down "WEST+1:8,SOUTH+1:8"
-// #define ui_anus "WEST+2:10,SOUTH+4:14"
-// #define ui_anus_down "WEST+2:10,SOUTH+1:8"
-// #define ui_nipples "WEST:6,SOUTH+5:17"
-// #define ui_nipples_down "WEST:6,SOUTH+2:11"
-// #define ui_penis "WEST+1:8,SOUTH+5:17"
-// #define ui_penis_down "WEST+1:8,SOUTH+2:11"
-// #define ui_erp_inventory "WEST:6,SOUTH+1:8"
-// #define ui_erp_inventory_up "WEST:6,SOUTH+4:14"
 
 // Strippable Defines
 #define ERP_SLOT_EQUIP_DELAY (5 SECONDS) // Lamella TODO: delay need to be balanced
@@ -670,224 +648,33 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/obj/item/nipples = null
 	var/obj/item/penis = null
 
-// // Extention can_equip checks for ERP slots
-// /datum/species/can_equip(obj/item/I, slot, disable_warning, mob/living/carbon/human/H, bypass_equip_delay_self = FALSE)
-// 	. = ..()
-// 	if(!.)
-// 		if(/*I.slot_flags & slot && */H.client?.prefs.erp_pref == "Yes")
-// 			switch(slot)
-// 				if(ITEM_SLOT_VAGINA)
-// 					if(H.is_bottomless())
-// 						if(H.getorganslot(ORGAN_SLOT_VAGINA))
-// 							for(var/L in GLOB.vagina_items_allowed)
-// 								if(istype(I,L))
-// 									return equip_delay_self_check(I, H, bypass_equip_delay_self)
-// 								continue
-// 							return FALSE
-// 						return FALSE
-// 					return FALSE
-// 				if(ITEM_SLOT_ANUS)
-// 					if(H.is_bottomless())
-// 						for(var/L in GLOB.anus_items_allowed)
-// 							if(istype(I,L))
-// 								return equip_delay_self_check(I, H, bypass_equip_delay_self)
-// 							continue
-// 						return FALSE
-// 					return FALSE
-// 				if(ITEM_SLOT_NIPPLES)
-// 					if(H.is_topless())
-// 						for(var/L in GLOB.nipples_items_allowed)
-// 							if(istype(I,L))
-// 								return equip_delay_self_check(I, H, bypass_equip_delay_self)
-// 							continue
-// 						return FALSE
-// 					return FALSE
-// 				if(ITEM_SLOT_PENIS)
-// 					if(H.is_bottomless())
-// 						if(H.getorganslot(ORGAN_SLOT_PENIS))
-// 							for(var/L in GLOB.peins_items_allowed)
-// 								if(istype(I,L))
-// 									return equip_delay_self_check(I, H, bypass_equip_delay_self)
-// 								continue
-// 							return FALSE
-// 						return FALSE
-// 					return FALSE
-// 				else
-// 					return FALSE
-// 		else
-// 			return FALSE
-// 	return TRUE
+/////////////////////////////
+//    SEXTOY CLOTH TYPE    //
+/////////////////////////////
 
-// /mob/living/carbon/human/equip_to_slot_if_possible(obj/item/W, slot, qdel_on_fail = FALSE, disable_warning = FALSE, redraw_mob = TRUE, bypass_equip_delay_self = FALSE, initial = FALSE)
-// 	. = ..()
-// 	if(!.)
-// 		if(slot == ITEM_SLOT_VAGINA || slot == ITEM_SLOT_ANUS || slot == ITEM_SLOT_NIPPLES || slot == ITEM_SLOT_PENIS)
-// 			if(!disable_warning)
-// 				if(istype(src,/mob/living/carbon/human))
-// 					var/mob/living/carbon/human/H = src
-// 					switch(slot)
-// 						if(ITEM_SLOT_VAGINA)
-// 							if(H.is_bottomless())
-// 								if(H.getorganslot(ORGAN_SLOT_VAGINA))
-// 									to_chat(src,"<span class='warning'>For some reason, the object does not fit in the vagina.</span>")
-// 								to_chat(src,"<span class='warning'>You cannot find any vaginas here.</span>")
-// 								return FALSE
-// 							to_chat(src,"<span class='warning'>Clothes prevent you from getting to the vagina.</span>")
-// 							return FALSE
+/obj/item/clothing/sextoy
+	name = "sextoy"
+	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
+	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_items/lewd_items.dmi'
+	equip_sound = 'modular_skyrat/modules/modular_items/lewd_items/sounds/bang1.ogg'
+	drop_sound = 'modular_skyrat/modules/modular_items/lewd_items/sounds/bang2.ogg'
+	pickup_sound =  'sound/items/handling/cloth_pickup.ogg'
+	slot_flags = ITEM_SLOT_VAGINA | ITEM_SLOT_ANUS | ITEM_SLOT_PENIS | ITEM_SLOT_NIPPLES
+	var/mutantrace_variation = NO_MUTANTRACE_VARIATION //Are there special sprites for specific situations? Don't use this unless you need to.
 
-// 						if(ITEM_SLOT_ANUS)
-// 							if(H.is_bottomless())
-// 								to_chat(src,"<span class='warning'>For some reason, the object does not fit in the anus.</span>")
-// 								return FALSE
-// 							to_chat(src,"<span class='warning'>Clothes prevent you from getting to the anus.</span>")
-// 							return FALSE
+/obj/item/clothing/sextoy/dropped(mob/user)
+	..()
 
-// 						if(ITEM_SLOT_NIPPLES)
-// 							if(H.is_topless())
-// 								to_chat(src,"<span class='warning'>For some reason, the object does not fit on the nipples.</span>")
-// 								return FALSE
-// 							to_chat(src,"<span class='warning'>Clothes prevent you from getting to the nipples.</span>")
-// 							return FALSE
+	update_appearance()
+	if(!ishuman(loc))
+		return
 
-// 						if(ITEM_SLOT_PENIS)
-// 							if(H.is_bottomless())
-// 								if(H.getorganslot(ORGAN_SLOT_PENIS))
-// 									to_chat(src,"<span class='warning'>For some reason, the object does not fit on the penis.</span>")
-// 									return FALSE
-// 								to_chat(src,"<span class='warning'>You cannot find any penises here.</span>")
-// 								return FALSE
-// 							to_chat(src,"<span class='warning'>Clothes prevent you from getting to the penis.</span>")
-// 							return FALSE
-// 				return FALSE
-// 			return FALSE
-// 		return FALSE
-// 	else
-// 		return TRUE
-
-// // Supplement a procedure for getting an item by ERP slot for human class (may be not needed if carbon class has this code to)
-// /mob/living/carbon/human/get_item_by_slot(slot_id)
-// 	var/obj/item/I = ..()
-// 	if(!I)
-// 		switch(slot_id)
-// 			if(ITEM_SLOT_VAGINA)
-// 				return vagina
-// 			if(ITEM_SLOT_ANUS)
-// 				return anus
-// 			if(ITEM_SLOT_NIPPLES)
-// 				return nipples
-// 			if(ITEM_SLOT_PENIS)
-// 				return penis
-// 			else
-// 				return null
-// 	else
-// 		return I
-
-// // Supplement a procedure for getting a ERP body slots
-// /mob/living/carbon/human/get_body_slots()
-// 	var/list/L = ..()
-
-// 	L.Add(vagina)
-// 	L.Add(anus)
-// 	L.Add(nipples)
-// 	L.Add(penis)
-// 	return L
-
-// // Extention equipping procedure for ERP slot
-// /mob/living/carbon/human/equip_to_slot(obj/item/I, slot, initial = FALSE, redraw_mob = FALSE)
-// 	if(src.client?.prefs.erp_pref == "Yes")
-
-// 		if(!slot)
-// 			return
-// 		if(!istype(I))
-// 			return
-
-// 		if(slot == ITEM_SLOT_VAGINA || slot == ITEM_SLOT_ANUS || slot == ITEM_SLOT_NIPPLES || slot == ITEM_SLOT_PENIS)
-
-// 			var/index = get_held_index_of_item(I)
-// 			if(index)
-// 				held_items[index] = null
-
-// 			if(I.pulledby)
-// 				I.pulledby.stop_pulling()
-
-// 			I.screen_loc = null
-// 			if(client)
-// 				client.screen -= I
-// 			if(observers?.len)
-// 				for(var/M in observers)
-// 					var/mob/dead/observe = M
-// 					if(observe.client)
-// 						observe.client.screen -= I
-// 			I.forceMove(src)
-// 			I.plane = ABOVE_HUD_PLANE
-// 			I.appearance_flags |= NO_CLIENT_COLOR
-
-// 			switch(slot)
-// 				if(ITEM_SLOT_VAGINA)
-// 					if(src.is_bottomless())
-// 						if(vagina)
-// 							return
-// 						vagina = I
-// 						update_inv_vagina()
-// 						return
-// 					to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
-// 					return
-// 				if(ITEM_SLOT_ANUS)
-// 					if(src.is_bottomless())
-// 						if(anus)
-// 							return
-// 						anus = I
-// 						update_inv_anus()
-// 						return
-// 					to_chat(usr, "[src] is not bottomless, you cannot access to anus")
-// 					return
-// 				if(ITEM_SLOT_NIPPLES)
-// 					if(src.is_topless())
-// 						if(nipples)
-// 							return
-// 						nipples = I
-// 						update_inv_nipples()
-// 						return
-// 					to_chat(usr, "[src] is not topless, you cannot access to nipples")
-// 					return
-// 				if(ITEM_SLOT_PENIS)
-// 					if(src.is_bottomless())
-// 						if(penis)
-// 							return
-// 						penis = I
-// 						update_inv_penis()
-// 						return
-// 					to_chat(usr, "[src] is not bottomless, you cannot access to penis")
-// 					return
-// 				else
-// 					return FALSE
-// 		else
-// 			..()
-// 	else
-// 		..()
-
-// // Extention unequipping procedure for ERP slot
-// /mob/living/carbon/human/doUnEquip(obj/item/I, force, newloc, no_move, invdrop = TRUE, silent = FALSE)
-// 	. = ..()
-// 	if(I)
-// 		if(I == vagina)
-// 			vagina = null
-// 			if(!QDELETED(src))
-// 				update_inv_vagina()
-// 		else if(I == anus)
-// 			anus = null
-// 			if(!QDELETED(src))
-// 				update_inv_anus()
-// 		else if(I == nipples)
-// 			nipples = null
-// 			if(!QDELETED(src))
-// 				update_inv_nipples()
-// 		else if(I == penis)
-// 			penis = null
-// 			if(!QDELETED(src))
-// 				update_inv_penis()
-// 		update_equipment_speed_mods()
-
+	var/mob/living/carbon/human/holder = loc
+	holder.update_inv_vagina()
+	holder.update_inv_anus()
+	holder.update_inv_nipples()
+	holder.update_inv_penis()
+	holder.fan_hud_set_fandom()
 
 /////////////////////////////
 // ICON UPDATING EXTENTION //
@@ -903,12 +690,13 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 // Updating vagina slot
 /mob/living/carbon/human/update_inv_vagina()
+	//ui stuff
 	var/datum/hud/human/H = src.hud_used
 	if(vagina)
 		if(client && H && client.prefs.erp_pref == "Yes")
 			var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_VAGINA) + 1]
 			inv.update_appearance()
-			// if(vagina)
+
 			if(usr.hud_used.inventory_shown && src.hud_used)
 				vagina?.screen_loc = ui_vagina
 			else
@@ -917,6 +705,52 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 				client.screen += vagina
 			update_observer_view(vagina)
 			src.hud_used.hidden_inventory_update(src)
+	//on_mob stuff
+	remove_overlay(VAGINA_LAYER) //i think it's good to use gloves layer for this. Kinda shitcode, but items like tail buttplug suppose to appear above uniform
+
+	var/obj/item/clothing/sextoy/U = vagina
+
+	if(vagina && (vagina.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
+		return
+
+	var/icon_file = vagina?.worn_icon
+	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
+	if(dna.species.mutant_bodyparts["taur"])
+		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
+		if(vagina.mutant_variants & S.taur_mode)
+			applied_style = S.taur_mode
+		else if(vagina.mutant_variants & S.alt_taur_mode)
+			applied_style = S.alt_taur_mode
+	if(!applied_style)
+		if((DIGITIGRADE in dna.species.species_traits) && (vagina.mutant_variants & STYLE_DIGITIGRADE))
+			applied_style = STYLE_DIGITIGRADE
+
+	var/x_override
+	switch(applied_style)
+		if(STYLE_DIGITIGRADE)
+			icon_file = U.worn_icon_digi || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_digi.dmi'
+		if(STYLE_TAUR_SNAKE)
+			icon_file = U.worn_icon_taur_snake || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_snake.dmi'
+		if(STYLE_TAUR_HOOF)
+			icon_file = U.worn_icon_taur_hoof || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_hoof.dmi'
+		if(STYLE_TAUR_PAW)
+			icon_file = U.worn_icon_taur_paw || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_paw.dmi'
+
+	if(applied_style & STYLE_TAUR_ALL)
+		x_override = 64
+
+	var/mutable_appearance/vagina_overlay
+
+	if(!vagina_overlay)
+		vagina_overlay = U.build_worn_icon(default_layer = VAGINA_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+
+	if(OFFSET_UNIFORM in dna.species.offset_features)
+		vagina_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
+		vagina_overlay.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
+	overlays_standing[VAGINA_LAYER] = vagina_overlay
+
+	apply_overlay(VAGINA_LAYER)
+	update_mutant_bodyparts()
 
 // Updating anus slot
 /mob/living/carbon/human/update_inv_anus()
@@ -1059,22 +893,6 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 // Update whether our back item appears on our hud.
 /mob/living/carbon/proc/update_hud_penis(obj/item/I)
 	return
-
-// // Updating ERP slot icons to
-// /obj/item/update_slot_icon()
-// 	. = ..()
-
-// 	var/mob/owner = loc
-// 	var/flags = slot_flags
-
-// 	if(flags & ITEM_SLOT_VAGINA)
-// 		owner.update_inv_vagina()
-// 	if(flags & ITEM_SLOT_ANUS)
-// 		owner.update_inv_anus()
-// 	if(flags & ITEM_SLOT_NIPPLES)
-// 		owner.update_inv_nipples()
-// 	if(flags & ITEM_SLOT_PENIS)
-// 		owner.update_inv_penis()
 
 //////////////////////////////////
 // UI CONSTRUCTION AND HANDLING //
