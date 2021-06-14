@@ -769,6 +769,53 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			update_observer_view(anus)
 			src.hud_used.hidden_inventory_update(src)
 
+	//on_mob stuff
+	remove_overlay(ANUS_LAYER) //i think it's good to use gloves layer for this. Kinda shitcode, but items like tail buttplug suppose to appear above uniform
+
+	var/obj/item/clothing/sextoy/U = anus
+
+	if(anus && (anus.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
+		return
+
+	var/icon_file = anus?.worn_icon
+	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
+	if(dna.species.mutant_bodyparts["taur"])
+		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
+		if(anus.mutant_variants & S.taur_mode)
+			applied_style = S.taur_mode
+		else if(anus.mutant_variants & S.alt_taur_mode)
+			applied_style = S.alt_taur_mode
+	if(!applied_style)
+		if((DIGITIGRADE in dna.species.species_traits) && (anus.mutant_variants & STYLE_DIGITIGRADE))
+			applied_style = STYLE_DIGITIGRADE
+
+	var/x_override
+	switch(applied_style)
+		if(STYLE_DIGITIGRADE)
+			icon_file = U.worn_icon_digi || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_digi.dmi'
+		if(STYLE_TAUR_SNAKE)
+			icon_file = U.worn_icon_taur_snake || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_snake.dmi'
+		if(STYLE_TAUR_HOOF)
+			icon_file = U.worn_icon_taur_hoof || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_hoof.dmi'
+		if(STYLE_TAUR_PAW)
+			icon_file = U.worn_icon_taur_paw || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_paw.dmi'
+
+	if(applied_style & STYLE_TAUR_ALL)
+		x_override = 64
+
+	var/mutable_appearance/anus_overlay
+
+	if(!anus_overlay)
+		anus_overlay = U.build_worn_icon(default_layer = ANUS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+
+	if(OFFSET_UNIFORM in dna.species.offset_features)
+		anus_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
+		anus_overlay.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
+	overlays_standing[ANUS_LAYER] = anus_overlay
+
+	apply_overlay(ANUS_LAYER)
+	update_mutant_bodyparts()
+
 // Updating nipples slot
 /mob/living/carbon/human/update_inv_nipples()
 	var/datum/hud/human/H = src.hud_used
@@ -786,6 +833,53 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			update_observer_view(nipples)
 			src.hud_used.hidden_inventory_update(src)
 
+	//on_mob stuff
+	remove_overlay(NIPPLES_LAYER) //i think it's good to use gloves layer for this. Kinda shitcode, but items like tail buttplug suppose to appear above uniform
+
+	var/obj/item/clothing/sextoy/U = nipples
+
+	if(nipples && (nipples.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
+		return
+
+	var/icon_file = nipples?.worn_icon
+	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
+	if(dna.species.mutant_bodyparts["taur"])
+		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
+		if(nipples.mutant_variants & S.taur_mode)
+			applied_style = S.taur_mode
+		else if(nipples.mutant_variants & S.alt_taur_mode)
+			applied_style = S.alt_taur_mode
+	if(!applied_style)
+		if((DIGITIGRADE in dna.species.species_traits) && (nipples.mutant_variants & STYLE_DIGITIGRADE))
+			applied_style = STYLE_DIGITIGRADE
+
+	var/x_override
+	switch(applied_style)
+		if(STYLE_DIGITIGRADE)
+			icon_file = U.worn_icon_digi || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_digi.dmi'
+		if(STYLE_TAUR_SNAKE)
+			icon_file = U.worn_icon_taur_snake || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_snake.dmi'
+		if(STYLE_TAUR_HOOF)
+			icon_file = U.worn_icon_taur_hoof || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_hoof.dmi'
+		if(STYLE_TAUR_PAW)
+			icon_file = U.worn_icon_taur_paw || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_paw.dmi'
+
+	if(applied_style & STYLE_TAUR_ALL)
+		x_override = 64
+
+	var/mutable_appearance/nipples_overlay
+
+	if(!nipples_overlay)
+		nipples_overlay = U.build_worn_icon(default_layer = NIPPLES_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+
+	if(OFFSET_UNIFORM in dna.species.offset_features)
+		nipples_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
+		nipples_overlay.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
+	overlays_standing[NIPPLES_LAYER] = nipples_overlay
+
+	apply_overlay(NIPPLES_LAYER)
+	update_mutant_bodyparts()
+
 // Updating penis slot
 /mob/living/carbon/human/update_inv_penis()
 	var/datum/hud/human/H = src.hud_used
@@ -802,6 +896,53 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 				client.screen += penis
 			update_observer_view(penis)
 			src.hud_used.hidden_inventory_update(src)
+
+	//on_mob stuff
+	remove_overlay(PENIS_LAYER) //i think it's good to use gloves layer for this. Kinda shitcode, but items like tail buttplug suppose to appear above uniform
+
+	var/obj/item/clothing/sextoy/U = penis
+
+	if(penis && (penis.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
+		return
+
+	var/icon_file = penis?.worn_icon
+	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
+	if(dna.species.mutant_bodyparts["taur"])
+		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
+		if(penis.mutant_variants & S.taur_mode)
+			applied_style = S.taur_mode
+		else if(penis.mutant_variants & S.alt_taur_mode)
+			applied_style = S.alt_taur_mode
+	if(!applied_style)
+		if((DIGITIGRADE in dna.species.species_traits) && (penis.mutant_variants & STYLE_DIGITIGRADE))
+			applied_style = STYLE_DIGITIGRADE
+
+	var/x_override
+	switch(applied_style)
+		if(STYLE_DIGITIGRADE)
+			icon_file = U.worn_icon_digi || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_digi.dmi'
+		if(STYLE_TAUR_SNAKE)
+			icon_file = U.worn_icon_taur_snake || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_snake.dmi'
+		if(STYLE_TAUR_HOOF)
+			icon_file = U.worn_icon_taur_hoof || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_hoof.dmi'
+		if(STYLE_TAUR_PAW)
+			icon_file = U.worn_icon_taur_paw || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_paw.dmi'
+
+	if(applied_style & STYLE_TAUR_ALL)
+		x_override = 64
+
+	var/mutable_appearance/penis_overlay
+
+	if(!penis_overlay)
+		penis_overlay = U.build_worn_icon(default_layer = PENIS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+
+	if(OFFSET_UNIFORM in dna.species.offset_features)
+		penis_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
+		penis_overlay.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
+	overlays_standing[PENIS_LAYER] = penis_overlay
+
+	apply_overlay(PENIS_LAYER)
+	update_mutant_bodyparts()
 
 // Shoes update extention for supporting correctt removing shoe in sleepbag
 /mob/living/carbon/human/update_inv_shoes()

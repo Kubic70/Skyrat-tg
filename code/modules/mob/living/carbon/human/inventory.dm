@@ -180,7 +180,7 @@
 				update_inv_vagina()
 			else
 				to_chat(usr, "[src] is not bottomless, you cannot access to vagina")
-			return
+
 		if(ITEM_SLOT_ANUS)
 			if(src.is_bottomless())
 				if(anus)
@@ -189,7 +189,7 @@
 				update_inv_anus()
 			else
 				to_chat(usr, "[src] is not bottomless, you cannot access to anus")
-			return
+
 		if(ITEM_SLOT_NIPPLES)
 			if(src.is_topless())
 				if(nipples)
@@ -198,7 +198,7 @@
 				update_inv_nipples()
 			else
 				to_chat(usr, "[src] is not topless, you cannot access to nipples")
-			return
+
 		if(ITEM_SLOT_PENIS)
 			if(src.is_bottomless())
 				if(penis)
@@ -207,7 +207,7 @@
 				update_inv_penis()
 			else
 				to_chat(usr, "[src] is not bottomless, you cannot access to penis")
-			return
+
 		//SKYRAT EDIT ADDITION END
 		else
 			to_chat(src, "<span class='danger'>You are trying to equip this item to an unsupported inventory slot. Report this to a coder!</span>")

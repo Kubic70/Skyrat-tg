@@ -576,17 +576,16 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		to_chat(user, "<span class='danger'>Looks like [M] don't want you to do that.</span>")
 		return
 
+//dumb way to fix organs overlapping with toys, but WHY NOT. Find a better way if you're not lazy as me.
 /obj/item/clothing/sextoy/double_dildo/equipped(mob/user, slot)
 	. = ..()
 	var/mob/living/carbon/human/H = user
-	if(src == H.vagina)
-		to_chat(world, "STUFF WORKS")
 	var/obj/item/organ/genital/vagina/V = H.getorganslot(ORGAN_SLOT_VAGINA)
 	var/obj/item/organ/genital/womb/W = H.getorganslot(ORGAN_SLOT_WOMB)
 	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
 	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
 
-	if(src == H.belt)
+	if(src == H.vagina)
 		V?.visibility_preference = GENITAL_NEVER_SHOW
 		W?.visibility_preference = GENITAL_NEVER_SHOW
 		P?.visibility_preference = GENITAL_NEVER_SHOW
@@ -603,7 +602,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
 	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
 
-	if(src == H.belt)
+	if(src == H.vagina)
 		V?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
 		W?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
 		P?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
