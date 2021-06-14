@@ -2,7 +2,7 @@
 ///Normal vibrating egg///
 //////////////////////////
 
-/obj/item/eggvib
+/obj/item/clothing/sextoy/eggvib
 	name = "vibrating egg"
 	desc = "Simple sex toy."
 	icon_state = "eggvib"
@@ -21,12 +21,12 @@
 	w_class = WEIGHT_CLASS_TINY
 
 //create radial menu
-/obj/item/eggvib/proc/populate_eggvib_designs()
+/obj/item/clothing/sextoy/eggvib/proc/populate_eggvib_designs()
 	eggvib_designs = list(
 		"pink" = image(icon = src.icon, icon_state = "eggvib_pink_low_on"),
 		"teal" = image(icon = src.icon, icon_state = "eggvib_teal_low_on"))
 
-/obj/item/eggvib/AltClick(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/eggvib/AltClick(mob/user, obj/item/I)
 	if(color_changed == TRUE)
 		toy_on = !toy_on
 		to_chat(user, "<span class='notice'>You switched remote controller [toy_on? "on. Brrrr..." : "off."]</span>")
@@ -47,26 +47,26 @@
 		return
 
 //to check if we can change egg's model
-/obj/item/eggvib/proc/check_menu(mob/living/user)
+/obj/item/clothing/sextoy/eggvib/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/eggvib/Initialize()
+/obj/item/clothing/sextoy/eggvib/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
 	if(!length(eggvib_designs))
 		populate_eggvib_designs()
 
-/obj/item/eggvib/update_icon_state()
+/obj/item/clothing/sextoy/eggvib/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[vibration_mode]_[toy_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
-/obj/item/eggvib/attack_self(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/eggvib/attack_self(mob/user, obj/item/I)
 	if(toy_on == TRUE)
 		toggle_mode()
 		if(vibration_mode == "low")
@@ -81,7 +81,7 @@
 		to_chat(usr, "<span class ='notice'> You cannot switch modes while the vibrating egg is... Not vibrating!</span>")
 		return
 
-/obj/item/eggvib/proc/toggle_mode()
+/obj/item/clothing/sextoy/eggvib/proc/toggle_mode()
 	mode = modes[mode]
 	switch(mode)
 		if("low")
@@ -94,18 +94,18 @@
 			vibration_mode = "hard"
 			playsound(loc, 'sound/weapons/magin.ogg', 20, TRUE)
 
-/obj/item/eggvib/equipped(mob/user, slot, initial)
+/obj/item/clothing/sextoy/eggvib/equipped(mob/user, slot, initial)
 	. = ..()
 	if(slot == "vagina" || slot == "anus" || slot == "penis" || slot == "breasts")
 		START_PROCESSING(SSobj, src)
 		to_chat(world, "vibrating ON")
 
-/obj/item/eggvib/dropped(mob/user, silent)
+/obj/item/clothing/sextoy/eggvib/dropped(mob/user, silent)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	to_chat(world, "vibrating OFF")
 
-/obj/item/eggvib/process(delta_time)
+/obj/item/clothing/sextoy/eggvib/process(delta_time)
 	. = ..()
 	var/mob/living/U = loc
 	var/bzz = 0

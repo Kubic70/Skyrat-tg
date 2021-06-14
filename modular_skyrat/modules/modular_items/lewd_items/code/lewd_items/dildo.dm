@@ -433,11 +433,18 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
 
 	if(src == H.vagina)
+		worn_icon = "dildo_side"
+		update_icon_state()
+		update_icon()
 		V?.visibility_preference = GENITAL_NEVER_SHOW
 		W?.visibility_preference = GENITAL_NEVER_SHOW
 		P?.visibility_preference = GENITAL_NEVER_SHOW
 		T?.visibility_preference = GENITAL_NEVER_SHOW
 		H.update_body()
+	else if(src == H.anus)
+		worn_icon_state = ""
+		update_icon_state()
+		update_icon()
 	else
 		return
 

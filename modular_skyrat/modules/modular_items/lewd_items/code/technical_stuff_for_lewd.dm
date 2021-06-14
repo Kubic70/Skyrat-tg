@@ -523,20 +523,21 @@
 
 // Allowed items for vagina slot
 GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
-	/obj/item/eggvib,
+	/obj/item/clothing/sextoy/eggvib,
 	/obj/item/electropack/signalvib,
 	/obj/item/vibrator,
 	/obj/item/dildo,
+	/obj/item/clothing/sextoy/buttplug,
 	/obj/item/custom_dildo,
 	/obj/item/clothing/sextoy/double_dildo
 	)))
 
 // Allowed items for anus slot
 GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
-	/obj/item/eggvib,
+	/obj/item/clothing/sextoy/eggvib,
 	/obj/item/electropack/signalvib,
 	/obj/item/vibrator,
-	/obj/item/buttplug,
+	/obj/item/clothing/sextoy/buttplug,
 	/obj/item/dildo,
 	/obj/item/custom_dildo,
 	/obj/item/clothing/sextoy/double_dildo
@@ -544,14 +545,14 @@ GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 
 // Allowed items for nipples slot
 GLOBAL_LIST_INIT(nipples_items_allowed, typecacheof(list(
-	/obj/item/eggvib,
+	/obj/item/clothing/sextoy/eggvib,
 	/obj/item/electropack/signalvib,
 	/obj/item/clothing/nipple_clamps
 	)))
 
 // Allowed items for penis slot
 GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
-	/obj/item/eggvib,
+	/obj/item/clothing/sextoy/eggvib,
 	/obj/item/electropack/signalvib,
 	/obj/item/condom
 	)))
@@ -742,7 +743,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/mutable_appearance/vagina_overlay
 
 	if(!vagina_overlay)
-		vagina_overlay = U.build_worn_icon(default_layer = VAGINA_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+		vagina_overlay = U?.build_worn_icon(default_layer = VAGINA_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
 		vagina_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
@@ -806,7 +807,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/mutable_appearance/anus_overlay
 
 	if(!anus_overlay)
-		anus_overlay = U.build_worn_icon(default_layer = ANUS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+		anus_overlay = U?.build_worn_icon(default_layer = ANUS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
 		anus_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
@@ -870,7 +871,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/mutable_appearance/nipples_overlay
 
 	if(!nipples_overlay)
-		nipples_overlay = U.build_worn_icon(default_layer = NIPPLES_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+		nipples_overlay = U?.build_worn_icon(default_layer = NIPPLES_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
 		nipples_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
@@ -934,7 +935,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/mutable_appearance/penis_overlay
 
 	if(!penis_overlay)
-		penis_overlay = U.build_worn_icon(default_layer = PENIS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+		penis_overlay = U?.build_worn_icon(default_layer = PENIS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
 		penis_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]

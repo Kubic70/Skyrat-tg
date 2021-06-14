@@ -19,9 +19,9 @@
 	STR.set_holdable(list(
 						//toys
 						/obj/item/electropack/signalvib,
-						/obj/item/buttplug,
+						/obj/item/clothing/sextoy/buttplug,
 						/obj/item/clothing/nipple_clamps,
-						/obj/item/eggvib,
+						/obj/item/clothing/sextoy/eggvib,
 						/obj/item/clothing/sextoy/double_dildo,
 						/obj/item/vibroring,
 						/obj/item/condom_pack,

@@ -1,4 +1,4 @@
-/obj/item/buttplug
+/obj/item/clothing/sextoy/buttplug
 	name = "buttplug"
 	desc = "Uhh... Again, WHERE i supposed to put that?!"
 	icon_state = "buttplug"
@@ -17,7 +17,7 @@
 	w_class = WEIGHT_CLASS_TINY
 
 //create radial menu
-/obj/item/buttplug/proc/populate_buttplug_designs()
+/obj/item/clothing/sextoy/buttplug/proc/populate_buttplug_designs()
 	buttplug_designs = list(
 		"pink" = image(icon = src.icon, icon_state = "buttplug_pink_small"),
 		"teal" = image(icon = src.icon, icon_state = "buttplug_teal_small"),
@@ -26,13 +26,13 @@
 		"metal" = image(icon = src.icon, icon_state = "buttplug_metal_small"),
 		"green" = image(icon = src.icon, icon_state = "buttplug_green_small"))
 
-/obj/item/buttplug/proc/populate_buttplug_forms()
+/obj/item/clothing/sextoy/buttplug/proc/populate_buttplug_forms()
 	buttplug_forms = list(
 		"small" = image(icon = src.icon, icon_state = "buttplug_pink_small"),
 		"medium" = image(icon = src.icon, icon_state = "buttplug_pink_medium"),
 		"big" = image(icon = src.icon, icon_state = "buttplug_pink_big"))
 
-/obj/item/buttplug/AltClick(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/buttplug/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -58,14 +58,14 @@
 		return
 
 //to check if we can change buttplug model
-/obj/item/buttplug/proc/check_menu(mob/living/user)
+/obj/item/clothing/sextoy/buttplug/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/buttplug/Initialize()
+/obj/item/clothing/sextoy/buttplug/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
@@ -74,10 +74,8 @@
 	if(!length(buttplug_forms))
 		populate_buttplug_forms()
 
-/obj/item/buttplug/update_icon_state()
+/obj/item/clothing/sextoy/buttplug/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[current_size]"
 	worn_icon_state = "[initial(icon_state)]_[current_color]"
 
-//Проверь отображение затычки с хвостом.
-//А светящаяся затычка должна светиться зелёным. Ну это ты и сам понял
