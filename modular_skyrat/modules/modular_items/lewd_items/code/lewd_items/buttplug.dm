@@ -10,6 +10,7 @@
 	slot_flags = ITEM_SLOT_ANUS|ITEM_SLOT_VAGINA
 	var/current_color = "pink"
 	var/current_size = "small"
+	light_color = LIGHT_COLOR_ELECTRIC_GREEN
 	var/color_changed = FALSE
 	var/form_changed = FALSE
 	var/static/list/buttplug_designs
@@ -42,6 +43,9 @@
 			return FALSE
 		current_color = choice
 		update_icon()
+		if(choice == "green")
+			set_light(1)
+			update_light()
 		color_changed = TRUE
 	if(color_changed == TRUE)
 		if(form_changed == FALSE)
@@ -67,6 +71,8 @@
 
 /obj/item/clothing/sextoy/buttplug/Initialize()
 	. = ..()
+	set_light(0)
+	update_light()
 	update_icon_state()
 	update_icon()
 	if(!length(buttplug_designs))
@@ -78,4 +84,3 @@
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[current_size]"
 	worn_icon_state = "[initial(icon_state)]_[current_color]"
-
