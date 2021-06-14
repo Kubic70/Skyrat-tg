@@ -351,12 +351,6 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	. = ..()
 	update_action_buttons_icons()
 
-/obj/item/clothing/sextoy/double_dildo/dropped()
-	.=..()
-	if(W && !ismob(loc) && in_hands == TRUE)
-		qdel(W)
-		in_hands = FALSE
-
 //Functionality stuff
 /obj/item/clothing/sextoy/double_dildo/proc/update_action_buttons_icons()
 	var/datum/action/item_action/M
@@ -379,42 +373,97 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	var/mob/living/carbon/human/C = usr
 	if(src == C.vagina)
 		toggle(C)
+	else if(src == C.anus)
+		to_chat(C, "<span class='warning'>You can't use it properly while it's in your anus!</span>")
 	else
 		to_chat(C, "<span class='warning'>You need to equip dildo before using!</span>")
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /obj/item/clothing/sextoy/double_dildo/proc/toggle(user)
 	var/mob/living/carbon/human/C = usr
 	playsound(C, 'modular_skyrat/modules/modular_items/lewd_items/sounds/latex.ogg', 40, TRUE)
 	var/obj/item/held = C.get_active_held_item()
 	var/obj/item/unheld = C.get_inactive_held_item()
-	if(in_hands == FALSE)
-		if(src == C.vagina)
-			//CODE FOR PUTTING DILDO IN HANDS
-			if(held || unheld)
-				if(!((held.name =="dildo side" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="dildo side" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
+
+	if(in_hands == TRUE)
+		if(held?.name == "dildo side" && held?.item_flags == ABSTRACT | HAND_ITEM)
+			qdel(held)
+			C.visible_message("<span class='notice'>[user] put dildo side back</span>")
+			in_hands = FALSE
+			return
+
+		else if(unheld?.name == "dildo side" && unheld?.item_flags == ABSTRACT | HAND_ITEM)
+			qdel(unheld)
+			C.visible_message("<span class='notice'>[user] put dildo side back</span>")
+			in_hands = FALSE
+			return
+
+		else if(held == null)
+			if(unheld.name =="dildo side" && unheld.item_flags == ABSTRACT | HAND_ITEM)
+				if(src == C.belt)
+					qdel(unheld)
+					//CODE FOR PUTTING DILDO IN HANDS
 					W = new()
 					C.put_in_hands(W)
 					W.update_icon_state()
 					W.update_icon()
-					C.visible_message("<span class='notice'>[user] takes a dildo side in their hand. So hot!</span>")
-				else
-					qdel(W)
-			else
-				W = new()
-				C.put_in_hands(W)
-				W.update_icon_state()
-				W.update_icon()
-				C.visible_message("<span class='notice'>[user] takes a dildo side in their hand. So hot!</span>")
-			//END
+					C.visible_message("<span class='notice'>[user] takes a dildo side in their hand. Looks menacingly</span>")
+					in_hands = TRUE
+					return
+		else
+			C.visible_message("<span class='notice'>[user]'s hand not empty. Can't take dildo side in hand</span>")
+			return
 	else
-		//CODE FOR PUTTING STRAPON BACK
-		if(((held.name =="dildo side" && held.item_flags == ABSTRACT | HAND_ITEM) || (unheld.name =="dildo side" && unheld.item_flags == ABSTRACT | HAND_ITEM)))
-			qdel(W)
-			W.update_icon_state()
-			W.update_icon()
-			C.visible_message("<span class='notice'>[user] put dildo back</span>")
-		in_hands = !in_hands
+		W = new()
+		C.put_in_hands(W)
+		W.update_icon_state()
+		W.update_icon()
+		C.visible_message("<span class='notice'>[user] takes a dildo side in their hand. Looks menacingly</span>")
+		in_hands = TRUE
+		return
 
+//dumb way to fix organs overlapping with toys, but WHY NOT. Find a better way if you're not lazy as me.
+/obj/item/clothing/sextoy/double_dildo/equipped(mob/user, slot)
+	. = ..()
+	var/mob/living/carbon/human/H = user
+	var/obj/item/organ/genital/vagina/V = H.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/womb/W = H.getorganslot(ORGAN_SLOT_WOMB)
+	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
+	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
+
+	if(src == H.vagina)
+		V?.visibility_preference = GENITAL_NEVER_SHOW
+		W?.visibility_preference = GENITAL_NEVER_SHOW
+		P?.visibility_preference = GENITAL_NEVER_SHOW
+		T?.visibility_preference = GENITAL_NEVER_SHOW
+		H.update_body()
+	else
+		return
+
+/obj/item/clothing/sextoy/double_dildo/dropped(mob/living/user)
+	.=..()
+	var/mob/living/carbon/human/M = user
+	if(W && !ismob(loc) && in_hands == TRUE && src != M.belt)
+		qdel(W)
+		in_hands = FALSE
+
+/obj/item/clothing/sextoy/double_dildo/dropped(mob/living/user)
+	. = ..()
+	var/mob/living/carbon/human/H = user
+	var/obj/item/organ/genital/vagina/V = H.getorganslot(ORGAN_SLOT_VAGINA)
+	var/obj/item/organ/genital/womb/W = H.getorganslot(ORGAN_SLOT_WOMB)
+	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
+	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
+
+	if(src == H.vagina)
+		V?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		W?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		P?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		T?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
+		H.update_body()
+	else
+		return
 
 /obj/item/clothing/sextoy/double_dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
@@ -574,39 +623,4 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 					return
 	else
 		to_chat(user, "<span class='danger'>Looks like [M] don't want you to do that.</span>")
-		return
-
-//dumb way to fix organs overlapping with toys, but WHY NOT. Find a better way if you're not lazy as me.
-/obj/item/clothing/sextoy/double_dildo/equipped(mob/user, slot)
-	. = ..()
-	var/mob/living/carbon/human/H = user
-	var/obj/item/organ/genital/vagina/V = H.getorganslot(ORGAN_SLOT_VAGINA)
-	var/obj/item/organ/genital/womb/W = H.getorganslot(ORGAN_SLOT_WOMB)
-	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
-	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
-
-	if(src == H.vagina)
-		V?.visibility_preference = GENITAL_NEVER_SHOW
-		W?.visibility_preference = GENITAL_NEVER_SHOW
-		P?.visibility_preference = GENITAL_NEVER_SHOW
-		T?.visibility_preference = GENITAL_NEVER_SHOW
-		H.update_body()
-	else
-		return
-
-/obj/item/clothing/sextoy/double_dildo/dropped(mob/living/user)
-	. = ..()
-	var/mob/living/carbon/human/H = user
-	var/obj/item/organ/genital/vagina/V = H.getorganslot(ORGAN_SLOT_VAGINA)
-	var/obj/item/organ/genital/womb/W = H.getorganslot(ORGAN_SLOT_WOMB)
-	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
-	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
-
-	if(src == H.vagina)
-		V?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
-		W?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
-		P?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
-		T?.visibility_preference = GENITAL_HIDDEN_BY_CLOTHES
-		H.update_body()
-	else
 		return

@@ -136,12 +136,19 @@
 	var/obj/item/unheld = C.get_inactive_held_item()
 
 	if(in_hands == TRUE)
-		if(held.name =="strapon" && held.item_flags == ABSTRACT | HAND_ITEM)
+		if(held?.name == "strapon" && held?.item_flags == ABSTRACT | HAND_ITEM)
 			qdel(held)
 			C.visible_message("<span class='notice'>[user] put strapon back</span>")
 			in_hands = FALSE
 			return
-		if(held == null)
+
+		else if(unheld?.name == "strapon" && unheld?.item_flags == ABSTRACT | HAND_ITEM)
+			qdel(unheld)
+			C.visible_message("<span class='notice'>[user] put strapon back</span>")
+			in_hands = FALSE
+			return
+
+		else if(held == null)
 			if(unheld.name =="strapon" && unheld.item_flags == ABSTRACT | HAND_ITEM)
 				if(src == C.belt)
 					qdel(unheld)
