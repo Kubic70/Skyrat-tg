@@ -44,7 +44,7 @@
 		current_color = choice
 		update_icon()
 		if(choice == "green")
-			set_light(1)
+			set_light(0.25)
 			update_light()
 		color_changed = TRUE
 	if(color_changed == TRUE)

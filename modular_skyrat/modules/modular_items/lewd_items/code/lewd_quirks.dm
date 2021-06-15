@@ -24,13 +24,13 @@
 	var/obj/item/organ/genital/vagina = quirk_holder.getorganslot(ORGAN_SLOT_VAGINA)
 	var/obj/item/organ/genital/penis = quirk_holder.getorganslot(ORGAN_SLOT_PENIS)
 	if(vagina && penis)
-		sextoy_type = /obj/item/magic_wand
+		sextoy_type = /obj/item/clothing/sextoy/magic_wand
 	else if(penis)
-		sextoy_type = /obj/item/fleshlight
+		sextoy_type = /obj/item/clothing/sextoy/fleshlight
 	else if(vagina)
-		sextoy_type = /obj/item/dildo
+		sextoy_type = /obj/item/clothing/sextoy/dildo
 	else
-		sextoy_type = /obj/item/magic_wand
+		sextoy_type = /obj/item/clothing/sextoy/magic_wand
 
 	sextoy = new sextoy_type(get_turf(quirk_holder))
 	H.put_in_hands(sextoy)

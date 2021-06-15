@@ -2,7 +2,7 @@
 ///Vibroring///
 ///////////////
 
-/obj/item/vibroring
+/obj/item/clothing/sextoy/vibroring
 	name = "vibrating ring"
 	desc = "Used to keep erection"
 	icon_state = "vibroring"
@@ -15,12 +15,12 @@
 	slot_flags = ITEM_SLOT_PENIS
 
 //create radial menu
-/obj/item/vibroring/proc/populate_vibroring_designs()
+/obj/item/clothing/sextoy/vibroring/proc/populate_vibroring_designs()
 	vibroring_designs = list(
 		"pink" = image(icon = src.icon, icon_state = "vibroring_pink_off"),
 		"teal" = image(icon = src.icon, icon_state = "vibroring_teal_off"))
 
-/obj/item/vibroring/AltClick(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/vibroring/AltClick(mob/user, obj/item/I)
 	if(color_changed == TRUE)
 		toy_on = !toy_on
 		to_chat(user, "<span class='notice'>You turned vibroring [toy_on? "on. Brrrr..." : "off."]</span>")
@@ -41,35 +41,35 @@
 		return
 
 //to check if we can change egg's model
-/obj/item/vibroring/proc/check_menu(mob/living/user)
+/obj/item/clothing/sextoy/vibroring/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/vibroring/Initialize()
+/obj/item/clothing/sextoy/vibroring/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
 	if(!length(vibroring_designs))
 		populate_vibroring_designs()
 
-/obj/item/vibroring/update_icon_state()
+/obj/item/clothing/sextoy/vibroring/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[toy_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
-/obj/item/vibroring/equipped(mob/user, slot, initial)
+/obj/item/clothing/sextoy/vibroring/equipped(mob/user, slot, initial)
 	. = ..()
 	if(slot == "penis")
 		START_PROCESSING(SSobj, src)
 
-/obj/item/vibroring/dropped(mob/user, silent)
+/obj/item/clothing/sextoy/vibroring/dropped(mob/user, silent)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
-/obj/item/vibroring/process(delta_time)
+/obj/item/clothing/sextoy/vibroring/process(delta_time)
 	. = ..()
 	var/mob/living/carbon/human/U = loc
 	var/obj/item/organ/genital/testicles/P = U.getorganslot(ORGAN_SLOT_PENIS)

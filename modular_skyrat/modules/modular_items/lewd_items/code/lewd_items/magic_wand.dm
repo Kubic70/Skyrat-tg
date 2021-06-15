@@ -1,4 +1,4 @@
-/obj/item/magic_wand
+/obj/item/clothing/sextoy/magic_wand
 	name = "magic wand"
 	desc = "Not sure where is magic in this thing, but if you press button - it makes funny vibrations"
 	icon_state = "magicwand"
@@ -11,24 +11,25 @@
 	var/list/modes = list("low" = "medium", "medium" = "hard", "hard" = "low")
 	var/mode = "low"
 	w_class = WEIGHT_CLASS_TINY
+	slot_flags = ITEM_SLOT_VAGINA|ITEM_SLOT_PENIS
 
-/obj/item/magic_wand/AltClick(mob/user)
+/obj/item/clothing/sextoy/magic_wand/AltClick(mob/user)
     wand_on = !wand_on
     to_chat(user, "<span class='notice'>You turn the vibrator [wand_on? "on. Brrrr..." : "off."]</span>")
     playsound(user, wand_on ? 'sound/weapons/magin.ogg' : 'sound/weapons/magout.ogg', 40, TRUE)
     update_icon_state()
     update_icon()
 
-/obj/item/magic_wand/Initialize()
+/obj/item/clothing/sextoy/magic_wand/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
 
-/obj/item/magic_wand/update_icon_state()
+/obj/item/clothing/sextoy/magic_wand/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[vibration_mode]_[wand_on? "on" : "off"]"
 
-/obj/item/magic_wand/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/clothing/sextoy/magic_wand/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return
@@ -304,7 +305,7 @@
 		to_chat(user, "<span class='notice'>You must turn on the toy, to use it!</span>")
 		return
 
-/obj/item/magic_wand/attack_self(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/magic_wand/attack_self(mob/user, obj/item/I)
 	if(wand_on == TRUE)
 		toggle_mode()
 		if(vibration_mode == "low")
@@ -319,7 +320,7 @@
 		to_chat(usr, "<span class ='notice'> You cannot switch modes while the vibrator is turned off.</span>")
 		return
 
-/obj/item/magic_wand/proc/toggle_mode()
+/obj/item/clothing/sextoy/magic_wand/proc/toggle_mode()
 	mode = modes[mode]
 	switch(mode)
 		if("low")

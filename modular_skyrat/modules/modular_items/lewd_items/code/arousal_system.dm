@@ -559,7 +559,7 @@
 			if(prob(40))
 				owner.emote("moan")
 			balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
-			var/obj/item/condom/C = owner.get_item_by_slot(ITEM_SLOT_PENIS)
+			var/obj/item/clothing/sextoy/condom/C = owner.get_item_by_slot(ITEM_SLOT_PENIS)
 			C.condom_use()
 			if(C.condom_state == "broken")
 				var/turf/T = get_turf(owner)

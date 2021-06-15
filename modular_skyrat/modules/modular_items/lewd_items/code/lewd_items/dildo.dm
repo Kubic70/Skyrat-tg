@@ -2,7 +2,7 @@
 ///NORMAL DILDO///
 //////////////////
 
-/obj/item/dildo
+/obj/item/clothing/sextoy/dildo
 	name = "dildo"
 	desc = "Uhh... What a jiggly thing."
 	icon_state = "dildo"
@@ -17,7 +17,7 @@
 	slot_flags = ITEM_SLOT_ANUS|ITEM_SLOT_VAGINA
 
 //create radial menu
-/obj/item/dildo/proc/populate_dildo_designs()
+/obj/item/clothing/sextoy/dildo/proc/populate_dildo_designs()
 	dildo_designs = list(
 		"avian" = image (icon = src.icon, icon_state = "dildo_avian"),
 		"canine" = image(icon = src.icon, icon_state = "dildo_canine"),
@@ -26,7 +26,7 @@
 		"human" = image(icon = src.icon, icon_state = "dildo_human"),
 		"tentacle" = image(icon = src.icon, icon_state = "dildo_tentacle"))
 
-/obj/item/dildo/AltClick(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/dildo/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -41,26 +41,26 @@
 		return
 
 //to check if we can change dildo's model
-/obj/item/dildo/proc/check_menu(mob/living/user)
+/obj/item/clothing/sextoy/dildo/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/dildo/Initialize()
+/obj/item/clothing/sextoy/dildo/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
 	if(!length(dildo_designs))
 		populate_dildo_designs()
 
-/obj/item/dildo/update_icon_state()
+/obj/item/clothing/sextoy/dildo/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
-/obj/item/dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/clothing/sextoy/dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return
@@ -151,7 +151,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		"White"		= "#c0c0c0",//white
 		))
 
-/obj/item/custom_dildo
+/obj/item/clothing/sextoy/custom_dildo
 	name = "custom dildo"
 	desc = "Dildo that can be customized individually."
 	icon_state = "polydildo"
@@ -169,7 +169,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	slot_flags = ITEM_SLOT_ANUS|ITEM_SLOT_VAGINA
 
 //radial menu for sizes
-/obj/item/custom_dildo/proc/populate_dildo_sizes()
+/obj/item/clothing/sextoy/custom_dildo/proc/populate_dildo_sizes()
 	dildo_sizes = list(
 		"small" = image (icon = src.icon, icon_state = "polydildo_small"),
 		"medium" = image(icon = src.icon, icon_state = "polydildo_medium"),
@@ -178,7 +178,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 //for that one cool polychromic form.
 //i hate polychromics, hue-shifting better, but they wanted it - i made it.
 
-/obj/item/custom_dildo/AltClick(mob/living/user, obj/item/I)
+/obj/item/clothing/sextoy/custom_dildo/AltClick(mob/living/user, obj/item/I)
 	. = ..()
 	if(size_changed == FALSE)
 		. = ..()
@@ -199,7 +199,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 			color_changed = TRUE
 			return TRUE
 
-/obj/item/custom_dildo/proc/customize(mob/living/user)
+/obj/item/clothing/sextoy/custom_dildo/proc/customize(mob/living/user)
 	if(!can_customize)
 		return FALSE
 	if(src && !user.incapacitated() && in_range(user,src))
@@ -216,32 +216,32 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	update_icon_state()
 	return TRUE
 
-/obj/item/custom_dildo/examine(mob/user)
+/obj/item/clothing/sextoy/custom_dildo/examine(mob/user)
 	. = ..()
 	if(can_customize)
 		. += "<span class='notice'>Alt-Click \the [src.name] to customize it.</span>"
 
 //to check if we can change dildo's model
-/obj/item/custom_dildo/proc/check_menu(mob/living/user)
+/obj/item/clothing/sextoy/custom_dildo/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/custom_dildo/Initialize()
+/obj/item/clothing/sextoy/custom_dildo/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
 	if(!length(dildo_sizes))
 		populate_dildo_sizes()
 
-/obj/item/custom_dildo/update_icon_state()
+/obj/item/clothing/sextoy/custom_dildo/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[poly_size]"
 	inhand_icon_state = "[initial(icon_state)]_[poly_size]"
 
-/obj/item/custom_dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/clothing/sextoy/custom_dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return
@@ -345,7 +345,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	slot_flags = ITEM_SLOT_ANUS|ITEM_SLOT_VAGINA
 	actions_types = list(/datum/action/item_action/take_dildo)
 	var/in_hands = FALSE
-	var/obj/item/dildo_side/W
+	var/obj/item/clothing/sextoy/dildo_side/W
 
 /obj/item/clothing/sextoy/double_dildo/Initialize()
 	. = ..()
@@ -545,7 +545,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		to_chat(user, "<span class='danger'>Looks like [M] don't want you to do that.</span>")
 		return
 
-/obj/item/dildo_side
+/obj/item/clothing/sextoy/dildo_side
 	name = "dildo side"
 	desc = "You looking so hot!"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_icons.dmi'
@@ -555,11 +555,11 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	throwforce = 0
 	item_flags = ABSTRACT | HAND_ITEM
 
-/obj/item/dildo_side/Initialize()
+/obj/item/clothing/sextoy/dildo_side/Initialize()
 	. = ..()
 	ADD_TRAIT(src, TRAIT_NODROP, STRAPON_TRAIT)
 
-/obj/item/dildo_side/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/clothing/sextoy/dildo_side/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return

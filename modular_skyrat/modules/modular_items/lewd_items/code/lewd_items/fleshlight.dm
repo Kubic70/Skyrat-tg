@@ -1,4 +1,4 @@
-/obj/item/fleshlight
+/obj/item/clothing/sextoy/fleshlight
 	name = "fleshlight"
 	desc = "What a strange flashlight."
 	icon_state = "fleshlight"
@@ -10,10 +10,11 @@
 	var/current_color = "pink"
 	var/color_changed = FALSE
 	var/static/list/fleshlight_designs
+	slot_flags = ITEM_SLOT_PENIS
 
 //to change color of fleshlight
 //create radial menu
-/obj/item/fleshlight/proc/populate_fleshlight_designs()
+/obj/item/clothing/sextoy/fleshlight/proc/populate_fleshlight_designs()
     fleshlight_designs = list(
 		"green" = image (icon = src.icon, icon_state = "fleshlight_green"),
 		"pink" = image (icon = src.icon, icon_state = "fleshlight_pink"),
@@ -21,26 +22,26 @@
 		"red" = image (icon = src.icon, icon_state = "fleshlight_red"),
 		"yellow" = image(icon = src.icon, icon_state = "fleshlight_yellow"))
 
-/obj/item/fleshlight/proc/check_menu(mob/living/user)
+/obj/item/clothing/sextoy/fleshlight/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/fleshlight/Initialize()
+/obj/item/clothing/sextoy/fleshlight/Initialize()
 	. = ..()
 	update_icon()
 	update_icon_state()
 	if(!length(fleshlight_designs))
 		populate_fleshlight_designs()
 
-/obj/item/fleshlight/update_icon_state()
+/obj/item/clothing/sextoy/fleshlight/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
-/obj/item/fleshlight/AltClick(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/fleshlight/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -54,7 +55,7 @@
 	else
 		return
 
-/obj/item/fleshlight/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/clothing/sextoy/fleshlight/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return

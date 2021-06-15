@@ -76,7 +76,7 @@
 	. = ..()
 	if(.)
 		return TRUE
-	if(penis != null && istype(penis, /obj/item/condom))
+	if(penis != null && istype(penis, /obj/item/clothing/sextoy/condom))
 		return TRUE
 	return FALSE
 
@@ -525,10 +525,10 @@
 GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/eggvib,
 	/obj/item/electropack/signalvib,
-	/obj/item/vibrator,
-	/obj/item/dildo,
+	/obj/item/clothing/sextoy/vibrator,
+	/obj/item/clothing/sextoy/dildo,
 	/obj/item/clothing/sextoy/buttplug,
-	/obj/item/custom_dildo,
+	/obj/item/clothing/sextoy/custom_dildo,
 	/obj/item/clothing/sextoy/double_dildo
 	)))
 
@@ -536,10 +536,10 @@ GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
 GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/eggvib,
 	/obj/item/electropack/signalvib,
-	/obj/item/vibrator,
+	/obj/item/clothing/sextoy/vibrator,
 	/obj/item/clothing/sextoy/buttplug,
-	/obj/item/dildo,
-	/obj/item/custom_dildo,
+	/obj/item/clothing/sextoy/dildo,
+	/obj/item/clothing/sextoy/custom_dildo,
 	/obj/item/clothing/sextoy/double_dildo
 	)))
 
@@ -547,14 +547,15 @@ GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 GLOBAL_LIST_INIT(nipples_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/eggvib,
 	/obj/item/electropack/signalvib,
-	/obj/item/clothing/nipple_clamps
+	/obj/item/clothing/sextoy/nipple_clamps
 	)))
 
 // Allowed items for penis slot
 GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/eggvib,
 	/obj/item/electropack/signalvib,
-	/obj/item/condom
+	/obj/item/clothing/sextoy/condom,
+	/obj/item/clothing/sextoy/magic_wand
 	)))
 
 // Strippable Defines

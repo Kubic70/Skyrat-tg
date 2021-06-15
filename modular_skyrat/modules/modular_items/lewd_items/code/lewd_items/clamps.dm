@@ -1,4 +1,4 @@
-/obj/item/clothing/nipple_clamps
+/obj/item/clothing/sextoy/nipple_clamps
 	name = "nipple clamps"
 	desc = "Causing pain to nipples"
 	icon_state = "clamps"
@@ -11,11 +11,11 @@
 	var/breast_type
 	var/breast_size
 
-/obj/item/clothing/nipple_clamps/update_icon_state()
+/obj/item/clothing/sextoy/nipple_clamps/update_icon_state()
 	. = ..()
 	worn_icon_state = "[initial(icon_state)]_[breast_type]_[breast_size]"
 
-/obj/item/clothing/nipple_clamps/equipped(mob/user, slot, initial)
+/obj/item/clothing/sextoy/nipple_clamps/equipped(mob/user, slot, initial)
 	. = ..()
 	var/mob/living/carbon/human/U = user
 	var/obj/item/organ/genital/breasts/B = U.getorganslot(ORGAN_SLOT_BREASTS)
@@ -36,14 +36,14 @@
 	if(slot == "nipples")
 		START_PROCESSING(SSobj, src)
 
-/obj/item/clothing/nipple_clamps/dropped(mob/user, silent)
+/obj/item/clothing/sextoy/nipple_clamps/dropped(mob/user, silent)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	var/mob/living/carbon/human/C = user
 	C.update_inv_nipples()
 	C.hud_used.hidden_inventory_update()
 
-/obj/item/clothing/nipple_clamps/process(delta_time)
+/obj/item/clothing/sextoy/nipple_clamps/process(delta_time)
 	. = ..()
 	var/mob/living/carbon/human/U = loc
 	var/obj/item/organ/genital/breasts/B = U.getorganslot(ORGAN_SLOT_BREASTS)

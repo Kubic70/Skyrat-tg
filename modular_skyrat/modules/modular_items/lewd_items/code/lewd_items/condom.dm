@@ -33,7 +33,7 @@
 	if(!do_after(user, 15, target = user))
 		return
 	playsound(src.loc, 'sound/items/poster_ripped.ogg', 50, TRUE)
-	var/obj/item/condom/C = new /obj/item/condom
+	var/obj/item/clothing/sextoy/condom/C = new /obj/item/clothing/sextoy/condom
 	user.put_in_hands(C)
 	switch(current_color)
 		if("pink")
@@ -46,7 +46,7 @@
 
 //Opened condom
 
-/obj/item/condom
+/obj/item/clothing/sextoy/condom
 	name = "condom"
 	desc = "I wonder if i can put this on head..."
 	icon_state = "condom"
@@ -56,17 +56,17 @@
 	var/condom_state = "unused"
 	slot_flags = ITEM_SLOT_PENIS
 
-/obj/item/condom/Initialize()
+/obj/item/clothing/sextoy/condom/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
 
-/obj/item/condom/update_icon_state()
+/obj/item/clothing/sextoy/condom/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[condom_state]"
 
 //to update model properly after use
-/obj/item/condom/proc/condom_use()
+/obj/item/clothing/sextoy/condom/proc/condom_use()
 	switch(condom_state)
 		if("used")
 			if(prob(10)) //chance of condom to break on first time.
@@ -84,7 +84,7 @@
 			update_icon()
 
 //When condom equipped we doing stuff
-/obj/item/condom/equipped(mob/user, slot, initial)
+/obj/item/clothing/sextoy/condom/equipped(mob/user, slot, initial)
 	. = ..()
 	if(slot == ITEM_SLOT_PENIS)
 		condom_state = "used"

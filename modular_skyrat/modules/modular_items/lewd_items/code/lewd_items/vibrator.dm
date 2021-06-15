@@ -1,5 +1,5 @@
 //This code huge and blocky, but we're working on update for... my god, 4 months. If you can upgrade it - do it, but don't remove or break something, test carefully. This item is insertable.
-/obj/item/vibrator
+/obj/item/clothing/sextoy/vibrator
 	name = "vibrator"
 	desc = "Woah. What an... Interesting item. I wonder what this red button does..."
 	icon_state = "vibrator"
@@ -7,7 +7,7 @@
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
-	slot_flags = ITEM_SLOT_PENIS|ITEM_SLOT_VAGINA|ITEM_SLOT_NIPPLES|ITEM_SLOT_ANUS
+	slot_flags = ITEM_SLOT_VAGINA|ITEM_SLOT_ANUS
 	var/toy_on = FALSE
 	var/current_color = "pink"
 	var/color_changed = FALSE
@@ -18,7 +18,7 @@
 	w_class = WEIGHT_CLASS_TINY
 
 //create radial menu
-/obj/item/vibrator/proc/populate_vibrator_designs()
+/obj/item/clothing/sextoy/vibrator/proc/populate_vibrator_designs()
 	vibrator_designs = list(
 		"pink" = image (icon = src.icon, icon_state = "vibrator_pink_low_on"),
 		"teal" = image(icon = src.icon, icon_state = "vibrator_teal_low_on"),
@@ -26,7 +26,7 @@
 		"yellow" = image(icon = src.icon, icon_state = "vibrator_yellow_low_on"),
 		"green" = image(icon = src.icon, icon_state = "vibrator_green_low_on"))
 
-/obj/item/vibrator/AltClick(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/vibrator/AltClick(mob/user, obj/item/I)
 	if(color_changed == TRUE)
 		toy_on = !toy_on
 		to_chat(user, "<span class='notice'>You turn the vibrator [toy_on? "on. Brrrr..." : "off."]</span>")
@@ -48,26 +48,26 @@
 		return
 
 //to check if we can change vibrator's model
-/obj/item/vibrator/proc/check_menu(mob/living/user)
+/obj/item/clothing/sextoy/vibrator/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/vibrator/Initialize()
+/obj/item/clothing/sextoy/vibrator/Initialize()
 	. = ..()
 	update_icon_state()
 	update_icon()
 	if(!length(vibrator_designs))
 		populate_vibrator_designs()
 
-/obj/item/vibrator/update_icon_state()
+/obj/item/clothing/sextoy/vibrator/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[vibration_mode]_[toy_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
-/obj/item/vibrator/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
+/obj/item/clothing/sextoy/vibrator/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
 		return
@@ -338,7 +338,7 @@
 		to_chat(user, "<span class='notice'>You must turn on the toy, to use it!</span>")
 		return
 
-/obj/item/vibrator/attack_self(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/vibrator/attack_self(mob/user, obj/item/I)
 	if(toy_on == TRUE)
 		toggle_mode()
 		if(vibration_mode == "low")
@@ -353,7 +353,7 @@
 		to_chat(usr, "<span class ='notice'> You cannot switch modes while the vibrator is turned off.</span>")
 		return
 
-/obj/item/vibrator/proc/toggle_mode()
+/obj/item/clothing/sextoy/vibrator/proc/toggle_mode()
 	mode = modes[mode]
 	switch(mode)
 		if("low")
