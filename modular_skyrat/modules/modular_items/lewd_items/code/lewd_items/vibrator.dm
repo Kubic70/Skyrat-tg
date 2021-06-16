@@ -67,6 +67,30 @@
 	icon_state = "[initial(icon_state)]_[current_color]_[vibration_mode]_[toy_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
+/obj/item/clothing/sextoy/vibrator/equipped(mob/user, slot)
+	. = ..()
+	var/mob/living/carbon/human/H = user
+	if(src == H.anus || src == H.vagina)
+		START_PROCESSING(SSobj, src)
+
+/obj/item/clothing/sextoy/vibrator/dropped(mob/user, slot)
+	. = ..()
+	STOP_PROCESSING(SSobj, src)
+
+/obj/item/clothing/sextoy/vibrator/process(delta_time)
+	var/mob/living/carbon/human/U = loc
+	if(toy_on == TRUE)
+		if(vibration_mode == "low" && U.arousal < 40) //prevent non-stop cumming from wearing this thing
+			U.adjustArousal(0.7 * delta_time)
+			U.adjustPleasure(0.7 * delta_time)
+		if(vibration_mode == "medium" && U.arousal < 70)
+			U.adjustArousal(1 * delta_time)
+			U.adjustPleasure(1 * delta_time)
+		if(vibration_mode == "hard") //no mercy
+			U.adjustArousal(1.5 * delta_time)
+			U.adjustPleasure(1.5 * delta_time)
+
+//SHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODESHITCODE
 /obj/item/clothing/sextoy/vibrator/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))

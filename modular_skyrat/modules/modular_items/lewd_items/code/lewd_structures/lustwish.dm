@@ -99,8 +99,8 @@
 
 	refill_canister = /obj/item/vending_refill/lustwish
 	payment_department = ACCOUNT_SRV
-	default_price = PAYCHECK_ASSISTANT * 2
-	extra_price = PAYCHECK_COMMAND * 0.5
+	default_price = PAYCHECK_ASSISTANT
+	extra_price = PAYCHECK_COMMAND * 0.3
 
 //Secret vending machine skin. Don't touch plz
 /obj/machinery/vending/lustwish/proc/populate_vend_designs()

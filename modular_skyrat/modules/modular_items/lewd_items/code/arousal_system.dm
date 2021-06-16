@@ -565,14 +565,14 @@
 				var/turf/T = get_turf(owner)
 				new /obj/effect/decal/cleanable/cum(T)
 
-		if(balls && owner.is_bottomless())
+		if(balls && owner.is_bottomless() && !owner.wear_condom())
 			var/turf/T = get_turf(owner)
 			new /obj/effect/decal/cleanable/cum(T)
 			if(prob(40))
 				owner.emote("moan")
 			balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
 
-		if(vagina && owner.is_bottomless())
+		if(vagina && owner.is_bottomless()) //Sry, futanari players, but condom's don't work like that for vagina, so yep.
 			var/turf/T = get_turf(owner)
 			new /obj/effect/decal/cleanable/femcum(T)
 			if(prob(40))

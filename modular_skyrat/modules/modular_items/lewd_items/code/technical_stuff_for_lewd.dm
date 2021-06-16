@@ -71,14 +71,17 @@
 /mob/proc/wear_condom()
 	return FALSE
 
-//
+// MAKE IT WORK
 /mob/living/carbon/human/wear_condom()
 	. = ..()
+	var/obj/item/clothing/sextoy/condom/C = src.get_item_by_slot(ITEM_SLOT_PENIS)
+	if(C.condom_state != "broken" && C == src.penis)
+		to_chat(world, "works works works")
+		return TRUE
 	if(.)
 		return TRUE
-	if(penis != null && istype(penis, /obj/item/clothing/sextoy/condom))
-		return TRUE
-	return FALSE
+	if(!(istype(get_item_by_slot(ITEM_SLOT_PENIS), /obj/item/clothing/sextoy/condom)))
+		return FALSE
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////this shouldn't be put anywhere, get your dirty hands off!////////////////
@@ -747,8 +750,8 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		vagina_overlay = U?.build_worn_icon(default_layer = VAGINA_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
-		vagina_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
-		vagina_overlay.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
+		vagina_overlay?.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
+		vagina_overlay?.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
 	overlays_standing[VAGINA_LAYER] = vagina_overlay
 
 	apply_overlay(VAGINA_LAYER)
@@ -811,8 +814,8 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		anus_overlay = U?.build_worn_icon(default_layer = ANUS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
-		anus_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
-		anus_overlay.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
+		anus_overlay?.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
+		anus_overlay?.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
 	overlays_standing[ANUS_LAYER] = anus_overlay
 
 	apply_overlay(ANUS_LAYER)
@@ -875,8 +878,8 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		nipples_overlay = U?.build_worn_icon(default_layer = NIPPLES_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
-		nipples_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
-		nipples_overlay.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
+		nipples_overlay?.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
+		nipples_overlay?.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
 	overlays_standing[NIPPLES_LAYER] = nipples_overlay
 
 	apply_overlay(NIPPLES_LAYER)
@@ -939,8 +942,8 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		penis_overlay = U?.build_worn_icon(default_layer = PENIS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
-		penis_overlay.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
-		penis_overlay.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
+		penis_overlay?.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
+		penis_overlay?.pixel_y += dna.species.offset_features[OFFSET_UNIFORM][2]
 	overlays_standing[PENIS_LAYER] = penis_overlay
 
 	apply_overlay(PENIS_LAYER)

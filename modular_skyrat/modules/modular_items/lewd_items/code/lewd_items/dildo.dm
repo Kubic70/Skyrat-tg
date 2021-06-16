@@ -351,6 +351,10 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	. = ..()
 	update_action_buttons_icons()
 
+/obj/item/clothing/sextoy/double_dildo/ComponentInitialize()
+	. = ..()
+	AddElement(/datum/element/update_icon_updates_onmob)
+
 //Functionality stuff
 /obj/item/clothing/sextoy/double_dildo/proc/update_action_buttons_icons()
 	var/datum/action/item_action/M
@@ -432,8 +436,11 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	var/obj/item/organ/genital/penis/P = H.getorganslot(ORGAN_SLOT_PENIS)
 	var/obj/item/organ/genital/testicles/T = H.getorganslot(ORGAN_SLOT_TESTICLES)
 
+	if(src == H.anus || src == H.vagina)
+		START_PROCESSING(SSobj, src)
+
 	if(src == H.vagina)
-		worn_icon = "dildo_side"
+		worn_icon_state = "dildo_side"
 		update_icon_state()
 		update_icon()
 		V?.visibility_preference = GENITAL_NEVER_SHOW
@@ -441,19 +448,26 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		P?.visibility_preference = GENITAL_NEVER_SHOW
 		T?.visibility_preference = GENITAL_NEVER_SHOW
 		H.update_body()
+
 	else if(src == H.anus)
 		worn_icon_state = ""
 		update_icon_state()
 		update_icon()
-	else
-		return
 
 /obj/item/clothing/sextoy/double_dildo/dropped(mob/living/user)
 	.=..()
 	var/mob/living/carbon/human/M = user
+	STOP_PROCESSING(SSobj, src)
 	if(W && !ismob(loc) && in_hands == TRUE && src != M.belt)
 		qdel(W)
 		in_hands = FALSE
+
+/obj/item/clothing/sextoy/double_dildo/process(delta_time)
+	var/mob/living/carbon/human/U = loc
+	//i tried using switch here, but it need static value, and u.arousal can't be it. So fuck switches. Reject it, embrace the IFs
+	if(U.arousal < 30)
+		U.adjustArousal(0.6 * delta_time)
+		U.adjustPleasure(0.6 * delta_time)
 
 /obj/item/clothing/sextoy/double_dildo/dropped(mob/living/user)
 	. = ..()

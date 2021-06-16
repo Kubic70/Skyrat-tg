@@ -33,6 +33,10 @@
 		"medium" = image(icon = src.icon, icon_state = "buttplug_pink_medium"),
 		"big" = image(icon = src.icon, icon_state = "buttplug_pink_big"))
 
+/obj/item/clothing/sextoy/buttplug/ComponentInitialize()
+	. = ..()
+	AddElement(/datum/element/update_icon_updates_onmob)
+
 /obj/item/clothing/sextoy/buttplug/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
 		. = ..()
@@ -84,3 +88,37 @@
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[current_size]"
 	worn_icon_state = "[initial(icon_state)]_[current_color]"
+
+/obj/item/clothing/sextoy/buttplug/equipped(mob/user, slot)
+	.=..()
+	var/mob/living/carbon/human/H = user
+	if(src == H.anus || src == H.vagina)
+		START_PROCESSING(SSobj, src)
+
+	if(src == H.vagina)
+		worn_icon_state = ""
+		update_icon()
+
+	if(src == H.anus)
+		worn_icon_state = "buttplug"
+		update_icon_state()
+		update_icon()
+
+/obj/item/clothing/sextoy/buttplug/dropped()
+	.=..()
+	STOP_PROCESSING(SSobj, src)
+
+/obj/item/clothing/sextoy/buttplug/process(delta_time)
+	var/mob/living/carbon/human/U = loc
+	//i tried using switch here, but it need static value, and u.arousal can't be it. So fuck switches. Reject it, embrace the IFs
+	if(current_size == "small" && U.arousal < 30)
+		U.adjustArousal(0.6 * delta_time)
+		U.adjustPleasure(0.7 * delta_time)
+	if(current_size == "medium" && U.arousal < 40)
+		U.adjustArousal(0.8 * delta_time)
+		U.adjustPleasure(0.8 * delta_time)
+	if(current_size == "big" && U.arousal < 50)
+		U.adjustArousal(1 * delta_time)
+		U.adjustPleasure(1 * delta_time)
+	if(current_size == "big" && U.pain < 22.5) //yeah, this will cause pain. No buttplug gib intended, sry
+		U.adjustPain (1*delta_time)

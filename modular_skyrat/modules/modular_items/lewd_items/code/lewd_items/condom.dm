@@ -34,6 +34,7 @@
 		return
 	playsound(src.loc, 'sound/items/poster_ripped.ogg', 50, TRUE)
 	var/obj/item/clothing/sextoy/condom/C = new /obj/item/clothing/sextoy/condom
+
 	user.put_in_hands(C)
 	switch(current_color)
 		if("pink")
