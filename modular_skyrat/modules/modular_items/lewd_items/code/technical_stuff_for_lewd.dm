@@ -724,7 +724,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		else if(vagina.mutant_variants & S.alt_taur_mode)
 			applied_style = S.alt_taur_mode
 	if(!applied_style)
-		if((DIGITIGRADE in dna.species.species_traits) && (vagina.mutant_variants & STYLE_DIGITIGRADE))
+		if((DIGITIGRADE in dna.species.species_traits) && (vagina?.mutant_variants & STYLE_DIGITIGRADE))
 			applied_style = STYLE_DIGITIGRADE
 
 	var/x_override
@@ -788,7 +788,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		else if(anus.mutant_variants & S.alt_taur_mode)
 			applied_style = S.alt_taur_mode
 	if(!applied_style)
-		if((DIGITIGRADE in dna.species.species_traits) && (anus.mutant_variants & STYLE_DIGITIGRADE))
+		if((DIGITIGRADE in dna.species.species_traits) && (anus?.mutant_variants & STYLE_DIGITIGRADE))
 			applied_style = STYLE_DIGITIGRADE
 
 	var/x_override
@@ -852,7 +852,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		else if(nipples.mutant_variants & S.alt_taur_mode)
 			applied_style = S.alt_taur_mode
 	if(!applied_style)
-		if((DIGITIGRADE in dna.species.species_traits) && (nipples.mutant_variants & STYLE_DIGITIGRADE))
+		if((DIGITIGRADE in dna.species.species_traits) && (nipples?.mutant_variants & STYLE_DIGITIGRADE))
 			applied_style = STYLE_DIGITIGRADE
 
 	var/x_override
@@ -916,7 +916,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		else if(penis.mutant_variants & S.alt_taur_mode)
 			applied_style = S.alt_taur_mode
 	if(!applied_style)
-		if((DIGITIGRADE in dna.species.species_traits) && (penis.mutant_variants & STYLE_DIGITIGRADE))
+		if((DIGITIGRADE in dna.species.species_traits) && (penis?.mutant_variants & STYLE_DIGITIGRADE))
 			applied_style = STYLE_DIGITIGRADE
 
 	var/x_override
