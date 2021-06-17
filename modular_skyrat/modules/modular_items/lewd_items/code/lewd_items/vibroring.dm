@@ -62,7 +62,8 @@
 
 /obj/item/clothing/sextoy/vibroring/equipped(mob/user, slot, initial)
 	. = ..()
-	if(slot == "penis")
+	var/mob/living/carbon/human/H = user
+	if(src == H.penis)
 		START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/sextoy/vibroring/dropped(mob/user, silent)
@@ -73,10 +74,8 @@
 	. = ..()
 	var/mob/living/carbon/human/U = loc
 	var/obj/item/organ/genital/testicles/P = U.getorganslot(ORGAN_SLOT_PENIS)
-	var/bzz = 0
 	if(toy_on == TRUE)
-		bzz = 0.2
-		U.adjustArousal(bzz * delta_time)
-		U.adjustPleasure(bzz * delta_time)
+		U.adjustArousal(1 * delta_time)
+		U.adjustPleasure(1 * delta_time)
 		if(P.aroused != AROUSAL_CANT)
 			P.aroused = AROUSAL_FULL //Vibroring keep penis erected.

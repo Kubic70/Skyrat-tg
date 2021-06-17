@@ -74,14 +74,11 @@
 // MAKE IT WORK
 /mob/living/carbon/human/wear_condom()
 	. = ..()
-	var/obj/item/clothing/sextoy/condom/C = src.get_item_by_slot(ITEM_SLOT_PENIS)
-	if(C.condom_state != "broken" && C == src.penis)
-		to_chat(world, "works works works")
-		return TRUE
 	if(.)
 		return TRUE
-	if(!(istype(get_item_by_slot(ITEM_SLOT_PENIS), /obj/item/clothing/sextoy/condom)))
-		return FALSE
+	if(penis != null && istype(penis, /obj/item/clothing/sextoy/condom))
+		return TRUE
+	return FALSE
 
 //////////////////////////////////////////////////////////////////////////////////
 /////////this shouldn't be put anywhere, get your dirty hands off!////////////////
@@ -715,7 +712,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	var/obj/item/clothing/sextoy/U = vagina
 
-	if(vagina && (vagina.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
+	if(wear_suit && (wear_suit.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
 		return
 
 	var/icon_file = vagina?.worn_icon
@@ -779,7 +776,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	var/obj/item/clothing/sextoy/U = anus
 
-	if(anus && (anus.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
+	if(wear_suit && (wear_suit.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
 		return
 
 	var/icon_file = anus?.worn_icon
@@ -843,7 +840,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	var/obj/item/clothing/sextoy/U = nipples
 
-	if(nipples && (nipples.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
+	if(wear_suit && (wear_suit.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
 		return
 
 	var/icon_file = nipples?.worn_icon
@@ -907,7 +904,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 
 	var/obj/item/clothing/sextoy/U = penis
 
-	if(penis && (penis.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
+	if(wear_suit && (wear_suit.flags_inv & HIDESEXTOY)) //you can add proper flags here if required
 		return
 
 	var/icon_file = penis?.worn_icon

@@ -555,28 +555,28 @@
 	var/obj/item/organ/genital/testicles/penis = owner.getorganslot(ORGAN_SLOT_PENIS)
 
 	if(H.client?.prefs.erp_pref == "Yes")
-		if(penis && balls && owner.wear_condom())
+		if(penis && balls && H.wear_condom())
 			if(prob(40))
-				owner.emote("moan")
+				H.emote("moan")
 			balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
-			var/obj/item/clothing/sextoy/condom/C = owner.get_item_by_slot(ITEM_SLOT_PENIS)
+			var/obj/item/clothing/sextoy/condom/C = H.get_item_by_slot(ITEM_SLOT_PENIS)
 			C.condom_use()
 			if(C.condom_state == "broken")
-				var/turf/T = get_turf(owner)
+				var/turf/T = get_turf(H)
 				new /obj/effect/decal/cleanable/cum(T)
 
-		if(balls && owner.is_bottomless() && !owner.wear_condom())
-			var/turf/T = get_turf(owner)
+		if(balls && H.is_bottomless() && !H.wear_condom())
+			var/turf/T = get_turf(H)
 			new /obj/effect/decal/cleanable/cum(T)
 			if(prob(40))
-				owner.emote("moan")
+				H.emote("moan")
 			balls.reagents.remove_all(balls.reagents.total_volume * 0.6)
 
-		if(vagina && owner.is_bottomless()) //Sry, futanari players, but condom's don't work like that for vagina, so yep.
-			var/turf/T = get_turf(owner)
+		if(vagina && H.is_bottomless()) //Sry, futanari players, but condom's don't work like that for vagina, so yep.
+			var/turf/T = get_turf(H)
 			new /obj/effect/decal/cleanable/femcum(T)
 			if(prob(40))
-				owner.emote("moan")
+				H.emote("moan")
 			vagina.reagents.remove_all()
 
 	return ..()

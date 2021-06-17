@@ -60,6 +60,22 @@
 	icon_state = "[initial(icon_state)]_[current_color]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
+/obj/item/clothing/sextoy/dildo/equipped(mob/user, slot)
+	.=..()
+	var/mob/living/carbon/human/H = user
+	if(src == H.anus || src == H.vagina)
+		START_PROCESSING(SSobj, src)
+
+/obj/item/clothing/sextoy/dildo/dropped(mob/user, slot)
+	.=..()
+	STOP_PROCESSING(SSobj, src)
+
+/obj/item/clothing/sextoy/dildo/process(delta_time)
+	var/mob/living/carbon/human/U = loc
+	if(U.arousal < 25)
+		U.adjustArousal(0.8 * delta_time)
+		U.adjustPleasure(0.8 * delta_time)
+
 /obj/item/clothing/sextoy/dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
 	if(!istype(M, /mob/living/carbon/human))
@@ -240,6 +256,28 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 	. = ..()
 	icon_state = "[initial(icon_state)]_[poly_size]"
 	inhand_icon_state = "[initial(icon_state)]_[poly_size]"
+
+/obj/item/clothing/sextoy/custom_dildo/equipped(mob/user, slot)
+	.=..()
+	var/mob/living/carbon/human/H = user
+	if(src == H.anus || src == H.vagina)
+		START_PROCESSING(SSobj, src)
+
+/obj/item/clothing/sextoy/custom_dildo/dropped(mob/user, slot)
+	.=..()
+	STOP_PROCESSING(SSobj, src)
+
+/obj/item/clothing/sextoy/custom_dildo/process(delta_time)
+	var/mob/living/carbon/human/U = loc
+	if(poly_size == "small" && U.arousal < 20)
+		U.adjustArousal(0.6 * delta_time)
+		U.adjustPleasure(0.6 * delta_time)
+	if(poly_size == "medium" && U.arousal < 25)
+		U.adjustArousal(0.8 * delta_time)
+		U.adjustPleasure(0.8 * delta_time)
+	if(poly_size == "big" && U.arousal < 30)
+		U.adjustArousal(1 * delta_time)
+		U.adjustPleasure(1 * delta_time)
 
 /obj/item/clothing/sextoy/custom_dildo/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
@@ -440,9 +478,6 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		START_PROCESSING(SSobj, src)
 
 	if(src == H.vagina)
-		worn_icon_state = "dildo_side"
-		update_icon_state()
-		update_icon()
 		V?.visibility_preference = GENITAL_NEVER_SHOW
 		W?.visibility_preference = GENITAL_NEVER_SHOW
 		P?.visibility_preference = GENITAL_NEVER_SHOW
@@ -450,9 +485,7 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 		H.update_body()
 
 	else if(src == H.anus)
-		worn_icon_state = ""
-		update_icon_state()
-		update_icon()
+		H.cut_overlay(H.overlays_standing[ANUS_LAYER])
 
 /obj/item/clothing/sextoy/double_dildo/dropped(mob/living/user)
 	.=..()
@@ -465,9 +498,9 @@ GLOBAL_LIST_INIT(dildo_colors, list(//mostly neon colors
 /obj/item/clothing/sextoy/double_dildo/process(delta_time)
 	var/mob/living/carbon/human/U = loc
 	//i tried using switch here, but it need static value, and u.arousal can't be it. So fuck switches. Reject it, embrace the IFs
-	if(U.arousal < 30)
-		U.adjustArousal(0.6 * delta_time)
-		U.adjustPleasure(0.6 * delta_time)
+	if(U.arousal < 25)
+		U.adjustArousal(0.8 * delta_time)
+		U.adjustPleasure(0.8 * delta_time)
 
 /obj/item/clothing/sextoy/double_dildo/dropped(mob/living/user)
 	. = ..()

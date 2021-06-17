@@ -12,7 +12,6 @@
 	var/suittoggled = FALSE
 	limb_integrity = 0 // disabled for most exo-suits
 
-
 ///obj/item/clothing/suit/worn_overlays(isinhands = FALSE) //ORIGINAL
 /obj/item/clothing/suit/worn_overlays(isinhands = FALSE, file2use, mutant_styles = NONE)
 	. = list()

@@ -149,6 +149,11 @@
 
 			if(I.flags_inv & HIDEJUMPSUIT)
 				update_inv_w_uniform()
+			if(I.flags_inv & HIDESEXTOY)
+				update_inv_anus()
+				update_inv_vagina()
+				update_inv_penis()
+				update_inv_nipples()
 			if(wear_suit.breakouttime) //when equipping a straightjacket
 				ADD_TRAIT(src, TRAIT_RESTRAINED, SUIT_TRAIT)
 				stop_pulling() //can't pull if restrained
@@ -246,6 +251,11 @@
 		if(!QDELETED(src)) //no need to update we're getting deleted anyway
 			if(I.flags_inv & HIDEJUMPSUIT)
 				update_inv_w_uniform()
+			if(I.flags_inv & HIDESEXTOY)
+				update_inv_anus()
+				update_inv_vagina()
+				update_inv_penis()
+				update_inv_nipples()
 			update_inv_wear_suit()
 	else if(I == w_uniform)
 		if(invdrop)

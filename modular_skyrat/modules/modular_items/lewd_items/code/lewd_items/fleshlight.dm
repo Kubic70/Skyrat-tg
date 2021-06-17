@@ -10,7 +10,6 @@
 	var/current_color = "pink"
 	var/color_changed = FALSE
 	var/static/list/fleshlight_designs
-	slot_flags = ITEM_SLOT_PENIS
 
 //to change color of fleshlight
 //create radial menu

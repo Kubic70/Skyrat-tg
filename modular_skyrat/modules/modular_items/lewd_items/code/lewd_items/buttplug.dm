@@ -95,16 +95,10 @@
 	if(src == H.anus || src == H.vagina)
 		START_PROCESSING(SSobj, src)
 
-	if(src == H.vagina)
-		worn_icon_state = ""
-		update_icon()
+	if(src == H.vagina && current_color == "tail")
+		H.cut_overlay(H.overlays_standing[VAGINA_LAYER])
 
-	if(src == H.anus)
-		worn_icon_state = "buttplug"
-		update_icon_state()
-		update_icon()
-
-/obj/item/clothing/sextoy/buttplug/dropped()
+/obj/item/clothing/sextoy/buttplug/dropped(mob/user, slot)
 	.=..()
 	STOP_PROCESSING(SSobj, src)
 

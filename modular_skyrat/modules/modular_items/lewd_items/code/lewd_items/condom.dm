@@ -87,7 +87,7 @@
 //When condom equipped we doing stuff
 /obj/item/clothing/sextoy/condom/equipped(mob/user, slot, initial)
 	. = ..()
-	if(slot == ITEM_SLOT_PENIS)
+	if(slot == ITEM_SLOT_PENIS && condom_state == "unused")
 		condom_state = "used"
 		update_icon_state()
 		update_icon()
