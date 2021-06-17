@@ -96,31 +96,27 @@
 
 /obj/item/clothing/sextoy/eggvib/equipped(mob/user, slot, initial)
 	. = ..()
-	if(slot == "vagina" || slot == "anus" || slot == "penis" || slot == "breasts")
+	var/mob/living/carbon/human/H = user
+	if(src == H.vagina || src == H.penis || src == H.anus || src == H.nipples)
 		START_PROCESSING(SSobj, src)
-		to_chat(world, "vibrating ON")
 
 /obj/item/clothing/sextoy/eggvib/dropped(mob/user, silent)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
-	to_chat(world, "vibrating OFF")
 
 /obj/item/clothing/sextoy/eggvib/process(delta_time)
 	. = ..()
 	var/mob/living/U = loc
-	var/bzz = 0
 	if(toy_on == TRUE)
-		switch(vibration_mode)
-			if("low")
-				bzz = 0.1
-			if("medium")
-				bzz = 0.3
-			if("hard")
-				bzz = 0.5
-		U.adjustArousal(bzz * delta_time)
-		U.adjustPleasure(bzz * delta_time)
-	to_chat(world, "vibrating...[bzz]")
-
+		if(vibration_mode == "low")
+			U.adjustArousal(0.5 * delta_time)
+			U.adjustPleasure(0.5 * delta_time)
+		if(vibration_mode == "medium")
+			U.adjustArousal(0.6 * delta_time)
+			U.adjustPleasure(0.6 * delta_time)
+		if(vibration_mode == "hard")
+			U.adjustArousal(0.7 * delta_time)
+			U.adjustPleasure(0.7 * delta_time)
 
 //////////////////////////
 ///Signal vibrating egg///

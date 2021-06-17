@@ -3,7 +3,9 @@
 	desc = "Not sure where is magic in this thing, but if you press button - it makes funny vibrations"
 	icon_state = "magicwand"
 	inhand_icon_state = "magicwand"
+	worn_icon_state = "magicwand"
 	icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/obj/lewd_items/lewd_items.dmi'
+	worn_icon = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_items/lewd_items.dmi'
 	lefthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_left.dmi'
 	righthand_file = 'modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_inhands/lewd_inhand_right.dmi'
 	var/wand_on = FALSE
@@ -28,6 +30,29 @@
 /obj/item/clothing/sextoy/magic_wand/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[vibration_mode]_[wand_on? "on" : "off"]"
+
+/obj/item/clothing/sextoy/magic_wand/equipped(mob/user, slot)
+	.=..()
+	var/mob/living/carbon/human/H = user
+	if(src == H.penis || src == H.vagina)
+		START_PROCESSING(SSobj, src)
+
+/obj/item/clothing/sextoy/magic_wand/dropped(mob/user, slot)
+	.=..()
+	STOP_PROCESSING(SSobj, src)
+
+/obj/item/clothing/sextoy/magic_wand/process(delta_time)
+	var/mob/living/carbon/human/U = loc
+	//i tried using switch here, but it need static value, and u.arousal can't be it. So fuck switches. Reject it, embrace the IFs
+	if(vibration_mode == "low" && U.arousal < 30)
+		U.adjustArousal(0.6 * delta_time)
+		U.adjustPleasure(0.7 * delta_time)
+	if(vibration_mode == "medium" && U.arousal < 60)
+		U.adjustArousal(0.8 * delta_time)
+		U.adjustPleasure(0.8 * delta_time)
+	if(vibration_mode == "hard")
+		U.adjustArousal(1 * delta_time)
+		U.adjustPleasure(1 * delta_time)
 
 /obj/item/clothing/sextoy/magic_wand/attack(mob/living/carbon/human/M, mob/living/carbon/human/user)
 	. = ..()
