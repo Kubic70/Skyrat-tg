@@ -84,7 +84,8 @@
 					/obj/item/bdsm_bed_kit = 3,
 					/obj/item/polepack = 3,
 					/obj/item/x_stand_kit = 3,
-					/obj/item/milking_machine/constructionkit = 2)
+					/obj/item/milking_machine/constructionkit/teal = 1,
+					/obj/item/milking_machine/constructionkit/pink = 1) //we was too tired to make normal code, fix it plz if you're not lazy
 
 	contraband = list(/obj/item/clothing/glasses/hypno = 4,
 					/obj/item/electropack/shockcollar = 4,
@@ -119,8 +120,8 @@
 				default_price = 0
 				extra_price = 0
 			if(FALSE)
-				default_price = PAYCHECK_ASSISTANT * 2
-				extra_price = PAYCHECK_COMMAND * 0.5
+				default_price = PAYCHECK_ASSISTANT
+				extra_price = PAYCHECK_COMMAND * 0.3
 	else
 		return
 

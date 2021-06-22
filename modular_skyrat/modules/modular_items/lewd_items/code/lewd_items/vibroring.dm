@@ -21,12 +21,16 @@
 		"teal" = image(icon = src.icon, icon_state = "vibroring_teal_off"))
 
 /obj/item/clothing/sextoy/vibroring/AltClick(mob/user, obj/item/I)
+	var/mob/living/carbon/human/H = user
 	if(color_changed == TRUE)
 		toy_on = !toy_on
 		to_chat(user, "<span class='notice'>You turned vibroring [toy_on? "on. Brrrr..." : "off."]</span>")
 		playsound(user, toy_on ? 'sound/weapons/magin.ogg' : 'sound/weapons/magout.ogg', 40, TRUE)
 		update_icon_state()
 		update_icon()
+		if(src == H.penis)
+			START_PROCESSING(SSobj, src)
+
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -71,7 +75,6 @@
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/sextoy/vibroring/process(delta_time)
-	. = ..()
 	var/mob/living/carbon/human/U = loc
 	var/obj/item/organ/genital/testicles/P = U.getorganslot(ORGAN_SLOT_PENIS)
 	if(toy_on == TRUE)

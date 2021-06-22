@@ -27,12 +27,16 @@
 		"teal" = image(icon = src.icon, icon_state = "eggvib_teal_low_on"))
 
 /obj/item/clothing/sextoy/eggvib/AltClick(mob/user, obj/item/I)
+	var/mob/living/carbon/human/H = user
 	if(color_changed == TRUE)
 		toy_on = !toy_on
 		to_chat(user, "<span class='notice'>You switched remote controller [toy_on? "on. Brrrr..." : "off."]</span>")
 		playsound(user, toy_on ? 'sound/weapons/magin.ogg' : 'sound/weapons/magout.ogg', 40, TRUE)
 		update_icon_state()
 		update_icon()
+		if(src == H.vagina || src == H.penis || src == H.anus || src == H.nipples)
+			START_PROCESSING(SSobj, src)
+
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -105,7 +109,6 @@
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/clothing/sextoy/eggvib/process(delta_time)
-	. = ..()
 	var/mob/living/U = loc
 	if(toy_on == TRUE)
 		if(vibration_mode == "low")

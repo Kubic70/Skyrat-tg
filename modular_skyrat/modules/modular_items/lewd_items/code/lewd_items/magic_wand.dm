@@ -1,3 +1,5 @@
+//MAKE IT WORK
+
 /obj/item/clothing/sextoy/magic_wand
 	name = "magic wand"
 	desc = "Not sure where is magic in this thing, but if you press button - it makes funny vibrations"
@@ -12,9 +14,16 @@
 	var/vibration_mode = "low"
 	var/list/modes = list("low" = "medium", "medium" = "hard", "hard" = "low")
 	var/mode = "low"
+	var/mutable_appearance/magicwand_overlay
 	w_class = WEIGHT_CLASS_TINY
 	slot_flags = ITEM_SLOT_VAGINA|ITEM_SLOT_PENIS
-	
+
+//some stuff for making overlay of this item. Why? Because.
+/obj/item/clothing/sextoy/magic_wand/worn_overlays(isinhands = FALSE)
+	. = list()
+	if(!isinhands)
+		. += magicwand_overlay
+
 /obj/item/clothing/sextoy/magic_wand/AltClick(mob/user)
     wand_on = !wand_on
     to_chat(user, "<span class='notice'>You turn the vibrator [wand_on? "on. Brrrr..." : "off."]</span>")
@@ -24,8 +33,12 @@
 
 /obj/item/clothing/sextoy/magic_wand/Initialize()
 	. = ..()
+
+	magicwand_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_items/lewd_items.dmi')
+
 	update_icon_state()
 	update_icon()
+	update_appearance()
 
 /obj/item/clothing/sextoy/magic_wand/update_icon_state()
 	. = ..()
@@ -36,7 +49,6 @@
 	var/mob/living/carbon/human/H = user
 	if(src == H.penis || src == H.vagina)
 		START_PROCESSING(SSobj, src)
-	//Im using overlay 'cause it should appear above genitals, but doesn't hide it. I dumb, ik
 
 /obj/item/clothing/sextoy/magic_wand/dropped(mob/user, slot)
 	.=..()

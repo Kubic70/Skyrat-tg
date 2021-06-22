@@ -98,6 +98,10 @@
 	if(src == H.vagina && current_color == "tail")
 		H.cut_overlay(H.overlays_standing[VAGINA_LAYER])
 
+	// I did this shit with taur icons on purpose because fuck skyrat's system with taurs, it's dumb and maybe dumber than me I CANT DO THIS ANYMORE WHY THIS OVERLAPPING WITH MY SPRITES AAAAAARGH
+	if(H.dna.species.mutant_bodyparts["taur"] && src == H.anus)
+		H.cut_overlay(H.overlays_standing[ANUS_LAYER])
+
 /obj/item/clothing/sextoy/buttplug/dropped(mob/user, slot)
 	.=..()
 	STOP_PROCESSING(SSobj, src)

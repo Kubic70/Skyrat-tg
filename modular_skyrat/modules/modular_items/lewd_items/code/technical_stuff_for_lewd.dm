@@ -71,7 +71,6 @@
 /mob/proc/wear_condom()
 	return FALSE
 
-// MAKE IT WORK
 /mob/living/carbon/human/wear_condom()
 	. = ..()
 	if(.)
@@ -529,7 +528,8 @@ GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/dildo,
 	/obj/item/clothing/sextoy/buttplug,
 	/obj/item/clothing/sextoy/custom_dildo,
-	/obj/item/clothing/sextoy/double_dildo
+	/obj/item/clothing/sextoy/double_dildo,
+	/obj/item/clothing/sextoy/magic_wand
 	)))
 
 // Allowed items for anus slot
@@ -555,7 +555,8 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/eggvib,
 	/obj/item/electropack/signalvib,
 	/obj/item/clothing/sextoy/condom,
-	/obj/item/clothing/sextoy/magic_wand
+	/obj/item/clothing/sextoy/magic_wand,
+	/obj/item/clothing/sextoy/vibroring
 	)))
 
 // Strippable Defines
@@ -699,7 +700,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 			var/atom/movable/screen/inventory/inv = H.inv_slots[TOBITSHIFT(ITEM_SLOT_VAGINA) + 1]
 			inv.update_appearance()
 
-			if(usr.hud_used.inventory_shown && src.hud_used)
+			if(usr?.hud_used.inventory_shown && src.hud_used)
 				vagina?.screen_loc = ui_vagina
 			else
 				vagina?.screen_loc = ui_vagina_down
@@ -719,7 +720,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
 	if(dna.species.mutant_bodyparts["taur"])
 		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		if(vagina.mutant_variants & S.taur_mode)
+		if(vagina?.mutant_variants & S.taur_mode)
 			applied_style = S.taur_mode
 		else if(vagina.mutant_variants & S.alt_taur_mode)
 			applied_style = S.alt_taur_mode
@@ -783,7 +784,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
 	if(dna.species.mutant_bodyparts["taur"])
 		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		if(anus.mutant_variants & S.taur_mode)
+		if(anus?.mutant_variants & S.taur_mode)
 			applied_style = S.taur_mode
 		else if(anus.mutant_variants & S.alt_taur_mode)
 			applied_style = S.alt_taur_mode
@@ -847,7 +848,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
 	if(dna.species.mutant_bodyparts["taur"])
 		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		if(nipples.mutant_variants & S.taur_mode)
+		if(nipples?.mutant_variants & S.taur_mode)
 			applied_style = S.taur_mode
 		else if(nipples.mutant_variants & S.alt_taur_mode)
 			applied_style = S.alt_taur_mode
@@ -911,7 +912,7 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
 	if(dna.species.mutant_bodyparts["taur"])
 		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		if(penis.mutant_variants & S.taur_mode)
+		if(penis?.mutant_variants & S.taur_mode)
 			applied_style = S.taur_mode
 		else if(penis.mutant_variants & S.alt_taur_mode)
 			applied_style = S.alt_taur_mode
