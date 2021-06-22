@@ -35,6 +35,7 @@
 	. = ..()
 
 	magicwand_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_items/lewd_items.dmi')
+	magicwand_overlay.icon_state = "magicwand"
 
 	update_icon_state()
 	update_icon()
@@ -47,8 +48,9 @@
 /obj/item/clothing/sextoy/magic_wand/equipped(mob/user, slot)
 	.=..()
 	var/mob/living/carbon/human/H = user
-	if(src == H.penis || src == H.vagina)
-		START_PROCESSING(SSobj, src)
+	if(wand_on == TRUE)
+		if(src == H.penis || src == H.vagina)
+			START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/sextoy/magic_wand/dropped(mob/user, slot)
 	.=..()
