@@ -124,8 +124,8 @@
 //////////////////////////
 ///Signal vibrating egg///
 //////////////////////////
-
-/obj/item/electropack/signalvib
+//new
+/obj/item/clothing/sextoy/signalvib
 	name = "signal vibrating egg"
 	desc = "Sex toy with remote control capability. Use signaller to turn it on."
 	icon_state = "signalvib"
@@ -146,7 +146,57 @@
 	var/random = TRUE
 	var/freq_in_name = TRUE
 
-/obj/item/electropack/signalvib/receive_signal(datum/signal/signal)
+	var/on = TRUE
+	var/code = 2
+	var/frequency = FREQ_ELECTROPACK
+	var/shock_cooldown = FALSE
+
+//signalling stuff
+
+/obj/item/clothing/sextoy/signalvib/Destroy()
+	SSradio.remove_object(src, frequency)
+	return ..()
+
+//ATTACK HAND IGNORING PARENT RETURN VALUE
+/obj/item/clothing/sextoy/signalvib/attack_hand(mob/user, list/modifiers)
+	if(iscarbon(user))
+		var/mob/living/carbon/C = user
+		if(src == C.back)
+			to_chat(user, "<span class='warning'>You need help taking this off!</span>")
+			return
+	return ..()
+
+/obj/item/clothing/sextoy/signalvib/attackby(obj/item/W, mob/user, params)
+	if(istype(W, /obj/item/clothing/head/helmet))
+		var/obj/item/assembly/shock_kit/A = new /obj/item/assembly/shock_kit(user)
+		A.icon = 'icons/obj/assemblies.dmi'
+
+		if(!user.transferItemToLoc(W, A))
+			to_chat(user, "<span class='warning'>[W] is stuck to your hand, you cannot attach it to [src]!</span>")
+			return
+		W.master = A
+		A.helmet_part = W
+
+		user.transferItemToLoc(src, A, TRUE)
+		master = A
+		A.electropack_part = src
+
+		user.put_in_hands(A)
+		A.add_fingerprint(user)
+	else
+		return ..()
+
+/obj/item/clothing/sextoy/signalvib/proc/set_frequency(new_frequency)
+	SSradio.remove_object(src, frequency)
+	frequency = new_frequency
+	SSradio.add_object(src, frequency, RADIO_SIGNALER)
+
+/obj/item/clothing/sextoy/signalvib/ui_state(mob/user)
+	return GLOB.hands_state
+
+//arousal stuff
+
+/obj/item/clothing/sextoy/signalvib/receive_signal(datum/signal/signal)
 	if(!signal || signal.data["code"] != code)
 		return
 
@@ -161,12 +211,12 @@
 		master.receive_signal()
 
 //create radial menu
-/obj/item/electropack/signalvib/proc/populate_signalvib_designs()
+/obj/item/clothing/sextoy/signalvib/proc/populate_signalvib_designs()
 	signalvib_designs = list(
 		"pink" = image(icon = src.icon, icon_state = "signalvib_pink_low_on"),
 		"teal" = image(icon = src.icon, icon_state = "signalvib_teal_low_on"))
 
-/obj/item/electropack/signalvib/AltClick(mob/user, obj/item/I)
+/obj/item/clothing/sextoy/signalvib/AltClick(mob/user, obj/item/I)
 	if(color_changed == FALSE)
 		. = ..()
 		if(.)
@@ -195,14 +245,15 @@
 		return
 
 //to check if we can change egg's model
-/obj/item/electropack/signalvib/proc/check_menu(mob/living/user)
+/obj/item/clothing/sextoy/signalvib/proc/check_menu(mob/living/user)
 	if(!istype(user))
 		return FALSE
 	if(user.incapacitated())
 		return FALSE
 	return TRUE
 
-/obj/item/electropack/signalvib/Initialize()
+/obj/item/clothing/sextoy/signalvib/Initialize()
+	set_frequency(frequency)
 	update_icon_state()
 	update_icon()
 	if(!length(signalvib_designs))
@@ -217,16 +268,16 @@
 		name = initial(name) + " - freq: [frequency/10] code: [code]"
 	.=..()
 
-/obj/item/electropack/signalvib/ui_state(mob/user)
+/obj/item/clothing/sextoy/signalvib/ui_state(mob/user)
 	return GLOB.hands_state
 
-/obj/item/electropack/signalvib/ui_interact(mob/user, datum/tgui/ui)
+/obj/item/clothing/sextoy/signalvib/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Signalvib", name)
 		ui.open()
 
-/obj/item/electropack/signalvib/ui_data(mob/user)
+/obj/item/clothing/sextoy/signalvib/ui_data(mob/user)
 	var/list/data = list()
 	data["toystate"] = toy_on
 	data["frequency"] = frequency
@@ -235,7 +286,7 @@
 	data["maxFrequency"] = MAX_FREE_FREQ
 	return data
 
-/obj/item/electropack/signalvib/ui_act(action, params)
+/obj/item/clothing/sextoy/signalvib/ui_act(action, params)
 	. = ..()
 	if(.)
 		return
@@ -266,12 +317,12 @@
 				code = initial(code)
 				. = TRUE
 
-/obj/item/electropack/signalvib/update_icon_state()
+/obj/item/clothing/sextoy/signalvib/update_icon_state()
 	. = ..()
 	icon_state = "[initial(icon_state)]_[current_color]_[vibration_mode]_[toy_on? "on" : "off"]"
 	inhand_icon_state = "[initial(icon_state)]_[current_color]"
 
-/obj/item/electropack/signalvib/proc/toggle_mode()
+/obj/item/clothing/sextoy/signalvib/proc/toggle_mode()
 	mode = modes[mode]
 	switch(mode)
 		if("low")
@@ -285,30 +336,27 @@
 			playsound(loc, 'sound/weapons/magin.ogg', 20, TRUE)
 
 //Processing
-/obj/item/electropack/signalvib/equipped(mob/user, slot, initial)
+/obj/item/clothing/sextoy/signalvib/equipped(mob/user, slot, initial)
 	. = ..()
 	var/mob/living/carbon/human/U = src.loc
 	if(src == U.penis || src == U.vagina || src == U.nipples || src == U.anus)
 		START_PROCESSING(SSobj, src)
 		to_chat(world, "vibrating ON")
 
-/obj/item/electropack/signalvib/dropped(mob/user, silent)
+/obj/item/clothing/sextoy/signalvib/dropped(mob/user, silent)
 	. = ..()
 	STOP_PROCESSING(SSobj, src)
 	to_chat(world, "vibrating OFF")
 
-/obj/item/electropack/signalvib/process(delta_time)
-	. = ..()
+/obj/item/clothing/sextoy/signalvib/process(delta_time)
 	var/mob/living/U = loc
-	var/bzz = 0
 	if(toy_on == TRUE)
-		switch(vibration_mode)
-			if("low")
-				bzz = 0.1
-			if("medium")
-				bzz = 0.3
-			if("hard")
-				bzz = 0.5
-		U.adjustArousal(bzz * delta_time)
-		U.adjustPleasure(bzz * delta_time)
-		to_chat(world, "vibrating...[bzz]")
+		if(vibration_mode == "low")
+			U.adjustArousal(0.5 * delta_time)
+			U.adjustPleasure(0.5 * delta_time)
+		if(vibration_mode == "medium")
+			U.adjustArousal(0.6 * delta_time)
+			U.adjustPleasure(0.6 * delta_time)
+		if(vibration_mode == "hard")
+			U.adjustArousal(0.7 * delta_time)
+			U.adjustPleasure(0.7 * delta_time)

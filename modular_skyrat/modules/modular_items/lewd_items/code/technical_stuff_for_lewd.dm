@@ -523,7 +523,7 @@
 // Allowed items for vagina slot
 GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/eggvib,
-	/obj/item/electropack/signalvib,
+	/obj/item/clothing/sextoy/signalvib,
 	/obj/item/clothing/sextoy/vibrator,
 	/obj/item/clothing/sextoy/dildo,
 	/obj/item/clothing/sextoy/buttplug,
@@ -535,7 +535,7 @@ GLOBAL_LIST_INIT(vagina_items_allowed, typecacheof(list(
 // Allowed items for anus slot
 GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/eggvib,
-	/obj/item/electropack/signalvib,
+	/obj/item/clothing/sextoy/signalvib,
 	/obj/item/clothing/sextoy/vibrator,
 	/obj/item/clothing/sextoy/buttplug,
 	/obj/item/clothing/sextoy/dildo,
@@ -546,14 +546,14 @@ GLOBAL_LIST_INIT(anus_items_allowed, typecacheof(list(
 // Allowed items for nipples slot
 GLOBAL_LIST_INIT(nipples_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/eggvib,
-	/obj/item/electropack/signalvib,
+	/obj/item/clothing/sextoy/signalvib,
 	/obj/item/clothing/sextoy/nipple_clamps
 	)))
 
 // Allowed items for penis slot
 GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 	/obj/item/clothing/sextoy/eggvib,
-	/obj/item/electropack/signalvib,
+	/obj/item/clothing/sextoy/signalvib,
 	/obj/item/clothing/sextoy/condom,
 	/obj/item/clothing/sextoy/magic_wand,
 	/obj/item/clothing/sextoy/vibroring
@@ -717,35 +717,10 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		return
 
 	var/icon_file = vagina?.worn_icon
-	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
-	if(dna.species.mutant_bodyparts["taur"])
-		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		if(vagina?.mutant_variants & S.taur_mode)
-			applied_style = S.taur_mode
-		else if(vagina.mutant_variants & S.alt_taur_mode)
-			applied_style = S.alt_taur_mode
-	if(!applied_style)
-		if((DIGITIGRADE in dna.species.species_traits) && (vagina?.mutant_variants & STYLE_DIGITIGRADE))
-			applied_style = STYLE_DIGITIGRADE
-
-	var/x_override
-	switch(applied_style)
-		if(STYLE_DIGITIGRADE)
-			icon_file = U.worn_icon_digi || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_digi.dmi'
-		if(STYLE_TAUR_SNAKE)
-			icon_file = U.worn_icon_taur_snake || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_snake.dmi'
-		if(STYLE_TAUR_HOOF)
-			icon_file = U.worn_icon_taur_hoof || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_hoof.dmi'
-		if(STYLE_TAUR_PAW)
-			icon_file = U.worn_icon_taur_paw || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_paw.dmi'
-
-	if(applied_style & STYLE_TAUR_ALL)
-		x_override = 64
-
 	var/mutable_appearance/vagina_overlay
 
 	if(!vagina_overlay)
-		vagina_overlay = U?.build_worn_icon(default_layer = VAGINA_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+		vagina_overlay = U?.build_worn_icon(default_layer = VAGINA_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
 		vagina_overlay?.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
@@ -781,35 +756,10 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		return
 
 	var/icon_file = anus?.worn_icon
-	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
-	if(dna.species.mutant_bodyparts["taur"])
-		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		if(anus?.mutant_variants & S.taur_mode)
-			applied_style = S.taur_mode
-		else if(anus.mutant_variants & S.alt_taur_mode)
-			applied_style = S.alt_taur_mode
-	if(!applied_style)
-		if((DIGITIGRADE in dna.species.species_traits) && (anus?.mutant_variants & STYLE_DIGITIGRADE))
-			applied_style = STYLE_DIGITIGRADE
-
-	var/x_override
-	switch(applied_style)
-		if(STYLE_DIGITIGRADE)
-			icon_file = U.worn_icon_digi || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_digi.dmi'
-		if(STYLE_TAUR_SNAKE)
-			icon_file = U.worn_icon_taur_snake || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_snake.dmi'
-		if(STYLE_TAUR_HOOF)
-			icon_file = U.worn_icon_taur_hoof || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_hoof.dmi'
-		if(STYLE_TAUR_PAW)
-			icon_file = U.worn_icon_taur_paw || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_paw.dmi'
-
-	if(applied_style & STYLE_TAUR_ALL)
-		x_override = 64
-
 	var/mutable_appearance/anus_overlay
 
 	if(!anus_overlay)
-		anus_overlay = U?.build_worn_icon(default_layer = ANUS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+		anus_overlay = U?.build_worn_icon(default_layer = ANUS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
 		anus_overlay?.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
@@ -845,35 +795,10 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		return
 
 	var/icon_file = nipples?.worn_icon
-	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
-	if(dna.species.mutant_bodyparts["taur"])
-		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		if(nipples?.mutant_variants & S.taur_mode)
-			applied_style = S.taur_mode
-		else if(nipples.mutant_variants & S.alt_taur_mode)
-			applied_style = S.alt_taur_mode
-	if(!applied_style)
-		if((DIGITIGRADE in dna.species.species_traits) && (nipples?.mutant_variants & STYLE_DIGITIGRADE))
-			applied_style = STYLE_DIGITIGRADE
-
-	var/x_override
-	switch(applied_style)
-		if(STYLE_DIGITIGRADE)
-			icon_file = U.worn_icon_digi || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_digi.dmi'
-		if(STYLE_TAUR_SNAKE)
-			icon_file = U.worn_icon_taur_snake || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_snake.dmi'
-		if(STYLE_TAUR_HOOF)
-			icon_file = U.worn_icon_taur_hoof || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_hoof.dmi'
-		if(STYLE_TAUR_PAW)
-			icon_file = U.worn_icon_taur_paw || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_paw.dmi'
-
-	if(applied_style & STYLE_TAUR_ALL)
-		x_override = 64
-
 	var/mutable_appearance/nipples_overlay
 
 	if(!nipples_overlay)
-		nipples_overlay = U?.build_worn_icon(default_layer = NIPPLES_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+		nipples_overlay = U?.build_worn_icon(default_layer = NIPPLES_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
 		nipples_overlay?.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]
@@ -909,35 +834,10 @@ GLOBAL_LIST_INIT(peins_items_allowed, typecacheof(list(
 		return
 
 	var/icon_file = penis?.worn_icon
-	var/applied_style = NONE //keeping it just in case. Taurs thing making everything 10x times harder
-	if(dna.species.mutant_bodyparts["taur"])
-		var/datum/sprite_accessory/taur/S = GLOB.sprite_accessories["taur"][dna.species.mutant_bodyparts["taur"][MUTANT_INDEX_NAME]]
-		if(penis?.mutant_variants & S.taur_mode)
-			applied_style = S.taur_mode
-		else if(penis.mutant_variants & S.alt_taur_mode)
-			applied_style = S.alt_taur_mode
-	if(!applied_style)
-		if((DIGITIGRADE in dna.species.species_traits) && (penis?.mutant_variants & STYLE_DIGITIGRADE))
-			applied_style = STYLE_DIGITIGRADE
-
-	var/x_override
-	switch(applied_style)
-		if(STYLE_DIGITIGRADE)
-			icon_file = U.worn_icon_digi || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_digi.dmi'
-		if(STYLE_TAUR_SNAKE)
-			icon_file = U.worn_icon_taur_snake || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_snake.dmi'
-		if(STYLE_TAUR_HOOF)
-			icon_file = U.worn_icon_taur_hoof || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_hoof.dmi'
-		if(STYLE_TAUR_PAW)
-			icon_file = U.worn_icon_taur_paw || 'modular_skyrat/master_files/icons/mob/clothing/under/uniform_taur_paw.dmi'
-
-	if(applied_style & STYLE_TAUR_ALL)
-		x_override = 64
-
 	var/mutable_appearance/penis_overlay
 
 	if(!penis_overlay)
-		penis_overlay = U?.build_worn_icon(default_layer = PENIS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file, override_x_center = x_override, mutant_styles = applied_style)
+		penis_overlay = U?.build_worn_icon(default_layer = PENIS_LAYER, default_icon_file = 'icons/mob/clothing/under/default.dmi', isinhands = FALSE, override_icon = icon_file)
 
 	if(OFFSET_UNIFORM in dna.species.offset_features)
 		penis_overlay?.pixel_x += dna.species.offset_features[OFFSET_UNIFORM][1]

@@ -13,7 +13,7 @@
 
 	//STUFF SOLD HERE//
 	products = list(//Sex toys
-					/obj/item/electropack/signalvib = 8,
+					/obj/item/clothing/sextoy/signalvib = 8,
 					/obj/item/clothing/sextoy/buttplug = 6,
 					/obj/item/clothing/sextoy/nipple_clamps = 4,
 					/obj/item/clothing/sextoy/eggvib = 8,
