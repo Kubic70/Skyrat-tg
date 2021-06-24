@@ -181,11 +181,8 @@
 			H.add_overlay(H.overlays_standing[BODY_FRONT_LAYER])
 			H.add_overlay(H.overlays_standing[HEAD_LAYER])
 			H.add_overlay(H.overlays_standing[HAIR_LAYER])
-
-			// H.bodyparts.Add(legl)
-			// H.bodyparts.Add(legr)
-
 			H.add_overlay(H.overlays_standing[SHOES_LAYER])
+
 			H.update_inv_shoes()
 			H.regenerate_icons()
 	STOP_PROCESSING(SSobj, src)
@@ -201,6 +198,6 @@
 		time_to_sound_left -= delta_time
 
 //
-/obj/item/clothing/suit/straight_jacket/kinky_sleepbag/doStrip(mob/stripper, mob/owner)
-	. = ..()
-	owner.update_inv_hands()
+// /obj/item/clothing/suit/straight_jacket/kinky_sleepbag/doStrip(mob/stripper, mob/owner)
+//	. = ..()
+//	owner.update_inv_hands()
