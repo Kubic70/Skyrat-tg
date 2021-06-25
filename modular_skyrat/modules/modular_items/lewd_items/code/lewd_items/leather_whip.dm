@@ -23,6 +23,8 @@
 	var/static/list/whip_forms
 	var/static/list/whip_types
 
+	var/mutable_appearance/whip_overlay
+
 	//Changing pain mode
 	var/list/modes = list("hard" = "weak", "weak" = "hard")
 	var/mode = "hard"
@@ -36,6 +38,11 @@
 	moans = list("Mmmph...", "Hmmphh", "Mmmfhg", "Gmmmh...")
 	moans_alt = list("Mhgm...", "Hmmmp!...", "GMmmhp!")
 	moans_alt_probability = 5
+
+/obj/item/clothing/mask/leatherwhip/worn_overlays(isinhands = FALSE)
+	. = list()
+	if(!isinhands)
+		. += whip_overlay
 
 //No speaking
 /obj/item/clothing/mask/leatherwhip/handle_speech(datum/source, list/speech_args)
@@ -67,6 +74,17 @@
 /obj/item/clothing/mask/leatherwhip/ComponentInitialize()
 	. = ..()
 	AddElement(/datum/element/update_icon_updates_onmob)
+
+/obj/item/clothing/mask/leatherwhip/equipped(mob/M, slot)
+	. = ..()
+
+	update_icon_state()
+
+	whip_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_masks.dmi', "[initial(icon_state)]_[current_whip_form]", ABOVE_MOB_LAYER + 0.1) //two arguments. Yes, all mob layer. Fuck person who was working on genitals, they're working wrong.ABOVE_NORMAL_TURF_LAYER
+
+	update_icon()
+	update_appearance()
+	update_overlays()
 
 //to change color
 /obj/item/clothing/mask/leatherwhip/AltClick(mob/user, obj/item/I)
@@ -115,6 +133,14 @@
 		populate_whip_forms()
 	if(!length(whip_types))
 		populate_whip_types()
+
+	update_icon_state()
+
+	whip_overlay = mutable_appearance('modular_skyrat/modules/modular_items/lewd_items/icons/mob/lewd_clothing/lewd_masks.dmi', "[initial(icon_state)]_[current_whip_form]", ABOVE_MOB_LAYER + 0.1) //two arguments. Yes, all mob layer. Fuck person who was working on genitals, they're working wrong.ABOVE_NORMAL_TURF_LAYER
+
+	update_icon()
+	update_appearance()
+	update_overlays()
 
 /obj/item/clothing/mask/leatherwhip/update_icon_state()
 	. = ..()

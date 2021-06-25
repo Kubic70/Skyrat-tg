@@ -124,7 +124,6 @@
 //////////////////////////
 ///Signal vibrating egg///
 //////////////////////////
-//new
 /obj/item/clothing/sextoy/signalvib
 	name = "signal vibrating egg"
 	desc = "Sex toy with remote control capability. Use signaller to turn it on."
