@@ -40,6 +40,7 @@
 	moans_alt_probability = 5
 
 /obj/item/clothing/mask/leatherwhip/worn_overlays(isinhands = FALSE)
+	.=..()
 	. = list()
 	if(!isinhands)
 		. += whip_overlay

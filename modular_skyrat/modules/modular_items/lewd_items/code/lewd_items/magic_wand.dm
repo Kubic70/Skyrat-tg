@@ -20,6 +20,7 @@
 
 //some stuff for making overlay of this item. Why? Because.
 /obj/item/clothing/sextoy/magic_wand/worn_overlays(isinhands = FALSE)
+	.=..()
 	. = list()
 	if(!isinhands)
 		. += magicwand_overlay
