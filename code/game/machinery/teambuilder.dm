@@ -17,10 +17,14 @@
 /obj/machinery/teambuilder/Initialize()
 	. = ..()
 	add_filter("teambuilder", 2, list("type" = "outline", "color" = team_color, "size" = 2))
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = .proc/on_entered,
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/teambuilder/examine_more(mob/user)
 	. = ..()
-	. += "<span class='notice'>You see a hastily written note on the side, it says '1215-1217, PICK A SIDE'.</span>"
+	. += span_notice("You see a hastily written note on the side, it says '1215-1217, PICK A SIDE'.")
 
 /obj/machinery/teambuilder/Crossed(atom/movable/AM, oldloc)
 	. = ..()

@@ -272,6 +272,8 @@
 			return "[jobtitle] is unavailable."
 		if(JOB_UNAVAILABLE_BANNED)
 			return "You are currently banned from [jobtitle]."
+		if(JOB_NOT_VETERAN)
+			return "You need to be veteran to join as [jobtitle]."
 		if(JOB_UNAVAILABLE_PLAYTIME)
 			return "You do not have enough relevant playtime for [jobtitle]."
 		if(JOB_UNAVAILABLE_ACCOUNTAGE)
@@ -323,6 +325,8 @@
 		return JOB_UNAVAILABLE_SPECIES
 	if(!job.has_required_languages(client.prefs))
 		return JOB_UNAVAILABLE_LANGUAGE
+	if(job.veteran_only && !is_veteran_player(client))
+		return JOB_NOT_VETERAN
 	return JOB_AVAILABLE
 
 /mob/dead/new_player/proc/AttemptLateSpawn(rank)
@@ -483,7 +487,6 @@
 	var/mob/living/carbon/human/H = new(loc)
 
 	var/frn = CONFIG_GET(flag/force_random_names)
-	var/admin_anon_names = SSticker.anonymousnames
 	if(!frn)
 		frn = is_banned_from(ckey, "Appearance")
 		if(QDELETED(src))
@@ -498,9 +501,9 @@
 
 	client.prefs.copy_to(H, antagonist = is_antag, is_latejoiner = transfer_after)
 
-	if(admin_anon_names)//overrides random name because it achieves the same effect and is an admin enabled event tool
+	if(GLOB.current_anonymous_theme)//overrides random name because it achieves the same effect and is an admin enabled event tool
 		randomize_human(H)
-		H.fully_replace_character_name(null, SSticker.anonymousnames.anonymous_name(H))
+		H.fully_replace_character_name(null, GLOB.current_anonymous_theme.anonymous_name(H))
 
 	H.dna.update_dna_identity()
 	if(mind)
@@ -509,7 +512,7 @@
 		mind.active = FALSE //we wish to transfer the key manually
 		mind.original_character_slot_index = client.prefs.default_slot
 		mind.transfer_to(H) //won't transfer key since the mind is not active
-		mind.original_character = H
+		mind.set_original_character(H)
 
 	H.name = real_name
 	client.init_verbs()

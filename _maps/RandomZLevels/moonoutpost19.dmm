@@ -563,7 +563,7 @@
 	},
 /area/awaymission/moonoutpost19/syndicate)
 "by" = (
-/obj/structure/chair/stool,
+/obj/structure/chair/stool/directional/west,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -589,10 +589,8 @@
 	},
 /area/awaymission/moonoutpost19/syndicate)
 "bA" = (
-/obj/machinery/light{
-	dir = 8
-	},
-/obj/structure/chair/stool,
+/obj/machinery/light/directional/west,
+/obj/structure/chair/stool/directional/south,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -661,7 +659,7 @@
 	},
 /area/awaymission/moonoutpost19/syndicate)
 "bI" = (
-/obj/structure/chair/stool,
+/obj/structure/chair/stool/directional/west,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -976,7 +974,7 @@
 	},
 /area/awaymission/moonoutpost19/syndicate)
 "cj" = (
-/obj/structure/chair/stool,
+/obj/structure/chair/stool/directional/south,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006;
 	icon_state = "platingdmg3"
@@ -2763,7 +2761,7 @@
 /turf/open/floor/engine,
 /area/awaymission/moonoutpost19/research)
 "gf" = (
-/obj/structure/chair/stool,
+/obj/structure/chair/stool/directional/north,
 /turf/open/floor/plating{
 	heat_capacity = 1e+006
 	},
@@ -4347,7 +4345,7 @@
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "jl" = (
-/obj/structure/chair/stool,
+/obj/structure/chair/stool/directional/west,
 /turf/open/floor/carpet{
 	heat_capacity = 1e+006
 	},
@@ -5642,7 +5640,7 @@
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "mj" = (
-/obj/structure/chair/stool,
+/obj/structure/chair/stool/directional/north,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -5808,7 +5806,9 @@
 	},
 /area/awaymission/moonoutpost19/arrivals)
 "mB" = (
-/obj/effect/spawner/randomarcade,
+/obj/effect/spawner/randomarcade{
+	dir = 1
+	},
 /turf/open/floor/iron/dark,
 /area/awaymission/moonoutpost19/arrivals)
 "mC" = (
@@ -6647,6 +6647,13 @@
 	dir = 4
 	},
 /turf/open/floor/plating{
+	heat_capacity = 1e+006
+	},
+/area/awaymission/moonoutpost19/arrivals)
+"zF" = (
+/obj/structure/chair/stool/directional/west,
+/obj/machinery/computer/security/telescreen/entertainment/directional/north,
+/turf/open/floor/carpet{
 	heat_capacity = 1e+006
 	},
 /area/awaymission/moonoutpost19/arrivals)

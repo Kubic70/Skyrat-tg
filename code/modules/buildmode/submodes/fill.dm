@@ -7,11 +7,11 @@
 	var/objholder = null
 
 /datum/buildmode_mode/fill/show_help(client/c)
-	to_chat(c, "<span class='notice'>***********************************************************</span>")
-	to_chat(c, "<span class='notice'>Left Mouse Button on turf/obj/mob      = Select corner</span>")
-	to_chat(c, "<span class='notice'>Left Mouse Button + Alt on turf/obj/mob = Delete region</span>")
-	to_chat(c, "<span class='notice'>Right Mouse Button on buildmode button = Select object type</span>")
-	to_chat(c, "<span class='notice'>***********************************************************</span>")
+	to_chat(c, span_notice("***********************************************************"))
+	to_chat(c, span_notice("Left Mouse Button on turf/obj/mob      = Select corner"))
+	to_chat(c, span_notice("Left Mouse Button + Alt on turf/obj/mob = Delete region"))
+	to_chat(c, span_notice("Right Mouse Button on buildmode button = Select object type"))
+	to_chat(c, span_notice("***********************************************************"))
 
 /datum/buildmode_mode/fill/change_settings(client/c)
 	var/target_path = input(c, "Enter typepath:" ,"Typepath","/obj/structure/closet")
@@ -29,7 +29,7 @@
 
 /datum/buildmode_mode/fill/handle_click(client/c, params, obj/object)
 	if(isnull(objholder))
-		to_chat(c, "<span class='warning'>Select an object type first.</span>")
+		to_chat(c, span_warning("Select an object type first."))
 		deselect_region()
 		return
 	..()
@@ -64,6 +64,8 @@
 				if(ispath(objholder,/turf))
 					T = T.ChangeTurf(objholder)
 					T.setDir(BM.build_dir)
+				else if(ispath(objholder, /obj/effect/turf_decal))
+					T.AddElement(/datum/element/decal, initial(objholder.icon), initial(objholder.icon_state), BM.build_dir, null, null, initial(objholder.alpha), initial(objholder.color), null, FALSE, null)
 				else
 					var/obj/A = new objholder(T)
 					A.setDir(BM.build_dir)

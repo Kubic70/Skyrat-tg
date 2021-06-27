@@ -107,6 +107,15 @@
 	else
 		stack_trace("proximity_checker created without host")
 		return INITIALIZE_HINT_QDEL
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = .proc/on_entered,
+		COMSIG_ATOM_EXITED =.proc/on_uncrossed,
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
+
+/obj/effect/abstract/proximity_checker/proc/on_uncrossed(datum/source, atom/movable/gone, direction)
+	SIGNAL_HANDLER
+	return
 
 /obj/effect/abstract/proximity_checker/Destroy()
 	monitor = null

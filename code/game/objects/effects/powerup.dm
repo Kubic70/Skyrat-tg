@@ -16,9 +16,13 @@
 	COOLDOWN_DECLARE(respawn_cooldown)
 
 /obj/effect/powerup/Initialize()
-	..()
+	. = ..()
 	if(lifetime)
 		QDEL_IN(src, lifetime)
+	var/static/list/loc_connections = list(
+		COMSIG_ATOM_ENTERED = .proc/on_entered,
+	)
+	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/powerup/Crossed(atom/movable/movable_atom)
 	. = ..()
@@ -43,7 +47,7 @@
 	else
 		qdel(src)
 	if(pickup_message)
-		to_chat(target, "<span class='notice'>[pickup_message]</span>")
+		to_chat(target, span_notice("[pickup_message]"))
 	if(pickup_sound)
 		playsound(get_turf(target), pickup_sound, 50, TRUE, -1)
 	return TRUE

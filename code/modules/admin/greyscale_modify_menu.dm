@@ -68,7 +68,25 @@
 			) as color|null
 			if(new_color)
 				split_colors[group] = new_color
-				refresh_preview()
+				queue_refresh()
+
+		if("random_color")
+			var/group = text2num(params["color_index"])
+			randomize_color(group)
+			queue_refresh()
+
+		if("random_all_colors")
+			for(var/i in 1 to length(split_colors))
+				randomize_color(i)
+			queue_refresh()
+
+		if("select_icon_state")
+			var/new_icon_state = params["new_icon_state"]
+			if(!config.icon_states[new_icon_state])
+				return
+			icon_state = new_icon_state
+			queue_refresh()
+
 		if("apply")
 			target.greyscale_colors = split_colors.Join()
 			target.update_appearance()
@@ -82,11 +100,62 @@
 	for(var/i in 2 to length(raw_colors))
 		split_colors += "#[raw_colors[i]]"
 
+/datum/greyscale_modify_menu/proc/randomize_color(color_index)
+	var/new_color = "#"
+	for(var/i in 1 to 3)
+		new_color += num2hex(rand(0, 255), 2)
+	split_colors[color_index] = new_color
+
+/datum/greyscale_modify_menu/proc/queue_refresh()
+	refreshing = TRUE
+	addtimer(CALLBACK(src, .proc/refresh_preview), 1 SECONDS, TIMER_UNIQUE | TIMER_OVERRIDE)
+
 /datum/greyscale_modify_menu/proc/refresh_preview()
 	var/list/data = SSgreyscale.configurations["[target.greyscale_config]"].GenerateDebug(split_colors)
 
 	sprite_data = list()
-	var/list/steps = list()
-	sprite_data["steps"] = steps
-	for(var/step in data["steps"])
-		steps += list(list("layer"=icon2html(data["steps"][step], user, sourceonly=TRUE), "result"=icon2html(step, user, sourceonly=TRUE)))
+
+	var/list/generated_icon_states = list()
+	for(var/state in config.icon_states)
+		generated_icon_states += state // We don't want the values from this keyed list
+	sprite_data["icon_states"] = generated_icon_states
+
+	if(!(icon_state in generated_icon_states))
+		icon_state = target.icon_state
+		if(!(icon_state in generated_icon_states))
+			icon_state = pick(generated_icon_states)
+
+	var/image/finished
+	var/time_spent = TICK_USAGE
+	if(!generate_full_preview)
+		finished = image(config.GenerateBundle(used_colors), icon_state=icon_state)
+		time_spent = TICK_USAGE - time_spent
+	else
+		var/list/data = config.GenerateDebug(used_colors.Join())
+		time_spent = TICK_USAGE - time_spent
+		finished = image(data["icon"], icon_state=icon_state)
+		var/list/steps = list()
+		sprite_data["steps"] = steps
+		for(var/step in data["steps"])
+			CHECK_TICK
+			var/list/step_data = data["steps"][step]
+			var/image/layer = image(step)
+			var/image/result = step_data["result"]
+			steps += list(
+				list(
+					"layer"=icon2html(layer, user, dir=sprite_dir, sourceonly=TRUE),
+					"result"=icon2html(result, user, dir=sprite_dir, sourceonly=TRUE),
+					"config_name"=step_data["config_name"]
+				)
+			)
+
+	sprite_data["time_spent"] = TICK_DELTA_TO_MS(time_spent)
+	sprite_data["finished"] = icon2html(finished, user, dir=sprite_dir, sourceonly=TRUE)
+	refreshing = FALSE
+
+/datum/greyscale_modify_menu/proc/Unlock()
+	allowed_configs = SSgreyscale.configurations
+	unlocked = TRUE
+
+/datum/greyscale_modify_menu/proc/DefaultApply()
+	target.set_greyscale(split_colors, config.type)

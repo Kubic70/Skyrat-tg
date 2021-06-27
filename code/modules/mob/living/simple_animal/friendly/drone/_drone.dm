@@ -4,9 +4,9 @@
 #define DRONE_TOTAL_LAYERS 2
 
 /// Message displayed when new drone spawns in drone network
-#define DRONE_NET_CONNECT "<span class='notice'>DRONE NETWORK: [name] connected.</span>"
+#define DRONE_NET_CONNECT span_notice("DRONE NETWORK: [name] connected.")
 /// Message displayed when drone in network dies
-#define DRONE_NET_DISCONNECT "<span class='danger'>DRONE NETWORK: [name] is not responding.</span>"
+#define DRONE_NET_DISCONNECT span_danger("DRONE NETWORK: [name] is not responding.")
 
 /// Maintenance Drone icon_state (multiple colors)
 #define MAINTDRONE "drone_maint"
@@ -223,21 +223,21 @@
 
 	//Hacked
 	if(hacked)
-		. += "<span class='warning'>Its display is glowing red!</span>"
+		. += span_warning("Its display is glowing red!")
 
 	//Damaged
 	if(health != maxHealth)
 		if(health > maxHealth * 0.33) //Between maxHealth and about a third of maxHealth, between 30 and 10 for normal drones
-			. += "<span class='warning'>Its screws are slightly loose.</span>"
+			. += span_warning("Its screws are slightly loose.")
 		else //otherwise, below about 33%
-			. += "<span class='boldwarning'>Its screws are very loose!</span>"
+			. += span_boldwarning("Its screws are very loose!")
 
 	//Dead
 	if(stat == DEAD)
 		if(client)
-			. += "<span class='deadsay'>A message repeatedly flashes on its display: \"REBOOT -- REQUIRED\".</span>"
+			. += span_deadsay("A message repeatedly flashes on its display: \"REBOOT -- REQUIRED\".")
 		else
-			. += "<span class='deadsay'>A message repeatedly flashes on its display: \"ERROR -- OFFLINE\".</span>"
+			. += span_deadsay("A message repeatedly flashes on its display: \"ERROR -- OFFLINE\".")
 	. += "*---------*</span>"
 
 
@@ -250,10 +250,10 @@
 	if(. & EMP_PROTECT_SELF)
 		return
 	Stun(100)
-	to_chat(src, "<span class='danger'><b>ER@%R: MME^RY CO#RU9T!</b> R&$b@0tin)...</span>")
+	to_chat(src, span_danger("<b>ER@%R: MME^RY CO#RU9T!</b> R&$b@0tin)..."))
 	if(severity == 1)
 		adjustBruteLoss(heavy_emp_damage)
-		to_chat(src, "<span class='userdanger'>HeAV% DA%^MMA+G TO I/O CIR!%UUT!</span>")
+		to_chat(src, span_userdanger("HeAV% DA%^MMA+G TO I/O CIR!%UUT!"))
 
 
 /**
@@ -309,6 +309,51 @@
 					L -= I
 		if(cleared)
 			to_chat(src, "--- [class] alarm in [A.name] has been cleared.")
+
+/mob/living/simple_animal/drone/proc/blacklist_on_try_use_machine(datum/source, obj/machinery/machine)
+	SIGNAL_HANDLER
+	if(GLOB.drone_machine_blacklist_enabled && is_type_in_typecache(machine, drone_machinery_blacklist_compiled))
+		to_chat(src, span_warning("Using [machine] could break your laws."))
+		return COMPONENT_CANT_USE_MACHINE_INTERACT | COMPONENT_CANT_USE_MACHINE_TOOLS
+
+/mob/living/simple_animal/drone/proc/blacklist_on_try_wires_interact(datum/source, atom/machine)
+	SIGNAL_HANDLER
+	if(GLOB.drone_machine_blacklist_enabled && is_type_in_typecache(machine, drone_machinery_blacklist_compiled))
+		to_chat(src, span_warning("Using [machine] could break your laws."))
+		return COMPONENT_CANT_INTERACT_WIRES
+
+
+/mob/living/simple_animal/drone/proc/set_shy(new_shy)
+	shy = new_shy
+	shy_update()
+
+/mob/living/simple_animal/drone/proc/shy_update()
+	var/list/drone_bad_areas = make_associative(drone_area_blacklist_flat) + typecacheof(drone_area_blacklist_recursive)
+	var/list/drone_good_items = make_associative(drone_item_whitelist_flat) + typecacheof(drone_item_whitelist_recursive)
+
+	var/list/drone_bad_machinery = make_associative(drone_machinery_blacklist_flat) + typecacheof(drone_machinery_blacklist_recursive)
+	var/list/drone_good_machinery = LAZYCOPY(drone_machinery_whitelist_flat) + typecacheof(drone_machinery_whitelist_recursive) // not a valid typecache, only intended for negation against drone_bad_machinery
+	drone_machinery_blacklist_compiled = drone_bad_machinery - drone_good_machinery
+
+	var/static/list/not_shy_of = typecacheof(list(/mob/living/simple_animal/drone, /mob/living/simple_animal/bot))
+	if(shy)
+		ADD_TRAIT(src, TRAIT_PACIFISM, DRONE_SHY_TRAIT)
+		LoadComponent(/datum/component/shy, not_shy_of, 4, "Your laws prevent this action near %TARGET.", TRUE)
+		LoadComponent(/datum/component/shy_in_room, drone_bad_areas, "Touching anything in %ROOM could break your laws.")
+		LoadComponent(/datum/component/technoshy, 5 MINUTES, "%TARGET was touched by a being recently, using it could break your laws.")
+		LoadComponent(/datum/component/itempicky, drone_good_items, "Using %TARGET could break your laws.")
+		RegisterSignal(src, COMSIG_TRY_USE_MACHINE, .proc/blacklist_on_try_use_machine)
+		RegisterSignal(src, COMSIG_TRY_WIRES_INTERACT, .proc/blacklist_on_try_wires_interact)
+	else
+		REMOVE_TRAIT(src, TRAIT_PACIFISM, DRONE_SHY_TRAIT)
+		qdel(GetComponent(/datum/component/shy))
+		qdel(GetComponent(/datum/component/shy_in_room))
+		qdel(GetComponent(/datum/component/technoshy))
+		qdel(GetComponent(/datum/component/itempicky))
+		UnregisterSignal(src, list(COMSIG_TRY_USE_MACHINE, COMSIG_TRY_WIRES_INTERACT))
+
+/mob/living/simple_animal/drone/handle_temperature_damage()
+	return
 
 /mob/living/simple_animal/drone/flash_act(intensity = 1, override_blindness_check = 0, affect_silicon = 0, visual = 0, type = /atom/movable/screen/fullscreen/flash, length = 25)
 	if(affect_silicon)

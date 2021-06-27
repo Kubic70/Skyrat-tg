@@ -74,6 +74,9 @@
 	icon_state = "coathop"
 	inhand_icon_state = "coathop"
 	armor = list(MELEE = 10, BULLET = 15, LASER = 15, ENERGY = 25, BOMB = 10, BIO = 0, RAD = 0, FIRE = 0, ACID = 35)
+	allowed = list(
+		/obj/item/melee/classic_baton/telescopic,
+	)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/hop
 
 /obj/item/clothing/head/hooded/winterhood/hop
@@ -214,6 +217,12 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 50, RAD = 0, FIRE = 20, ACID = 30)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/medical/cmo
 
+/obj/item/clothing/suit/hooded/wintercoat/medical/cmo/Initialize()
+	. = ..()
+	allowed += list(
+		/obj/item/melee/classic_baton/telescopic,
+	)
+
 /obj/item/clothing/head/hooded/winterhood/medical/cmo
 	desc = "A blue winter coat hood."
 	icon_state = "hood_cmo"
@@ -300,6 +309,12 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 20, BIO = 0, RAD = 0, FIRE = 30, ACID = 0)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/science/rd
 
+/obj/item/clothing/suit/hooded/wintercoat/science/rd/Initialize()
+	. = ..()
+	allowed += list(
+		/obj/item/melee/classic_baton/telescopic,
+	)
+
 /obj/item/clothing/head/hooded/winterhood/science/rd
 	desc = "A white winter coat hood. It smells faintly of hair gel."
 	icon_state = "hood_rd"
@@ -365,6 +380,12 @@
 	armor = list(MELEE = 0, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 20, FIRE = 30, ACID = 10)
 	hoodtype = /obj/item/clothing/head/hooded/winterhood/engineering/ce
 
+/obj/item/clothing/suit/hooded/wintercoat/engineering/ce/Initialize()
+	. = ..()
+	allowed += list(
+		/obj/item/melee/classic_baton/telescopic,
+	)
+
 /obj/item/clothing/head/hooded/winterhood/engineering/ce
 	desc = "A white winter coat hood. Feels surprisingly heavy. The tag says that it's not child safe."
 	icon_state = "hood_ce"
@@ -428,3 +449,23 @@
 	desc = "A dusty winter coat hood."
 	icon_state = "hood_miner"
 	armor = list(MELEE = 10, BULLET = 0, LASER = 0, ENERGY = 0, BOMB = 0, BIO = 0, RAD = 0, FIRE = 0, ACID = 0)
+
+/obj/item/clothing/suit/hooded/wintercoat/custom
+	name = "tailored winter coat"
+	desc = "A heavy jacket made from 'synthetic' animal furs, with custom colors."
+	greyscale_colors = "#ffffff#ffffff#808080#808080#808080#808080"
+	greyscale_config = /datum/greyscale_config/winter_coats
+	greyscale_config_worn = /datum/greyscale_config/winter_coats/worn
+	hoodtype = /obj/item/clothing/head/hooded/winterhood/custom
+
+/obj/item/clothing/suit/hooded/wintercoat/custom/MakeHood()
+	. = ..()
+	var/list/coat_colors = (SSgreyscale.ParseColorString(greyscale_colors))
+	var/list/new_coat_colors = coat_colors.Copy(1,4)
+	hood.set_greyscale(new_coat_colors) //Adopt the suit's grayscale coloring for visual clarity.
+
+/obj/item/clothing/head/hooded/winterhood/custom
+	name = "tailored winter coat hood"
+	desc = "A heavy jacket hood made from 'synthetic' animal furs, with custom colors."
+	greyscale_config = /datum/greyscale_config/winter_hoods
+	greyscale_config_worn = /datum/greyscale_config/winter_hoods/worn

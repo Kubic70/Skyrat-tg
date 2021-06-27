@@ -51,7 +51,6 @@ SUBSYSTEM_DEF(job)
 	var/always_promote_captain_job = TRUE
 
 /datum/controller/subsystem/job/Initialize(timeofday)
-	SSmapping.HACK_LoadMapConfig()
 	setup_job_lists()
 	if(!occupations.len)
 		SetupOccupations()
@@ -81,7 +80,7 @@ SUBSYSTEM_DEF(job)
 	occupations = list()
 	var/list/all_jobs = subtypesof(/datum/job)
 	if(!all_jobs.len)
-		to_chat(world, "<span class='boldannounce'>Error setting up jobs, no job datums found</span>")
+		to_chat(world, span_boldannounce("Error setting up jobs, no job datums found"))
 		return FALSE
 
 	for(var/J in all_jobs)
@@ -129,6 +128,8 @@ SUBSYSTEM_DEF(job)
 			return FALSE
 		if(!job.has_required_languages(player.client.prefs))
 			return FALSE
+		if(job.veteran_only && !is_veteran_player(player.client))
+			return FALSE
 		//SKYRAT EDIT END
 		if(job.required_playtime_remaining(player.client))
 			return FALSE
@@ -164,6 +165,8 @@ SUBSYSTEM_DEF(job)
 		if(!job.has_required_languages(player.client.prefs))
 			JobDebug("FOC job not compatible with languages, Player: [player]")
 			continue
+		if(job.veteran_only && !is_veteran_player(player.client))
+			JobDebug("FOC player is not veteran, Player: [player]")
 		//SKYRAT EDIT END
 		if(job.required_playtime_remaining(player.client))
 			JobDebug("FOC player not enough xp, Player: [player]")
@@ -192,6 +195,11 @@ SUBSYSTEM_DEF(job)
 		if(job.title in GLOB.command_positions) //If you want a command position, select it!
 			continue
 
+		//SKYRAT EDIT ADDITION
+		if(job.title in GLOB.central_command_positions) //If you want a CC position, select it!
+			continue
+		//SKYRAT EDIT END
+
 		if(is_banned_from(player.ckey, job.title) || QDELETED(player))
 			if(QDELETED(player))
 				JobDebug("GRJ isbanned failed, Player deleted")
@@ -213,6 +221,8 @@ SUBSYSTEM_DEF(job)
 		if(!job.has_required_languages(player.client.prefs))
 			JobDebug("GRJ player has incompatible languages, Player: [player]")
 			continue
+		if(job.veteran_only && !is_veteran_player(player.client))
+			JobDebug("GRJ player is not veteran, Player: [player]")
 		//SKYRAT EDIT END
 
 		if(job.required_playtime_remaining(player.client))
@@ -303,12 +313,7 @@ SUBSYSTEM_DEF(job)
 	//Setup new player list and get the jobs list
 	JobDebug("Running DO")
 
-	//Holder for Triumvirate is stored in the SSticker, this just processes it
-	if(SSticker.triai)
-		for(var/datum/job/ai/A in occupations)
-			A.spawn_positions = 3
-		for(var/obj/effect/landmark/start/ai/secondary/S in GLOB.start_landmarks_list)
-			S.latejoin_active = TRUE
+	SEND_SIGNAL(src, COMSIG_OCCUPATIONS_DIVIDED)
 
 	//Get the players who are ready
 	for(var/i in GLOB.new_player_list)
@@ -404,6 +409,9 @@ SUBSYSTEM_DEF(job)
 					continue
 				if(!job.has_required_languages(player.client.prefs))
 					JobDebug("DO player has incompatible species, Player: [player], Job:[job.title]")
+					continue
+				if(job.veteran_only && !is_veteran_player(player.client))
+					JobDebug("DO player is not veteran, Player: [player], Job:[job.title]")
 					continue
 				//SKYRAT EDIT END
 
@@ -544,7 +552,7 @@ SUBSYSTEM_DEF(job)
 		if (M.client && job.no_dresscode && job.loadout)
 			packed_items = M.client.prefs.equip_preference_loadout(living_mob,FALSE,job,blacklist=job.blacklist_dresscode_slots,initial=TRUE)
 		//SKYRAT EDIT ADDITION END
-		var/new_mob = job.equip(living_mob, null, null, joined_late , null, M.client, is_captain)//silicons override this proc to return a mob
+		var/new_mob = job.equip(living_mob, null, null, joined_late, null, M.client, is_captain)//silicons override this proc to return a mob
 		if(ismob(new_mob))
 			living_mob = new_mob
 			if(!joined_late)
@@ -565,7 +573,7 @@ SUBSYSTEM_DEF(job)
 		if(job.req_admin_notify)
 			to_chat(M, "<b>You are playing a job that is important for Game Progression. If you have to disconnect, please notify the admins via adminhelp.</b>")
 		if(CONFIG_GET(number/minimal_access_threshold))
-			to_chat(M, "<span class='notice'><B>As this station was initially staffed with a [CONFIG_GET(flag/jobs_have_minimal_access) ? "full crew, only your job's necessities" : "skeleton crew, additional access may"] have been added to your ID card.</B></span>")
+			to_chat(M, span_notice("<B>As this station was initially staffed with a [CONFIG_GET(flag/jobs_have_minimal_access) ? "full crew, only your job's necessities" : "skeleton crew, additional access may"] have been added to your ID card.</B>"))
 
 	var/related_policy = get_policy(rank)
 	if(related_policy)
@@ -635,7 +643,12 @@ SUBSYSTEM_DEF(job)
 	var/jobstext = file2text("[global.config.directory]/jobs.txt")
 	for(var/datum/job/J in occupations)
 		var/regex/jobs = new("[J.title]=(-1|\\d+),(-1|\\d+)")
-		jobs.Find(jobstext)
+		// Skyrat Edit - SSjobs no longer runtimes if it cant find a job
+		// original: jobs.Find(jobstext)
+		if(!jobs.Find(jobstext))
+			log_runtime("RUNTIME: UNABLE TO FIND '[J.title]' INSIDE OF '[global.config.directory]/jobs.txt'")
+			continue
+		// Skyrat Edit End
 		J.total_positions = text2num(jobs.group[1])
 		J.spawn_positions = text2num(jobs.group[2])
 
@@ -773,9 +786,12 @@ SUBSYSTEM_DEF(job)
 /datum/controller/subsystem/job/proc/DropLandAtRandomHallwayPoint(mob/living/living_mob)
 	var/turf/spawn_turf = get_safe_random_station_turf(typesof(/area/hallway))
 
-	var/obj/structure/closet/supplypod/centcompod/toLaunch = new()
-	living_mob.forceMove(toLaunch)
-	new /obj/effect/pod_landingzone(spawn_turf, toLaunch)
+	if(!spawn_turf)
+		SendToLateJoin(living_mob)
+	else
+		var/obj/structure/closet/supplypod/centcompod/toLaunch = new()
+		living_mob.forceMove(toLaunch)
+		new /obj/effect/pod_landingzone(spawn_turf, toLaunch)
 
 ///////////////////////////////////
 //Keeps track of all living heads//
@@ -873,9 +889,9 @@ SUBSYSTEM_DEF(job)
 	var/where = new_captain.equip_in_one_of_slots(paper, slots, FALSE) || "at your feet"
 
 	if(acting_captain)
-		to_chat(new_captain, "<span class='notice'>Due to your position in the chain of command, you have been promoted to Acting Captain. You can find in important note about this [where].</span>")
+		to_chat(new_captain, span_notice("Due to your position in the chain of command, you have been promoted to Acting Captain. You can find in important note about this [where]."))
 	else
-		to_chat(new_captain, "<span class='notice'>You can find the code to obtain your spare ID from the secure safe on the Bridge [where].</span>")
+		to_chat(new_captain, span_notice("You can find the code to obtain your spare ID from the secure safe on the Bridge [where]."))
 
 	// Force-give their ID card bridge access.
 	var/obj/item/id_slot = new_captain.get_item_by_slot(ITEM_SLOT_ID)

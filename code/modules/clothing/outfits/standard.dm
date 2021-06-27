@@ -123,6 +123,9 @@
 	head = /obj/item/clothing/head/bandana/armored
 	shoes = /obj/item/clothing/shoes/sneakers/brown
 
+	back = /obj/item/storage/backpack/satchel/leather //SKYRAT EDIT ADDITION
+	backpack_contents = list(/obj/item/gun/ballistic/automatic/pistol/m1911, /obj/item/ammo_box/magazine/m45 = 3) //SKYRAT EDIT ADDITION
+
 /datum/outfit/pirate/post_equip(mob/living/carbon/human/equipped)
 	equipped.faction |= "pirate"
 
@@ -151,6 +154,9 @@
 	head = /obj/item/clothing/head/helmet/space/pirate/bandana
 	mask = /obj/item/clothing/mask/breath
 
+	back = /obj/item/storage/backpack/satchel/leather //SKYRAT EDIT ADDITION
+	backpack_contents = list(/obj/item/gun/ballistic/automatic/pistol/m1911, /obj/item/ammo_box/magazine/m45 = 3) //SKYRAT EDIT ADDITION
+
 /datum/outfit/pirate/space/captain
 	name = "Space Pirate Captain (EVA)"
 
@@ -167,6 +173,9 @@
 	gloves = /obj/item/clothing/gloves/color/black
 	head = /obj/item/clothing/head/collectable/tophat
 	shoes = /obj/item/clothing/shoes/laceup
+
+	back = /obj/item/storage/backpack/satchel/leather //SKYRAT EDIT ADDITION
+	backpack_contents = list(/obj/item/gun/ballistic/automatic/pistol/m1911, /obj/item/ammo_box/magazine/m45 = 3) //SKYRAT EDIT ADDITION
 
 /datum/outfit/pirate/silverscale/captain
 	name = "Silver Scale Captain"
