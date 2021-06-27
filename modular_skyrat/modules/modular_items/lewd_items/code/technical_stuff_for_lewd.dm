@@ -3,6 +3,19 @@
 //I made this file to prevent myself from touching normal files///////////
 //////////////////////////////////////////////////////////////////////////
 
+//moved from my old interactions file 'cause skyrats already did interactions
+
+#define REQUIRE_NONE 0
+#define REQUIRE_EXPOSED 1
+#define REQUIRE_UNEXPOSED 2
+#define REQUIRE_ANY 3
+
+/mob/living
+	var/has_penis = FALSE
+	var/has_vagina = FALSE
+	var/has_breasts = FALSE
+	var/anus_exposed = FALSE
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////This code is supposed to be placed in "code/modules/mob/living/carbon/human/inventory.dm"/////////////
 //If you are nice person you can transfer this part of code to it, but i didn't for modularisation reasons//
@@ -157,7 +170,7 @@
     return TRUE
 
 /mob/living/proc/has_penis(var/nintendo = REQUIRE_ANY)
-	var/mob/living/carbon/C = src
+	var/mob/living/carbon/human/C = src
 	if(issilicon(src) && C.has_penis)
 		return TRUE
 	if(istype(C))
@@ -203,7 +216,7 @@
 	return FALSE
 
 /mob/living/proc/has_vagina(var/nintendo = REQUIRE_ANY)
-	var/mob/living/carbon/C = src
+	var/mob/living/carbon/human/C = src
 	if(issilicon(src) && C.has_vagina)
 		return TRUE
 	if(istype(C))

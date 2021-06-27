@@ -333,7 +333,7 @@
 	inv_box = new /atom/movable/screen/inventory()
 	inv_box.name = "penis"
 	inv_box.icon = ui_style
-	inv_box.icon_state = "template"
+	inv_box.icon_state = "penis"
 	inv_box.screen_loc = ui_penis_down
 	inv_box.slot_id = ITEM_SLOT_PENIS
 	inv_box.hud = src
