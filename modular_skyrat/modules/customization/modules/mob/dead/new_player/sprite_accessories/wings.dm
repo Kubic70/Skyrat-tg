@@ -1,3 +1,6 @@
+// When adding or making new wing sprites, try to use matrixed colours!
+// You can find a color palette to work with in modular_skyrat\modules\customization\icons\mob\sprite_accessory\wings.dmi as 'colorpalette matrixcolors'
+// Check some of the wings that make use of them for examples on how to make it look decent
 /datum/sprite_accessory/wings
 	icon = 'icons/mob/clothing/wings.dmi'
 	generic = "Wings"
@@ -29,7 +32,7 @@
 	color_src = USE_ONE_COLOR
 
 /datum/sprite_accessory/wings/moth
-	icon = 'modular_skyrat/modules/customization/icons/mob/sprite_accessory/moth_wings.dmi' //Needs new icon to suit new naming convention
+	icon = 'modular_skyrat/master_files/icons/mob/sprite_accessory/moth_wings.dmi' //Needs new icon to suit new naming convention
 	default_color = "FFF"
 	recommended_species = list("moth", "synthmammal", "mammal", "insect") //Mammals too, I guess. They wont get flight though, see the wing organs for that logic
 	organ_type = /obj/item/organ/wings/moth
@@ -122,7 +125,7 @@
 	icon_state = "witchwing"
 
 /datum/sprite_accessory/wings/mammal
-	icon = 'modular_skyrat/modules/customization/icons/mob/sprite_accessory/wings.dmi'
+	icon = 'modular_skyrat/master_files/icons/mob/sprite_accessory/wings.dmi'
 	default_color = DEFAULT_PRIMARY
 	recommended_species = list("synthmammal", "mammal", "lizard", "insect", "synthliz")
 	relevent_layers = list(BODY_BEHIND_LAYER, BODY_FRONT_LAYER)
@@ -138,6 +141,16 @@
 /datum/sprite_accessory/wings/mammal/feathery
 	name = "Feathery"
 	icon_state = "feathery"
+
+/datum/sprite_accessory/wings/mammal/featheryalt1
+	name = "Feathery (alt 1)"
+	icon_state = "featheryalt1"
+	color_src = USE_MATRIXED_COLORS
+
+/datum/sprite_accessory/wings/mammal/featheryalt2
+	name = "Feathery (alt 2)"
+	icon_state = "featheryalt2"
+	color_src = USE_MATRIXED_COLORS
 
 /datum/sprite_accessory/wings/mammal/bee
 	name = "Bee"
@@ -176,4 +189,24 @@
 /datum/sprite_accessory/wings/mammal/harpywingsalt2
 	name = "Harpy (Bat)"
 	icon_state = "harpybat"
+	color_src = USE_ONE_COLOR
+
+/datum/sprite_accessory/wings/mammal/top/is_hidden(mob/living/carbon/human/H, obj/item/bodypart/HD)
+	if((H.wear_suit && (H.try_hide_mutant_parts || (H.wear_suit.flags_inv & HIDEJUMPSUIT) && (!H.wear_suit.species_exception || !is_type_in_list(H.dna.species, H.wear_suit.species_exception)))))
+		return TRUE
+	return FALSE
+
+/datum/sprite_accessory/wings/mammal/top/harpywings_top
+	name = "Harpy (Top)"
+	icon_state = "harpy_top"
+	color_src = USE_ONE_COLOR
+
+/datum/sprite_accessory/wings/mammal/top/harpywingsalt1_top
+	name = "Harpy (alt 1) (Top)"
+	icon_state = "harpyalt_top"
+	color_src = USE_ONE_COLOR
+
+/datum/sprite_accessory/wings/mammal/top/harpywingsalt2_top
+	name = "Harpy (Bat) (Top)"
+	icon_state = "harpybat_top"
 	color_src = USE_ONE_COLOR

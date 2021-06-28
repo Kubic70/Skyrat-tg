@@ -362,14 +362,6 @@ GLOBAL_LIST_INIT(pda_styles, sortList(list(MONO, VT, ORBITRON, SHARE)))
 #define GANG_DESTROYED 25
 #define GANG_OPERATING 26
 
-//SKYRAT EDIT ADDITION BEGIN - ASSAULTOPS
-#define ASSAULTOPS_STALEMATE 27
-#define ASSAULTOPS_ASSAULT_WIN 28
-#define ASSAULTOPS_CREW_WIN 29
-#define ASSAULTOPS_ASSAULT_LOSS 30
-#define ASSAULTOPS_CREW_LOSS 31
-//SKYRAT EDIT ADDITION END
-
 #define FIELD_TURF 1
 #define FIELD_EDGE 2
 
@@ -443,6 +435,7 @@ GLOBAL_LIST_INIT(pda_styles, sortList(list(MONO, VT, ORBITRON, SHARE)))
 #define BONE_SCAR_FILE "wounds/bone_scar_desc.json"
 #define SCAR_LOC_FILE "wounds/scar_loc.json"
 #define EXODRONE_FILE "exodrone.json"
+#define CLOWN_NONSENSE_FILE "clown_nonsense.json"
 
 //Fullscreen overlay resolution in tiles.
 #define FULLSCREEN_OVERLAY_RESOLUTION_X 15
@@ -466,12 +459,6 @@ GLOBAL_LIST_INIT(pda_styles, sortList(list(MONO, VT, ORBITRON, SHARE)))
 #define OVERRIDE_CONFIG_DIRECTORY_PARAMETER "config-directory"
 
 #define EGG_LAYING_MESSAGES list("lays an egg.","squats down and croons.","begins making a huge racket.","begins clucking raucously.")
-
-// Used by PDA and cartridge code to reduce repetitiveness of spritesheets
-#define PDAIMG(what) {"<span class="pda16x16 [#what]"></span>"}
-
-/// Prepares a text to be used for maptext. Use this so it doesn't look hideous.
-#define MAPTEXT(text) {"<span class='maptext'>[##text]</span>"}
 
 //Filters
 #define AMBIENT_OCCLUSION filter(type="drop_shadow", x=0, y=-2, size=4, color="#04080FAA")
@@ -528,8 +515,9 @@ GLOBAL_LIST_INIT(pda_styles, sortList(list(MONO, VT, ORBITRON, SHARE)))
 
 //Religion
 
-#define HOLY_ROLE_PRIEST 1 //default priestly role
-#define HOLY_ROLE_HIGHPRIEST 2 //the one who designates the religion
+#define HOLY_ROLE_DEACON 1 //role below priests, for losing most powers of priests but still being holy.
+#define HOLY_ROLE_PRIEST 2 //default priestly role
+#define HOLY_ROLE_HIGHPRIEST 3 //the one who designates the religion
 
 #define ALIGNMENT_GOOD "good"
 #define ALIGNMENT_NEUT "neutral"
@@ -563,4 +551,6 @@ GLOBAL_LIST_INIT(pda_styles, sortList(list(MONO, VT, ORBITRON, SHARE)))
 //while using the SKILLCHIP_RESTRICTED_CATEGORIES flag
 #define SKILLCHIP_CATEGORY_GENERAL "general"
 #define SKILLCHIP_CATEGORY_JOB "job"
-#define SKILLCHIP_CATEGORY_FIREMAN_CARRYING "fireman carrying"
+
+/// Emoji icon set
+#define EMOJI_SET 'modular_skyrat/master_files/icons/emoji.dmi' // SKYRAT EDIT

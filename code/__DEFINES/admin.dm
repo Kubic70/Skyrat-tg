@@ -6,6 +6,9 @@
 #define MUTE_PRAY (1<<2)
 #define MUTE_ADMINHELP (1<<3)
 #define MUTE_DEADCHAT (1<<4)
+// Skyrat Edit Addition - Mute LOOC
+#define MUTE_LOOC (1<<5)
+// Skyrat Edit End
 #define MUTE_ALL (~0)
 
 //Some constants for DB_Ban
@@ -137,3 +140,8 @@ GLOBAL_VAR_INIT(ghost_role_flags, (~0))
 #define GHOSTROLE_SILICONS (1<<3)
 //ie mafia, ctf
 #define GHOSTROLE_MINIGAME (1<<4)
+
+//smite defines
+
+#define LIGHTNING_BOLT_DAMAGE 75
+#define LIGHTNING_BOLT_ELECTROCUTION_ANIMATION_LENGTH 40

@@ -102,13 +102,13 @@
 
 /datum/config_entry/flag/log_shuttle // log shuttle related actions, ie shuttle computers, shuttle manipulator, emergency console
 
+/datum/config_entry/flag/log_timers_on_bucket_reset // logs all timers in buckets on automatic bucket reset (Useful for timer debugging)
+
 /datum/config_entry/flag/allow_admin_ooccolor // Allows admins with relevant permissions to have their own ooc colour
 
 /datum/config_entry/flag/allow_admin_asaycolor //Allows admins with relevant permissions to have a personalized asay color
 
 /datum/config_entry/flag/allow_vote_restart // allow votes to restart
-
-/datum/config_entry/flag/allow_vote_mode // allow votes to change mode
 
 /datum/config_entry/flag/allow_vote_map // allow votes to change map
 
@@ -208,6 +208,13 @@
 /datum/config_entry/flag/use_exp_restrictions_other
 
 /datum/config_entry/flag/use_exp_restrictions_admin_bypass
+
+/datum/config_entry/flag/use_low_living_hour_intern
+
+/datum/config_entry/number/use_low_living_hour_intern_hours
+	config_entry_value = 0
+	integer = FALSE
+	min_val = 0
 
 /datum/config_entry/string/server
 
@@ -509,16 +516,5 @@
 
 /datum/config_entry/string/centcom_source_whitelist
 
-//SKYRAT EDIT ADDITION BEGIN
-/datum/config_entry/string/servertagline
-	config_entry_value = "We forgot to set the server's tagline in config.txt"
-
-/datum/config_entry/string/discord_link
-	config_entry_value = "We forgot to set the server's discord link in config.txt"
-
-/datum/config_entry/flag/sql_game_log
-	protection = CONFIG_ENTRY_LOCKED
-
-/datum/config_entry/flag/file_game_log
-	protection = CONFIG_ENTRY_LOCKED
-//SKYRAT EDIT END
+/// URL for admins to be redirected to for 2FA
+/datum/config_entry/string/admin_2fa_url

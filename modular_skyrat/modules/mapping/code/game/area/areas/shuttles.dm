@@ -1,3 +1,2 @@
-/area/shuttle/shipstation
-	name = "NTSS 'Companionship'"
-	requires_power = TRUE
+/area/shuttle/blackmarket_chevvy
+	name = "Blackmarket Chevvy"

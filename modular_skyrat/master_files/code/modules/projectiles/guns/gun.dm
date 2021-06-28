@@ -278,6 +278,8 @@
 				user.visible_message("<span class='danger'>[user] fires [src]!</span>", \
 								"<span class='danger'>You fire [src]!</span>", \
 								"<span class='hear'>You hear a gunshot!</span>", COMBAT_MESSAGE_RANGE)
+	if(user.resting) // SKYRAT EDIT ADD - no crawlshooting
+		user.Immobilize(20, TRUE) // SKYRAT EDIT END
 
 /obj/item/gun/emp_act(severity)
 	. = ..()
@@ -415,7 +417,7 @@
 				to_chat(user, "<span class='warning'>[src] is lethally chambered! You don't want to risk harming anyone...</span>")
 				return
 		if(randomspread)
-			sprd = round((rand() - 0.5) * DUALWIELD_PENALTY_EXTRA_MULTIPLIER * (randomized_gun_spread + randomized_bonus_spread))
+			sprd = round((rand(0, 1) - 0.5) * DUALWIELD_PENALTY_EXTRA_MULTIPLIER * (randomized_gun_spread + randomized_bonus_spread))
 		else //Smart spread
 			sprd = round((((rand_spr/burst_size) * iteration) - (0.5 + (rand_spr * 0.25))) * (randomized_gun_spread + randomized_bonus_spread))
 		before_firing(target,user)
@@ -441,8 +443,6 @@
 
 /obj/item/gun/proc/process_fire(atom/target, mob/living/user, message = TRUE, params = null, zone_override = "", bonus_spread = 0)
 	if(user)
-		if(HAS_TRAIT(user, TRAIT_POOR_AIM)) //nice shootin' tex
-			target = pick(orange(2, target))
 		SEND_SIGNAL(user, COMSIG_MOB_FIRED_GUN, user, target, params, zone_override)
 
 	SEND_SIGNAL(src, COMSIG_GUN_FIRED, user, target, params, zone_override)
@@ -452,12 +452,18 @@
 	if(semicd)
 		return
 
+	//Vary by at least this much
+	var/base_bonus_spread = 0
 	var/sprd = 0
 	var/randomized_gun_spread = 0
 	var/rand_spr = rand()
+	if(user && HAS_TRAIT(user, TRAIT_POOR_AIM)) //Nice job hotshot
+		bonus_spread += 35
+		base_bonus_spread += 10
+
 	if(spread)
 		randomized_gun_spread =	rand(0,spread)
-	var/randomized_bonus_spread = rand(0, bonus_spread)
+	var/randomized_bonus_spread = rand(base_bonus_spread, bonus_spread)
 
 	if(burst_size > 1)
 		firing_burst = TRUE
@@ -469,7 +475,7 @@
 				if(chambered.harmful) // Is the bullet chambered harmful?
 					to_chat(user, "<span class='warning'>[src] is lethally chambered! You don't want to risk harming anyone...</span>")
 					return
-			sprd = round((rand() - 0.5) * DUALWIELD_PENALTY_EXTRA_MULTIPLIER * (randomized_gun_spread + randomized_bonus_spread))
+			sprd = round((rand(0, 1) - 0.5) * DUALWIELD_PENALTY_EXTRA_MULTIPLIER * (randomized_gun_spread + randomized_bonus_spread))
 			before_firing(target,user)
 			if(!chambered.fire_casing(target, user, params, , suppressed, zone_override, sprd, src))
 				shoot_with_empty_chamber(user)
@@ -704,7 +710,7 @@
 	if(azoom)
 		azoom.Remove(user)
 	if(zoomed)
-		zoom(user, user.dir)
+		zoom(user, user.dir, FALSE)
 
 /obj/item/gun/update_overlays()
 	. = ..()
@@ -790,10 +796,15 @@
 	var/obj/item/gun/gun = null
 
 /datum/action/toggle_scope_zoom/Trigger()
+	. = ..()
+	if(!.)
+		return
 	gun.zoom(owner, owner.dir)
 
 /datum/action/toggle_scope_zoom/IsAvailable()
 	. = ..()
+	if(owner.get_active_held_item() != gun)
+		. = FALSE
 	if(!. && gun)
 		gun.zoom(owner, owner.dir, FALSE)
 

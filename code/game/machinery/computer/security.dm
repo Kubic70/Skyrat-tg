@@ -39,7 +39,7 @@
 		playsound(src, 'sound/machines/terminal_prompt_confirm.ogg', 50, FALSE)
 	*/
 	if(src.z > 6)
-		to_chat(user, "<span class='boldannounce'>Unable to establish a connection</span>: \black You're too far away from the station!")
+		to_chat(user, "[span_boldannounce("Unable to establish a connection")]: \black You're too far away from the station!")
 		return
 	var/dat
 
@@ -178,6 +178,7 @@
 						<tr><td>Fingerprint:</td><td><A href='?src=[REF(src)];choice=Edit Field;field=fingerprint'>&nbsp;[active1.fields["fingerprint"]]&nbsp;</A></td></tr>
 						<tr><td>Physical Status:</td><td>&nbsp;[active1.fields["p_stat"]]&nbsp;</td></tr>
 						<tr><td>Mental Status:</td><td>&nbsp;[active1.fields["m_stat"]]&nbsp;</td></tr>
+						<tr><td>General Records:</td><td><A href='?src=[REF(src)];choice=View Past General'>View&nbsp;</A></td></tr>
 						</table></td>
 						<td><table><td align = center><a href='?src=[REF(src)];choice=Edit Field;field=show_photo_front'><img src=photo_front height=80 width=80 border=4></a><br>
 						<a href='?src=[REF(src)];choice=Edit Field;field=print_photo_front'>Print photo</a><br>
@@ -185,11 +186,12 @@
 						<td align = center><a href='?src=[REF(src)];choice=Edit Field;field=show_photo_side'><img src=photo_side height=80 width=80 border=4></a><br>
 						<a href='?src=[REF(src)];choice=Edit Field;field=print_photo_side'>Print photo</a><br>
 						<a href='?src=[REF(src)];choice=Edit Field;field=upd_photo_side'>Update side photo</a></td></table>
-						</td></tr></table></td></tr></table>"}
+						</td></tr></table></td></tr></table>"} // SKYRAT EDIT - TEXT AMENDED, "GENERAL RECORDS" - RP RECORDS
 					else
 						dat += "<br>General Record Lost!<br>"
 					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2)))
 						dat += "<font size='4'><b>Security Data</b></font>"
+						dat += "<br>Security Records: <A href='?src=[REF(src)];choice=View Past Security'>View</A>" //SKYRAT EDIT ADD - RP RECORDS
 						dat += "<br>Criminal Status: <A href='?src=[REF(src)];choice=Edit Field;field=criminal'>[active2.fields["criminal"]]</A>"
 						dat += "<br><br>Citations: <A href='?src=[REF(src)];choice=Edit Field;field=citation_add'>Add New</A>"
 
@@ -279,6 +281,21 @@ What a mess.*/
 	if(usr.contents.Find(src) || (in_range(src, usr) && isturf(loc)) || issilicon(usr) || isAdminGhostAI(usr))
 		usr.set_machine(src)
 		switch(href_list["choice"])
+			//SKYRAT EDIT ADD - RP RECORDS
+			if("View Past Security")
+				if(istype(active2, /datum/data/record))
+					temp = "<h5>Security Records:</h5>"
+					temp += "<ul>"
+					temp += "<li>[active2.fields["past_records"]]</li>"
+					temp += "</ul>"
+
+			if("View Past General")
+				if(istype(active1, /datum/data/record))
+					temp = "<h5>General Records:</h5>"
+					temp += "<ul>"
+					temp += "<li>[active1.fields["past_records"]]</li>"
+					temp += "</ul>"
+			//SKYRAT EDIT ADD END
 // SORTING!
 			if("Sorting")
 				// Reverse the order if clicked twice
@@ -331,7 +348,7 @@ What a mess.*/
 					rank = I.assignment
 					screen = 1
 				else
-					to_chat(usr, "<span class='danger'>Unauthorized Access.</span>")
+					to_chat(usr, span_danger("Unauthorized Access."))
 				playsound(src, 'sound/machines/terminal_on.ogg', 50, FALSE)
 
 //RECORD FUNCTIONS
@@ -358,18 +375,19 @@ What a mess.*/
 						if(C && istype(C))
 							var/pay = C.get_item_credit_value()
 							if(!pay)
-								to_chat(usr, "<span class='warning'>[C] doesn't seem to be worth anything!</span>")
+								to_chat(usr, span_warning("[C] doesn't seem to be worth anything!"))
 							else
 								var/diff = p.fine - p.paid
 								GLOB.data_core.payCitation(active2.fields["id"], text2num(href_list["cdataid"]), pay)
-								to_chat(usr, "<span class='notice'>You have paid [pay] credit\s towards your fine.</span>")
+								to_chat(usr, span_notice("You have paid [pay] credit\s towards your fine."))
 								if (pay == diff || pay > diff || pay >= diff)
 									investigate_log("Citation Paid off: <strong>[p.crimeName]</strong> Fine: [p.fine] | Paid off by [key_name(usr)]", INVESTIGATE_RECORDS)
-									to_chat(usr, "<span class='notice'>The fine has been paid in full.</span>")
+									to_chat(usr, span_notice("The fine has been paid in full."))
+								SSblackbox.ReportCitation(text2num(href_list["cdataid"]),"","","","", 0, pay)
 								qdel(C)
 								playsound(src, "terminal_type", 25, FALSE)
 						else
-							to_chat(usr, "<span class='warning'>Fines can only be paid with holochips!</span>")
+							to_chat(usr, span_warning("Fines can only be paid with holochips!"))
 
 			if("Print Record")
 				if(!( printing ))
@@ -383,11 +401,20 @@ What a mess.*/
 						P.info += text("Name: [] ID: []<BR>\nGender: []<BR>\nAge: []<BR>", active1.fields["name"], active1.fields["id"], active1.fields["gender"], active1.fields["age"])
 						P.info += "\nSpecies: [active1.fields["species"]]<BR>"
 						P.info += text("\nFingerprint: []<BR>\nPhysical Status: []<BR>\nMental Status: []<BR>", active1.fields["fingerprint"], active1.fields["p_stat"], active1.fields["m_stat"])
+						//SKYRAT EDIT ADD - RP RECORDS
+						if(!(active1.fields["past_records"] == ""))
+							P.info += "\nGeneral Records:\n[active1.fields["past_records"]]\n"
+						//SKYRAT EDIT ADD END
 					else
 						P.info += "<B>General Record Lost!</B><BR>"
 					if((istype(active2, /datum/data/record) && GLOB.data_core.security.Find(active2)))
-						P.info += text("<BR>\n<CENTER><B>Security Data</B></CENTER><BR>\nCriminal Status: []", active2.fields["criminal"])
-
+						// P.info += text("<BR>\n<CENTER><B>Security Data</B></CENTER><BR>\nCriminal Status: []", active2.fields["criminal"]) // SKYRAT EDIT ORIGINAL
+						//SKYRAT EDIT ADD - RP RECORDS
+						P.info += text("<BR>\n<CENTER><B>Security Data</B></CENTER><BR>\n")
+						if(!(active2.fields["past_records"] == ""))
+							P.info += "\nSecurity Records:\n[active2.fields["past_records"]]\n"
+						P.info += text("Criminal Status: []", active2.fields["criminal"])
+						//SKYRAT EDIT END
 						P.info += "<BR>\n<BR>\nCrimes:<BR>\n"
 						P.info +={"<table style="text-align:center;" border="1" cellspacing="0" width="100%">
 <tr>
@@ -692,13 +719,13 @@ What a mess.*/
 							fine = min(fine, maxFine)
 
 							if(fine < 0)
-								to_chat(usr, "<span class='warning'>You're pretty sure that's not how money works.</span>")
+								to_chat(usr, span_warning("You're pretty sure that's not how money works."))
 								return
 
 							if(!canUseSecurityRecordsConsole(usr, t1, null, a2))
 								return
 
-							var/crime = GLOB.data_core.createCrimeEntry(t1, "", authenticated, station_time_timestamp(), fine)
+							var/datum/data/crime/crime = GLOB.data_core.createCrimeEntry(t1, "", authenticated, station_time_timestamp(), fine)
 							for (var/obj/item/pda/P in GLOB.PDAs)
 								if(P.owner == active1.fields["name"])
 									var/message = "You have been fined [fine] credits for '[t1]'. Fines may be paid at security."
@@ -713,6 +740,7 @@ What a mess.*/
 									usr.log_message("(PDA: Citation Server) sent \"[message]\" to [signal.format_target()]", LOG_PDA)
 							GLOB.data_core.addCitation(active1.fields["id"], crime)
 							investigate_log("New Citation: <strong>[t1]</strong> Fine: [fine] | Added to [active1.fields["name"]] by [key_name(usr)]", INVESTIGATE_RECORDS)
+							SSblackbox.ReportCitation(crime.dataId, usr.ckey, usr.real_name, active1.fields["name"], t1, fine)
 					if("citation_delete")
 						if(istype(active1, /datum/data/record))
 							if(href_list["cdataid"])
@@ -745,7 +773,7 @@ What a mess.*/
 								temp += "<li><a href='?src=[REF(src)];choice=Change Rank;rank=[rank]'>[rank]</a></li>"
 							temp += "</ul>"
 						else
-							alert(usr, "You do not have the required rank to do this!")
+							tgui_alert(usr, "You do not have the required rank to do this!")
 //TEMPORARY MENU FUNCTIONS
 			else//To properly clear as per clear screen.
 				temp=null
