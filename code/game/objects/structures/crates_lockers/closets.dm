@@ -448,8 +448,12 @@
 	broken = TRUE //applies to secure lockers only
 	open()
 
+<<<<<<< HEAD
 /obj/structure/closet/AltClick(mob/user)
 	..()
+=======
+/obj/structure/closet/attack_hand_secondary(mob/user, modifiers)
+>>>>>>> origin/master
 	if(!user.canUseTopic(src, BE_CLOSE) || !isturf(loc))
 		return
 	if(opened || !secure)

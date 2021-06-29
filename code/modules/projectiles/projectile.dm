@@ -1,4 +1,3 @@
-
 #define MOVES_HITSCAN -1 //Not actually hitscan but close as we get without actual hitscan.
 #define MUZZLE_EFFECT_PIXEL_INCREMENT 17 //How many pixels to move the muzzle flash up so your character doesn't look like they're shitting out lasers.
 
@@ -821,6 +820,11 @@
 		else if(T != loc)
 			step_towards(src, T)
 			hitscan_last = loc
+<<<<<<< HEAD
+=======
+	if(QDELETED(src)) //deleted on last move
+		return
+>>>>>>> origin/master
 	if(!hitscanning && !forcemoved)
 		pixel_x = trajectory.return_px() - trajectory.mpx * trajectory_multiplier * SSprojectiles.global_iterations_per_move
 		pixel_y = trajectory.return_py() - trajectory.mpy * trajectory_multiplier * SSprojectiles.global_iterations_per_move

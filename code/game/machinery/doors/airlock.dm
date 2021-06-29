@@ -237,6 +237,8 @@
 	return !requiresID() || ..()
 
 /obj/machinery/door/airlock/proc/ntnet_receive(datum/source, datum/netdata/data)
+	SIGNAL_HANDLER
+
 	// Check if the airlock is powered and can accept control packets.
 	if(!hasPower() || !canAIControl())
 		return
@@ -291,6 +293,16 @@
 	audible_message("<span class='hear'>You hear a click from the bottom of the door.</span>", null,  1)
 	update_appearance()
 
+<<<<<<< HEAD
+=======
+/obj/machinery/door/airlock/proc/set_bolt(should_bolt)
+	if(locked == should_bolt)
+		return
+	SEND_SIGNAL(src, COMSIG_AIRLOCK_SET_BOLT, should_bolt)
+	. = locked
+	locked = should_bolt
+
+>>>>>>> origin/master
 /obj/machinery/door/airlock/unlock()
 	unbolt()
 

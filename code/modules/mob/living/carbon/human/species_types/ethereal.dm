@@ -17,7 +17,10 @@
 	species_traits = list(DYNCOLORS, AGENDER, NO_UNDERWEAR, HAIR, HAS_FLESH, HAS_BONE) // i mean i guess they have blood so they can have wounds too
 	changesource_flags = MIRROR_BADMIN | WABBAJACK | MIRROR_PRIDE | MIRROR_MAGIC | RACE_SWAP | ERT_SPAWN | SLIME_EXTRACT
 	species_language_holder = /datum/language_holder/ethereal
+<<<<<<< HEAD
 	inherent_traits = list(TRAIT_ADVANCEDTOOLUSER,TRAIT_NOHUNGER)
+=======
+>>>>>>> origin/master
 	sexes = FALSE //no fetish content allowed
 	toxic_food = NONE
 	// Body temperature for ethereals is much higher then humans as they like hotter environments
@@ -36,8 +39,6 @@
 	var/static/r2 = 237
 	var/static/g2 = 164
 	var/static/b2 = 149
-	//this is shit but how do i fix it? no clue.
-	var/drain_time = 0 //used to keep ethereals from spam draining power sources
 	var/obj/effect/dummy/lighting_obj/ethereal_light
 
 /datum/species/ethereal/Destroy(force)
@@ -122,11 +123,6 @@
 	source.emp_act(EMP_LIGHT)
 	return COMPONENT_BLOCK_LIGHT_EATER
 
-/datum/species/ethereal/spec_life(mob/living/carbon/human/H, delta_time, times_fired)
-	.=..()
-	handle_charge(H, delta_time, times_fired)
-
-
 /datum/species/ethereal/proc/stop_emp(mob/living/carbon/human/H)
 	EMPeffect = FALSE
 	spec_updatehealth(H)
@@ -143,6 +139,7 @@
 /datum/species/ethereal/proc/stop_emag(mob/living/carbon/human/H)
 	emageffect = FALSE
 	spec_updatehealth(H)
+<<<<<<< HEAD
 	H.visible_message("<span class='danger'>[H] stops flickering and goes back to their normal state!</span>")
 
 /datum/species/ethereal/proc/handle_charge(mob/living/carbon/human/H, delta_time, times_fired)
@@ -200,3 +197,6 @@
 	return ETHEREAL_CHARGE_NONE
 
 
+=======
+	H.visible_message(span_danger("[H] stops flickering and goes back to their normal state!"))
+>>>>>>> origin/master

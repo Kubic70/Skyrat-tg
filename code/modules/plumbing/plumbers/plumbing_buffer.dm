@@ -70,13 +70,22 @@
 
 /obj/machinery/plumbing/buffer/attack_hand_secondary(mob/user, modifiers)
 	. = ..()
+	if(. == SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN)
+		return
+
+	. = SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
 
 	var/new_volume = input(user, "Enter new activation threshold", "Beepityboop", activation_volume) as num|null
 	if(!new_volume)
 		return
 
 	activation_volume = round(clamp(new_volume, 0, buffer))
+<<<<<<< HEAD
 	to_chat(user, "<span class='notice'>New activation threshold is now [activation_volume].</span>")
+=======
+	to_chat(user, span_notice("New activation threshold is now [activation_volume]."))
+	return
+>>>>>>> origin/master
 
 /obj/machinery/plumbing/buffer/attackby(obj/item/item, mob/user, params)
 	if(item.tool_behaviour == TOOL_SCREWDRIVER)

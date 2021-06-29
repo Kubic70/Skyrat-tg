@@ -3413,7 +3413,7 @@
 /turf/open/floor/iron,
 /area/construction/mining/aux_base)
 "alF" = (
-/obj/machinery/atmospherics/components/unary/tank/air,
+/obj/machinery/atmospherics/components/tank/air,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
 "alG" = (
@@ -18323,6 +18323,10 @@
 	dir = 1;
 	layer = 2.9
 	},
+<<<<<<< HEAD
+=======
+/obj/machinery/atmospherics/components/tank/toxins,
+>>>>>>> origin/master
 /turf/open/floor/iron,
 /area/maintenance/disposal/incinerator)
 "bCm" = (
@@ -22552,7 +22556,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},
-/obj/machinery/atmospherics/components/unary/tank/air{
+/obj/machinery/atmospherics/components/tank/air{
 	dir = 8
 	},
 /turf/open/floor/plating,
@@ -24627,7 +24631,7 @@
 /turf/open/floor/plating,
 /area/ai_monitored/turret_protected/aisat/atmos)
 "cui" = (
-/obj/machinery/atmospherics/components/unary/tank/air,
+/obj/machinery/atmospherics/components/tank/air,
 /turf/open/floor/plating,
 /area/ai_monitored/turret_protected/aisat/atmos)
 "cuj" = (
@@ -32508,6 +32512,21 @@
 /obj/effect/landmark/start/shaft_miner,
 /turf/open/floor/iron,
 /area/cargo/miningdock)
+<<<<<<< HEAD
+=======
+"gSD" = (
+/obj/machinery/door/airlock/public/glass{
+	name = "Dormitory"
+	},
+/obj/structure/cable,
+/turf/open/floor/iron,
+/area/commons/cryopods)
+"gSR" = (
+/obj/machinery/atmospherics/components/tank/air,
+/obj/effect/turf_decal/delivery,
+/turf/open/floor/iron/dark,
+/area/maintenance/starboard/aft)
+>>>>>>> origin/master
 "gTp" = (
 /obj/machinery/power/apc/auto_name/west,
 /obj/structure/disposalpipe/segment,
@@ -43356,6 +43375,43 @@
 /obj/effect/turf_decal/stripes/corner,
 /obj/machinery/lapvend,
 /turf/open/floor/iron,
+<<<<<<< HEAD
+=======
+/area/maintenance/starboard/fore)
+"oCt" = (
+/obj/effect/turf_decal/trimline/blue/filled/line{
+	dir = 1
+	},
+/obj/structure/noticeboard/directional/north,
+/turf/open/floor/iron/white,
+/area/medical/medbay)
+"oCz" = (
+/obj/machinery/atmospherics/components/tank/air,
+/obj/effect/turf_decal/delivery,
+/turf/open/floor/iron/dark,
+/area/maintenance/port)
+"oCM" = (
+/obj/machinery/shower{
+	dir = 1
+	},
+/obj/structure/window/reinforced/tinted{
+	dir = 8
+	},
+/obj/machinery/door/window/northleft{
+	name = "Shower Cubicle"
+	},
+/obj/item/soap/nanotrasen,
+/turf/open/floor/iron/freezer,
+/area/maintenance/starboard/fore)
+"oCP" = (
+/obj/structure/flora/tree/pine,
+/turf/open/floor/plating/asteroid/snow/icemoon,
+/area/icemoon/surface/outdoors)
+"oDj" = (
+/obj/effect/turf_decal/stripes/corner,
+/obj/machinery/lapvend,
+/turf/open/floor/iron,
+>>>>>>> origin/master
 /area/commons/locker)
 "oDA" = (
 /obj/effect/spawner/structure/window/reinforced,

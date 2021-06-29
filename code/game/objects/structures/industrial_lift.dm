@@ -25,6 +25,8 @@
 	RegisterSignal(new_lift_platform, COMSIG_PARENT_QDELETING, .proc/remove_lift_platforms)
 
 /datum/lift_master/proc/remove_lift_platforms(obj/structure/industrial_lift/old_lift_platform)
+	SIGNAL_HANDLER
+
 	if(!(old_lift_platform in lift_platforms))
 		return
 	old_lift_platform.lift_master_datum = null
@@ -229,13 +231,47 @@ GLOBAL_LIST_EMPTY(lifts)
 		destination = get_step_multiz(src, going)
 	else
 		destination = going
+<<<<<<< HEAD
+=======
+
+	if(istype(destination, /turf/closed/wall))
+		var/turf/closed/wall/C = destination
+		do_sparks(2, FALSE, C)
+		C.dismantle_wall(devastated = TRUE)
+		for(var/mob/M in urange(8, src))
+			shake_camera(M, 2, 3)
+		playsound(C, 'sound/effects/meteorimpact.ogg', 100, TRUE)
+
+>>>>>>> origin/master
 	if(going == DOWN)
 		for(var/mob/living/crushed in destination.contents)
 			to_chat(crushed, "<span class='userdanger'>You are crushed by [src]!</span>")
 			crushed.gib(FALSE,FALSE,FALSE)//the nicest kind of gibbing, keeping everything intact.
 	else if(going != UP) //can't really crush something upwards
+<<<<<<< HEAD
 		for(var/obj/structure/anchortrouble in destination.contents)
 			if(!QDELETED(anchortrouble) && anchortrouble.anchored && (!istype(anchortrouble, /obj/structure/holosign)) && anchortrouble.layer >= GAS_PUMP_LAYER) //to avoid pipes, wires, etc
+=======
+		var/atom/throw_target = get_edge_target_turf(src, turn(going, pick(45, -45))) //finds a spot to throw the victim at for daring to be hit by a tram
+		for(var/obj/structure/victimstructure in destination.contents)
+			if(QDELETED(victimstructure))
+				continue
+			if(!istype(victimstructure, /obj/structure/holosign) && victimstructure.layer >= LOW_OBJ_LAYER)
+				if(victimstructure.anchored && initial(victimstructure.anchored) == TRUE)
+					visible_message("<span class='danger'>[src] smashes through [victimstructure]!</span>")
+					victimstructure.deconstruct(FALSE)
+				else
+					visible_message("<span class='danger'>[src] violently rams [victimstructure] out of the way!</span>")
+					victimstructure.anchored = FALSE
+					victimstructure.take_damage(rand(20,25))
+					victimstructure.throw_at(throw_target, 200, 4)
+		for(var/obj/machinery/victimmachine in destination.contents)
+			if(QDELETED(victimmachine))
+				continue
+			if(istype(victimmachine, /obj/machinery/field)) //graceful break handles this scenario
+				continue
+			if(victimmachine.layer >= LOW_OBJ_LAYER) //avoids stuff that is probably flush with the ground
+>>>>>>> origin/master
 				playsound(src, 'sound/effects/bang.ogg', 50, TRUE)
 				visible_message("<span class='notice'>[src] smashes through [anchortrouble]!</span>")
 				anchortrouble.deconstruct(FALSE)

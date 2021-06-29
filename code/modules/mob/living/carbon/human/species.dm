@@ -1241,6 +1241,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	outfit_important_for_life= new()
 	outfit_important_for_life.equip(human_to_equip)
 
+<<<<<<< HEAD
 ////////
 //LIFE//
 ////////
@@ -1332,6 +1333,8 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		if(0 to NUTRITION_LEVEL_STARVING)
 			H.throw_alert("nutrition", /atom/movable/screen/alert/starving)
 
+=======
+>>>>>>> origin/master
 /datum/species/proc/update_health_hud(mob/living/carbon/human/H)
 	return FALSE
 

@@ -2016,7 +2016,7 @@
 /turf/open/floor/iron,
 /area/cargo/storage)
 "alF" = (
-/obj/machinery/atmospherics/components/unary/tank/air,
+/obj/machinery/atmospherics/components/tank/air,
 /turf/open/floor/plating,
 /area/maintenance/port/fore)
 "alO" = (
@@ -16490,8 +16490,14 @@
 /turf/open/floor/plating,
 /area/maintenance/port)
 "bdM" = (
+<<<<<<< HEAD:_maps/map_files/IceBoxStation/IceBoxStation_skyrat_old2.dmm
 /obj/item/latexballon,
 /turf/open/floor/plating,
+=======
+/obj/machinery/atmospherics/components/tank/air,
+/obj/effect/turf_decal/delivery,
+/turf/open/floor/iron/dark,
+>>>>>>> origin/master:_maps/map_files/NSSJourney/NSSJourney.dmm
 /area/maintenance/port)
 "bdN" = (
 /obj/effect/turf_decal/stripes/corner{
@@ -31778,7 +31784,7 @@
 /obj/effect/turf_decal/stripes/line{
 	dir = 5
 	},
-/obj/machinery/atmospherics/components/unary/tank/air{
+/obj/machinery/atmospherics/components/tank/air{
 	dir = 8
 	},
 /turf/open/floor/plating,
@@ -32774,8 +32780,14 @@
 	},
 /area/science/research)
 "cdR" = (
+<<<<<<< HEAD:_maps/map_files/IceBoxStation/IceBoxStation_skyrat_old2.dmm
 /obj/machinery/atmospherics/components/unary/tank/air,
 /turf/open/floor/plating,
+=======
+/obj/machinery/atmospherics/components/tank/air,
+/obj/effect/turf_decal/delivery,
+/turf/open/floor/iron/dark,
+>>>>>>> origin/master:_maps/map_files/NSSJourney/NSSJourney.dmm
 /area/maintenance/starboard/aft)
 "cdT" = (
 /obj/effect/turf_decal/stripes/line{
@@ -35663,7 +35675,7 @@
 /turf/open/floor/plating,
 /area/ai_monitored/turret_protected/aisat/atmos)
 "cui" = (
-/obj/machinery/atmospherics/components/unary/tank/air,
+/obj/machinery/atmospherics/components/tank/air,
 /turf/open/floor/plating,
 /area/ai_monitored/turret_protected/aisat/atmos)
 "cuj" = (
@@ -42943,7 +42955,24 @@
 	dir = 10
 	},
 /turf/open/floor/iron/dark,
+<<<<<<< HEAD:_maps/map_files/IceBoxStation/IceBoxStation_skyrat_old2.dmm
 /area/commons/storage/mining)
+=======
+/area/ai_monitored/command/nuke_storage)
+"hbb" = (
+/obj/machinery/atmospherics/components/tank/air{
+	dir = 4
+	},
+/turf/open/floor/plating,
+/area/security/prison)
+"hbl" = (
+/obj/effect/turf_decal/trimline/blue/filled/warning{
+	dir = 1
+	},
+/obj/structure/cable,
+/turf/open/floor/iron/white,
+/area/medical/medbay/central)
+>>>>>>> origin/master:_maps/map_files/NSSJourney/NSSJourney.dmm
 "hcB" = (
 /obj/effect/turf_decal/tile/blue{
 	dir = 1

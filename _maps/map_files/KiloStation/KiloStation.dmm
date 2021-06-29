@@ -4267,7 +4267,7 @@
 /turf/open/floor/plating/airless,
 /area/space/nearstation)
 "ajj" = (
-/obj/machinery/atmospherics/components/unary/tank/air{
+/obj/machinery/atmospherics/components/tank/air{
 	dir = 8
 	},
 /obj/effect/turf_decal/tile/neutral{
@@ -65179,6 +65179,38 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/security/prison)
+<<<<<<< HEAD
+=======
+"jBT" = (
+/obj/machinery/light_switch/directional/east,
+/obj/item/radio/intercom/directional/north,
+/obj/effect/turf_decal/tile/neutral,
+/obj/effect/turf_decal/tile/neutral{
+	dir = 8
+	},
+/obj/machinery/atmospherics/components/tank/air,
+/obj/effect/turf_decal/delivery,
+/turf/open/floor/iron/dark,
+/area/ai_monitored/turret_protected/aisat/atmos)
+"jBU" = (
+/obj/effect/decal/cleanable/dirt,
+/obj/effect/turf_decal/tile/yellow,
+/obj/effect/turf_decal/tile/yellow{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
+	dir = 4
+	},
+/obj/structure/disposalpipe/segment,
+/obj/effect/turf_decal/tile/red{
+	dir = 4
+	},
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/turf/open/floor/iron,
+/area/maintenance/disposal/incinerator)
+>>>>>>> origin/master
 "jBX" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/cable,
@@ -80520,11 +80552,25 @@
 	},
 /turf/open/floor/iron/dark,
 /area/ai_monitored/command/storage/eva)
+<<<<<<< HEAD
 "rFM" = (
 /obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
 /obj/machinery/atmospherics/pipe/smart/manifold4w/dark/visible,
 /turf/open/floor/plating{
 	icon_state = "panelscorched"
+=======
+"rFk" = (
+/obj/effect/turf_decal/stripes/line{
+	dir = 8
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/cyan/visible,
+/obj/machinery/light/directional/west,
+/turf/open/floor/engine,
+/area/engineering/supermatter/room)
+"rFl" = (
+/obj/machinery/atmospherics/components/tank/toxins{
+	dir = 4
+>>>>>>> origin/master
 	},
 /area/maintenance/disposal/incinerator)
 "rFV" = (

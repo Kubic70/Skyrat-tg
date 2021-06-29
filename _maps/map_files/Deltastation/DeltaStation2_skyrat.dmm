@@ -42105,6 +42105,7 @@
 /turf/open/floor/iron/grimy,
 /area/tcommsat/computer)
 "bSG" = (
+<<<<<<< HEAD
 /obj/structure/table,
 /obj/item/clothing/suit/straight_jacket,
 /obj/item/clothing/suit/straight_jacket,
@@ -42114,6 +42115,14 @@
 /obj/item/restraints/handcuffs,
 /turf/open/floor/iron,
 /area/security/prison)
+=======
+/obj/machinery/atmospherics/components/tank/air{
+	dir = 4
+	},
+/obj/machinery/atmospherics/pipe/smart/manifold4w/general/visible/layer4,
+/turf/open/floor/plating,
+/area/security/prison/safe)
+>>>>>>> origin/master
 "bSH" = (
 /obj/item/kirbyplants/random,
 /turf/open/floor/iron/grimy,
@@ -62711,7 +62720,7 @@
 /area/science/xenobiology)
 "cNb" = (
 /obj/effect/turf_decal/bot,
-/obj/machinery/atmospherics/components/unary/tank/air,
+/obj/machinery/atmospherics/components/tank/air,
 /turf/open/floor/iron,
 /area/science/xenobiology)
 "cNc" = (
@@ -88916,7 +88925,7 @@
 /obj/effect/turf_decal/tile/neutral{
 	dir = 8
 	},
-/obj/machinery/atmospherics/components/unary/tank/air{
+/obj/machinery/atmospherics/components/tank/air{
 	dir = 1
 	},
 /obj/machinery/firealarm/directional/west,

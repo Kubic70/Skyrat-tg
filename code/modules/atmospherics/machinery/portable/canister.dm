@@ -412,6 +412,25 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		if((10) to (5 * ONE_ATMOSPHERE))
 			. += icon(canister_overlay_file, "can-0")
 
+<<<<<<< HEAD
+=======
+/obj/machinery/portable_atmospherics/canister/proc/update_window()
+	if(!air_contents)
+		return
+	var/static/alpha_filter
+	if(!alpha_filter) // Gotta do this seperate since the icon may not be correct at world init
+		alpha_filter = filter(type="alpha", icon=icon(icon, "window-base"))
+
+	cut_overlay(window)
+	window = image(icon, icon_state="window-base", layer=FLOAT_LAYER)
+	var/list/window_overlays = list()
+	for(var/visual in air_contents.return_visuals())
+		var/image/new_visual = image(visual, layer=FLOAT_LAYER)
+		new_visual.filters = alpha_filter
+		window_overlays += new_visual
+	window.overlays = window_overlays
+	add_overlay(window)
+>>>>>>> origin/master
 
 /obj/machinery/portable_atmospherics/canister/should_atmos_process(datum/gas_mixture/air, exposed_temperature)
 	return exposed_temperature > temperature_resistance * mode

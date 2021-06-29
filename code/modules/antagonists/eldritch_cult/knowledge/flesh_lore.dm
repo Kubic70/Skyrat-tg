@@ -128,6 +128,8 @@
 			crit_wound.apply_wound(bodypart)
 
 /datum/eldritch_knowledge/flesh_grasp/proc/remove_ghoul(datum/source)
+	SIGNAL_HANDLER
+
 	var/mob/living/carbon/human/humie = source
 	spooky_scaries -= humie
 	humie.mind.remove_antag_datum(/datum/antagonist/heretic_monster)
@@ -226,6 +228,7 @@
 	user.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/shed_human_form)
 	if(!ishuman(user))
 		return
+<<<<<<< HEAD
 	var/mob/living/carbon/human/H = user
 	H.physiology.brute_mod *= 0.5
 	H.physiology.burn_mod *= 0.5
@@ -235,3 +238,17 @@
 	ghoul1.ghoul_amt *= 3
 	var/datum/eldritch_knowledge/flesh_ghoul/ghoul2 = heretic.get_knowledge(/datum/eldritch_knowledge/flesh_ghoul)
 	ghoul2.max_amt *= 3
+=======
+	var/mob/living/carbon/human/lord_of_arms = user
+	lord_of_arms.physiology.brute_mod *= 0.5
+	lord_of_arms.physiology.burn_mod *= 0.5
+	lord_of_arms.client?.give_award(/datum/award/achievement/misc/flesh_ascension, lord_of_arms)
+	var/datum/antagonist/heretic/heretic_datum = user.mind.has_antag_datum(/datum/antagonist/heretic)
+	var/datum/eldritch_knowledge/flesh_grasp/grasp_ghoul = heretic_datum.get_knowledge(/datum/eldritch_knowledge/flesh_grasp)
+	grasp_ghoul.ghoul_amt *= 3
+	var/datum/eldritch_knowledge/flesh_ghoul/better_ghoul = heretic_datum.get_knowledge(/datum/eldritch_knowledge/flesh_ghoul)
+	better_ghoul.max_amt *= 3
+
+#undef GHOUL_MAX_HEALTH
+#undef MUTE_MAX_HEALTH
+>>>>>>> origin/master

@@ -129,7 +129,17 @@ DEFINE_BITFIELD(smoothing_flags, list(
 #define SMOOTH_GROUP_CLEANABLE_DIRT S_OBJ(67) ///obj/effect/decal/cleanable/dirt
 
 #define SMOOTH_GROUP_INDUSTRIAL_LIFT S_OBJ(70) ///obj/structure/industrial_lift
+<<<<<<< HEAD
 
 #define SMOOTH_GROUP_SHUTTERS S_OBJ(71) //SKYRAT EDIT ADDITION - ASSAULTOPS
+=======
+
+#define SMOOTH_GROUP_GAS_TANK S_OBJ(71)
+
+//SKYRAT EDIT ADDITION
+#define SMOOTH_GROUP_SHUTTERS S_OBJ(72)
+
+#define SMOOTH_GROUP_WATER S_OBJ(73) ///obj/effect/abstract/liquid_turf
+>>>>>>> origin/master
 
 #define MAX_S_OBJ SMOOTH_GROUP_SHUTTERS //Always match this value with the one above it. //SKYRAT EDIT CHANGE - ASSAULTOPS - ORIGINAL: #define MAX_S_OBJ SMOOTH_GROUP_SHUTTERS

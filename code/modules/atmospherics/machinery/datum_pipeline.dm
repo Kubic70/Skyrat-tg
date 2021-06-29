@@ -246,6 +246,7 @@
 		stack_trace("[src] has one or more null gas mixtures, which may cause bugs. Null mixtures will not be considered in reconcile_air().")
 		return removeNullsFromList(.)
 
+/// Called when the pipenet needs to update and mix together all the air mixes
 /datum/pipeline/proc/reconcile_air()
 	var/list/datum/gas_mixture/gas_mixture_list = list()
 	var/list/datum/pipeline/pipeline_list = list()
@@ -257,6 +258,7 @@
 			continue
 		gas_mixture_list += pipeline.other_airs
 		gas_mixture_list += pipeline.air
+<<<<<<< HEAD
 		for(var/atmosmch in pipeline.other_atmosmch)
 			if (istype(atmosmch, /obj/machinery/atmospherics/components/binary/valve))
 				var/obj/machinery/atmospherics/components/binary/valve/considered_valve = atmosmch
@@ -267,6 +269,13 @@
 				var/obj/machinery/atmospherics/components/unary/portables_connector/considered_connector = atmosmch
 				if(considered_connector.connected_device)
 					gas_mixture_list += considered_connector.connected_device.air_contents
+=======
+		for(var/obj/machinery/atmospherics/components/atmosmch as anything in pipeline.other_atmosmch)
+			if(!atmosmch.custom_reconcilation)
+				continue
+			pipeline_list |= atmosmch.returnPipenetsForReconcilation(src)
+			gas_mixture_list |= atmosmch.returnAirsForReconcilation(src)
+>>>>>>> origin/master
 
 	var/total_thermal_energy = 0
 	var/total_heat_capacity = 0
@@ -274,8 +283,7 @@
 
 	var/list/total_gases = total_gas_mixture.gases
 
-	for(var/mixture in gas_mixture_list)
-		var/datum/gas_mixture/gas_mixture = mixture
+	for(var/datum/gas_mixture/gas_mixture as anything in gas_mixture_list)
 		total_gas_mixture.volume += gas_mixture.volume
 
 		// This is sort of a combined merge + heat_capacity calculation

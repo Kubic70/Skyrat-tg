@@ -401,8 +401,13 @@
 	if(Adjacent(user))
 		var/minor
 		if(registered_name && registered_age && registered_age < AGE_MINOR)
+<<<<<<< HEAD
 			minor = " <b>[registered_age]</b>"
 		user.visible_message("<span class='notice'>[user] shows you: [icon2html(src, viewers(user))] [src.name][minor].</span>", "<span class='notice'>You show \the [src.name][minor].</span>")
+=======
+			minor = " <b>[registered_age]</b>" //SKYRAT EDIT CHANGE
+		user.visible_message(span_notice("[user] shows you: [icon2html(src, viewers(user))] [src.name][minor]."), span_notice("You show \the [src.name][minor]."))
+>>>>>>> origin/master
 	add_fingerprint(user)
 
 /obj/item/card/id/vv_edit_var(var_name, var_value)
