@@ -58,11 +58,7 @@
 	name = "White Eyepatch"
 	path = /obj/item/clothing/glasses/eyepatch/white
 
-/datum/loadout_item/glasses/biker
-	name = "Biker Goggles"
-	path = /obj/item/clothing/glasses/biker
-
-/datum/loadout_item/glasses/medicpatch
+/datum/loadout_item/glasses/medic
 	name = "Medical Eyepatch"
 	path = /obj/item/clothing/glasses/hud/med/eyepatchsr
 	restricted_roles = list("Medical Doctor", "Chief Medical Officer", "Geneticist", "Chemist", "Virologist", "Paramedic")

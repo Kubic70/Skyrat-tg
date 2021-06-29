@@ -36,59 +36,15 @@
 
 /obj/structure/geyser/plunger_act(obj/item/plunger/P, mob/living/user, _reinforced)
 	if(!_reinforced)
-		to_chat(user, span_warning("The [P.name] isn't strong enough!"))
+		to_chat(user, "<span class='warning'>The [P.name] isn't strong enough!</span>")
 		return
 	if(activated)
-		to_chat(user, span_warning("The [name] is already active!"))
+		to_chat(user, "<span class='warning'>The [name] is already active!</span>")
 		return
 
-	to_chat(user, span_notice("You start vigorously plunging [src]!"))
+	to_chat(user, "<span class='notice'>You start vigorously plunging [src]!</span>")
 	if(do_after(user, 50 * P.plunge_mod, target = src) && !activated)
 		start_chemming()
-
-/obj/structure/geyser/attackby(obj/item/item, mob/user, params)
-	if(!istype(item, /obj/item/mining_scanner) && !istype(item, /obj/item/t_scanner/adv_mining_scanner))
-		return ..() //this runs the plunger code
-
-	if(discovered)
-		to_chat(user, span_warning("This geyser has already been discovered!"))
-		return
-
-	to_chat(user, span_notice("You discovered the geyser and mark it on the GPS system!"))
-	if(discovery_message)
-		to_chat(user, discovery_message)
-
-	discovered = TRUE
-	if(true_name)
-		name = true_name
-
-	AddComponent(/datum/component/gps, true_name) //put it on the gps so miners can mark it and chemists can profit off of it
-
-	if(isliving(user))
-		var/mob/living/living = user
-
-		var/obj/item/card/id/card = living.get_idcard()
-		if(card)
-			to_chat(user, span_notice("[point_value] mining points have been paid out!"))
-			card.mining_points += point_value
-
-/obj/structure/geyser/wittel
-	reagent_id = /datum/reagent/wittel
-	point_value = 250
-	true_name = "wittel geyser"
-	discovery_message = "It's a rare wittel geyser! This could be very powerful in the right hands... "
-
-/obj/structure/geyser/plasma_oxide
-	reagent_id = /datum/reagent/plasma_oxide
-	true_name = "plasma-oxide geyser"
-
-/obj/structure/geyser/protozine
-	reagent_id = /datum/reagent/medicine/omnizine/protozine
-	true_name = "protozine geyser"
-
-/obj/structure/geyser/hollowwater
-	reagent_id = /datum/reagent/water/hollowwater
-	true_name = "hollow water geyser"
 
 /obj/structure/geyser/random
 	erupting_state = null
@@ -138,7 +94,7 @@
 		var/mob/living/carbon/H = hit_atom
 		if(!H.wear_mask)
 			H.equip_to_slot_if_possible(src, ITEM_SLOT_MASK)
-			H.visible_message(span_warning("The plunger slams into [H]'s face!"), span_warning("The plunger suctions to your face!"))
+			H.visible_message("<span class='warning'>The plunger slams into [H]'s face!</span>", "<span class='warning'>The plunger suctions to your face!</span>")
 
 /obj/item/plunger/attack_self(mob/user)
 	. = ..()
@@ -147,10 +103,10 @@
 
 	if(!layer_mode)
 		icon_state = initial(icon_state)
-		to_chat(user, span_notice("You set the plunger to 'Plunger Mode'."))
+		to_chat(user, "<span class='notice'>You set the plunger to 'Plunger Mode'.</span>")
 	else
 		icon_state = layer_mode_sprite
-		to_chat(user, span_notice("You set the plunger to 'Layer Mode'."))
+		to_chat(user, "<span class='notice'>You set the plunger to 'Layer Mode'.</span>")
 
 	playsound(src, 'sound/machines/click.ogg', 10, TRUE)
 

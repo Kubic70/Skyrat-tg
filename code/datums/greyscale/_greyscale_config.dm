@@ -1,6 +1,3 @@
-#define MAX_SANE_LAYERS 50
-
-/// A datum tying together a greyscale configuration and dmi file. Required for using GAGS and handles the code interactions.
 /datum/greyscale_config
 	/// Reference to the json config file
 	var/json_config
@@ -44,10 +41,9 @@
 		icon_file = file(string_icon_file)
 
 	var/list/raw = json_decode(file2text(json_config))
-	ReadIconStateConfiguration(raw)
-
-	if(!length(icon_states))
-		CRASH("The json configuration [DebugName()] doesn't have any icon states.")
+	layers = ReadLayersFromJson(raw["layers"])
+	if(!length(layers))
+		CRASH("The json configuration [DebugName()] is missing any layers.")
 
 	icon_cache = list()
 
@@ -55,20 +51,7 @@
 
 /// Gets the name used for debug purposes
 /datum/greyscale_config/proc/DebugName()
-	var/display_name = name || "MISSING_NAME"
-	return "[display_name] ([icon_file]|[json_config])"
-
-/// Takes the json icon state configuration and puts it into a more processed format
-/datum/greyscale_config/proc/ReadIconStateConfiguration(list/data)
-	icon_states = list()
-	for(var/state in data)
-		var/list/raw_layers = data[state]
-		if(!length(raw_layers))
-			stack_trace("The json configuration [DebugName()] for icon state '[state]' is missing any layers.")
-			continue
-		if(icon_states[state])
-			stack_trace("The json configuration [DebugName()] has a duplicate icon state '[state]' and is being overriden.")
-		icon_states[state] = ReadLayersFromJson(raw_layers)
+	return "([icon_file]|[json_config])"
 
 /// Takes the json layers configuration and puts it into a more processed format
 /datum/greyscale_config/proc/ReadLayersFromJson(list/data)
@@ -79,8 +62,8 @@
 	if(!islist(data[1]))
 		var/layer_type = SSgreyscale.layer_types[data["type"]]
 		if(!layer_type)
-			CRASH("An unknown layer type was specified in the json of greyscale configuration [DebugName()]: [data["layer_type"]]")
-		return new layer_type(icon_file, data.Copy()) // We don't want anything in there touching our version of the data
+			CRASH("An unknown layer type was specified in greyscale configuration json: [data["layer_type"]]")
+		return new layer_type(icon_file, data)
 	var/list/output = list()
 	for(var/list/group as anything in data)
 		output += ReadLayerGroup(group)
@@ -90,10 +73,6 @@
 
 /// Reads layer configurations to take out some useful overall information
 /datum/greyscale_config/proc/ReadMetadata()
-	var/icon/source = icon(icon_file)
-	height = source.Height()
-	width = source.Width()
-
 	var/list/datum/greyscale_layer/all_layers = list()
 	var/list/to_process = list(layers)
 	while(length(to_process))
@@ -104,22 +83,10 @@
 		else
 			all_layers += current
 
-	if(length(all_layers) > MAX_SANE_LAYERS)
-		stack_trace("[DebugName()] has [length(all_layers)] layers which is larger than the max of [MAX_SANE_LAYERS].")
-
 	var/list/color_groups = list()
-	var/largest_id = 0
 	for(var/datum/greyscale_layer/layer as anything in all_layers)
 		for(var/id in layer.color_ids)
-			if(!isnum(id))
-				continue
-			largest_id = max(id, largest_id)
 			color_groups["[id]"] = TRUE
-
-	for(var/i in 1 to largest_id)
-		if(color_groups["[i]"])
-			continue
-		stack_trace("Color Ids are required to be sequential and start from 1. [DebugName()] has a max id of [largest_id] but is missing [i].")
 
 	expected_colors = length(color_groups)
 
@@ -152,10 +119,9 @@
 
 		// These are so we can see the result of every step of the process in the preview ui
 		if(render_steps)
-			var/list/icon_data = list()
-			render_steps[icon(layer_icon)] = icon_data
-			icon_data["config_name"] = name
-			icon_data["result"] = icon(new_icon)
+			var/icon/new_icon_copy = new(new_icon)
+			var/icon/layer_icon_copy = new(layer_icon)
+			render_steps[layer_icon_copy] = icon(new_icon_copy)
 	return new_icon
 
 /datum/greyscale_config/proc/GenerateDebug(list/colors)
@@ -168,5 +134,3 @@
 
 	output["icon"] = GenerateLayerGroup(colors, layers, debug_steps)
 	return output
-
-#undef MAX_SANE_LAYERS

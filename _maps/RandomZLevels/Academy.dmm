@@ -87,7 +87,7 @@
 /turf/open/floor/carpet,
 /area/awaymission/academy/headmaster)
 "ax" = (
-/obj/structure/chair/stool/directional/east,
+/obj/structure/chair/stool,
 /turf/open/floor/carpet,
 /area/awaymission/academy/headmaster)
 "ay" = (
@@ -509,7 +509,7 @@
 /turf/open/floor/iron/showroomfloor,
 /area/awaymission/academy/headmaster)
 "ch" = (
-/obj/structure/chair/stool/directional/east,
+/obj/structure/chair/stool,
 /obj/machinery/light/small{
 	dir = 4
 	},
@@ -546,7 +546,7 @@
 /turf/open/floor/plating,
 /area/awaymission/academy/headmaster)
 "cp" = (
-/obj/structure/chair/stool/directional/east,
+/obj/structure/chair/stool,
 /turf/open/floor/iron/showroomfloor,
 /area/awaymission/academy/headmaster)
 "cr" = (
@@ -841,7 +841,7 @@
 /turf/open/floor/iron,
 /area/awaymission/academy/classrooms)
 "du" = (
-/obj/structure/chair/stool/directional/south,
+/obj/structure/chair/stool,
 /turf/open/floor/iron,
 /area/awaymission/academy/classrooms)
 "dv" = (
@@ -1337,10 +1337,6 @@
 /obj/structure/window/reinforced,
 /turf/open/floor/iron,
 /area/awaymission/academy/classrooms)
-"fm" = (
-/obj/structure/chair/stool/directional/west,
-/turf/open/floor/carpet,
-/area/awaymission/academy/headmaster)
 "fn" = (
 /obj/structure/table,
 /obj/machinery/microwave,
@@ -1804,7 +1800,7 @@
 /turf/open/floor/engine/cult,
 /area/awaymission/academy/academycellar)
 "gO" = (
-/obj/structure/chair/stool/directional/south,
+/obj/structure/chair/stool,
 /obj/effect/turf_decal/tile/neutral{
 	dir = 1
 	},
@@ -1866,7 +1862,7 @@
 /turf/open/floor/iron/white/side,
 /area/awaymission/academy/classrooms)
 "hb" = (
-/obj/structure/chair/stool/directional/south,
+/obj/structure/chair/stool,
 /turf/open/floor/iron/white/side,
 /area/awaymission/academy/classrooms)
 "hc" = (
@@ -3330,65 +3326,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating,
 /area/awaymission/academy/academyaft)
-"Mj" = (
-/obj/machinery/light/directional/west,
-/obj/machinery/portable_atmospherics/pump,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/turf/open/floor/iron/dark,
-/area/awaymission/academy/headmaster)
-"Mm" = (
-/obj/machinery/light/directional/north,
-/turf/open/floor/light,
-/area/awaymission/academy/academyengine)
-"MI" = (
-/obj/machinery/light/directional/east,
-/turf/open/floor/carpet,
-/area/awaymission/academy/headmaster)
-"MK" = (
-/obj/machinery/light/directional/west,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 1
-	},
-/obj/effect/turf_decal/tile/neutral,
-/obj/effect/turf_decal/tile/neutral{
-	dir = 4
-	},
-/obj/effect/turf_decal/tile/neutral{
-	dir = 8
-	},
-/turf/open/floor/iron/dark,
-/area/awaymission/academy/classrooms)
-"NN" = (
-/obj/structure/chair/stool/directional/west,
-/turf/open/floor/iron,
-/area/awaymission/academy/classrooms)
-"Of" = (
-/obj/structure/noticeboard/directional/north,
-/turf/open/floor/wood,
-/area/awaymission/academy/headmaster)
-"Oh" = (
-/obj/structure/noticeboard/directional/south,
-/obj/item/paper/fluff/awaymissions/academy/class/biology,
-/turf/open/floor/iron/grimy,
-/area/awaymission/academy/classrooms)
-"PY" = (
-/obj/machinery/light/directional/north,
-/turf/open/floor/iron,
-/area/awaymission/academy/academyengine)
-"Qo" = (
-/obj/machinery/light/small/directional/south,
-/obj/structure/cable,
-/turf/open/floor/carpet,
-/area/awaymission/academy/headmaster)
 "Tk" = (
 /obj/machinery/door/airlock/maintenance_hatch,
 /obj/effect/mapping_helpers/airlock/cyclelink_helper{
@@ -12783,9 +12720,9 @@ ab
 aj
 al
 ah
-fm
+ax
 ah
-fm
+ax
 ah
 ah
 ah
@@ -13199,11 +13136,11 @@ cl
 cd
 as
 di
-NN
+du
 bz
-NN
+du
 bz
-NN
+du
 eo
 bE
 eD
@@ -13589,9 +13526,9 @@ cd
 cV
 as
 di
-NN
+du
 bz
-NN
+du
 bz
 bz
 eo

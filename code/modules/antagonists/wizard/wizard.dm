@@ -157,7 +157,7 @@
 	..() //SKYRAT EDIT ADDITION - WIZARD CHANGES
 
 /datum/antagonist/wizard/farewell()
-	to_chat(owner, span_userdanger("You have been brainwashed! You are no longer a wizard!"))
+	to_chat(owner, "<span class='userdanger'>You have been brainwashed! You are no longer a wizard!</span>")
 
 /datum/antagonist/wizard/proc/rename_wizard()
 	set waitfor = FALSE
@@ -245,7 +245,6 @@
 //Random event wizard
 /datum/antagonist/wizard/apprentice/imposter
 	name = "Wizard Imposter"
-	show_in_antagpanel = FALSE
 	allow_rename = FALSE
 	move_to_lair = FALSE
 
@@ -278,7 +277,6 @@
 
 /datum/antagonist/wizard/academy
 	name = "Academy Teacher"
-	show_in_antagpanel = FALSE
 	outfit_type = /datum/outfit/wizard/academy
 	move_to_lair = FALSE
 
@@ -311,16 +309,16 @@
 	var/wizardwin = 1
 	for(var/datum/objective/objective in objectives)
 		if(objective.check_completion())
-			parts += "<B>Objective #[count]</B>: [objective.explanation_text] [span_greentext("Success!")]"
+			parts += "<B>Objective #[count]</B>: [objective.explanation_text] <span class='greentext'>Success!</span>"
 		else
-			parts += "<B>Objective #[count]</B>: [objective.explanation_text] [span_redtext("Fail.")]"
+			parts += "<B>Objective #[count]</B>: [objective.explanation_text] <span class='redtext'>Fail.</span>"
 			wizardwin = 0
 		count++
 
 	if(wizardwin)
-		parts += span_greentext("The wizard was successful!")
+		parts += "<span class='greentext'>The wizard was successful!</span>"
 	else
-		parts += span_redtext("The wizard has failed!")
+		parts += "<span class='redtext'>The wizard has failed!</span>"
 
 	if(owner.spell_list.len>0)
 		parts += "<B>[owner.name] used the following spells: </B>"

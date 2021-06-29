@@ -34,25 +34,12 @@
 	var/genetic = FALSE
 	icon_state = "stickyweb1"
 
-/obj/structure/spider/stickyweb/attack_hand(mob/user, list/modifiers)
-	.= ..()
-	if(.)
-		return
-	if(!HAS_TRAIT(user,TRAIT_WEB_WEAVER))
-		return
-	user.visible_message(span_notice("[user] begins weaving [src] into cloth."), span_notice("You begin weaving [src] into cloth."))
-	if(!do_after(user, 2 SECONDS))
-		return
-	qdel(src)
-	var/obj/item/stack/sheet/cloth/woven_cloth = new /obj/item/stack/sheet/cloth
-	user.put_in_hands(woven_cloth)
-
 /obj/structure/spider/stickyweb/Initialize()
 	if(prob(50))
 		icon_state = "stickyweb2"
 	. = ..()
 
-/obj/structure/spider/stickyweb/CanAllowThrough(atom/movable/mover, border_dir)
+/obj/structure/spider/stickyweb/CanAllowThrough(atom/movable/mover, turf/target)
 	. = ..()
 	if(genetic)
 		return
@@ -62,7 +49,7 @@
 		if(istype(mover.pulledby, /mob/living/simple_animal/hostile/poison/giant_spider))
 			return TRUE
 		if(prob(50))
-			to_chat(mover, span_danger("You get stuck in \the [src] for a moment."))
+			to_chat(mover, "<span class='danger'>You get stuck in \the [src] for a moment.</span>")
 			return FALSE
 	else if(istype(mover, /obj/projectile))
 		return prob(30)
@@ -75,7 +62,7 @@
 	allowed_mob = allowedmob
 	. = ..()
 
-/obj/structure/spider/stickyweb/genetic/CanAllowThrough(atom/movable/mover, border_dir)
+/obj/structure/spider/stickyweb/genetic/CanAllowThrough(atom/movable/mover, turf/target)
 	. = ..() //this is the normal spider web return aka a spider would make this TRUE
 	if(mover == allowed_mob)
 		return TRUE
@@ -83,7 +70,7 @@
 		if(mover.pulledby == allowed_mob)
 			return TRUE
 		if(prob(50))
-			to_chat(mover, span_danger("You get stuck in \the [src] for a moment."))
+			to_chat(mover, "<span class='danger'>You get stuck in \the [src] for a moment.</span>")
 			return FALSE
 	else if(istype(mover, /obj/projectile))
 		return prob(30)
@@ -149,7 +136,7 @@
 
 		var/datum/radial_menu_choice/option = new
 		option.image = image(icon = initial(spider.icon), icon_state = initial(spider.icon_state))
-		option.info = span_boldnotice("[initial(spider.menu_description)]")
+		option.info = "<span class='boldnotice'>[initial(spider.menu_description)]</span>"
 
 		display_spiders[initial(spider.name)] = option
 
@@ -248,7 +235,7 @@
 		return
 
 	if(prob(50))
-		audible_message(span_hear("You hear something scampering through the ventilation ducts."))
+		audible_message("<span class='hear'>You hear something scampering through the ventilation ducts.</span>")
 
 	addtimer(CALLBACK(src, .proc/finish_vent_move, exit_vent), travel_time)
 
@@ -276,7 +263,7 @@
 			var/obj/machinery/atmospherics/components/unary/vent_pump/exit_vent = pick(vents)
 			if(prob(50))
 				visible_message("<B>[src] scrambles into the ventilation ducts!</B>", \
-								span_hear("You hear something scampering through the ventilation ducts."))
+								"<span class='hear'>You hear something scampering through the ventilation ducts.</span>")
 
 			addtimer(CALLBACK(src, .proc/vent_move, exit_vent), rand(20,60))
 
@@ -288,7 +275,7 @@
 			var/target_atom = pick(nearby)
 			walk_to(src, target_atom)
 			if(prob(40))
-				src.visible_message(span_notice("\The [src] skitters[pick(" away"," around","")]."))
+				src.visible_message("<span class='notice'>\The [src] skitters[pick(" away"," around","")].</span>")
 	else if(prob(10))
 		//ventcrawl!
 		for(var/obj/machinery/atmospherics/components/unary/vent_pump/v in view(7,src))
@@ -323,8 +310,8 @@
 	var/breakout_time = 600
 	user.changeNext_move(CLICK_CD_BREAKOUT)
 	user.last_special = world.time + CLICK_CD_BREAKOUT
-	to_chat(user, span_notice("You struggle against the tight bonds... (This will take about [DisplayTimeText(breakout_time)].)"))
-	visible_message(span_notice("You see something struggling and writhing in \the [src]!"))
+	to_chat(user, "<span class='notice'>You struggle against the tight bonds... (This will take about [DisplayTimeText(breakout_time)].)</span>")
+	visible_message("<span class='notice'>You see something struggling and writhing in \the [src]!</span>")
 	if(do_after(user,(breakout_time), target = src))
 		if(!user || user.stat != CONSCIOUS || user.loc != src)
 			return
@@ -332,7 +319,7 @@
 
 /obj/structure/spider/cocoon/Destroy()
 	var/turf/T = get_turf(src)
-	src.visible_message(span_warning("\The [src] splits open."))
+	src.visible_message("<span class='warning'>\The [src] splits open.</span>")
 	for(var/atom/movable/A in contents)
 		A.forceMove(T)
 	return ..()

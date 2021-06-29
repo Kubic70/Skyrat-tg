@@ -29978,9 +29978,6 @@
 /obj/machinery/light/small{
 	dir = 4
 	},
-/obj/effect/turf_decal/vg_decals/atmos/plasma{
-	dir = 8
-	},
 /turf/open/floor/engine/plasma,
 /area/engineering/atmos)
 "eSn" = (
@@ -35093,42 +35090,10 @@
 /obj/structure/fluff/tram_rail,
 /turf/open/openspace,
 /area/hallway/primary/tram/center)
-"gWb" = (
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
-	dir = 8
-	},
-/turf/open/floor/iron/dark,
-/area/security/prison)
-"gWt" = (
-/obj/machinery/door/airlock/security{
-	name = "Permanent Cell 3"
-	},
-/obj/effect/turf_decal/trimline/red/filled/line{
-	dir = 4
-	},
-/obj/effect/turf_decal/trimline/red/filled/line{
-	dir = 8
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron,
-/area/security/prison/safe)
-"gWE" = (
-/obj/machinery/door/airlock/security{
-	name = "Permanent Cell 7"
-	},
-/obj/effect/turf_decal/trimline/red/filled/line{
-	dir = 4
-	},
-/obj/effect/turf_decal/trimline/red/filled/line{
-	dir = 8
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4,
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2,
-/obj/effect/decal/cleanable/dirt,
-/turf/open/floor/iron,
-/area/security/prison/safe)
+"gWm" = (
+/obj/machinery/portable_atmospherics/canister/air,
+/turf/open/floor/engine/air,
+/area/engineering/atmos)
 "gXl" = (
 /turf/closed/wall/r_wall,
 /area/construction/mining/aux_base)
@@ -43580,19 +43545,14 @@
 	},
 /turf/open/floor/engine,
 /area/science/xenobiology)
-"kWo" = (
-/obj/effect/turf_decal/trimline/neutral/filled/line{
-	dir = 1
-	},
-/obj/machinery/atmospherics/pipe/smart/manifold4w/scrubbers/hidden/layer2{
-	dir = 8
-	},
-/obj/structure/disposalpipe/segment{
+"kWq" = (
+/obj/effect/turf_decal/sand/plating,
+/obj/structure/cable,
+/obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden/layer4{
 	dir = 4
 	},
-/obj/machinery/vending/dorms,
-/turf/open/floor/iron,
-/area/commons/dorms)
+/turf/open/floor/plating/airless,
+/area/mine/explored)
 "kWz" = (
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 10
@@ -44437,7 +44397,7 @@
 /turf/open/floor/plating,
 /area/maintenance/port/central)
 "lpr" = (
-/obj/machinery/atmospherics/miner/oxygen,
+/obj/machinery/portable_atmospherics/canister/oxygen,
 /turf/open/floor/engine/o2,
 /area/engineering/atmos)
 "lpF" = (
@@ -50647,7 +50607,7 @@
 /turf/open/floor/iron,
 /area/cargo/miningdock)
 "olj" = (
-/obj/machinery/atmospherics/miner/toxins,
+/obj/machinery/portable_atmospherics/canister/toxins,
 /turf/open/floor/engine/plasma,
 /area/engineering/atmos)
 "ols" = (
@@ -51103,9 +51063,6 @@
 /area/ai_monitored/turret_protected/aisat_interior)
 "oxX" = (
 /obj/machinery/light/small,
-/obj/effect/turf_decal/vg_decals/atmos/air{
-	dir = 1
-	},
 /turf/open/floor/engine/air,
 /area/engineering/atmos)
 "oyj" = (
@@ -55954,7 +55911,7 @@
 /turf/open/floor/iron,
 /area/hallway/primary/tram/center)
 "qEi" = (
-/obj/machinery/atmospherics/miner/n2o,
+/obj/machinery/portable_atmospherics/canister/nitrous_oxide,
 /turf/open/floor/engine/n2o,
 /area/engineering/atmos)
 "qEz" = (
@@ -58507,9 +58464,6 @@
 /area/command/gateway)
 "rLX" = (
 /obj/machinery/light/small,
-/obj/effect/turf_decal/vg_decals/atmos/oxygen{
-	dir = 1
-	},
 /turf/open/floor/engine/o2,
 /area/engineering/atmos)
 "rMi" = (
@@ -60133,9 +60087,6 @@
 "sxN" = (
 /obj/machinery/light/small{
 	dir = 4
-	},
-/obj/effect/turf_decal/vg_decals/atmos/carbon_dioxide{
-	dir = 8
 	},
 /turf/open/floor/engine/co2,
 /area/engineering/atmos)
@@ -64657,9 +64608,6 @@
 /area/hallway/primary/tram/center)
 "usv" = (
 /obj/machinery/light/small,
-/obj/effect/turf_decal/vg_decals/atmos/nitrogen{
-	dir = 1
-	},
 /turf/open/floor/engine/n2,
 /area/engineering/atmos)
 "usM" = (
@@ -64951,9 +64899,6 @@
 "uAn" = (
 /obj/machinery/light/small{
 	dir = 4
-	},
-/obj/effect/turf_decal/vg_decals/atmos/mix{
-	dir = 8
 	},
 /turf/open/floor/engine/vacuum,
 /area/engineering/atmos)
@@ -70592,9 +70537,6 @@
 /obj/machinery/light/small{
 	dir = 4
 	},
-/obj/effect/turf_decal/vg_decals/atmos/nitrous_oxide{
-	dir = 8
-	},
 /turf/open/floor/engine/n2o,
 /area/engineering/atmos)
 "xeA" = (
@@ -71040,20 +70982,6 @@
 /obj/structure/ladder,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/aisat_interior)
-"xnh" = (
-/obj/structure/chair/pew/left{
-	dir = 4
-	},
-/obj/effect/landmark/start/hangover,
-/turf/open/floor/iron/chapel{
-	dir = 8
-	},
-/area/service/chapel)
-"xnt" = (
-/obj/machinery/ammo_workbench,
-/obj/effect/turf_decal/bot,
-/turf/open/floor/iron/showroomfloor,
-/area/security/office)
 "xnD" = (
 /obj/effect/decal/cleanable/dirt,
 /obj/structure/disposalpipe/segment{
@@ -71844,7 +71772,7 @@
 /turf/open/floor/engine/air,
 /area/engineering/atmos)
 "xFX" = (
-/obj/machinery/atmospherics/miner/carbon_dioxide,
+/obj/machinery/portable_atmospherics/canister/carbon_dioxide,
 /turf/open/floor/engine/co2,
 /area/engineering/atmos)
 "xGb" = (
@@ -72368,7 +72296,7 @@
 /turf/open/floor/plating,
 /area/maintenance/solars/starboard)
 "xPD" = (
-/obj/machinery/atmospherics/miner/nitrogen,
+/obj/machinery/portable_atmospherics/canister/nitrogen,
 /turf/open/floor/engine/n2,
 /area/engineering/atmos)
 "xPR" = (
@@ -108986,7 +108914,7 @@ tOl
 jwD
 ntZ
 tyN
-che
+gWm
 oxX
 iCR
 ajc
@@ -157520,7 +157448,7 @@ awF
 anG
 anG
 anG
-kWo
+veH
 hCH
 asB
 akE

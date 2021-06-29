@@ -19,10 +19,10 @@
 
 /datum/surgery_step/incise/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if ishuman(target)
-		var/mob/living/carbon/human/human_target = target
-		if (!(NOBLOOD in human_target.dna.species.species_traits))
-			display_results(user, target, span_notice("Blood pools around the incision in [human_target]'s [parse_zone(target_zone)]."),
-				span_notice("Blood pools around the incision in [human_target]'s [parse_zone(target_zone)]."),
+		var/mob/living/carbon/human/H = target
+		if (!(NOBLOOD in H.dna.species.species_traits))
+			display_results(user, target, "<span class='notice'>Blood pools around the incision in [H]'s [parse_zone(target_zone)].</span>",
+				"<span class='notice'>Blood pools around the incision in [H]'s [parse_zone(target_zone)].</span>",
 				"")
 			var/obj/item/bodypart/BP = target.get_bodypart(target_zone)
 			if(BP)
@@ -30,9 +30,9 @@
 	return ..()
 
 /datum/surgery_step/incise/nobleed/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	display_results(user, target, span_notice("You begin to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]..."),
-		span_notice("[user] begins to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]."),
-		span_notice("[user] begins to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]."))
+	display_results(user, target, "<span class='notice'>You begin to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)]...</span>",
+		"<span class='notice'>[user] begins to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)].</span>",
+		"<span class='notice'>[user] begins to <i>carefully</i> make an incision in [target]'s [parse_zone(target_zone)].</span>")
 
 //clamp bleeders
 /datum/surgery_step/clamp_bleeders
@@ -41,9 +41,9 @@
 	time = 24
 
 /datum/surgery_step/clamp_bleeders/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	display_results(user, target, span_notice("You begin to clamp bleeders in [target]'s [parse_zone(target_zone)]..."),
-		span_notice("[user] begins to clamp bleeders in [target]'s [parse_zone(target_zone)]."),
-		span_notice("[user] begins to clamp bleeders in [target]'s [parse_zone(target_zone)]."))
+	display_results(user, target, "<span class='notice'>You begin to clamp bleeders in [target]'s [parse_zone(target_zone)]...</span>",
+		"<span class='notice'>[user] begins to clamp bleeders in [target]'s [parse_zone(target_zone)].</span>",
+		"<span class='notice'>[user] begins to clamp bleeders in [target]'s [parse_zone(target_zone)].</span>")
 
 /datum/surgery_step/clamp_bleeders/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	if(locate(/datum/surgery_step/saw) in surgery.steps)
@@ -62,9 +62,9 @@
 	time = 24
 
 /datum/surgery_step/retract_skin/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	display_results(user, target, span_notice("You begin to retract the skin in [target]'s [parse_zone(target_zone)]..."),
-		span_notice("[user] begins to retract the skin in [target]'s [parse_zone(target_zone)]."),
-		span_notice("[user] begins to retract the skin in [target]'s [parse_zone(target_zone)]."))
+	display_results(user, target, "<span class='notice'>You begin to retract the skin in [target]'s [parse_zone(target_zone)]...</span>",
+		"<span class='notice'>[user] begins to retract the skin in [target]'s [parse_zone(target_zone)].</span>",
+		"<span class='notice'>[user] begins to retract the skin in [target]'s [parse_zone(target_zone)].</span>")
 
 
 
@@ -76,9 +76,9 @@
 	time = 24
 
 /datum/surgery_step/close/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	display_results(user, target, span_notice("You begin to mend the incision in [target]'s [parse_zone(target_zone)]..."),
-		span_notice("[user] begins to mend the incision in [target]'s [parse_zone(target_zone)]."),
-		span_notice("[user] begins to mend the incision in [target]'s [parse_zone(target_zone)]."))
+	display_results(user, target, "<span class='notice'>You begin to mend the incision in [target]'s [parse_zone(target_zone)]...</span>",
+		"<span class='notice'>[user] begins to mend the incision in [target]'s [parse_zone(target_zone)].</span>",
+		"<span class='notice'>[user] begins to mend the incision in [target]'s [parse_zone(target_zone)].</span>")
 
 /datum/surgery_step/close/tool_check(mob/user, obj/item/tool)
 	if(implement_type == TOOL_WELDER || implement_type == /obj/item)
@@ -117,9 +117,9 @@
 
 /datum/surgery_step/saw/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results)
 	target.apply_damage(50, BRUTE, "[target_zone]", wound_bonus=CANT_WOUND)
-	display_results(user, target, span_notice("You saw [target]'s [parse_zone(target_zone)] open."),
-		span_notice("[user] saws [target]'s [parse_zone(target_zone)] open!"),
-		span_notice("[user] saws [target]'s [parse_zone(target_zone)] open!"))
+	display_results(user, target, "<span class='notice'>You saw [target]'s [parse_zone(target_zone)] open.</span>",
+		"<span class='notice'>[user] saws [target]'s [parse_zone(target_zone)] open!</span>",
+		"<span class='notice'>[user] saws [target]'s [parse_zone(target_zone)] open!</span>")
 	return ..()
 
 //drill bone
@@ -129,12 +129,12 @@
 	time = 30
 
 /datum/surgery_step/drill/preop(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery)
-	display_results(user, target, span_notice("You begin to drill into the bone in [target]'s [parse_zone(target_zone)]..."),
-		span_notice("[user] begins to drill into the bone in [target]'s [parse_zone(target_zone)]."),
-		span_notice("[user] begins to drill into the bone in [target]'s [parse_zone(target_zone)]."))
+	display_results(user, target, "<span class='notice'>You begin to drill into the bone in [target]'s [parse_zone(target_zone)]...</span>",
+		"<span class='notice'>[user] begins to drill into the bone in [target]'s [parse_zone(target_zone)].</span>",
+		"<span class='notice'>[user] begins to drill into the bone in [target]'s [parse_zone(target_zone)].</span>")
 
 /datum/surgery_step/drill/success(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
-	display_results(user, target, span_notice("You drill into [target]'s [parse_zone(target_zone)]."),
-		span_notice("[user] drills into [target]'s [parse_zone(target_zone)]!"),
-		span_notice("[user] drills into [target]'s [parse_zone(target_zone)]!"))
+	display_results(user, target, "<span class='notice'>You drill into [target]'s [parse_zone(target_zone)].</span>",
+		"<span class='notice'>[user] drills into [target]'s [parse_zone(target_zone)]!</span>",
+		"<span class='notice'>[user] drills into [target]'s [parse_zone(target_zone)]!</span>")
 	return ..()

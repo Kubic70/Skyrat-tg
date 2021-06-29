@@ -26,10 +26,10 @@
 
 	if(W.tool_behaviour == TOOL_SCREWDRIVER)
 		if(density)
-			to_chat(user, span_warning("You need to open [src] before opening its maintenance panel."))
+			to_chat(user, "<span class='warning'>You need to open [src] before opening its maintenance panel.</span>")
 			return
 		else if(default_deconstruction_screwdriver(user, icon_state, icon_state, W))
-			to_chat(user, span_notice("You [panel_open ? "open" : "close"] the maintenance hatch of [src]."))
+			to_chat(user, "<span class='notice'>You [panel_open ? "open" : "close"] the maintenance hatch of [src].</span>")
 			return TRUE
 
 	if(panel_open)
@@ -37,21 +37,22 @@
 			var/change_id = input("Set the shutters/blast door/blast door controllers ID. It must be a number between 1 and 100.", "ID", id) as num|null
 			if(change_id)
 				id = clamp(round(change_id, 1), 1, 100)
-				to_chat(user, span_notice("You change the ID to [id]."))
+				to_chat(user, "<span class='notice'>You change the ID to [id].</span>")
 
-		else if(W.tool_behaviour == TOOL_CROWBAR && deconstruction == BLASTDOOR_FINISHED)
-			to_chat(user, span_notice("You start to remove the airlock electronics."))
+		if(W.tool_behaviour == TOOL_CROWBAR && deconstruction == INTACT)
+			to_chat(user, "<span class='notice'>You start to remove the airlock electronics.</span>")
 			if(do_after(user, 10 SECONDS, target = src))
 				new /obj/item/electronics/airlock(loc)
 				id = null
 				deconstruction = FALSE
 
-		else if(W.tool_behaviour == TOOL_WIRECUTTER && deconstruction == BLASTDOOR_NEEDS_ELECTRONICS)
-			to_chat(user, span_notice("You start to remove the internal cables."))
+		if(W.tool_behaviour == TOOL_WIRECUTTER && deconstruction == FALSE)
+			to_chat(user, "<span class='notice'>You start to remove the internal cables.</span>")
 			if(do_after(user, 10 SECONDS, target = src))
 				deconstruction = TRUE
 
-			to_chat(user, span_notice("You start tearing apart the [src]."))
+		if(W.tool_behaviour == TOOL_WELDER && deconstruction == TRUE)
+			to_chat(user, "<span class='notice'>You start tearing apart the [src].</span>")
 			playsound(src.loc, 'sound/items/welder.ogg', 50, 1)
 			if(do_after(user, 15 SECONDS, target = src))
 				new /obj/item/stack/sheet/plasteel(loc, 5)
@@ -60,12 +61,7 @@
 /obj/machinery/door/poddoor/examine(mob/user)
 	. = ..()
 	if(panel_open)
-		if(deconstruction == BLASTDOOR_FINISHED)
-			. += span_notice("The maintenance panel is opened and the electronics could be <b>pried</b> out.")
-		else if(deconstruction == BLASTDOOR_NEEDS_ELECTRONICS)
-			. += span_notice("The <i>electronics</i> are missing and there are some <b>wires</b> sticking out.")
-		else if(deconstruction == BLASTDOOR_NEEDS_WIRES)
-			. += span_notice("The <i>wires</i> have been removed and it's ready to be <b>sliced apart</b>.")
+		. += "<span class='<span class='notice'>The maintenance panel is [panel_open ? "opened" : "closed"].</span>"
 
 /obj/machinery/door/poddoor/connect_to_shuttle(obj/docking_port/mobile/port, obj/docking_port/stationary/dock)
 	id = "[port.id]_[id]"
@@ -174,9 +170,9 @@
 /obj/machinery/door/poddoor/attack_alien(mob/living/carbon/alien/humanoid/user, list/modifiers)
 	if(density & !(resistance_flags & INDESTRUCTIBLE))
 		add_fingerprint(user)
-		user.visible_message(span_warning("[user] begins prying open [src]."),\
-					span_noticealien("You begin digging your claws into [src] with all your might!"),\
-					span_warning("You hear groaning metal..."))
+		user.visible_message("<span class='warning'>[user] begins prying open [src].</span>",\
+					"<span class='noticealien'>You begin digging your claws into [src] with all your might!</span>",\
+					"<span class='warning'>You hear groaning metal...</span>")
 		playsound(src, 'sound/machines/airlock_alien_prying.ogg', 100, TRUE)
 
 		var/time_to_open = 5 SECONDS
@@ -185,7 +181,7 @@
 
 		if(do_after(user, time_to_open, src))
 			if(density && !open(TRUE)) //The airlock is still closed, but something prevented it opening. (Another player noticed and bolted/welded the airlock in time!)
-				to_chat(user, span_warning("Despite your efforts, [src] managed to resist your attempts to open it!"))
+				to_chat(user, "<span class='warning'>Despite your efforts, [src] managed to resist your attempts to open it!</span>")
 
 	else
 		return ..()

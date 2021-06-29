@@ -85,24 +85,22 @@
 		/obj/item/stack/sheet/durathread = /datum/species/golem/durathread,
 		/obj/item/stack/sheet/cotton/durathread = /datum/species/golem/durathread,
 		/obj/item/stack/sheet/mineral/snow = /datum/species/golem/snow,
-		/obj/item/stack/sheet/mineral/metal_hydrogen= /datum/species/golem/mhydrogen,
-	)
+		/obj/item/stack/sheet/mineral/metal_hydrogen= /datum/species/golem/mhydrogen)
 
-	if(!istype(I, /obj/item/stack))
-		return
-	var/obj/item/stack/stuff_stack = I
-	var/species = golem_shell_species_types[stuff_stack.merge_type]
-	if(!species)
-		to_chat(user, span_warning("You can't build a golem out of this kind of material!"))
-		return
-	if(!stuff_stack.use(10))
-		to_chat(user, span_warning("You need at least ten sheets to finish a golem!"))
-		return
-	to_chat(user, span_notice("You finish up the golem shell with ten sheets of [stuff_stack]."))
-	new shell_type(get_turf(src), species, user)
-	qdel(src)
+	if(istype(I, /obj/item/stack))
+		var/obj/item/stack/O = I
+		var/species = golem_shell_species_types[O.merge_type]
+		if(species)
+			if(O.use(10))
+				to_chat(user, "<span class='notice'>You finish up the golem shell with ten sheets of [O].</span>")
+				new shell_type(get_turf(src), species, user)
+				qdel(src)
+			else
+				to_chat(user, "<span class='warning'>You need at least ten sheets to finish a golem!</span>")
+		else
+			to_chat(user, "<span class='warning'>You can't build a golem out of this kind of material!</span>")
 
-///made with xenobiology, the golem obeys its creator
+//made with xenobiology, the golem obeys its creator
 /obj/item/golem_shell/servant
 	name = "incomplete servant golem shell"
 	shell_type = /obj/effect/mob_spawn/human/golem/servant

@@ -148,7 +148,7 @@ GLOBAL_LIST_INIT(dye_registry, list(
 /obj/machinery/washing_machine/examine(mob/user)
 	. = ..()
 	if(!busy)
-		. += span_notice("<b>Right-click</b> with an empty hand to start a wash cycle.")
+		. += "<span class='notice'><b>Right-click</b> with an empty hand to start a wash cycle.</span>"
 
 /obj/machinery/washing_machine/process(delta_time)
 	if(!busy)
@@ -289,19 +289,19 @@ GLOBAL_LIST_INIT(dye_registry, list(
 
 	else if(!user.combat_mode)
 		if (!state_open)
-			to_chat(user, span_warning("Open the door first!"))
+			to_chat(user, "<span class='warning'>Open the door first!</span>")
 			return TRUE
 
 		if(bloody_mess)
-			to_chat(user, span_warning("[src] must be cleaned up first!"))
+			to_chat(user, "<span class='warning'>[src] must be cleaned up first!</span>")
 			return TRUE
 
 		if(contents.len >= max_wash_capacity)
-			to_chat(user, span_warning("The washing machine is full!"))
+			to_chat(user, "<span class='warning'>The washing machine is full!</span>")
 			return TRUE
 
 		if(!user.transferItemToLoc(W, src))
-			to_chat(user, span_warning("\The [W] is stuck to your hand, you cannot put it in the washing machine!"))
+			to_chat(user, "<span class='warning'>\The [W] is stuck to your hand, you cannot put it in the washing machine!</span>")
 			return TRUE
 		if(W.dye_color)
 			color_source = W
@@ -315,7 +315,7 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	if(.)
 		return
 	if(busy)
-		to_chat(user, span_warning("[src] is busy!"))
+		to_chat(user, "<span class='warning'>[src] is busy!</span>")
 		return
 
 	if(user.pulling && isliving(user.pulling))
@@ -338,13 +338,13 @@ GLOBAL_LIST_INIT(dye_registry, list(
 	if(!user.canUseTopic(src, !issilicon(user)))
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(busy)
-		to_chat(user, span_warning("[src] is busy!"))
+		to_chat(user, "<span class='warning'>[src] is busy!</span>")
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(state_open)
-		to_chat(user, span_warning("Close the door first!"))
+		to_chat(user, "<span class='warning'>Close the door first!</span>")
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	if(bloody_mess)
-		to_chat(user, span_warning("[src] must be cleaned up first!"))
+		to_chat(user, "<span class='warning'>[src] must be cleaned up first!</span>")
 		return SECONDARY_ATTACK_CONTINUE_CHAIN
 	busy = TRUE
 	update_appearance()
@@ -362,5 +362,5 @@ GLOBAL_LIST_INIT(dye_registry, list(
 
 /obj/machinery/washing_machine/open_machine(drop = 1)
 	..()
-	set_density(TRUE) //because machinery/open_machine() sets it to FALSE
+	density = TRUE //because machinery/open_machine() sets it to 0
 	color_source = null

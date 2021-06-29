@@ -111,14 +111,14 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 /obj/machinery/portable_atmospherics/canister/interact(mob/user)
 	. = ..()
 	if(!allowed(user))
-		to_chat(user, span_alert("Error - Unauthorized User."))
+		to_chat(user, "<span class='alert'>Error - Unauthorized User.</span>")
 		playsound(src, 'sound/misc/compiler-failure.ogg', 50, TRUE)
 		return
 
 /obj/machinery/portable_atmospherics/canister/examine(user)
 	. = ..()
 	if(mode)
-		. += span_notice("This canister is Tier [mode]. A sticker on its side says <b>MAX SAFE PRESSURE: [siunit_pressure(initial(pressure_limit), 0)]</b>.")
+		. += "<span class='notice'>This canister is Tier [mode]. A sticker on its side says <b>MAX SAFE PRESSURE: [siunit_pressure(initial(pressure_limit), 0)]</b>.</span>"
 
 // Please keep the canister types sorted
 // Basic canister per gas below here
@@ -449,31 +449,14 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		return TRUE
 	var/pressure = air_contents.return_pressure()
 	if(pressure > 300)
-		to_chat(user, span_alert("The pressure gauge on [src] indicates a high pressure inside... maybe you want to reconsider?"))
+		to_chat(user, "<span class='alert'>The pressure gauge on \the [src] indicates a high pressure inside... maybe you want to reconsider?</span>")
 		message_admins("[src] deconstructed by [ADMIN_LOOKUPFLW(user)]")
 		log_game("[src] deconstructed by [key_name(user)]")
-	to_chat(user, span_notice("You begin cutting [src] apart..."))
+	to_chat(user, "<span class='notice'>You begin cutting \the [src] apart...</span>")
 	if(I.use_tool(src, user, 3 SECONDS, volume=50))
-		to_chat(user, span_notice("You cut [src] apart."))
+		to_chat(user, "<span class='notice'>You cut \the [src] apart.</span>")
 		deconstruct(TRUE)
 
-/obj/machinery/portable_atmospherics/canister/welder_act(mob/living/user, obj/item/tool)
-	. = ..()
-	if(user.combat_mode)
-		return FALSE
-	if(obj_integrity >= max_integrity)
-		return TRUE
-	if(machine_stat & BROKEN)
-		return TRUE
-	if(!tool.tool_start_check(user, amount=0))
-		return TRUE
-	to_chat(user, span_notice("You begin repairing cracks in [src]..."))
-	while(tool.use_tool(src, user, 2.5 SECONDS, volume=40))
-		obj_integrity = min(obj_integrity + 25, max_integrity)
-		if(obj_integrity >= max_integrity)
-			to_chat(user, span_notice("You've finished repairing [src]."))
-			return TRUE
-		to_chat(user, span_notice("You repair some of the cracks in [src]..."))
 	return TRUE
 
 /obj/machinery/portable_atmospherics/canister/obj_break(damage_flag)
@@ -494,7 +477,13 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 	air_update_turf(FALSE, FALSE)
 	obj_break()
 
-	set_density(FALSE)
+	if(expelled_pressure > pressure_limit)
+		var/pressure_dif = expelled_pressure - pressure_limit
+		var/max_pressure_difference = 20000
+		var/explosion_range = CEILING(min(pressure_dif, max_pressure_difference) / 1000, 1)
+		explosion(T, 0, 0, explosion_range, 0, smoke = FALSE)
+
+	density = FALSE
 	playsound(src.loc, 'sound/effects/spray.ogg', 10, TRUE, -3)
 	investigate_log("was destroyed.", INVESTIGATE_ATMOS)
 
@@ -699,8 +688,8 @@ GLOBAL_LIST_INIT(gas_id_to_canister, init_gas_id_to_canister())
 		if("eject")
 			if(holding)
 				if(valve_open)
-					message_admins("[ADMIN_LOOKUPFLW(usr)] removed [holding] from [src] with valve still open at [ADMIN_VERBOSEJMP(src)] releasing contents into the [span_boldannounce("air")].")
-					investigate_log("[key_name(usr)] removed the [holding], leaving the valve open and transferring into the [span_boldannounce("air")].", INVESTIGATE_ATMOS)
+					message_admins("[ADMIN_LOOKUPFLW(usr)] removed [holding] from [src] with valve still open at [ADMIN_VERBOSEJMP(src)] releasing contents into the <span class='boldannounce'>air</span>.")
+					investigate_log("[key_name(usr)] removed the [holding], leaving the valve open and transferring into the <span class='boldannounce'>air</span>.", INVESTIGATE_ATMOS)
 				replace_tank(usr, FALSE)
 				. = TRUE
 	update_appearance()

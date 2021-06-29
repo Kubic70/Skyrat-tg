@@ -63,7 +63,9 @@
 
 /obj/item/clothing/under/rank/security/peacekeeper/blue
 	name = "blue peacekeeper uniform"
-	icon_state = "bsecurity"
+	icon_state = "rsecurity"
+	worn_icon = 'modular_skyrat/modules/sec_haul/icons/peacekeeper/clothing/sol/peacekeeper_uniforms.dmi'
+	worn_icon_digi = 'modular_skyrat/modules/sec_haul/icons/peacekeeper/clothing/sol/peacekeeper_uniforms_digi.dmi'
 
 /obj/item/clothing/under/rank/security/warden/peacekeeper
 	name = "peacekeeper wardens suit"
@@ -300,8 +302,9 @@
 /obj/item/clothing/head/helmet/space/hardsuit/security_peacekeeper
 	name = "Armadyne SS-01 Voidsuit Helmet"
 	desc = "An Armadyne brand voidsuit helmet, with a decent layer of armor, this one comes in the peacekeeper colors."
-	icon = 'modular_skyrat/master_files/icons/obj/clothing/hats.dmi'
-	worn_icon = 'modular_skyrat/master_files/icons/mob/clothing/head.dmi'
+	icon = 'modular_skyrat/modules/sec_haul/icons/peacekeeper/peacekeeper_items.dmi'
+	worn_icon = 'modular_skyrat/modules/sec_haul/icons/peacekeeper/clothing/peacekeeper_hardsuit.dmi'
+	worn_icon_muzzled = 'modular_skyrat/modules/sec_haul/icons/peacekeeper/clothing/peacekeeper_hardsuit_digi.dmi'
 	icon_state = "hardsuit0-peacekeeper"
 	inhand_icon_state = "sec_helm"
 	hardsuit_type = "peacekeeper"

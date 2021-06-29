@@ -35,10 +35,6 @@
 	. = ..()
 	update_appearance(UPDATE_ICON)
 	req_one_access = SSid_access.get_region_access_list(list(REGION_ALL_STATION, REGION_CENTCOM))
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/machinery/recycler/RefreshParts()
 	var/amt_made = 0
@@ -57,7 +53,7 @@
 
 /obj/machinery/recycler/examine(mob/user)
 	. = ..()
-	. += span_notice("Reclaiming <b>[amount_produced]%</b> of materials salvaged.")
+	. += "<span class='notice'>Reclaiming <b>[amount_produced]%</b> of materials salvaged.</span>"
 	. += {"The power light is [(machine_stat & NOPOWER) ? "off" : "on"].
 	The safety-mode light is [safety_mode ? "on" : "off"].
 	The safety-sensors status light is [obj_flags & EMAGGED ? "off" : "on"]."}
@@ -85,7 +81,7 @@
 		safety_mode = FALSE
 		update_appearance()
 	playsound(src, "sparks", 75, TRUE, SILENCED_SOUND_EXTRARANGE)
-	to_chat(user, span_notice("You use the cryptographic sequencer on [src]."))
+	to_chat(user, "<span class='notice'>You use the cryptographic sequencer on [src].</span>")
 
 /obj/machinery/recycler/update_icon_state()
 	var/is_powered = !(machine_stat & (BROKEN|NOPOWER))
@@ -94,11 +90,12 @@
 	icon_state = icon_name + "[is_powered]" + "[(bloody ? "bld" : "")]" // add the blood tag at the end
 	return ..()
 
-/obj/machinery/recycler/CanAllowThrough(atom/movable/mover, border_dir)
+/obj/machinery/recycler/CanAllowThrough(atom/movable/AM)
 	. = ..()
 	if(!anchored)
 		return
-	if(border_dir == eat_dir)
+	var/move_dir = get_dir(loc, AM.loc)
+	if(move_dir == eat_dir)
 		return TRUE
 
 /obj/machinery/recycler/Crossed(atom/movable/AM)

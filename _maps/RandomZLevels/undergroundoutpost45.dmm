@@ -2325,7 +2325,7 @@
 	},
 /area/awaymission/undergroundoutpost45/central)
 "eR" = (
-/obj/structure/chair/stool/directional/east,
+/obj/structure/chair/stool,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -3680,7 +3680,7 @@
 	},
 /area/awaymission/undergroundoutpost45/crew_quarters)
 "hL" = (
-/obj/structure/chair/stool/directional/south,
+/obj/structure/chair/stool,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -3930,7 +3930,7 @@
 	},
 /area/awaymission/undergroundoutpost45/crew_quarters)
 "in" = (
-/obj/structure/chair/stool/directional/west,
+/obj/structure/chair/stool,
 /obj/effect/decal/cleanable/dirt,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
@@ -4453,7 +4453,7 @@
 /obj/machinery/atmospherics/pipe/smart/manifold4w/supply/hidden{
 	dir = 4
 	},
-/obj/structure/chair/stool/directional/south,
+/obj/structure/chair/stool,
 /turf/open/floor/iron{
 	heat_capacity = 1e+006
 	},
@@ -13131,16 +13131,6 @@
 	temperature = 363.9
 	},
 /area/awaymission/undergroundoutpost45/caves)
-"Qd" = (
-/obj/structure/chair/stool/directional/west,
-/obj/effect/turf_decal/tile/bar,
-/obj/effect/turf_decal/tile/bar{
-	dir = 1
-	},
-/turf/open/floor/iron{
-	heat_capacity = 1e+006
-	},
-/area/awaymission/undergroundoutpost45/crew_quarters)
 "UM" = (
 /obj/effect/turf_decal/sand/plating,
 /obj/effect/turf_decal/stripes/asteroid/line{
@@ -46682,10 +46672,10 @@ eJ
 eJ
 gr
 hk
-Qd
+hL
 in
 in
-Qd
+hL
 iH
 jU
 kq

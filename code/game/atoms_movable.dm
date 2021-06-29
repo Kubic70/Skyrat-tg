@@ -278,8 +278,8 @@
 		var/mob/M = AM
 		log_combat(src, M, "grabbed", addition="passive grab")
 		if(!supress_message)
-			M.visible_message(span_warning("[src] grabs [M] passively."), \
-				span_danger("[src] grabs you passively."))
+			M.visible_message("<span class='warning'>[src] grabs [M] passively.</span>", \
+				"<span class='danger'>[src] grabs you passively.</span>")
 	return TRUE
 
 /atom/movable/proc/stop_pulling()
@@ -300,7 +300,7 @@
 /atom/movable/proc/Move_Pulled(atom/A)
 	if(!pulling)
 		return FALSE
-	if(pulling.anchored || pulling.move_resist > move_force || !pulling.Adjacent(src, src, pulling))
+	if(pulling.anchored || pulling.move_resist > move_force || !pulling.Adjacent(src))
 		stop_pulling()
 		return FALSE
 	if(isliving(pulling))
@@ -355,49 +355,25 @@
 // Here's where we rewrite how byond handles movement except slightly different
 // To be removed on step_ conversion
 // All this work to prevent a second bump
-/atom/movable/Move(atom/newloc, direction, glide_size_override = 0)
+/atom/movable/Move(atom/newloc, direct=0, glide_size_override = 0)
 	. = FALSE
 	if(!newloc || newloc == loc)
 		return
 
-	if(!direction)
-		direction = get_dir(src, newloc)
+	if(!direct)
+		direct = get_dir(src, newloc)
 
 	if(set_dir_on_move)
-		setDir(direction)
+		setDir(direct)
 
-	var/is_multi_tile_object = bound_width > 32 || bound_height > 32
+	if(!loc.Exit(src, newloc))
+		return
 
-	var/list/old_locs
-	if(is_multi_tile_object && isturf(loc))
-		old_locs = locs.Copy()
-		for(var/atom/exiting_loc as anything in old_locs)
-			if(!exiting_loc.Exit(src, direction))
-				return
-	else
-		if(!loc.Exit(src, direction))
-			return
+	if(!newloc.Enter(src, src.loc))
+		return
 
-	var/list/new_locs
-	if(is_multi_tile_object && isturf(newloc))
-		new_locs = block(
-			newloc,
-			locate(
-				min(world.maxx, newloc.x + CEILING(bound_width / 32, 1)),
-				min(world.maxy, newloc.y + CEILING(bound_height / 32, 1)),
-				newloc.z
-				)
-		) // If this is a multi-tile object then we need to predict the new locs and check if they allow our entrance.
-		for(var/atom/entering_loc as anything in new_locs)
-			if(!entering_loc.Enter(src))
-				return
-			if(SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_MOVE, entering_loc) & COMPONENT_MOVABLE_BLOCK_PRE_MOVE)
-				return
-	else // Else just try to enter the single destination.
-		if(!newloc.Enter(src))
-			return
-		if(SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_MOVE, newloc) & COMPONENT_MOVABLE_BLOCK_PRE_MOVE)
-			return
+	if (SEND_SIGNAL(src, COMSIG_MOVABLE_PRE_MOVE, newloc) & COMPONENT_MOVABLE_BLOCK_PRE_MOVE)
+		return
 
 	// Past this is the point of no return
 	var/atom/oldloc = loc
@@ -405,24 +381,25 @@
 	var/area/newarea = get_area(newloc)
 	loc = newloc
 	. = TRUE
-
-	if(old_locs) // This condition will only be true if it is a multi-tile object.
-		for(var/atom/exited_loc as anything in (old_locs - new_locs))
-			exited_loc.Exited(src, direction)
-	else // Else there's just one loc to be exited.
-		oldloc.Exited(src, direction)
+	oldloc.Exited(src, newloc)
 	if(oldarea != newarea)
-		oldarea.Exited(src, direction)
+		oldarea.Exited(src, newloc)
 
-	if(new_locs) // Same here, only if multi-tile.
-		for(var/atom/entered_loc as anything in (new_locs - old_locs))
-			entered_loc.Entered(src, direction)
-	else
-		newloc.Entered(src, direction)
+	for(var/i in oldloc)
+		if(i == src) // Multi tile objects
+			continue
+		var/atom/movable/thing = i
+		thing.Uncrossed(src)
+
+	newloc.Entered(src, oldloc)
 	if(oldarea != newarea)
-		newarea.Entered(src, direction)
+		newarea.Entered(src, oldloc)
 
-	Moved(oldloc, direction)
+	for(var/i in loc)
+		if(i == src) // Multi tile objects
+			continue
+		var/atom/movable/thing = i
+		thing.Crossed(src)
 
 ////////////////////////////////////////
 
@@ -545,7 +522,7 @@
 	. = TRUE
 	SEND_SIGNAL(src, COMSIG_MOVABLE_CROSS, AM)
 	SEND_SIGNAL(AM, COMSIG_MOVABLE_CROSS_OVER, src)
-	return CanPass(AM, get_dir(src, AM))
+	return CanPass(AM, AM.loc, TRUE)
 
 //oldloc = old location on atom, inserted when forceMove is called and ONLY when forceMove is called!
 /atom/movable/Crossed(atom/movable/AM, oldloc)
@@ -594,18 +571,17 @@
 			return
 	A.Bumped(src)
 
-/atom/movable/Exited(atom/movable/gone, direction)
+/atom/movable/Exited(atom/movable/AM, atom/newLoc)
 	. = ..()
-	if(gone.area_sensitive_contents)
+	if(AM.area_sensitive_contents)
 		for(var/atom/movable/location as anything in get_nested_locs(src) + src)
-			LAZYREMOVE(location.area_sensitive_contents, gone.area_sensitive_contents)
+			LAZYREMOVE(location.area_sensitive_contents, AM.area_sensitive_contents)
 
-/atom/movable/Entered(atom/movable/arrived, direction)
+/atom/movable/Entered(atom/movable/AM, atom/oldLoc)
 	. = ..()
-	if(arrived.area_sensitive_contents)
+	if(AM.area_sensitive_contents)
 		for(var/atom/movable/location as anything in get_nested_locs(src) + src)
-			//We can't make the assumption that objects won't become area sensitive in the process of entering us
-			LAZYOR(location.area_sensitive_contents, arrived.area_sensitive_contents)
+			LAZYADD(location.area_sensitive_contents, AM.area_sensitive_contents)
 
 /// See traits.dm. Use this in place of ADD_TRAIT.
 /atom/movable/proc/become_area_sensitive(trait_source = TRAIT_GENERIC)
@@ -863,23 +839,23 @@
 /atom/movable/proc/force_push(atom/movable/AM, force = move_force, direction, silent = FALSE)
 	. = AM.force_pushed(src, force, direction)
 	if(!silent && .)
-		visible_message(span_warning("[src] forcefully pushes against [AM]!"), span_warning("You forcefully push against [AM]!"))
+		visible_message("<span class='warning'>[src] forcefully pushes against [AM]!</span>", "<span class='warning'>You forcefully push against [AM]!</span>")
 
 /atom/movable/proc/move_crush(atom/movable/AM, force = move_force, direction, silent = FALSE)
 	. = AM.move_crushed(src, force, direction)
 	if(!silent && .)
-		visible_message(span_danger("[src] crushes past [AM]!"), span_danger("You crush [AM]!"))
+		visible_message("<span class='danger'>[src] crushes past [AM]!</span>", "<span class='danger'>You crush [AM]!</span>")
 
 /atom/movable/proc/move_crushed(atom/movable/pusher, force = MOVE_FORCE_DEFAULT, direction)
 	return FALSE
 
-/atom/movable/CanAllowThrough(atom/movable/mover, border_dir)
+/atom/movable/CanAllowThrough(atom/movable/mover, turf/target)
 	. = ..()
 	if(mover in buckled_mobs)
 		return TRUE
 
 /// Returns true or false to allow src to move through the blocker, mover has final say
-/atom/movable/proc/CanPassThrough(atom/blocker, movement_dir, blocker_opinion)
+/atom/movable/proc/CanPassThrough(atom/blocker, turf/target, blocker_opinion)
 	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_BE_PURE(TRUE)
 	return blocker_opinion
@@ -904,7 +880,7 @@
 			return turf
 		else
 			var/atom/movable/AM = A
-			if(AM.density || !AM.CanPass(src, get_dir(src, AM)))
+			if(!AM.CanPass(src) || AM.density)
 				if(AM.anchored)
 					return AM
 				dense_object_backup = AM
@@ -1146,12 +1122,12 @@
 
 		// This should never happen, but if it does it should not be silent.
 		if(deadchat_plays() == COMPONENT_INCOMPATIBLE)
-			to_chat(usr, span_warning("Deadchat control not compatible with [src]."))
+			to_chat(usr, "<span class='warning'>Deadchat control not compatible with [src].</span>")
 			CRASH("deadchat_control component incompatible with object of type: [type]")
 
-		to_chat(usr, span_notice("Deadchat now control [src]."))
+		to_chat(usr, "<span class='notice'>Deadchat now control [src].</span>")
 		log_admin("[key_name(usr)] has added deadchat control to [src]")
-		message_admins(span_notice("[key_name(usr)] has added deadchat control to [src]"))
+		message_admins("<span class='notice'>[key_name(usr)] has added deadchat control to [src]</span>")
 
 /obj/item/proc/do_pickup_animation(atom/target)
 	set waitfor = FALSE

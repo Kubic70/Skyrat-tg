@@ -233,26 +233,5 @@ GLOBAL_LIST_INIT(blacklisted_cargo_types, typecacheof(list(
 	SSshuttle.centcom_message = msg
 	investigate_log("Shuttle contents sold for [D.account_balance - presale_points] credits. Contents: [ex.exported_atoms ? ex.exported_atoms.Join(",") + "." : "none."] Message: [SSshuttle.centcom_message || "none."]", INVESTIGATE_CARGO)
 
-/*
-	Generates a box of mail depending on our exports and imports.
-	Applied in the cargo shuttle sending/arriving, by building the crate if the round is ready to introduce mail based on the economy subsystem.
-	Then, fills the mail crate with mail, by picking applicable crew who can recieve mail at the time to sending.
-*/
-/obj/docking_port/mobile/supply/proc/create_mail()
-	//Early return if there's no mail waiting to prevent taking up a slot. We also don't send mails on sundays or holidays.
-	if(!SSeconomy.mail_waiting || SSeconomy.mail_blocked)
-		return
-
-	//spawn crate
-	var/list/empty_turfs = list()
-	for(var/place as anything in shuttle_areas)
-		var/area/shuttle/shuttle_area = place
-		for(var/turf/open/floor/shuttle_floor in shuttle_area)
-			if(shuttle_floor.is_blocked_turf())
-				continue
-			empty_turfs += shuttle_floor
-
-	new /obj/structure/closet/crate/mail/economy(pick(empty_turfs))
-
 #undef GOODY_FREE_SHIPPING_MAX
 #undef CRATE_TAX

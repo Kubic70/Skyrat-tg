@@ -56858,11 +56858,6 @@
 /obj/structure/cable,
 /turf/open/floor/plating/airless,
 /area/mine/explored)
-"rmF" = (
-/obj/machinery/ammo_workbench,
-/obj/effect/turf_decal/bot,
-/turf/open/floor/iron/showroomfloor,
-/area/security/office)
 "rmG" = (
 /obj/effect/turf_decal/trimline/yellow/filled/line{
 	dir = 6

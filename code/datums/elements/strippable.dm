@@ -30,8 +30,7 @@
 	UnregisterSignal(source, COMSIG_MOUSEDROP_ONTO)
 
 	if (!isnull(strip_menus))
-		qdel(strip_menus[source])
-		strip_menus -= source
+		QDEL_NULL(strip_menus[source])
 
 /datum/element/strippable/proc/mouse_drop_onto(datum/source, atom/over, mob/user)
 	SIGNAL_HANDLER
@@ -76,7 +75,7 @@
 /// It should not perform the equipping itself.
 /datum/strippable_item/proc/try_equip(atom/source, obj/item/equipping, mob/user)
 	if (HAS_TRAIT(equipping, TRAIT_NODROP))
-		to_chat(user, span_warning("You can't put [equipping] on [source], it's stuck to your hand!"))
+		to_chat(user, "<span class='warning'>You can't put [equipping] on [source], it's stuck to your hand!</span>")
 		return FALSE
 	return TRUE
 
@@ -87,14 +86,14 @@
 		var/obj/item/clothing/clothing = source
 		if(clothing.clothing_flags & DANGEROUS_OBJECT)
 			source.visible_message(
-				span_danger("[user] tries to put [equipping] on [source]."),
-				span_userdanger("[user] tries to put [equipping] on you."),
+				"<span class='danger'>[user] tries to put [equipping] on [source].</span>",
+				"<span class='userdanger'>[user] tries to put [equipping] on you.</span>",
 				ignored_mobs = user,
 			)
 		else
 			source.visible_message(
-				span_notice("[user] tries to put [equipping] on [source]."),
-				span_notice("[user] tries to put [equipping] on you."),
+				"<span class='notice'>[user] tries to put [equipping] on [source].</span>",
+				"<span class='notice'>[user] tries to put [equipping] on you.</span>",
 				ignored_mobs = user,
 			)
 
@@ -105,7 +104,7 @@
 					var/list/new_entry = list(list(user.name, "tried equipping you with [equipping]", world.time))
 					LAZYADD(victim_human.afk_thefts, new_entry)
 
-	to_chat(user, span_notice("You try to put [equipping] on [source]..."))
+	to_chat(user, "<span class='notice'>You try to put [equipping] on [source]...</span>")
 
 	var/log = "[key_name(source)] is having [equipping] put on them by [key_name(user)]"
 	source.log_message(log, LOG_ATTACK, color="red")
@@ -143,14 +142,14 @@
 		return FALSE
 
 	source.visible_message(
-		span_warning("[user] tries to remove [source]'s [item]."),
-		span_userdanger("[user] tries to remove your [item]."),
+		"<span class='warning'>[user] tries to remove [source]'s [item].</span>",
+		"<span class='userdanger'>[user] tries to remove your [item].</span>",
 		ignored_mobs = user,
 	)
 
-	to_chat(user, span_danger("You try to remove [source]'s [item]..."))
-	source.log_message("[key_name(source)] is being stripped of [item] by [key_name(user)]", LOG_ATTACK, color="red")
-	user.log_message("[key_name(source)] is being stripped of [item] by [key_name(user)]", LOG_ATTACK, color="red", log_globally=FALSE)
+	to_chat(user, "<span class='danger'>You try to remove [source]'s [item]...</span>")
+	source.log_message("[key_name(source)] is being stripped of [item] by [key_name(src)]", LOG_ATTACK, color="red")
+	user.log_message("[key_name(source)] is being stripped of [item] by [key_name(src)]", LOG_ATTACK, color="red", log_globally=FALSE)
 	item.add_fingerprint(src)
 
 	if(ishuman(source))
@@ -211,7 +210,7 @@
 		disable_warning = TRUE,
 		bypass_equip_delay_self = TRUE,
 	))
-		to_chat(user, span_warning("\The [equipping] doesn't fit in that place!"))
+		to_chat(user, "<span class='warning'>\The [equipping] doesn't fit in that place!</span>")
 		return FALSE
 
 	return TRUE

@@ -10,8 +10,6 @@
  * Plastic Utensils
  */
 
-#define PLASTIC_BREAK_PROBABILITY 25
-
 /obj/item/kitchen
 	icon = 'icons/obj/kitchen.dmi'
 	lefthand_file = 'icons/mob/inhands/equipment/kitchen_lefthand.dmi'
@@ -42,7 +40,7 @@
 	custom_price = PAYCHECK_PRISONER
 
 /obj/item/kitchen/fork/suicide_act(mob/living/carbon/user)
-	user.visible_message(span_suicide("[user] stabs \the [src] into [user.p_their()] chest! It looks like [user.p_theyre()] trying to take a bite out of [user.p_them()]self!"))
+	user.visible_message("<span class='suicide'>[user] stabs \the [src] into [user.p_their()] chest! It looks like [user.p_theyre()] trying to take a bite out of [user.p_them()]self!</span>")
 	playsound(src, 'sound/items/eatfood.ogg', 50, TRUE)
 	return BRUTELOSS
 
@@ -52,10 +50,10 @@
 
 	if(forkload)
 		if(M == user)
-			M.visible_message(span_notice("[user] eats a delicious forkful of omelette!"))
+			M.visible_message("<span class='notice'>[user] eats a delicious forkful of omelette!</span>")
 			M.reagents.add_reagent(forkload.type, 1)
 		else
-			M.visible_message(span_notice("[user] feeds [M] a delicious forkful of omelette!"))
+			M.visible_message("<span class='notice'>[user] feeds [M] a delicious forkful of omelette!</span>")
 			M.reagents.add_reagent(forkload.type, 1)
 		icon_state = "fork"
 		forkload = null
@@ -71,10 +69,13 @@
 	throwforce = 0
 	custom_materials = list(/datum/material/plastic=80)
 	custom_price = PAYCHECK_PRISONER * 2
+	var/break_chance = 25
 
-/obj/item/kitchen/fork/plastic/Initialize()
-	. = ..()
-	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
+/obj/item/kitchen/fork/plastic/afterattack(atom/target, mob/user)
+	.=..()
+	if(prob(break_chance))
+		user.visible_message("<span class='danger'>[user]'s fork snaps into tiny pieces in their hand.</span>")
+		qdel(src)
 
 /obj/item/kitchen/knife
 	name = "kitchen knife"
@@ -109,9 +110,9 @@
 	AddComponent(/datum/component/butchering, 80 - force, 100, force - 10) //bonus chance increases depending on force
 
 /obj/item/kitchen/knife/suicide_act(mob/user)
-	user.visible_message(pick(span_suicide("[user] is slitting [user.p_their()] wrists with the [src.name]! It looks like [user.p_theyre()] trying to commit suicide."), \
-						span_suicide("[user] is slitting [user.p_their()] throat with the [src.name]! It looks like [user.p_theyre()] trying to commit suicide."), \
-						span_suicide("[user] is slitting [user.p_their()] stomach open with the [src.name]! It looks like [user.p_theyre()] trying to commit seppuku.")))
+	user.visible_message(pick("<span class='suicide'>[user] is slitting [user.p_their()] wrists with the [src.name]! It looks like [user.p_theyre()] trying to commit suicide.</span>", \
+						"<span class='suicide'>[user] is slitting [user.p_their()] throat with the [src.name]! It looks like [user.p_theyre()] trying to commit suicide.</span>", \
+						"<span class='suicide'>[user] is slitting [user.p_their()] stomach open with the [src.name]! It looks like [user.p_theyre()] trying to commit seppuku.</span>"))
 	return (BRUTELOSS)
 
 /obj/item/kitchen/knife/plastic
@@ -128,10 +129,13 @@
 	attack_verb_simple = list("prod", "whiff", "scratch", "poke")
 	sharpness = SHARP_EDGED
 	custom_price = PAYCHECK_PRISONER * 2
+	var/break_chance = 25
 
-/obj/item/kitchen/knife/plastic/Initialize()
-	. = ..()
-	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
+/obj/item/kitchen/knife/plastic/afterattack(mob/living/carbon/user)
+	.=..()
+	if(prob(break_chance))
+		user.visible_message("<span class='danger'>[user]'s knife snaps into tiny pieces in their hand.</span>")
+		qdel(src)
 
 /obj/item/kitchen/knife/ritual
 	name = "ritual knife"
@@ -255,7 +259,7 @@
 	custom_materials = null
 
 /obj/item/kitchen/knife/shiv/carrot/suicide_act(mob/living/carbon/user)
-	user.visible_message(span_suicide("[user] forcefully drives \the [src] into [user.p_their()] eye! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message("<span class='suicide'>[user] forcefully drives \the [src] into [user.p_their()] eye! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return BRUTELOSS
 
 /obj/item/kitchen/rollingpin
@@ -275,7 +279,7 @@
 	tool_behaviour = TOOL_ROLLINGPIN
 
 /obj/item/kitchen/rollingpin/suicide_act(mob/living/carbon/user)
-	user.visible_message(span_suicide("[user] begins flattening [user.p_their()] head with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
+	user.visible_message("<span class='suicide'>[user] begins flattening [user.p_their()] head with \the [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 	return BRUTELOSS
 /* Trays  moved to /obj/item/storage/bag */
 
@@ -304,8 +308,11 @@
 	custom_price = PAYCHECK_PRISONER * 2
 	toolspeed = 75 // The plastic spoon takes 5 minutes to dig through a single mineral turf... It's one, continuous, breakable, do_after...
 
-/obj/item/kitchen/spoon/plastic/Initialize()
-	. = ..()
-	AddElement(/datum/element/easily_fragmented, PLASTIC_BREAK_PROBABILITY)
+	/// The probability of this breaking every time it's used
+	var/break_chance = 25
 
-#undef PLASTIC_BREAK_PROBABILITY
+/obj/item/kitchen/spoon/plastic/afterattack(atom/target, mob/user)
+	.=..()
+	if(prob(break_chance))
+		user.visible_message("<span class='danger'>[user]'s spoon snaps into tiny pieces in their hand.</span>")
+		qdel(src)

@@ -146,15 +146,6 @@
 /obj/item/clothing/head/helmet/durathread
 	mutant_variants = NONE
 
-/obj/item/clothing/head/hooded/cloakhood/drake
-	mutant_variants = NONE
-
-/obj/item/clothing/head/hooded/cloakhood/goliath
-	mutant_variants = NONE
-
-/obj/item/clothing/head/nun_hood
-	mutant_variants = NONE
-
 //EARS>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
 //EYES>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -300,11 +291,5 @@
 /obj/item/clothing/suit/hooded/chaplain_hoodie
 	mutant_variants = NONE
 
-
-/obj/item/clothing/suit/hooded/chaplainsuit
-	mutant_variants = NONE
-
-/obj/item/clothing/suit/chaplainsuit
-	mutant_variants = NONE
 
 //FEET>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

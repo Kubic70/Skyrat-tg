@@ -18,19 +18,16 @@
 
 /datum/crew_manifest/ui_data(mob/user)
 	var/list/positions = list(
-		"Central Command" = list("exceptions" = list(), "open" = 0),
-		"Command" = list("exceptions" = list(), "open" = 0),
-		"Security" = list("exceptions" = list(), "open" = 0),
-		"Engineering" = list("exceptions" = list(), "open" = 0),
-		"Medical" = list("exceptions" = list(), "open" = 0),
-		"Misc" = list("exceptions" = list(), "open" = 0),
-		"Science" = list("exceptions" = list(), "open" = 0),
-		"Supply" = list("exceptions" = list(), "open" = 0),
-		"Service" = list("exceptions" = list(), "open" = 0),
-		"Silicon" = list("exceptions" = list(), "open" = 0)
+		"Command" = 0,
+		"Security" = 0,
+		"Engineering" = 0,
+		"Medical" = 0,
+		"Science" = 0,
+		"Supply" = 0,
+		"Service" = 0,
+		"Silicon" = 0
 	)
 	var/list/departments = list(
-		list("flag" = DEPARTMENT_CENTRAL_COMMAND, "name" = "Central Command"), //SKYRAT EDIT CHANGE
 		list("flag" = DEPARTMENT_COMMAND, "name" = "Command"),
 		list("flag" = DEPARTMENT_SECURITY, "name" = "Security"),
 		list("flag" = DEPARTMENT_ENGINEERING, "name" = "Engineering"),

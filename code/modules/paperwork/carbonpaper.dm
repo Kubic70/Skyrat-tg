@@ -21,11 +21,11 @@
 	. = ..()
 	if(copied || iscopy)
 		return
-	. += span_notice("Right-click to tear off the carbon-copy (you must use both hands).")
+	. += "<span class='notice'>Right-click to tear off the carbon-copy (you must use both hands).</span>"
 
 /obj/item/paper/carbon/proc/removecopy(mob/living/user)
 	if(copied || iscopy)
-		to_chat(user, span_notice("There are no more carbon copies attached to this paper!"))
+		to_chat(user, "<span class='notice'>There are no more carbon copies attached to this paper!</span>")
 	else
 		var/obj/item/paper/carbon/C = src
 		var/copycontents = C.info
@@ -37,7 +37,7 @@
 			Copy.info += copycontents
 			Copy.info += "</font>"
 			Copy.name = "Copy - [C.name]"
-		to_chat(user, span_notice("You tear off the carbon-copy!"))
+		to_chat(user, "<span class='notice'>You tear off the carbon-copy!</span>")
 		C.copied = TRUE
 		Copy.iscopy = TRUE
 		Copy.update_icon_state()

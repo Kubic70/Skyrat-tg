@@ -9,13 +9,9 @@
 	if(!isatom(target)) //How
 		return ELEMENT_INCOMPATIBLE
 	var/atom/to_track = target
-	to_track.AddElement(/datum/element/connect_loc, pass_on)
-	RegisterSignal(to_track, COMSIG_MOVABLE_MOVED, .proc/react_to_move)
-
-	if(!mapload && isopenturf(to_track.loc))
-		var/turf/open/new_open = to_track.loc
-		to_track.check_atmos_process(new_open, new_open.air, new_open.air.temperature) //Make sure you're properly registered
-
+	if(isopenturf(to_track.loc))
+		to_track.RegisterSignal(to_track.loc, COMSIG_TURF_EXPOSE, /atom/proc/check_atmos_process)
+	RegisterSignal(to_track, COMSIG_MOVABLE_MOVED, .proc/handle_move)
 	return ..()
 
 /datum/element/atmos_sensitive/Detach(datum/source)

@@ -27,8 +27,7 @@
 	RegisterSignal(parent, list(COMSIG_ATOM_ENTERED, COMSIG_ATOM_BLOB_ACT, COMSIG_ATOM_HULK_ATTACK, COMSIG_PARENT_ATTACKBY), .proc/play_squeak)
 	if(ismovable(parent))
 		RegisterSignal(parent, list(COMSIG_MOVABLE_BUMP, COMSIG_MOVABLE_IMPACT, COMSIG_PROJECTILE_BEFORE_FIRE), .proc/play_squeak)
-
-		AddElement(/datum/element/connect_loc_behalf, parent, item_connections)
+		RegisterSignal(parent, COMSIG_MOVABLE_CROSSED, .proc/play_squeak_crossed)
 		RegisterSignal(parent, COMSIG_MOVABLE_DISPOSING, .proc/disposing_react)
 		if(isitem(parent))
 			RegisterSignal(parent, list(COMSIG_ITEM_ATTACK, COMSIG_ITEM_ATTACK_OBJ, COMSIG_ITEM_HIT_REACT), .proc/play_squeak)
@@ -60,10 +59,6 @@
 	if(isnum(fallof_distance))
 		sound_falloff_distance = fallof_distance
 
-/datum/component/squeak/UnregisterFromParent()
-	. = ..()
-	RemoveElement(/datum/element/connect_loc_behalf, parent, item_connections)
-
 /datum/component/squeak/proc/play_squeak()
 	SIGNAL_HANDLER
 
@@ -82,17 +77,17 @@
 	else
 		steps++
 
-/datum/component/squeak/proc/play_squeak_crossed(datum/source, atom/movable/arrived, direction)
+/datum/component/squeak/proc/play_squeak_crossed(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
 
-	if(isitem(arrived))
-		var/obj/item/I = arrived
+	if(isitem(AM))
+		var/obj/item/I = AM
 		if(I.item_flags & ABSTRACT)
 			return
-	if(arrived.movement_type & (FLYING|FLOATING) || !arrived.has_gravity())
+	if(AM.movement_type & (FLYING|FLOATING) || !AM.has_gravity())
 		return
 	var/atom/current_parent = parent
-	if(isturf(current_parent?.loc))
+	if(isturf(current_parent.loc))
 		play_squeak()
 
 /datum/component/squeak/proc/use_squeak()

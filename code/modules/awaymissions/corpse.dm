@@ -54,13 +54,13 @@
 	//SKYRAT EDIT ADDITION END
 
 	if(!(GLOB.ghost_role_flags & GHOSTROLE_SPAWNER) && !(flags_1 & ADMIN_SPAWNED_1))
-		to_chat(user, span_warning("An admin has temporarily disabled non-admin ghost roles!"))
+		to_chat(user, "<span class='warning'>An admin has temporarily disabled non-admin ghost roles!</span>")
 		return
 	if(!uses)
-		to_chat(user, span_warning("This spawner is out of charges!"))
+		to_chat(user, "<span class='warning'>This spawner is out of charges!</span>")
 		return
 	if(is_banned_from(user.key, banType))
-		to_chat(user, span_warning("You are jobanned!"))
+		to_chat(user, "<span class='warning'>You are jobanned!</span>")
 		return
 	if(!allow_spawn(user))
 		return
@@ -149,7 +149,7 @@
 			if(flavour_text != "")
 				output_message += "\n<span class='bold'>[flavour_text]</span>"
 			if(important_info != "")
-				output_message += "\n[span_userdanger("[important_info]")]"
+				output_message += "\n<span class='userdanger'>[important_info]</span>"
 			to_chat(M, output_message)
 		var/datum/mind/MM = M.mind
 		var/datum/antagonist/A
@@ -268,8 +268,6 @@
 		H.dna.species.before_equip_job(null, H)
 		H.regenerate_icons()
 		SSquirks.AssignQuirks(H, user.client, TRUE, TRUE, null, FALSE, H)
-		user.client.prefs.equip_preference_loadout(H, FALSE, blacklist = list(ITEM_SLOT_EARS,ITEM_SLOT_BELT,ITEM_SLOT_ID,ITEM_SLOT_BACK,ITEM_SLOT_ICLOTHING,ITEM_SLOT_BACK,ITEM_SLOT_OCLOTHING,ITEM_SLOT_GLOVES,ITEM_SLOT_FEET,ITEM_SLOT_HEAD,ITEM_SLOT_MASK,ITEM_SLOT_NECK,ITEM_SLOT_EYES,ITEM_SLOT_SUITSTORE,ITEM_SLOT_LPOCKET,ITEM_SLOT_RPOCKET)) //There has to be a better way to do this, this is utter bloat.
-		user.client.prefs.add_packed_items(H, null, FALSE)
 	else
 		if(!random || newname)
 			if(newname)

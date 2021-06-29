@@ -79,11 +79,6 @@
 	/// List of family heirlooms this job can get with the family heirloom quirk. List of types.
 	var/list/family_heirlooms
 
-	//SKYRAT EDIT ADDITION
-	///Is this job veteran only? If so, then this job requires the player to be in the veteran_players.txt
-	var/veteran_only = FALSE
-	//SKYRAT EDIT END
-
 /datum/job/New()
 	. = ..()
 	var/list/jobs_changes = get_map_changes()
@@ -99,6 +94,8 @@
 	var/string_type = "[type]"
 	var/list/splits = splittext(string_type, "/")
 	var/endpart = splits[splits.len]
+
+	SSmapping.HACK_LoadMapConfig()
 
 	var/list/job_changes = SSmapping.config.job_changes
 	if(!(endpart in job_changes))

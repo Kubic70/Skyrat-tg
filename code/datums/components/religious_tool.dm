@@ -80,8 +80,8 @@
 	if(user.mind.holy_role != HOLY_ROLE_HIGHPRIEST)
 		to_chat(user, "<span class='warning'>You are not the high priest, and therefore cannot select a religious sect.")
 		return
-	if(!user.canUseTopic(parent, BE_CLOSE, FALSE, NO_TK))
-		to_chat(user,span_warning("You cannot select a sect at this time."))
+	var/list/available_options = generate_available_sects(user)
+	if(!available_options)
 		return
 
 	var/sect_select = input(user,"Select a sect (You CANNOT revert this decision!)","Select a Sect",null) in available_options
@@ -108,8 +108,9 @@
 	if(performing_rite)
 		to_chat(user, "<span class='notice'>There is a rite currently being performed here already!")
 		return
-	if(!user.canUseTopic(parent, BE_CLOSE, FALSE, NO_TK))
-		to_chat(user,span_warning("You are not close enough to perform the rite."))
+	var/rite_select = input(user,"Select a rite to perform!","Select a rite",null) in easy_access_sect.rites_list
+	if(!rite_select || !user.canUseTopic(parent, BE_CLOSE, FALSE, NO_TK))
+		to_chat(user,"<span class ='warning'>You cannot perform the rite at this time.</span>")
 		return
 	var/selection2type = easy_access_sect.rites_list[rite_select]
 	performing_rite = new selection2type(parent)
@@ -146,12 +147,14 @@
 
 	if(!can_i_see)
 		return
-	examine_list += span_notice("Use a bible to interact with this.")
 	if(!easy_access_sect)
 		if(operation_flags & RELIGION_TOOL_SECTSELECT)
-			examine_list += span_notice("This looks like it can be used to select a sect.")
+			examine_list += "<span class='notice'>This looks like it can be used to select a sect.</span>"
 			return
-	if(operation_flags & RELIGION_TOOL_SACRIFICE)//this can be moved around if things change but usually no rites == no sacrifice
-		examine_list += span_notice("Desired items can be used on this to increase favor.")
-	if(easy_access_sect.rites_list && operation_flags & RELIGION_TOOL_INVOKE)
-		examine_list += span_notice("You can invoke rites from this.")
+
+	examine_list += "<span class='notice'>The sect currently has [round(easy_access_sect.favor)] favor with [GLOB.deity].[(operation_flags & RELIGION_TOOL_SACRIFICE) ? "Desired items can be used on this to increase favor." : ""]</span>"
+	if(!easy_access_sect.rites_list)
+		return //if we dont have rites it doesnt do us much good if the object can be used to invoke them!
+	if(operation_flags & RELIGION_TOOL_INVOKE)
+		examine_list += "List of available Rites:"
+		examine_list += easy_access_sect.rites_list

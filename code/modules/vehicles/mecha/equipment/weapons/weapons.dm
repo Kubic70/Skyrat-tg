@@ -473,9 +473,9 @@
 	if(href_list["lethalPunch"])
 		harmful = !harmful
 		if(harmful)
-			to_chat(usr, "[icon2html(src, usr)][span_warning("Lethal Fisting Enabled.")]")
+			chassis?.to_chat(usr, "[icon2html(src, usr)]<span class='warning'>Lethal Fisting Enabled.</span>")
 		else
-			to_chat(usr, "[icon2html(src, usr)][span_warning("Lethal Fisting Disabled.")]")
+			chassis?.to_chat(usr, "[icon2html(src, usr)]<span class='warning'>Lethal Fisting Disabled.</span>")
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/launcher/punching_glove/action(mob/source, atom/target, params)
 	. = ..()

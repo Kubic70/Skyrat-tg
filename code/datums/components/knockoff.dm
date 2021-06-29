@@ -29,25 +29,8 @@
 		return
 	if(!prob(knockoff_chance))
 		return
-	if(!wearer.dropItemToGround(item))
+	if(!wearer.dropItemToGround(I))
 		return
-	wearer.visible_message(span_warning("[attacker] knocks off [wearer]'s [item.name]!"),span_userdanger("[attacker] knocks off your [item.name]!"))
-
-///Tries to knockoff the item when user is knocked down
-/datum/component/knockoff/proc/Knockoff_knockdown(mob/living/carbon/human/wearer,amount)
-	SIGNAL_HANDLER
-
-	if(amount <= 0)
-		return
-
-	var/obj/item/item = parent
-	if(!istype(wearer))
-		return
-	if(!prob(knockoff_chance))
-		return
-	if(!wearer.dropItemToGround(item))
-		return
-	wearer.visible_message(span_warning("[wearer]'s [item.name] gets knocked off!"),span_userdanger("Your [item.name] was knocked off!"))
 
 	wearer.visible_message("<span class='warning'>[attacker] knocks off [wearer]'s [I.name]!</span>","<span class='userdanger'>[attacker] knocks off your [I.name]!</span>")
 

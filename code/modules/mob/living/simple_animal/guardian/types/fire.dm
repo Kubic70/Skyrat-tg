@@ -14,13 +14,6 @@
 	carp_fluff_string = "<span class='holoparasite'>CARP CARP CARP! You caught one! OH GOD, EVERYTHING'S ON FIRE. Except you and the fish.</span>"
 	miner_fluff_string = "<span class='holoparasite'>You encounter... Plasma, the bringer of fire.</span>"
 
-/mob/living/simple_animal/hostile/guardian/fire/Initialize(mapload, theme)
-	. = ..()
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
-
 /mob/living/simple_animal/hostile/guardian/fire/Life(delta_time = SSMOBS_DT, times_fired)
 	. = ..()
 	if(summoner)

@@ -147,7 +147,7 @@
 	mood_change = 5
 
 /datum/mood_event/sacrifice_good
-	description = "<span class='nicegreen'>The gods are pleased with this offering!</span>\n"
+	description ="<span class='nicegreen'>The gods are pleased with this offering!</span>\n"
 	mood_change = 5
 	timeout = 3 MINUTES
 
@@ -236,17 +236,3 @@
 /datum/mood_event/kiss/add_effects(mob/beau)
 	if(beau)
 		description = "<span class='nicegreen'>[beau.name] blew a kiss at me, I must be a real catch!</span>\n"
-
-/datum/mood_event/honorbound
-	description = "<span class='nicegreen'>Following my honorbound code is fulfilling!</span>\n"
-	mood_change = 4
-
-/datum/mood_event/et_pieces
-	description = "<span class='abductor'>Mmm... I love peanut butter...</span>\n"
-	mood_change = 50
-	timeout = 10 MINUTES
-
-/datum/mood_event/memories_of_home
-	description = "<span class='nicegreen'>This taste seems oddly nostalgic...</span>\n"
-	mood_change = 3
-	timeout = 5 MINUTES

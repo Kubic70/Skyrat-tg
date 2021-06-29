@@ -30,11 +30,12 @@
 	. = ..()
 	if(!iscarbon(target))
 		return
-	var/mob/living/carbon/blind_victim = target
-	to_chat(blind_victim, span_danger("Your eyes burn horrifically!")) //pocket sand! also, this is the message that changeling blind stings use, and no, I'm not ashamed about reusing it
-	blind_victim.become_nearsighted(EYE_DAMAGE)
-	blind_victim.blind_eyes(5)
-	blind_victim.blur_eyes(10)
+	var/mob/living/carbon/C = target
+	to_chat(C, "<span class='danger'>Your eyes burn horrifically!</span>") //pocket sand! also, this is the message that changeling blind stings use, and no, I'm not ashamed about reusing it
+	C.become_nearsighted(EYE_DAMAGE)
+	C.blind_eyes(5)
+	C.blur_eyes(10)
+	return
 
 /datum/eldritch_knowledge/ashen_grasp/on_eldritch_blade(atom/target, mob/user, proximity_flag, click_parameters)
 	. = ..()

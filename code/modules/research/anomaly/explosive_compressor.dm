@@ -23,15 +23,15 @@
 
 /obj/machinery/research/explosive_compressor/examine(mob/user)
 	. = ..()
-	. += span_notice("Ctrl-Click to remove an inserted core.")
-	. += span_notice("Click with an empty hand to gather information about the required radius of an inserted core. Insert a ready TTV to start the implosion process if a core is inserted.")
+	. += "<span class='notice'>Ctrl-Click to remove an inserted core.</span>"
+	. += "<span class='notice'>Click with an empty hand to gather information about the required radius of an inserted core. Insert a ready TTV to start the implosion process if a core is inserted.</span>"
 
 /obj/machinery/research/explosive_compressor/attack_hand(mob/living/user, list/modifiers)
 	. = ..()
 	if(.)
 		return
 	if(!inserted_core)
-		to_chat(user, span_warning("There is no core inserted."))
+		to_chat(user, "<span class='warning'>There is no core inserted.</span>")
 		return
 	if(last_requirements_say + 3 SECONDS > world.time)
 		return
@@ -43,13 +43,10 @@
 	if(!istype(user) || !user.Adjacent(src) || !(user.mobility_flags & MOBILITY_USE))
 		return
 	if(!inserted_core)
-		to_chat(user, span_warning("There is no core inserted."))
-		return
-	if(testing)
-		to_chat(user, span_warning("You can't remove [inserted_core] from [src] while [p_theyre()] in testing mode."))
+		to_chat(user, "<span class='warning'>There is no core inserted.</span>")
 		return
 	inserted_core.forceMove(get_turf(user))
-	to_chat(user, span_notice("You remove [inserted_core] from [src]."))
+	to_chat(user, "<span class='notice'>You remove [inserted_core] from [src].</span>")
 	user.put_in_hands(inserted_core)
 	inserted_core = null
 
@@ -87,36 +84,29 @@
 	. = ..()
 	if(istype(I, /obj/item/raw_anomaly_core))
 		if(inserted_core)
-			to_chat(user, span_warning("There is already a core in [src]."))
+			to_chat(user, "<span class='warning'>There is already a core in [src].</span>")
 			return
-		if(testing)
-			to_chat(user, span_warning("You can't insert [tool] into [src] while [p_theyre()] in testing mode."))
+		if(!user.transferItemToLoc(I, src))
+			to_chat(user, "<span class='warning'>[I] is stuck to your hand.</span>")
 			return
-		if(!user.transferItemToLoc(tool, src))
-			to_chat(user, span_warning("[tool] is stuck to your hand."))
-			return
-		inserted_core = tool
-		to_chat(user, span_notice("You insert [tool] into [src]."))
+		inserted_core = I
+		to_chat(user, "<span class='notice'>You insert [I] into [src].</span>")
 		return
 	if(istype(I, /obj/item/transfer_valve))
 		// If they don't have a bomb core inserted, don't let them insert this. If they do, insert and do implosion.
 		if(!inserted_core)
-			to_chat(user, span_warning("There is no core inserted in [src]. What would be the point of detonating an implosion without a core?"))
+			to_chat(user, "<span class='warning'>There is no core inserted in [src]. What would be the point of detonating an implosion without a core?</span>")
 			return
-		if(testing)
-			to_chat(user, span_warning("You can't insert [tool] into [src] while [p_theyre()] in testing mode."))
-			return
-		var/obj/item/transfer_valve/valve = tool
+		var/obj/item/transfer_valve/valve = I
 		if(!valve.ready())
-			to_chat(user, span_warning("[valve] is incomplete."))
+			to_chat(user, "<span class='warning'>[valve] is incomplete.</span>")
 			return
-		if(!user.transferItemToLoc(tool, src))
-			to_chat(user, span_warning("[tool] is stuck to your hand."))
+		if(!user.transferItemToLoc(I, src))
+			to_chat(user, "<span class='warning'>[I] is stuck to your hand.</span>")
 			return
-		inserted_bomb = tool
-		to_chat(user, span_notice("You insert [tool] and press the start button."))
-		start_test()
-
+		inserted_bomb = I
+		to_chat(user, "<span class='notice'>You insert [I] and press the start button.</span>")
+		do_implosion()
 
 /**
  * The ""explosion"" proc.

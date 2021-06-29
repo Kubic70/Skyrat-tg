@@ -76,14 +76,13 @@
 	addtimer(CALLBACK(src, .proc/LockOn), 7)
 
 /datum/gunpoint/proc/MeleeAttackReact(datum/source_datum, atom/target)
-	SIGNAL_HANDLER
 	if(!CheckContinuity())
 		qdel(src)
 		return
 	if(!allow_use && CanReact())
 		source.log_message("[source] shot [target] because they attacked/disarmed/pulled", LOG_ATTACK)
 		to_chat(source, "<span class='warning'>You pull the trigger instinctively to [target.name] actions!</span>")
-		INVOKE_ASYNC(src, .proc/ShootTarget)
+		ShootTarget()
 
 /datum/gunpoint/proc/LockOn()
 	if(src) //if we're not present then locking on failed and this datum is deleted
@@ -139,13 +138,11 @@
 	return ..()
 
 /datum/gunpoint/proc/ClickDestroy()
-	SIGNAL_HANDLER
 	if(locked)
 		playsound(get_turf(source), 'modular_skyrat/modules/gunpoint/sound/targetoff.ogg', 50,1)
 	qdel(src)
 
 /datum/gunpoint/proc/SourceCC(datum/source, amount, update, ignore)
-	SIGNAL_HANDLER
 	if(amount && !ignore)
 		qdel(src)
 
@@ -155,20 +152,18 @@
 	aimed_gun.afterattack(target, source)
 
 /datum/gunpoint/proc/RadioReact(datum/datum_source, obj/item/radio/radio, message, channel, list/spans, datum/language/language, direct)
-	SIGNAL_HANDLER
 	if(!allow_radio && CanReact())
 		if(direct)
 			source.log_message("[source] shot [target] because they spoke on radio", LOG_ATTACK)
 			to_chat(source, "<span class='warning'>You pull the trigger instinctively as [target.name] speaks on the radio!</span>")
-			INVOKE_ASYNC(src, .proc/ShootTarget)
+			ShootTarget()
 
 /datum/gunpoint/proc/MovedReact(datum/datum_source, atom/moved, direction, forced)
-	SIGNAL_HANDLER
 	if(!CheckContinuity())
 		qdel(src)
 		return
 	if(!allow_move && CanReact() && !(target.pulledby && target.pulledby == source)) //Don't shoot him if we're pulling them
-		INVOKE_ASYNC(src, .proc/MovedShootProc)
+		MovedShootProc()
 
 /datum/gunpoint/proc/MovedShootProc() //This exists in case of someone moving several tiles in one tick, such as dashes or diagonal movement
 	moved_counter += 1
@@ -188,7 +183,6 @@
 		ShootTarget()
 
 /datum/gunpoint/proc/SourceMoved(datum/datum_source)
-	SIGNAL_HANDLER
 	if(!CheckContinuity())
 		qdel(src)
 

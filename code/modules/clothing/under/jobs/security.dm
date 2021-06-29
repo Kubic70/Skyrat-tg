@@ -215,14 +215,10 @@
 /obj/item/clothing/under/rank/prisoner
 	name = "prison jumpsuit"
 	desc = "It's standardised Nanotrasen prisoner-wear. Its suit sensors are stuck in the \"Fully On\" position."
-	icon_state = "jumpsuit"
-	inhand_icon_state = "jumpsuit"
-	greyscale_colors = "#ff8300"
-	greyscale_config = /datum/greyscale_config/jumpsuit_prison
-	greyscale_config_inhand_left = /datum/greyscale_config/jumpsuit_prison_inhand_left
-	greyscale_config_inhand_right = /datum/greyscale_config/jumpsuit_prison_inhand_right
-	greyscale_config_worn = /datum/greyscale_config/jumpsuit_prison_worn
-	greyscale_config_worn_digi = /datum/greyscale_config/jumpsuit_prison_worn_digi
+	icon = 'icons/obj/clothing/under/security.dmi'
+	icon_state = "prisoner"
+	inhand_icon_state = "o_suit"
+	worn_icon = 'icons/mob/clothing/under/security.dmi'
 	has_sensor = LOCKED_SENSORS
 	sensor_mode = SENSOR_COORDS
 	random_sensor = FALSE
@@ -230,17 +226,11 @@
 /obj/item/clothing/under/rank/prisoner/skirt
 	name = "prison jumpskirt"
 	desc = "It's standardised Nanotrasen prisoner-wear. Its suit sensors are stuck in the \"Fully On\" position."
-	icon_state = "jumpskirt"
-	greyscale_colors = "#ff8300"
-	greyscale_config = /datum/greyscale_config/jumpsuit_prison
-	greyscale_config_inhand_left = /datum/greyscale_config/jumpsuit_prison_inhand_left
-	greyscale_config_inhand_right = /datum/greyscale_config/jumpsuit_prison_inhand_right
-	greyscale_config_worn = /datum/greyscale_config/jumpsuit_prison_worn
-	greyscale_config_worn_digi = null
+	icon_state = "prisoner_skirt"
+	inhand_icon_state = "o_suit"
 	body_parts_covered = CHEST|GROIN|ARMS
 	dying_key = DYE_REGISTRY_JUMPSKIRT
 	fitted = FEMALE_UNIFORM_TOP
-	mutant_variants = NONE
 
 /obj/item/clothing/under/rank/security/officer/beatcop
 	name = "space police uniform"

@@ -48,13 +48,9 @@ nobiliumsuppression = INFINITY
 	return b.priority - a.priority
 
 /datum/gas_reaction
-	/** 
-	 * Regarding the requirements list: the minimum or maximum requirements must be non-zero.
-	 * When in doubt, use MINIMUM_MOLE_COUNT.
-	 * Another thing to note is that reactions will not fire if we have any requirements outside of gas id path or MIN_TEMP or MAX_TEMP. 
-	 * More complex implementations will require modifications to gas_mixture.react()
-	 */
-	var/list/requirements
+	//regarding the requirements lists: the minimum or maximum requirements must be non-zero.
+	//when in doubt, use MINIMUM_MOLE_COUNT.
+	var/list/min_requirements
 	var/major_gas //the highest rarity gas used in the reaction.
 	var/exclude = FALSE //do it this way to allow for addition/removal of reactions midmatch in the future
 	var/priority = 100 //lower numbers are checked/react later than higher numbers. if two reactions have the same priority they may happen in either order
@@ -567,8 +563,7 @@ nobiliumsuppression = INFINITY
 		/datum/gas/tritium = 30,
 		/datum/gas/bz = 20,
 		/datum/gas/nitryl = 30,
-		/datum/gas/plasma = MINIMUM_MOLE_COUNT,
-		"MIN_TEMP" = 1500)
+		"TEMP" = 1500)
 
 /datum/gas_reaction/stimformation/react(datum/gas_mixture/air)
 	var/list/cached_gases = air.gases

@@ -1,10 +1,5 @@
 /obj/item/clothing/shoes/sneakers
 	dying_key = DYE_REGISTRY_SNEAKERS
-	icon_state = "sneakers"
-	greyscale_colors = "#545454#ffffff"
-	greyscale_config = /datum/greyscale_config/sneakers
-	greyscale_config_worn = /datum/greyscale_config/sneakers_worn
-	greyscale_config_worn_digi = /datum/greyscale_config/sneakers_worn_digi
 
 /obj/item/clothing/shoes/sneakers/black
 	name = "black shoes"
@@ -55,10 +50,7 @@
 
 /obj/item/clothing/shoes/sneakers/orange
 	name = "orange shoes"
-	greyscale_colors = "#eb7016#ffffff"
-	greyscale_config = /datum/greyscale_config/sneakers_orange
-	greyscale_config_worn = /datum/greyscale_config/sneakers_orange_worn
-	greyscale_config_worn_digi = /datum/greyscale_config/sneakers_orange_worn_digi
+	icon_state = "orange"
 
 /obj/item/clothing/shoes/sneakers/orange/attack_self(mob/user)
 	if (src.chained)
@@ -82,7 +74,7 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/C = user
 		if(C.shoes == src && chained == 1)
-			to_chat(user, span_warning("You need help taking these off!"))
+			to_chat(user, "<span class='warning'>You need help taking these off!</span>")
 			return FALSE
 	return ..()
 
@@ -91,7 +83,7 @@
 	if(ishuman(m))
 		var/mob/living/carbon/human/c = m
 		if(c.shoes == src && chained == 1)
-			to_chat(c, span_warning("You need help taking these off!"))
+			to_chat(c, "<span class='warning'>You need help taking these off!</span>")
 			return
 	return ..()
 

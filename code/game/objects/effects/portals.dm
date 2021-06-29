@@ -62,14 +62,6 @@
 /obj/effect/portal/attack_tk(mob/user)
 	return
 
-/obj/effect/portal/proc/on_entered(datum/source, atom/movable/arrived, direction)
-	SIGNAL_HANDLER
-	if(isobserver(arrived))
-		return
-	if(linked && (get_step(source, REVERSE_DIR(direction)) == get_turf(linked)))
-		return
-	teleport(arrived)
-
 /obj/effect/portal/attack_hand(mob/user, list/modifiers)
 	. = ..()
 	if(.)
@@ -93,10 +85,6 @@
 	hardlinked = automatic_link
 	if(isturf(hard_target_override))
 		hard_target = hard_target_override
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
 /obj/effect/portal/singularity_pull()
 	return

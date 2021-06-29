@@ -183,9 +183,8 @@
 /turf/open/floor/iron/grimy,
 /area/shuttle/escape)
 "aG" = (
-/obj/structure/chair/stool/directional/east{
-	can_buckle = 1;
-	
+/obj/structure/chair/stool{
+	can_buckle = 1
 	},
 /turf/open/floor/iron/grimy,
 /area/shuttle/escape)
@@ -240,7 +239,10 @@
 /turf/open/floor/mineral/plastitanium/red/brig,
 /area/shuttle/escape/brig)
 "aN" = (
-/obj/structure/chair/stool/bar/directional/south,
+/obj/structure/chair/stool/bar{
+	can_buckle = 1;
+	name = "buckleable bar stool"
+	},
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -661,21 +663,10 @@
 /obj/machinery/stasis,
 /turf/open/floor/mineral/titanium,
 /area/shuttle/escape)
-"qr" = (
-/obj/structure/chair/stool/bar/directional/west{
-	can_buckle = 1;
-	name = "buckleable bar stool"
-	},
-/obj/effect/turf_decal/tile/bar,
-/obj/effect/turf_decal/tile/bar{
-	dir = 1
-	},
-/turf/open/floor/iron,
-/area/shuttle/escape)
-"EL" = (
-/obj/effect/turf_decal/tile/bar,
-/obj/effect/turf_decal/tile/bar{
-	dir = 1
+"Yn" = (
+/obj/machinery/vending/wallmed{
+	name = "Emergency NanoMed";
+	use_power = 0
 	},
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/shuttle/escape)
@@ -832,13 +823,13 @@ an
 az
 aE
 aE
-qr
-qr
-qr
-qr
-qr
-qr
-qr
+aN
+aN
+aN
+aN
+aN
+aN
+aN
 aE
 ca
 Yn

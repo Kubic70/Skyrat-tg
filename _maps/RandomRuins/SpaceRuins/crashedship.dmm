@@ -621,7 +621,7 @@
 /turf/open/floor/iron/cafeteria,
 /area/awaymission/bmpship/midship)
 "cu" = (
-/obj/structure/chair/stool/directional/south,
+/obj/structure/chair/stool,
 /obj/effect/turf_decal/tile/bar,
 /obj/effect/turf_decal/tile/bar{
 	dir = 1
@@ -874,7 +874,7 @@
 /turf/open/floor/carpet,
 /area/awaymission/bmpship/fore)
 "du" = (
-/obj/structure/chair/stool/directional/south,
+/obj/structure/chair/stool,
 /turf/open/floor/carpet,
 /area/awaymission/bmpship/fore)
 "dv" = (
@@ -1498,7 +1498,7 @@
 	},
 /area/awaymission/bmpship/fore)
 "fK" = (
-/obj/structure/chair/stool/directional/north,
+/obj/structure/chair/stool,
 /turf/open/floor/plating/airless{
 	icon_state = "platingdmg3"
 	},
@@ -1602,7 +1602,7 @@
 /turf/open/floor/iron,
 /area/awaymission/bmpship/aft)
 "gg" = (
-/obj/structure/chair/stool/directional/south,
+/obj/structure/chair/stool,
 /turf/open/floor/iron,
 /area/awaymission/bmpship/aft)
 "gh" = (
@@ -1894,10 +1894,6 @@
 "hE" = (
 /turf/closed/wall/mineral/titanium/nodiagonal,
 /area/awaymission/bmpship/fore)
-"wf" = (
-/obj/structure/chair/stool/directional/west,
-/turf/open/floor/iron,
-/area/awaymission/bmpship/aft)
 "ya" = (
 /obj/machinery/door/poddoor/shutters{
 	id = "packerMine"
@@ -4412,7 +4408,7 @@ cw
 cw
 fP
 ac
-wf
+gg
 dl
 cE
 cE

@@ -21,11 +21,8 @@
 	src.force_drop_items = force_drop
 	src.lube_flags = lube_flags
 	src.callback = callback
-	if(slot_whitelist)
-		src.slot_whitelist = slot_whitelist
-	if(ismovable(parent))
-		AddElement(/datum/element/connect_loc_behalf, parent, default_connections)
-
+	src.slot_whitelist = slot_whitelist
+	RegisterSignal(parent, COMSIG_MOVABLE_CROSSED, .proc/Slip)
 	if(isitem(parent))
 		holder = parent
 		RegisterSignal(parent, COMSIG_ITEM_EQUIPPED, .proc/on_equip)
@@ -39,12 +36,11 @@
  * source - the source of the signal
  * AM - the atom/movable that is being slipped.
  */
-/datum/component/slippery/proc/Slip(datum/source, atom/movable/arrived, direction)
+/datum/component/slippery/proc/Slip(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
-	if(!isliving(arrived))
-		return
-	var/mob/living/victim = arrived
-	if(!(victim.movement_type & FLYING) && victim.slip(knockdown_time, parent, lube_flags, paralyze_time, force_drop_items) && callback)
+
+	var/mob/victim = AM
+	if(istype(victim) && !(victim.movement_type & FLYING) && victim.slip(knockdown_time, parent, lube_flags, paralyze_time, force_drop_items) && callback)
 		callback.Invoke(victim)
 
 /*
@@ -61,7 +57,7 @@
 
 	if((!LAZYLEN(slot_whitelist) || (slot in slot_whitelist)) && isliving(equipper))
 		holder = equipper
-		AddElement(/datum/element/connect_loc_behalf, holder, holder_connections)
+		RegisterSignal(holder, COMSIG_MOVABLE_CROSSED, .proc/Slip_on_wearer)
 		RegisterSignal(holder, COMSIG_PARENT_PREQDELETED, .proc/holder_deleted)
 
 /*
@@ -87,8 +83,6 @@
 /datum/component/slippery/proc/on_drop(datum/source, mob/user)
 	SIGNAL_HANDLER
 
-	UnregisterSignal(user, COMSIG_PARENT_PREQDELETED)
-	RemoveElement(/datum/element/connect_loc_behalf, holder, holder_connections)
 	holder = null
 	UnregisterSignal(user, COMSIG_MOVABLE_CROSSED)
 
@@ -99,17 +93,11 @@
  * source - the source of the signal
  * AM - the atom/movable that slipped on us.
  */
-/datum/component/slippery/proc/Slip_on_wearer(datum/source, atom/movable/arrived, direction)
+/datum/component/slippery/proc/Slip_on_wearer(datum/source, atom/movable/AM)
 	SIGNAL_HANDLER
 
 	if(holder.body_position == LYING_DOWN && !holder.buckled)
-		Slip(source, arrived)
-
-/datum/component/slippery/UnregisterFromParent()
-	. = ..()
-	if(holder)
-		RemoveElement(/datum/element/connect_loc_behalf, holder, holder_connections)
-	RemoveElement(/datum/element/connect_loc_behalf, parent, default_connections)
+		Slip(source, AM)
 
 /// Used for making the clown PDA only slip if the clown is wearing his shoes and the elusive banana-skin belt
 /datum/component/slippery/clowning
@@ -120,4 +108,4 @@
 		if(istype(I, /obj/item/clothing/shoes/clown_shoes))
 			Slip(source, AM)
 		else
-			to_chat(holder,span_warning("[parent] failed to slip anyone. Perhaps I shouldn't have abandoned my legacy..."))
+			to_chat(holder,"<span class='warning'>[parent] failed to slip anyone. Perhaps I shouldn't have abandoned my legacy...</span>")

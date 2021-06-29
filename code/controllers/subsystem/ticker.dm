@@ -27,6 +27,11 @@ SUBSYSTEM_DEF(ticker)
 	var/admin_delay_notice = "" //a message to display to anyone who tries to restart the world after a delay
 	var/ready_for_reboot = FALSE //all roundend preparation done with, all that's left is reboot
 
+	///If set to an anonymous theme datum then people spawn with said themed anon name (see anonymousnames.dm)
+	var/datum/anonymous_theme/anonymousnames
+	///Boolean to see if the game needs to set up a triumvirate ai (see tripAI.dm)
+	var/triai = FALSE
+
 	var/tipped = FALSE //Did we broadcast the tip of the day yet?
 	var/selected_tip // What will be the tip of the day?
 
@@ -153,11 +158,8 @@ SUBSYSTEM_DEF(ticker)
 				start_at = world.time + (CONFIG_GET(number/lobby_countdown) * 10)
 			for(var/client/C in GLOB.clients)
 				window_flash(C, ignorepref = TRUE) //let them know lobby has opened up.
-			to_chat(world, span_notice("<b>Welcome to [station_name()]!</b>"))
-			//SKYRAT EDIT START - DISCORD SPAM PREVENTION
-			if(!discord_alerted)
-				discord_alerted = TRUE
-				send2chat("<@&[CONFIG_GET(string/game_alert_role_id)]> New round starting on [SSmapping.config.map_name], [CONFIG_GET(string/servername)]! \nIf you wish to be pinged for game related stuff, go to <#[CONFIG_GET(string/role_assign_channel_id)]> and assign yourself the roles.", CONFIG_GET(string/chat_announce_new_game)) // Skyrat EDIT -- role pingcurrent_state = GAME_STATE_PREGAME
+			to_chat(world, "<span class='boldnotice'>Welcome to [station_name()]!</span>")
+			send2chat("<@&[CONFIG_GET(string/game_alert_role_id)]> New round starting on [SSmapping.config.map_name], [CONFIG_GET(string/servername)]! \nIf you wish to be pinged for game related stuff, go to <#[CONFIG_GET(string/role_assign_channel_id)]> and assign yourself the roles.", CONFIG_GET(string/chat_announce_new_game)) // Skyrat EDIT -- role ping
 			current_state = GAME_STATE_PREGAME
 			change_lobbyscreen() //SKYRAT EDIT ADDITION
 			//Everyone who wants to be an observer is now spawned
@@ -214,7 +216,7 @@ SUBSYSTEM_DEF(ticker)
 
 
 /datum/controller/subsystem/ticker/proc/setup()
-	to_chat(world, span_boldannounce("Starting game..."))
+	to_chat(world, "<span class='boldannounce'>Starting game...</span>")
 	var/init_start = world.timeofday
 		//Create and announce mode
 	var/list/datum/game_mode/runnable_modes
@@ -263,7 +265,7 @@ SUBSYSTEM_DEF(ticker)
 			SSjob.ResetOccupations()
 			return FALSE
 	else
-		message_admins(span_notice("DEBUG: Bypassing prestart checks..."))
+		message_admins("<span class='notice'>DEBUG: Bypassing prestart checks...</span>")
 
 	CHECK_TICK
 
@@ -304,14 +306,14 @@ SUBSYSTEM_DEF(ticker)
 	round_start_time = world.time
 	SSdbcore.SetRoundStart()
 
-	to_chat(world, span_notice("<B>Welcome to [station_name()], enjoy your stay!</B>"))
+	to_chat(world, "<span class='notice'><B>Welcome to [station_name()], enjoy your stay!</B></span>")
 	alert_sound_to_playing(sound(SSstation.announcer.get_rand_welcome_sound())) //SKYRAT EDIT CHANGE
 
 	current_state = GAME_STATE_PLAYING
 	Master.SetRunLevel(RUNLEVEL_GAME)
 
 	if(SSevents.holidays)
-		to_chat(world, span_notice("and..."))
+		to_chat(world, "<span class='notice'>and...</span>")
 		for(var/holidayname in SSevents.holidays)
 			var/datum/holiday/holiday = SSevents.holidays[holidayname]
 			to_chat(world, "<h4>[holiday.greet()]</h4>")
@@ -350,9 +352,9 @@ SUBSYSTEM_DEF(ticker)
 		if(!iter_human.hardcore_survival_score)
 			continue
 		if(iter_human.mind?.special_role)
-			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score) * 2] hardcore random points if you greentext this round!"))
+			to_chat(iter_human, "<span class='notice'>You will gain [round(iter_human.hardcore_survival_score) * 2] hardcore random points if you greentext this round!</span>")
 		else
-			to_chat(iter_human, span_notice("You will gain [round(iter_human.hardcore_survival_score)] hardcore random points if you survive this round!"))
+			to_chat(iter_human, "<span class='notice'>You will gain [round(iter_human.hardcore_survival_score)] hardcore random points if you survive this round!</span>")
 
 //These callbacks will fire after roundstart key transfer
 /datum/controller/subsystem/ticker/proc/OnRoundstart(datum/callback/cb)
@@ -426,23 +428,23 @@ SUBSYSTEM_DEF(ticker)
 		picked_spare_id_candidate = pick(spare_id_candidates)
 
 	for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
-		var/mob/living/new_player_living = new_player_mob.new_character
-		if(istype(new_player_living) && new_player_living.mind?.assigned_role)
-			var/player_assigned_role = new_player_living.mind.assigned_role
+		var/mob/living/carbon/human/new_player_human = new_player_mob.new_character
+		if(istype(new_player_human) && new_player_human.mind?.assigned_role)
+			var/player_assigned_role = new_player_human.mind.assigned_role
 			var/player_is_captain = (picked_spare_id_candidate == new_player_mob) || (SSjob.always_promote_captain_job && (player_assigned_role == "Captain"))
 			if(player_is_captain)
 				captainless = FALSE
-			if(player_assigned_role != new_player_living.mind.special_role)
-				new_player_living = SSjob.EquipRank(new_player_mob, player_assigned_role, FALSE, player_is_captain)
-				if(CONFIG_GET(flag/roundstart_traits) && ishuman(new_player_living))
-					SSquirks.AssignQuirks(new_player_living, new_player_mob.client)
+			if(player_assigned_role != new_player_human.mind.special_role)
+				SSjob.EquipRank(new_player_mob, player_assigned_role, FALSE, player_is_captain)
+				if(CONFIG_GET(flag/roundstart_traits) && ishuman(new_player_human))
+					SSquirks.AssignQuirks(new_player_human, new_player_mob.client, TRUE)
 		CHECK_TICK
 
 	if(captainless)
 		for(var/mob/dead/new_player/new_player_mob as anything in GLOB.new_player_list)
 			var/mob/living/carbon/human/new_player_human = new_player_mob.new_character
 			if(new_player_human)
-				to_chat(new_player_mob, span_notice("Captainship not forced on anyone."))
+				to_chat(new_player_mob, "<span class='notice'>Captainship not forced on anyone.</span>")
 			CHECK_TICK
 
 /datum/controller/subsystem/ticker/proc/decide_security_officer_departments(
@@ -504,7 +506,7 @@ SUBSYSTEM_DEF(ticker)
 			m = pick(memetips)
 
 	if(m)
-		to_chat(world, span_purple("<span class='oocplain'><b>Tip of the round: </b>[html_encode(m)]</span>"))
+		to_chat(world, "<span class='purple'><b>Tip of the round: </b>[html_encode(m)]</span>")
 
 /datum/controller/subsystem/ticker/proc/check_queue()
 	if(!queued_players.len)
@@ -513,7 +515,7 @@ SUBSYSTEM_DEF(ticker)
 	if(!hpc)
 		listclearnulls(queued_players)
 		for (var/mob/dead/new_player/NP in queued_players)
-			to_chat(NP, span_userdanger("The alive players limit has been released!<br><a href='?src=[REF(NP)];late_join=override'>[html_encode(">>Join Game<<")]</a>"))
+			to_chat(NP, "<span class='userdanger'>The alive players limit has been released!<br><a href='?src=[REF(NP)];late_join=override'>[html_encode(">>Join Game<<")]</a></span>")
 			SEND_SOUND(NP, sound('sound/misc/notice1.ogg'))
 			NP.LateChoices()
 		queued_players.len = 0
@@ -528,14 +530,14 @@ SUBSYSTEM_DEF(ticker)
 			listclearnulls(queued_players)
 			if(living_player_count() < hpc)
 				if(next_in_line?.client)
-					to_chat(next_in_line, span_userdanger("A slot has opened! You have approximately 20 seconds to join. <a href='?src=[REF(next_in_line)];late_join=override'>\>\>Join Game\<\<</a>"))
+					to_chat(next_in_line, "<span class='userdanger'>A slot has opened! You have approximately 20 seconds to join. <a href='?src=[REF(next_in_line)];late_join=override'>\>\>Join Game\<\<</a></span>")
 					SEND_SOUND(next_in_line, sound('sound/misc/notice1.ogg'))
 					next_in_line.LateChoices()
 					return
 				queued_players -= next_in_line //Client disconnected, remove he
 			queue_delay = 0 //No vacancy: restart timer
 		if(25 to INFINITY)  //No response from the next in line when a vacancy exists, remove he
-			to_chat(next_in_line, span_danger("No response received. You have been removed from the line."))
+			to_chat(next_in_line, "<span class='danger'>No response received. You have been removed from the line.</span>")
 			queued_players -= next_in_line
 			queue_delay = 0
 
@@ -565,6 +567,8 @@ SUBSYSTEM_DEF(ticker)
 
 	delay_end = SSticker.delay_end
 
+	anonymousnames = SSticker.anonymousnames
+	triai = SSticker.triai
 	tipped = SSticker.tipped
 	selected_tip = SSticker.selected_tip
 
@@ -715,17 +719,17 @@ SUBSYSTEM_DEF(ticker)
 
 	var/skip_delay = check_rights()
 	if(delay_end && !skip_delay)
-		to_chat(world, span_boldannounce("An admin has delayed the round end."))
+		to_chat(world, "<span class='boldannounce'>An admin has delayed the round end.</span>")
 		return
 
-	to_chat(world, span_boldannounce("Rebooting World in [DisplayTimeText(delay)]. [reason]"))
+	to_chat(world, "<span class='boldannounce'>Rebooting World in [DisplayTimeText(delay)]. [reason]</span>")
 
 	var/start_wait = world.time
 	UNTIL(round_end_sound_sent || (world.time - start_wait) > (delay * 2)) //don't wait forever
 	sleep(delay - (world.time - start_wait))
 
 	if(delay_end && !skip_delay)
-		to_chat(world, span_boldannounce("Reboot was cancelled by an admin."))
+		to_chat(world, "<span class='boldannounce'>Reboot was cancelled by an admin.</span>")
 		return
 	if(end_string)
 		end_state = end_string
@@ -733,11 +737,11 @@ SUBSYSTEM_DEF(ticker)
 	var/statspage = CONFIG_GET(string/roundstatsurl)
 	var/gamelogloc = CONFIG_GET(string/gamelogurl)
 	if(statspage)
-		to_chat(world, span_info("Round statistics and logs can be viewed <a href=\"[statspage][GLOB.round_id]\">at this website!</a>"))
+		to_chat(world, "<span class='info'>Round statistics and logs can be viewed <a href=\"[statspage][GLOB.round_id]\">at this website!</a></span>")
 	else if(gamelogloc)
-		to_chat(world, span_info("Round logs can be located <a href=\"[gamelogloc]\">at this website!</a>"))
+		to_chat(world, "<span class='info'>Round logs can be located <a href=\"[gamelogloc]\">at this website!</a></span>")
 
-	log_game(span_boldannounce("Rebooting World. [reason]"))
+	log_game("<span class='boldannounce'>Rebooting World. [reason]</span>")
 
 	world.Reboot()
 

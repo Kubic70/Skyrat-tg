@@ -42,11 +42,6 @@
 		icon_living = "rare_frog"
 		icon_dead = "rare_frog_dead"
 		butcher_results = list(/obj/item/food/nugget = 5)
-/* SKYRAT EDIT REMOVAL
-	var/static/list/loc_connections = list(
-		COMSIG_ATOM_ENTERED = .proc/on_entered,
-	)
-	AddElement(/datum/element/connect_loc, loc_connections)
 
 //SKYRAT EDIT REMOVAL BEGIN
 /*
